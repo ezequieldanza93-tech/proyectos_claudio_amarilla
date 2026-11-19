@@ -38,6 +38,7 @@ header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:1
 header.top p{margin:4px 0 0}
 button,.btn{font:inherit;font-size:.88rem;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 12px;border-radius:8px;cursor:pointer}
 button:hover{border-color:var(--accent)}
+a.btn{display:inline-block;text-decoration:none;line-height:1.2}a.btn:hover{border-color:var(--accent)}a.btn.small{font-size:.8rem;padding:4px 9px}
 button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 button.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
 button.ghost{border-color:transparent;background:transparent;padding:5px 8px}
@@ -621,6 +622,7 @@ function substrateCard(x){
     ${x.cat?'':S.confirm==='pr'+x.id?`<button class="small danger" data-act="delProduct" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="pr${esc(x.id)}" aria-label="Borrar sustrato">✕</button>`}</div>${x.desc?`<div style="font-size:.86rem">${esc(x.desc)}</div>`:''}
     <dl class="fdl">${row('Presentaciones',x.presentations)}${row('pH',x.ph)}${row('CE / EC',x.ce)}${row('Composición',x.composition)}${row('Uso indicado',x.usage)}${row('Peso por bolsa',x.weight)}${row('Nutre las primeras',x.feedWeeks?x.feedWeeks+' semanas':'')}${row('Notas',x.notes)}</dl>
     <form class="row" data-form="feedweeks" data-id="${esc(x.id)}"><label class="row" style="gap:6px"><span class="muted" style="font-size:.82rem">Nutre las primeras</span><input name="feedWeeks" inputmode="numeric" style="width:70px" value="${esc(x.feedWeeks??'')}"><span class="muted" style="font-size:.82rem">semanas</span></label><button class="small" type="submit">Guardar</button></form>
+    ${x.img?`<div>${fotoBtn(x.img)}</div>`:''}
     ${(x.sources||[]).length?`<details><summary class="muted" style="font-size:.8rem">Fuentes (${x.sources.length})</summary><ul class="flist">${x.sources.map(u=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/,'').split('/')[0])}</a></li>`).join('')}</ul></details>`:''}
   </div>`;
 }
@@ -636,7 +638,7 @@ const j=a=>a.filter(v=>v!==''&&v!=null).join(' · ');
 function subOfSustrato(name){const n=(name||'').toLowerCase();return /coco/.test(n)?'coco':/compost/.test(n)?'enmiendas':'tierras'}
 function catalogIndex(){
   const out=[];const C=S.cat||{};
-  const push=(cat,sub,x,label,facts,extra)=>out.push({key:(extra&&extra.key)||'cat:'+x.id,cat,sub,brand:x.marca||'',label,facts,verified:!!x.verificado,src:catSrc(x),notes:x.notas||'',desc:x.descripcion_corta||'',conf:catConf(x),isCat:true,...(extra||{})});
+  const push=(cat,sub,x,label,facts,extra)=>out.push({key:(extra&&extra.key)||'cat:'+x.id,cat,sub,brand:x.marca||'',label,facts,verified:!!x.verificado,src:catSrc(x),notes:x.notas||'',desc:x.descripcion_corta||'',conf:catConf(x),img:catImg(x),isCat:true,...(extra||{})});
   (C.luces||[]).forEach(x=>push('equipo','luces',x,x.producto,j([x.tipo,x.potencia_real_w?x.potencia_real_w+' W':'',x.panel_largo_cm&&x.panel_ancho_cm?`${dec(x.panel_largo_cm)}×${dec(x.panel_ancho_cm)} cm`:'',x.ppf_umol_s?x.ppf_umol_s+' µmol/s':'',x.eficacia_umol_j?dec(x.eficacia_umol_j)+' µmol/J':'',x.espectro,x.dimmer?'dimmer':''])));
   (C.carpas||[]).forEach(x=>{const b=(a)=>a&&a.length?a.map(y=>`${y.cantidad}×${y.diametro||'?'}`).join(', '):'';
     push('equipo','carpas',x,x.producto,j([x.largo_cm?`${x.largo_cm}×${x.ancho_cm}×${x.alto_cm} cm`:'',b(x.bocas_superiores)?'bocas sup. '+b(x.bocas_superiores):'',b(x.bocas_inferiores)?'bocas inf. '+b(x.bocas_inferiores):'',x.material_reflectivo]))});
@@ -651,7 +653,7 @@ function catalogIndex(){
   S.products.filter(x=>!x.cat&&x.name).forEach(x=>{
     const sub=x.use==='sustrato'?subOfSustrato(x.name):x.use==='foliar'?'foliar':x.use==='radicular'?'radicular':x.sub||'accesorios';
     const cat=x.use==='sustrato'?'sustrato':(x.use==='foliar'||x.use==='radicular')?'fert':(x.cat2||'equipo');
-    out.push({key:x.id,cat,sub,brand:x.line||'',label:prodLabel(x),facts:j([x.unit?x.unit:'',x.ph?'pH '+x.ph:'',x.ce?'CE '+x.ce:'']),verified:!!x.verified,src:x.sources||[],notes:x.notes||'',desc:'',isCat:false,dbId:x.id});
+    out.push({key:x.id,cat,sub,brand:x.line||'',label:prodLabel(x),facts:j([x.unit?x.unit:'',x.ph?'pH '+x.ph:'',x.ce?'CE '+x.ce:'']),verified:!!x.verified,src:x.sources||[],img:x.img||'',notes:x.notes||'',desc:'',isCat:false,dbId:x.id});
   });
   return out;
 }
@@ -671,6 +673,7 @@ function catalogBrowser(){
       <span style="flex:1;min-width:0"><b style="font-weight:600">${esc(x.label)}</b>${x.isCat?'':'<span class="tag">propio</span>'}${x.verified?'':' <span class="aitag">sin verificar</span>'}
       <span class="muted" style="display:block;font-size:.8rem">${esc(x.facts)}</span></span><span class="chev">${open?'▴':'▾'}</span></button>
       ${open?(sub?substrateCard(sub):`<div class="wk-det">${x.desc?`<div style="font-size:.86rem">${esc(x.desc)}</div>`:''}${x.notes?`<div class="muted" style="font-size:.8rem">${esc(x.notes)}</div>`:''}${x.conf?`<div class="muted" style="font-size:.8rem">Diferencias entre fuentes: ${esc(x.conf)}</div>`:''}
+        ${x.img?`<div style="margin:6px 0">${fotoBtn(x.img)}</div>`:''}
         ${x.src.length?`<div style="font-size:.8rem">${x.src.slice(0,4).map(u=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/,'').split('/')[0])}</a>`).join(' · ')}</div>`:''}
         ${x.isCat?'':S.confirm==='pr'+x.dbId?`<button class="small danger" data-act="delProduct" data-id="${esc(x.dbId)}">Confirmar borrado</button>`:`<button class="small ghost danger" data-act="askDel" data-key="pr${esc(x.dbId)}">Borrar</button>`}</div>`):''}</div>`}).join('')}</div>`;
   return h;
@@ -806,6 +809,8 @@ const BRANDS={
 const CAT_FILES=['fertilizantes','foliares','sustratos','luces','carpas','ventilacion','clima','geneticas','marcas'];
 const catLine=x=>[x.marca,x.linea].filter(Boolean).join(' ');
 const catSrc=x=>(x.fuentes||[]).map(s=>s.url).filter(Boolean);
+function catImg(x){const u=(x&&x.imagen_url)||'';return /^https?:\/\//i.test(u)?u:''}
+function fotoBtn(u){return /^https?:\/\//i.test(u||'')?`<a class="btn small" href="${esc(u)}" target="_blank" rel="noopener noreferrer">Foto</a>`:''}
 const catConf=x=>(x.conflictos||[]).map(c=>`${c.campo}: ${(c.valores||[]).map(v=>v.valor).join(' / ')}`).join('; ');
 async function loadCatalog(){
   const out={};
@@ -814,7 +819,7 @@ async function loadCatalog(){
 }
 function catProducts(){
   if(!S.cat)return [];const a=[];
-  const base=x=>({id:'cat:'+x.id,cat:true,line:catLine(x),name:x.producto,verified:!!x.verificado,sources:catSrc(x),desc:x.descripcion_corta||''});
+  const base=x=>({id:'cat:'+x.id,cat:true,line:catLine(x),name:x.producto,verified:!!x.verificado,sources:catSrc(x),desc:x.descripcion_corta||'',img:catImg(x)});
   (S.cat.fertilizantes||[]).forEach(x=>a.push({...base(x),use:'radicular',unit:x.unidad||'ml',doses:x.dosis_fabricante||[],notes:x.notas||''}));
   (S.cat.foliares||[]).forEach(x=>a.push({...base(x),use:'foliar',unit:x.unidad||'ml',doses:x.dosis_fabricante||[],notes:x.notas||''}));
   (S.cat.sustratos||[]).forEach(x=>a.push({...base(x),use:'sustrato',presentations:(x.litros_presentacion||[]).map(l=>dec(l)+' L').join(', '),ph:x.ph_declarado||'',ce:x.ce_declarada||'',
@@ -844,7 +849,7 @@ function catFill(form,key){
   else{if(COMP_KINDS.includes(x.tipo)){c+=set('kind',x.tipo,true);applyKindVisibility(form)}
     if(x.tipo==='Ventilador')c+=set('diameter',x.diametro);else c+=set('size',x.diametro,true);
     c+=set('power',x.potencia_w)+set('oscillating',x.oscilante)+set('dimmer',x.dimmer)}
-  if(msg)msg.innerHTML=`Datos del catálogo${x.verificado?'':' (sin verificar)'}: completé ${c} campo(s).${catSrc(x).length?` <a href="${esc(catSrc(x)[0])}" target="_blank" rel="noopener">Fuente</a>`:''}${catConf(x)?' · Diferencias entre fuentes: '+esc(catConf(x)):''}`;
+  if(msg)msg.innerHTML=`Datos del catálogo${x.verificado?'':' (sin verificar)'}: completé ${c} campo(s).${catSrc(x).length?` <a href="${esc(catSrc(x)[0])}" target="_blank" rel="noopener">Fuente</a>`:''}${catImg(x)?' '+fotoBtn(catImg(x)):''}${catConf(x)?' · Diferencias entre fuentes: '+esc(catConf(x)):''}`;
 }
 function tentFill(form){
   const mv=form.querySelector('[name=tentModel]').value.trim();const x=(S.cat&&S.cat.carpas||[]).find(c=>c.producto===mv||c.modelo===mv);if(!x)return;
@@ -852,13 +857,13 @@ function tentFill(form){
   set('tentBrand',x.marca);set('width',x.ancho_cm?x.ancho_cm/100:null);set('length',x.largo_cm?x.largo_cm/100:null);set('height',x.alto_cm?x.alto_cm/100:null);
   for(const [pos,arr] of [['Top',x.bocas_superiores],['Bottom',x.bocas_inferiores]]){if(!arr||!arr.length)continue;const el=form.querySelector(`[name=ports${pos}]`);if(el.value.trim())continue;
     const ds=[];arr.forEach(b=>{for(let i=0;i<num(b.cantidad);i++)ds.push(b.diametro||'')});el.value=ds.length;document.getElementById('ports-'+pos).innerHTML=portInputs(pos,ds.length,ds);}
-  const m=form.querySelector('.tent-msg');if(m)m.textContent=`Datos de la carpa del catálogo${x.verificado?'':' (sin verificar)'}${x.bocas_superiores==null&&x.bocas_inferiores==null?'; la fuente no informa bocas':''}.`;
+  const m=form.querySelector('.tent-msg');if(m)m.innerHTML=esc(`Datos de la carpa del catálogo${x.verificado?'':' (sin verificar)'}${x.bocas_superiores==null&&x.bocas_inferiores==null?'; la fuente no informa bocas':''}.`)+(catImg(x)?' '+fotoBtn(catImg(x)):'');
 }
 const genLabel=x=>`${x.marca} · ${x.producto}`;
 function genOf(b){if(!S.cat||!S.cat.geneticas)return null;const g=S.cat.geneticas;return g.find(x=>'cat:'+x.id===b.geneticsId)||g.find(x=>genLabel(x)===b.genetics)}
 function genSheet(b){const x=genOf(b);if(!x)return '';
   const parts=[x.tipo,x.proporcion,x.ciclo_total_dias?'ciclo '+x.ciclo_total_dias:'',x.floracion?'floración '+x.floracion:'',x.altura_interior?'altura int. '+x.altura_interior:'',x.altura_exterior?'altura ext. '+x.altura_exterior:'',x.rendimiento_interior?'int. '+x.rendimiento_interior:'',x.rendimiento_exterior?'ext. '+x.rendimiento_exterior:''].filter(Boolean);
-  return `<div class="muted" style="font-size:.82rem">Ficha ${esc(genLabel(x))}: ${esc(parts.join(' · '))}${catSrc(x).length?` · <a href="${esc(catSrc(x)[0])}" target="_blank" rel="noopener">fuente</a>`:''}${x.verificado?'':' · sin verificar'}</div>`;}
+  return `<div class="muted" style="font-size:.82rem">Ficha ${esc(genLabel(x))}: ${esc(parts.join(' · '))}${catSrc(x).length?` · <a href="${esc(catSrc(x)[0])}" target="_blank" rel="noopener">fuente</a>`:''}${catImg(x)?' · '+fotoBtn(catImg(x)):''}${x.verificado?'':' · sin verificar'}</div>`;}
 /* ---------- compras ---------- */
 /* ---------- buscador de catálogo ---------- */
 const pickBtn=(opts)=>`<button type="button" class="small pick-btn" data-act="openPick" data-cats="${opts.cats||''}" data-subs="${opts.subs||''}" aria-label="Buscar en el catálogo">Buscar</button>`;
