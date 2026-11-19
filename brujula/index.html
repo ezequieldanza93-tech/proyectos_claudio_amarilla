@@ -1,0 +1,400 @@
+<title>Brújula de Objetivos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: columna única centrada; inicio = semana + tarjetas por prioridad; detalle = objetivo, porqué, tareas y registro de horas */
+:root{
+  --bg:#f3f5f2; --surface:#ffffff; --ink:#18221d; --muted:#5d6b63; --line:#d9e0db;
+  --accent:#2f6b4f; --accent-soft:#e2eee7;
+  --p1:#2f6b4f; --p2:#3d4f9a; --p3:#a5651a; --p4:#1f7a83; --p5:#7a4a8c;
+  --warn:#b4471f; --ok:#2f7d4a;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121815; --surface:#1a221e; --ink:#e6ece8; --muted:#9aa9a0; --line:#2c3832;
+  --accent:#6fbf94; --accent-soft:#213229;
+  --p1:#6fbf94; --p2:#8d9ef0; --p3:#e3a656; --p4:#5cc3cc; --p5:#c79ad9;
+  --warn:#f0875f; --ok:#6fcf8f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815; --surface:#1a221e; --ink:#e6ece8; --muted:#9aa9a0; --line:#2c3832;
+  --accent:#6fbf94; --accent-soft:#213229;
+  --p1:#6fbf94; --p2:#8d9ef0; --p3:#e3a656; --p4:#5cc3cc; --p5:#c79ad9;
+  --warn:#f0875f; --ok:#6fcf8f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:920px;margin:0 auto;padding-block:20px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:1.7rem;font-weight:700}
+h2{font-size:1.3rem;font-weight:700}
+h3{font-size:1.05rem;font-weight:600}
+.mono,.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+header.top p{margin:4px 0 0}
+button,.btn{font:inherit;font-size:.88rem;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 12px;border-radius:8px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+button.ghost{border-color:transparent;background:transparent;padding:5px 8px}
+button.danger{color:var(--warn)}
+button.small{font-size:.8rem;padding:4px 9px}
+input,textarea,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 9px;width:100%;min-width:0}
+textarea{min-height:70px;resize:vertical}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.spacer{flex:1}
+
+/* semana */
+.week-bars{display:flex;flex-direction:column;gap:10px}
+.wb{display:grid;grid-template-columns:minmax(90px,170px) 1fr 92px;gap:10px;align-items:center}
+.wb .name{font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{height:12px;background:var(--bg);border:1px solid var(--line);border-radius:6px;position:relative;overflow:hidden}
+.fill{position:absolute;inset:0 auto 0 0;border-radius:6px}
+.wb .val{font-size:.8rem;text-align:right}
+
+/* tarjetas */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--pc);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;cursor:pointer;text-align:left;min-width:0}
+.card:hover{box-shadow:0 2px 14px color-mix(in srgb,var(--pc) 18%,transparent)}
+.chip{display:inline-flex;align-items:center;font-family:var(--f-mono);font-size:.75rem;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--pc) 16%,transparent);color:var(--pc);font-weight:500}
+.why{font-size:.88rem;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.stat b{display:block;font-family:var(--f-mono);font-size:.95rem;font-weight:500}
+.stat span{font-size:.7rem;color:var(--muted)}
+.prog{height:6px;background:var(--bg);border-radius:3px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--pc)}
+.next{font-size:.82rem}
+
+/* detalle */
+.detail-head{display:flex;flex-direction:column;gap:10px;border-left:5px solid var(--pc);padding-left:14px}
+.quote{font-size:1rem;background:color-mix(in srgb,var(--pc) 9%,var(--surface));border-radius:10px;padding:14px 16px;white-space:pre-wrap}
+.tasks{display:flex;flex-direction:column}
+.task{display:grid;grid-template-columns:28px 1fr auto;gap:10px;padding:12px 0;border-top:1px solid var(--line);align-items:start}
+.task:first-child{border-top:0}
+.task .t-title{font-weight:500}
+.task.done .t-title{text-decoration:line-through;color:var(--muted)}
+.t-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:3px}
+.t-actions{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.check{width:22px;height:22px;border-radius:6px;border:2px solid var(--pc);background:transparent;padding:0;margin-top:2px;display:grid;place-items:center;color:var(--bg);font-size:.8rem}
+.check.on{background:var(--pc)}
+.check.mid{background:linear-gradient(135deg,var(--pc) 50%,transparent 50%)}
+.over{color:var(--warn)}
+.inline-form{grid-column:1/-1;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.logs{display:flex;flex-direction:column;gap:6px}
+.log{display:grid;grid-template-columns:90px 70px 1fr auto;gap:10px;font-size:.85rem;align-items:center;padding:6px 0;border-top:1px solid var(--line)}
+.log:first-child{border-top:0}
+.empty{border:1px dashed var(--line);border-radius:10px;padding:16px;color:var(--muted);font-size:.9rem}
+
+/* cronómetro */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.timerbar .clock{font-family:var(--f-mono);font-size:1.25rem}
+.timerbar button{background:var(--bg);color:var(--ink);border-color:var(--bg)}
+.notice{background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+@media (max-width:560px){
+  .task{grid-template-columns:28px 1fr}
+  .t-actions{grid-column:2;justify-content:flex-start}
+  .log{grid-template-columns:80px 60px 1fr}
+  .log .la{grid-column:1/-1}
+  .wb{grid-template-columns:1fr 84px}
+  .wb .track{grid-column:1/-1;grid-row:2}
+}
+@media (prefers-reduced-motion:no-preference){.card{transition:box-shadow .15s}}
+</style>
+
+<div class="wrap" id="app">
+  <header class="top">
+    <div>
+      <h1>Brújula de Objetivos</h1>
+      <p class="muted">Cargando tus objetivos…</p>
+    </div>
+  </header>
+</div>
+
+<script>
+(function(){
+const PCOL=['--p1','--p2','--p3','--p4','--p5'];
+const S={projects:[],tasks:[],logs:[],timer:null,view:'home',pid:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+let db=null, pending=false;
+const app=document.getElementById('app');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=v=>{const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:0};
+const h1=v=>{const r=Math.round(v*10)/10;return (r%1===0?r.toFixed(0):r.toFixed(1)).replace('.',',')};
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const fmtDate=s=>{if(!s)return '';const [y,m,d]=s.split('-');return d+'/'+m+'/'+y.slice(2)};
+function weekStart(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function daysLeft(s){if(!s)return null;const t=new Date(s+'T00:00:00');const n=new Date(today()+'T00:00:00');return Math.round((t-n)/86400000)}
+const sortedProjects=()=>[...S.projects].sort((a,b)=>(num(a.priority)||99)-(num(b.priority)||99)||String(a.name).localeCompare(b.name));
+const pcolor=p=>{const i=sortedProjects().findIndex(x=>x.id===p.id);return 'var('+PCOL[(i<0?0:i)%PCOL.length]+')'};
+const tasksOf=pid=>S.tasks.filter(t=>t.projectId===pid).sort((a,b)=>(a.status==='hecha')-(b.status==='hecha')||(a.due||'9999').localeCompare(b.due||'9999')||num(a.createdAt)-num(b.createdAt));
+const logsOf=pid=>S.logs.filter(l=>l.projectId===pid);
+const minsSum=arr=>arr.reduce((s,l)=>s+num(l.minutes),0);
+const taskMins=tid=>minsSum(S.logs.filter(l=>l.taskId===tid));
+
+function projStats(p){
+  const ts=tasksOf(p.id);const done=ts.filter(t=>t.status==='hecha');
+  const est=ts.reduce((s,t)=>s+num(t.estHours),0);
+  const estDone=done.reduce((s,t)=>s+num(t.estHours),0);
+  const ls=logsOf(p.id);const ws=weekStart();
+  return {ts,done,est,pct:est?estDone/est:(ts.length?done.length/ts.length:0),
+    dedicated:minsSum(ls)/60,week:minsSum(ls.filter(l=>(l.date||'')>=ws))/60,
+    next:ts.find(t=>t.status!=='hecha')};
+}
+
+/* ---------- render ---------- */
+function render(){
+  const a=document.activeElement;
+  if(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&!S._force){pending=true;return}
+  S._force=false;pending=false;
+  let html='';
+  if(S.timer)html+=timerBar();
+  if(S.err)html+=`<div class="notice">${esc(S.err)}</div>`;
+  html+= S.view==='project'&&S.projects.find(p=>p.id===S.pid)?detailView():homeView();
+  app.innerHTML=html;
+  tick();
+}
+app.addEventListener('focusout',()=>setTimeout(()=>{if(pending){const a=document.activeElement;if(!(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))render()}},0));
+function rerender(){S._force=true;render()}
+
+function timerBar(){
+  const p=S.projects.find(x=>x.id===S.timer.projectId);const t=S.tasks.find(x=>x.id===S.timer.taskId);
+  return `<div class="timerbar"><span class="label" style="color:inherit;opacity:.7">En curso</span>
+  <span class="clock" id="clock">00:00:00</span>
+  <span style="flex:1;min-width:0">${esc(p?p.name:'')}${t?' · '+esc(t.title):''}</span>
+  <button data-act="stopTimer">Detener y registrar</button><button data-act="cancelTimer" class="small">Descartar</button></div>`;
+}
+function tick(){
+  const el=document.getElementById('clock');if(!el||!S.timer)return;
+  const s=Math.max(0,Math.floor((Date.now()-num(S.timer.startedAt))/1000));
+  el.textContent=[Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(x=>String(x).padStart(2,'0')).join(':');
+}
+setInterval(tick,1000);
+
+function homeView(){
+  const ps=sortedProjects();
+  const loading=!db||!(S.loaded.projects&&S.loaded.tasks&&S.loaded.logs);
+  let h=`<header class="top"><div><h1>Brújula de Objetivos</h1>
+    <p class="muted">Qué quiero lograr, por qué, y cuánto tiempo le estoy dedicando.</p></div>
+    ${db?'<button class="primary" data-act="newProject">+ Nuevo objetivo</button>':''}</header>`;
+  if(S.form&&S.form.type==='project'&&!S.form.id)h+=`<div class="panel">${projectForm({})}</div>`;
+  if(loading&&!S.err){return h+`<div class="empty">Cargando objetivos, tareas y horas…</div>`}
+  if(!ps.length){return h+`<div class="empty">Todavía no hay objetivos cargados. Tocá «+ Nuevo objetivo» y escribí qué querés lograr y por qué.</div>`}
+  // semana
+  const ws=weekStart();let tot=0,goal=0;
+  const bars=ps.map(p=>{const st=projStats(p);tot+=st.week;const g=num(p.weeklyHours);goal+=g;
+    const max=Math.max(g,st.week,1);
+    return `<div class="wb" style="--pc:${pcolor(p)}"><span class="name">${esc(p.name)}</span>
+      <div class="track" title="${h1(st.week)} h de ${g?h1(g)+' h':'sin meta'}"><div class="fill" style="width:${Math.min(100,st.week/max*100)}%;background:var(--pc)"></div>
+      ${g?`<div style="position:absolute;top:-1px;bottom:-1px;left:calc(${Math.min(100,g/max*100)}% - 2px);width:2px;background:var(--ink)"></div>`:''}</div>
+      <span class="val num">${h1(st.week)}${g?' / '+h1(g):''} h</span></div>`}).join('');
+  h+=`<section class="panel"><div class="row"><h2>Esta semana</h2><span class="spacer"></span>
+    <span class="num muted">${h1(tot)} h${goal?' de '+h1(goal)+' h planificadas':''} · desde el lun ${fmtDate(ws)}</span></div>
+    <div class="week-bars">${bars}</div>
+    <span class="muted" style="font-size:.78rem">La raya negra marca la meta semanal de horas de cada objetivo (se carga en «Editar objetivo»).</span></section>`;
+  h+=`<section class="cards">${ps.map(card).join('')}</section>`;
+  return h;
+}
+function card(p){
+  const st=projStats(p);const dl=daysLeft(p.deadline);
+  return `<button class="card" style="--pc:${pcolor(p)}" data-act="open" data-id="${esc(p.id)}">
+    <div class="row"><span class="chip">N${esc(p.priority||'–')}</span>${p.deadline?`<span class="muted num" style="font-size:.75rem">${dl<0?'<span class="over">vencido</span>':dl+' días'} · ${fmtDate(p.deadline)}</span>`:''}</div>
+    <h3>${esc(p.name)}</h3>
+    ${p.goal?`<div style="font-size:.9rem">${esc(p.goal)}</div>`:''}
+    ${p.why?`<div class="why"><b>Por qué:</b> ${esc(p.why)}</div>`:''}
+    <div class="prog"><i style="width:${Math.round(st.pct*100)}%"></i></div>
+    <div class="stats">
+      <div class="stat"><b>${st.done.length}/${st.ts.length}</b><span>tareas hechas</span></div>
+      <div class="stat"><b>${h1(st.dedicated)}/${h1(st.est)}</b><span>h dedicadas / estimadas</span></div>
+      <div class="stat"><b>${h1(st.week)}</b><span>h esta semana</span></div>
+    </div>
+    <div class="next muted">${st.next?'Próxima: <span style="color:var(--ink)">'+esc(st.next.title)+'</span>':(st.ts.length?'Todas las tareas hechas':'Sin tareas: entrá y armá el plan')}</div>
+  </button>`;
+}
+
+function projectForm(p){
+  return `<form class="field" data-form="project" data-id="${esc(p.id||'')}" style="gap:12px">
+    <h3>${p.id?'Editar objetivo':'Nuevo objetivo'}</h3>
+    <div class="grid2">
+      <label class="field"><span class="label">Nombre</span><input id="f-name" name="name" required value="${esc(p.name)}"></label>
+      <label class="field"><span class="label">Prioridad (1 = más importante)</span><input id="f-prio" name="priority" type="number" min="1" value="${esc(p.priority||'')}"></label>
+    </div>
+    <label class="field"><span class="label">Objetivo (qué quiero lograr, medible)</span><textarea id="f-goal" name="goal">${esc(p.goal)}</textarea></label>
+    <label class="field"><span class="label">Por qué tengo que cumplirlo</span><textarea id="f-why" name="why">${esc(p.why)}</textarea></label>
+    <div class="grid2">
+      <label class="field"><span class="label">Fecha objetivo</span><input id="f-deadline" name="deadline" type="date" value="${esc(p.deadline)}"></label>
+      <label class="field"><span class="label">Meta de horas por semana</span><input id="f-weekly" name="weeklyHours" inputmode="decimal" value="${esc(p.weeklyHours||'')}"></label>
+    </div>
+    <label class="field"><span class="label">Recursos generales (dinero, materiales, personas, herramientas)</span><textarea id="f-res" name="resources">${esc(p.resources)}</textarea></label>
+    <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button></div>
+  </form>`;
+}
+function taskForm(t,pid){
+  return `<form class="inline-form" data-form="task" data-id="${esc(t.id||'')}" data-pid="${esc(pid)}">
+    <label class="field"><span class="label">Tarea</span><input id="t-title" name="title" required value="${esc(t.title)}"></label>
+    <div class="grid2">
+      <label class="field"><span class="label">Horas estimadas</span><input id="t-est" name="estHours" inputmode="decimal" value="${esc(t.estHours||'')}"></label>
+      <label class="field"><span class="label">Fecha límite</span><input id="t-due" name="due" type="date" value="${esc(t.due)}"></label>
+      <label class="field"><span class="label">Estado</span><select id="t-status" name="status">
+        ${['pendiente','en curso','hecha'].map(s=>`<option ${ (t.status||'pendiente')===s?'selected':''}>${s}</option>`).join('')}</select></label>
+    </div>
+    <label class="field"><span class="label">Recursos necesarios</span><input id="t-res" name="resources" value="${esc(t.resources)}" placeholder="Ej.: materiales, costo, a quién necesito"></label>
+    <div class="row"><button class="primary" type="submit">Guardar tarea</button><button type="button" data-act="cancelForm">Cancelar</button></div>
+  </form>`;
+}
+function logForm(pid,tid){
+  return `<form class="inline-form" data-form="log" data-pid="${esc(pid)}" data-tid="${esc(tid||'')}">
+    <div class="grid2">
+      <label class="field"><span class="label">Tiempo (horas, ej. 1,5)</span><input id="l-h" name="hours" inputmode="decimal" required></label>
+      <label class="field"><span class="label">Fecha</span><input id="l-date" name="date" type="date" value="${today()}"></label>
+    </div>
+    <label class="field"><span class="label">Qué hice (opcional)</span><input id="l-note" name="note"></label>
+    <div class="row"><button class="primary" type="submit">Registrar</button><button type="button" data-act="cancelForm">Cancelar</button></div>
+  </form>`;
+}
+
+function detailView(){
+  const p=S.projects.find(x=>x.id===S.pid);const st=projStats(p);const pc=pcolor(p);const dl=daysLeft(p.deadline);
+  const f=S.form;
+  let h=`<div class="row"><button class="ghost" data-act="home">← Todos los objetivos</button></div>`;
+  if(f&&f.type==='project'&&f.id===p.id){h+=`<div class="panel" style="--pc:${pc}">${projectForm(p)}</div>`}
+  else{
+  h+=`<section class="detail-head" style="--pc:${pc}">
+    <div class="row"><span class="chip">Prioridad N${esc(p.priority||'–')}</span>
+      ${p.deadline?`<span class="num muted" style="font-size:.8rem">Fecha objetivo ${fmtDate(p.deadline)} · ${dl<0?'<span class="over">vencida</span>':dl+' días'}</span>`:''}
+      <span class="spacer"></span><button class="small" data-act="editProject">Editar objetivo</button>
+      ${S.confirm==='p'+p.id?`<button class="small danger" data-act="delProject">Confirmar borrado</button><button class="small" data-act="noConfirm">No</button>`:`<button class="small danger" data-act="askDel" data-key="p${esc(p.id)}">Borrar</button>`}</div>
+    <h1>${esc(p.name)}</h1>
+    ${p.goal?`<div><div class="label">Objetivo</div><div style="font-size:1.05rem">${esc(p.goal)}</div></div>`:'<div class="muted">Sin objetivo escrito. Tocá «Editar objetivo».</div>'}
+    <div><div class="label" style="margin-bottom:6px">Por qué tengo que cumplirlo</div><div class="quote">${p.why?esc(p.why):'<span class="muted">Escribí por qué este objetivo importa. Releerlo es lo que sostiene la constancia.</span>'}</div></div>
+    ${p.resources?`<div><div class="label">Recursos generales</div><div style="white-space:pre-wrap">${esc(p.resources)}</div></div>`:''}
+  </section>`;}
+  h+=`<section class="panel" style="--pc:${pc}"><div class="stats" style="border:0;padding:0;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))">
+    <div class="stat"><b>${st.done.length}/${st.ts.length}</b><span>tareas hechas</span></div>
+    <div class="stat"><b>${h1(st.est)} h</b><span>estimadas en total</span></div>
+    <div class="stat"><b>${h1(st.dedicated)} h</b><span>dedicadas en total</span></div>
+    <div class="stat"><b>${h1(st.week)}${num(p.weeklyHours)?' / '+h1(num(p.weeklyHours)):''} h</b><span>esta semana${num(p.weeklyHours)?' / meta':''}</span></div>
+    <div class="stat"><b>${Math.round(st.pct*100)}%</b><span>avance (por horas estimadas)</span></div>
+  </div><div class="prog"><i style="width:${Math.round(st.pct*100)}%"></i></div></section>`;
+  // tareas
+  h+=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Plan de tareas</h2><span class="spacer"></span>
+    <button class="small" data-act="logProject">+ Registrar tiempo general</button>
+    <button class="small primary" data-act="newTask">+ Tarea</button></div>`;
+  if(f&&f.type==='log'&&!f.tid)h+=logForm(p.id,'');
+  if(f&&f.type==='task'&&!f.id)h+=taskForm({},p.id);
+  if(!st.ts.length&&!(f&&f.type==='task'))h+=`<div class="empty">Sin tareas todavía. Dividí el objetivo en pasos concretos, con horas estimadas y lo que necesitás para cada uno.</div>`;
+  h+=`<div class="tasks">${st.ts.map(t=>taskRow(t,p)).join('')}</div></section>`;
+  // registro
+  const ls=logsOf(p.id).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||num(b.createdAt)-num(a.createdAt)).slice(0,30);
+  h+=`<section class="panel"><h2>Registro de tiempo</h2>${ls.length?`<div class="logs">${ls.map(l=>{const t=S.tasks.find(x=>x.id===l.taskId);
+    return `<div class="log"><span class="num">${fmtDate(l.date)}</span><span class="num">${h1(num(l.minutes)/60)} h</span>
+    <span style="min-width:0">${t?esc(t.title):'<span class="muted">General</span>'}${l.note?' <span class="muted">· '+esc(l.note)+'</span>':''}</span>
+    <span class="la">${S.confirm==='l'+l.id?`<button class="small danger" data-act="delLog" data-id="${esc(l.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="l${esc(l.id)}" aria-label="Borrar registro">✕</button>`}</span></div>`}).join('')}</div>`
+    :'<div class="empty">Todavía no registraste tiempo. Usá ▶ en una tarea para cronometrar o «+ h» para cargar a mano.</div>'}</section>`;
+  return h;
+}
+function taskRow(t,p){
+  const f=S.form;
+  if(f&&f.type==='task'&&f.id===t.id)return `<div class="task">${taskForm(t,p.id)}</div>`;
+  const ded=taskMins(t.id)/60;const est=num(t.estHours);const dl=daysLeft(t.due);
+  const cls=t.status==='hecha'?'on':(t.status==='en curso'?'mid':'');
+  const running=S.timer&&S.timer.taskId===t.id;
+  return `<div class="task ${t.status==='hecha'?'done':''}">
+    <button class="check ${cls}" data-act="cycle" data-id="${esc(t.id)}" title="Estado: ${esc(t.status||'pendiente')} (tocar para cambiar)" aria-label="Cambiar estado">${t.status==='hecha'?'✓':''}</button>
+    <div style="min-width:0"><div class="t-title">${esc(t.title)}</div>
+      <div class="t-meta"><span class="num ${est&&ded>est?'over':''}">${h1(ded)}${est?' / '+h1(est):''} h</span>
+      ${t.due?`<span class="num ${dl!==null&&dl<0&&t.status!=='hecha'?'over':''}">vence ${fmtDate(t.due)}</span>`:''}
+      <span>${esc(t.status||'pendiente')}</span>
+      ${t.resources?`<span>Recursos: ${esc(t.resources)}</span>`:''}</div></div>
+    <div class="t-actions">
+      ${t.status!=='hecha'?`<button class="small" data-act="startTimer" data-id="${esc(t.id)}" ${running?'disabled':''} title="Cronometrar">${running?'● en curso':'▶'}</button>`:''}
+      <button class="small" data-act="logTask" data-id="${esc(t.id)}" title="Cargar horas a mano">+ h</button>
+      <button class="small ghost" data-act="editTask" data-id="${esc(t.id)}">Editar</button>
+      ${S.confirm==='t'+t.id?`<button class="small danger" data-act="delTask" data-id="${esc(t.id)}">Confirmar</button>`:`<button class="small ghost danger" data-act="askDel" data-key="t${esc(t.id)}" aria-label="Borrar tarea">✕</button>`}
+    </div>
+    ${f&&f.type==='log'&&f.tid===t.id?logForm(p.id,t.id):''}
+  </div>`;
+}
+
+/* ---------- acciones ---------- */
+async function safe(fn){try{S.err=null;await fn()}catch(e){S.err='No se pudo guardar: '+(e&&e.message||e)+'. Revisá la conexión y probá de nuevo.';rerender()}}
+app.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const act=b.dataset.act,id=b.dataset.id;
+  const A={
+    open(){S.view='project';S.pid=id;S.form=null;S.confirm=null;window.scrollTo(0,0);rerender()},
+    home(){S.view='home';S.form=null;S.confirm=null;rerender()},
+    newProject(){S.form={type:'project'};rerender();document.getElementById('f-name')?.focus()},
+    editProject(){S.form={type:'project',id:S.pid};rerender()},
+    newTask(){S.form={type:'task'};rerender();document.getElementById('t-title')?.focus()},
+    editTask(){S.form={type:'task',id};rerender()},
+    logTask(){S.form={type:'log',tid:id};rerender();document.getElementById('l-h')?.focus()},
+    logProject(){S.form={type:'log',tid:''};rerender();document.getElementById('l-h')?.focus()},
+    cancelForm(){S.form=null;rerender()},
+    askDel(){S.confirm=b.dataset.key;rerender()},
+    noConfirm(){S.confirm=null;rerender()},
+    cycle(){const t=S.tasks.find(x=>x.id===id);const order=['pendiente','en curso','hecha'];
+      const nx=order[(order.indexOf(t.status||'pendiente')+1)%3];safe(()=>db.doc('tasks/'+id).update({status:nx}))},
+    startTimer(){const t=S.tasks.find(x=>x.id===id);safe(async()=>{
+      if(S.timer)await saveTimerLog();
+      await db.doc('timer/current').set({projectId:t.projectId,taskId:id,startedAt:Date.now()});
+      if(t.status==='pendiente'||!t.status)await db.doc('tasks/'+id).update({status:'en curso'});})},
+    stopTimer(){safe(async()=>{await saveTimerLog();await db.doc('timer/current').delete()})},
+    cancelTimer(){safe(()=>db.doc('timer/current').delete())},
+    delTask(){safe(async()=>{await db.doc('tasks/'+id).delete();S.confirm=null})},
+    delLog(){safe(async()=>{await db.doc('logs/'+id).delete();S.confirm=null})},
+    delProject(){const pid=S.pid;safe(async()=>{
+      for(const t of S.tasks.filter(t=>t.projectId===pid))await db.doc('tasks/'+t.id).delete();
+      for(const l of S.logs.filter(l=>l.projectId===pid))await db.doc('logs/'+l.id).delete();
+      await db.doc('projects/'+pid).delete();S.view='home';S.confirm=null;rerender()})},
+  };
+  if(A[act]&&(db||act==='home'||act==='open'))A[act]();
+});
+async function saveTimerLog(){
+  const T=S.timer;if(!T)return;
+  const mins=Math.round((Date.now()-num(T.startedAt))/60000);
+  if(mins>=1)await db.collection('logs').add({projectId:T.projectId,taskId:T.taskId||'',minutes:mins,date:today(),note:'Cronómetro',createdAt:Date.now()});
+}
+app.addEventListener('submit',e=>{
+  e.preventDefault();const f=e.target;const d=Object.fromEntries(new FormData(f).entries());
+  const kind=f.dataset.form;
+  safe(async()=>{
+    if(kind==='project'){
+      const data={name:d.name.trim(),priority:num(d.priority)||null,goal:d.goal.trim(),why:d.why.trim(),deadline:d.deadline||'',weeklyHours:num(d.weeklyHours),resources:d.resources.trim()};
+      if(f.dataset.id)await db.doc('projects/'+f.dataset.id).update(data);
+      else{const r=await db.collection('projects').add({...data,createdAt:Date.now()});S.view='project';S.pid=r.id}
+    }else if(kind==='task'){
+      const data={title:d.title.trim(),estHours:num(d.estHours),due:d.due||'',status:d.status||'pendiente',resources:d.resources.trim()};
+      if(f.dataset.id)await db.doc('tasks/'+f.dataset.id).update(data);
+      else await db.collection('tasks').add({...data,projectId:f.dataset.pid,createdAt:Date.now()});
+    }else if(kind==='log'){
+      const mins=Math.round(num(d.hours)*60);if(mins<=0){S.err='Cargá un tiempo mayor a cero (en horas, ej. 0,5).';rerender();return}
+      await db.collection('logs').add({projectId:f.dataset.pid,taskId:f.dataset.tid||'',minutes:mins,date:d.date||today(),note:d.note.trim(),createdAt:Date.now()});
+    }
+    S.form=null;document.activeElement?.blur?.();rerender();
+  });
+});
+
+/* ---------- datos ---------- */
+const toList=snap=>snap.docs.map(d=>({id:d.id,...d.data()}));
+async function boot(){
+  rerender();
+  const timeout=setTimeout(()=>{if(!db){S.err='No se pudo conectar con el almacenamiento. Abrí esta página con tu sesión de claude.ai iniciada para ver y guardar tus objetivos.';rerender()}},10000);
+  try{db=window.claude&&await window.claude.use('db')}catch(e){db=null}
+  if(!db){clearTimeout(timeout);S.err='No se pudo conectar con el almacenamiento. Abrí esta página con tu sesión de claude.ai iniciada para ver y guardar tus objetivos.';rerender();return}
+  const loadTimer=setTimeout(()=>{if(!S.loaded.projects){S.err='Los datos tardan en llegar. Revisá la conexión.';rerender()}},10000);
+  clearTimeout(timeout);
+  const onErr=e=>{S.err='Error al leer datos: '+(e&&e.message||'desconocido');rerender()};
+  db.collection('projects').onSnapshot(s=>{clearTimeout(loadTimer);S.projects=toList(s);S.loaded.projects=true;if(S.err&&S.err.startsWith('Los datos'))S.err=null;render()},onErr);
+  db.collection('tasks').onSnapshot(s=>{S.tasks=toList(s);S.loaded.tasks=true;render()},onErr);
+  db.collection('logs').onSnapshot(s=>{S.logs=toList(s);S.loaded.logs=true;render()},onErr);
+  db.doc('timer/current').onSnapshot(s=>{S.timer=s.exists?s.data():null;render()},onErr);
+}
+boot();
+})();
+</script>
