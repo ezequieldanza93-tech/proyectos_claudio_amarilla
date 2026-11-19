@@ -409,7 +409,7 @@ const evStatus=e=>e.status||'cumplido';
 const ST_LABEL={planificado:'Planificado',cumplido:'Cumplido','no se hizo':'No se hizo'};
 function calendarPanel(p,pc){
   const month=S.calMonth||today().slice(0,7);const f=S.form;
-  const evs=S.events.filter(e=>e.projectId===p.id);
+  const evs=S.events.filter(e=>e.projectId===p.id&&(e.spaceId||'')===(S.space||''));
   const [y,m]=month.split('-').map(Number);
   const first=new Date(y,m-1,1);const lead=(first.getDay()+6)%7;const days=new Date(y,m,0).getDate();
   const t=today();
@@ -418,7 +418,7 @@ function calendarPanel(p,pc){
   for(let d=1;d<=days;d++){
     const ds=month+'-'+String(d).padStart(2,'0');const de=evs.filter(e=>e.date===ds);
     cells+=`<button class="cd ${ds===t?'today':''} ${de.length?'has':''}" data-act="calDay" data-date="${ds}" aria-label="${d} de ${MESES[m-1]}${de.length?': '+esc(de.map(e=>e.title+' ('+ST_LABEL[evStatus(e)]+')').join(', ')):''}">
-      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<span class="ev st-${evStatus(e).replace(/ /g,'-')}">${esc(e.title)}</span>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}</button>`;
+      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<span class="ev st-${evStatus(e).replace(/ /g,'-')}">${esc(e.title)}</span>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}</button>`;
   }
   const list=evs.filter(e=>(e.date||'').startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date));
   const germ=evs.filter(e=>e.type==='Germinación'&&evStatus(e)==='cumplido'&&e.date<=t).sort((a,b)=>b.date.localeCompare(a.date));
@@ -471,11 +471,11 @@ function eventForm(p,e){
 }
 const MAXB=20*1024*1024;
 function dayIndex(p,date){
-  const g=S.events.filter(e=>e.projectId===p.id&&e.type==='Germinación'&&evStatus(e)==='cumplido'&&e.date<=date).sort((a,b)=>b.date.localeCompare(a.date))[0];
+  const g=S.events.filter(e=>e.projectId===p.id&&(e.spaceId||'')===(S.space||'')&&e.type==='Germinación'&&evStatus(e)==='cumplido'&&e.date<=date).sort((a,b)=>b.date.localeCompare(a.date))[0];
   if(!g)return null;return Math.round((new Date(date+'T00:00:00')-new Date(g.date+'T00:00:00'))/86400000);
 }
 function mediaPanel(p,pc){
-  const items=S.media.filter(m=>m.projectId===p.id);
+  const items=S.media.filter(m=>m.projectId===p.id&&(m.spaceId||'')===(S.space||''));
   const byDay={};items.forEach(m=>{(byDay[m.date]=byDay[m.date]||[]).push(m)});
   const daysL=Object.keys(byDay).sort().reverse();
   const up=S.upload||{};
@@ -511,7 +511,7 @@ async function uploadMedia(f){
   let ok=0;const fails=big.map(x=>`${x.name} pesa ${(x.size/1048576).toFixed(0)} MB (máximo 20 MB)`);
   for(const file of files){ if(file.size>MAXB)continue;
     try{const r=await assets.upload(file);
-      await db.collection('media').add({projectId:f.dataset.pid,date,assetId:r.id,contentType:r.contentType||file.type,caption,createdAt:Date.now()});
+      await db.collection('media').add({projectId:f.dataset.pid,spaceId:S.space||'',date,assetId:r.id,contentType:r.contentType||file.type,caption,createdAt:Date.now()});
       ok++;S.upload.msg=`Subiendo ${ok} de ${files.length-big.length}…`;rerender();
     }catch(e){fails.push(`${file.name}: ${e&&e.code==='unsupported_type'?'formato no admitido':e&&e.code==='too_large'?'demasiado grande':e&&e.code==='quota_or_state'?'sin espacio disponible':(e&&e.message||'error')}`)}
   }
@@ -565,7 +565,7 @@ function spaceView(p,s,pc){
       <div class="prows" id="prows">${plants.map(x=>plantRow(x.genetics,x.qty||'')).join('')}</div>
       <button type="button" class="small" data-act="addPlantRow" style="align-self:flex-start">+ Agregar genética</button></div>
     <div class="row"><button class="primary" type="submit">Guardar espacio</button>${S.spaceMsg?`<span class="muted" style="font-size:.85rem">${esc(S.spaceMsg)}</span>`:''}</div>
-  </form>`;
+  </form>`+(p.calendar?calendarPanel(p,pc)+mediaPanel(p,pc):'');
 }
 function detailView(){
   const p=S.projects.find(x=>x.id===S.pid);const st=projStats(p);const pc=pcolor(p);const dl=daysLeft(p.deadline);
@@ -593,7 +593,7 @@ function detailView(){
     <div class="stat"><b>${h1(st.week)}${num(p.weeklyHours)?' / '+h1(num(p.weeklyHours)):''} h</b><span>esta semana${num(p.weeklyHours)?' / meta':''}</span></div>
     <div class="stat"><b>${Math.round(st.pct*100)}%</b><span>avance (por horas estimadas)</span></div>
   </div><div class="prog"><i style="width:${Math.round(st.pct*100)}%"></i></div></section>`;
-  if(p.calendar)h+=calendarPanel(p,pc)+mediaPanel(p,pc);
+  if(p.calendar&&!spacesOf(p.id).length)h+=calendarPanel(p,pc)+mediaPanel(p,pc);
   // tareas
   h+=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Plan de tareas</h2><span class="spacer"></span>
     <button class="small" data-act="logProject">+ Registrar tiempo general</button>
@@ -719,7 +719,7 @@ app.addEventListener('submit',e=>{
         if(!old.plannedDate&&old.date&&old.date!==ev.date)ev.plannedDate=old.date;
         ev.adjustNote=(d.adjustNote||'').trim();
         await db.doc('events/'+f.dataset.id).update(ev);}
-      else await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,createdAt:Date.now()});
+      else await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,spaceId:S.space||'',createdAt:Date.now()});
     }else if(kind==='move'){
       const amt=num(d.amount);if(amt<=0){S.err='Cargá un monto mayor a cero.';rerender();return}
       await db.collection('money').add({ledgerId:f.dataset.pid,type:d.type==='ingreso'?'ingreso':'gasto',amount:amt,category:(d.category||'').trim(),scope:d.scope||'',date:d.date||today(),note:(d.note||'').trim(),createdAt:Date.now()});
