@@ -13,12 +13,12 @@ Datos técnicos y de identificación de productos de cultivo que se venden en Ar
 | `fertilizantes.json` | 22 | 22 | 2 | Cannabiogen (Delta 9), Mamboretá, Namaste, Top Crop |
 | `foliares.json` | 40 | 40 | 0 | BioProyect, Green Leaf (4 en 1 / 6 en 1), La Pota, Mamboretá, Namaste, NoStress, Pangea, Power, Revienta, Top Crop, Vamp |
 | `sustratos.json` | 40 | 40 | 3 | Biobizz, Cultivate, Growers, Landiner, Lizard, Silver, Terrafertil (Growmix), Vamp |
-| `luces.json` | 47 | 45 | 3 | Amnesia, Bioled, Cosmel, Growtech, GS Iluminación, Lux, Mars Hydro |
+| `luces.json` | 47 | 46 | 3 | Amnesia, Bioled, Cosmel, Growtech, GS Iluminación, Lux, Mars Hydro |
 | `carpas.json` | 24 | 21 | 1 | cultivARG, Garden HighPro |
 | `ventilacion.json` | 18 | 18 | 3 | Agroled, Garden HighPro, Growtech, Santa Planta, VT Fans |
 | `clima.json` | 14 | 14 | 0 | Garden HighPro, Wentux |
 | `geneticas.json` | 26 | 26 | 0 | BSF Seeds (autoflorecientes), Clon Factory (clones) |
-| **Total** | **231** | **226** | **12** | |
+| **Total** | **231** | **227** | **12** | |
 
 Además:
 
@@ -57,7 +57,8 @@ Cada producto se volvió a abrir en su fuente, en dos pasos:
   - **pH de Hydro P:** el verificador eligió un valor entre dos fuentes que no coinciden, y la regla dice no elegir.
   - **Marca de una Probox:** el verificador la dejó como «Garden», lo que creaba una marca suelta que no existe.
 - **Las dudas se resolvieron con la regla de conflictos:** cuando dos fuentes no coinciden, el campo queda en `null` y los dos valores van a `conflictos`.
-- **`verificado: true`** quiere decir que el producto pasó este doble chequeo sin dudas abiertas. Los 5 que quedan en `false` están detallados en `pendientes.md`.
+- **`verificado: true`** quiere decir que el producto pasó este doble chequeo sin dudas abiertas. Los 4 que quedan en `false` están detallados en `pendientes.md`.
+- **Amnesia** se verificó aparte, respetando su `Crawl-delay: 60`: en el Eco 180w, `dimmer: true` no figuraba en la ficha y pasó a `null`.
 
 **Correcciones que hizo el orquestador, aparte de la verificación:**
 

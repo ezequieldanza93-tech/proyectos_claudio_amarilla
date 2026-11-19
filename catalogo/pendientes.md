@@ -19,6 +19,12 @@ Relevamiento del 19/11/2026. Acá está lo que no se pudo verificar, los product
 13. **Mamboretá**: los cebos y granulados (BOLITA, B+R, GRILLO, MIREX-S), la pintura-trampa A-TRAPA y el hormiguicida KAPUT no se diluyen en agua. Están en `foliares.json` con la dosis en `notas`. ¿Los querés en la app?
 14. **Garden HighPro Probox 80x80x160** de Santa Planta: no aclara si es Basic o Eco Pro. Puede ser el mismo producto que `garden-highpro-probox-ecopro-80x80x160`, y no se fusionó.
 15. **VT Fans**: `vt-fans-cooler-4-220v` (Goblin) puede ser el mismo producto que `vt-fans-turbina-cooler-extractor-4-ruleman` (Ganga). No se fusionó.
+16. **Amnesia**: es fabricante argentino («Diseñamos y fabricamos iluminación LED para cultivo indoor»). Sin embargo, solo el **Eco 180w** dice «AMNESIA» en la ficha, y es el único cargado. Los demás quedaron afuera por la regla de marca explícita:
+    - **Cob YXO** (15 paneles de 100 a 500 W, en versiones Cálido, Full Spectrum y Mixto): el sitio los agrupa en la categoría **«Amnesia Cob YXO»**, pero la ficha solo nombra los chips YXO. ¿Los cargamos como Amnesia, línea Cob YXO?
+    - **Samsung Bloom 150W**: la ficha no nombra ninguna marca. Tiene datos (150 W, sin dimmer, PPFD 650 a 40 cm).
+    - **Cob Pro, Cob Samsung y Panel Cob Samsung**: tampoco nombran marca.
+    - Sin datos técnicos en la ficha: Bloom 300, Araña Pro 240, Cob Samsung 500/600, Led Yxo 50w y Cooler Ruleman 4".
+    - Las 32 fichas están guardadas localmente: si decidís que son de Amnesia, se cargan sin volver a pedirle nada al sitio.
 
 ## 2. Límites que afectaron la cobertura
 
@@ -95,7 +101,7 @@ Siguen **abiertos** solo los de los productos con `verificado: false`, al final 
 - `terrafertil-growmix-z-floricultura` · ph_declarado: dudoso — Web dice 5,00 - 6,00 y la ficha PDF dice 5.00 - 5.80: dos fuentes del fabricante discrepan. (https://terrafertil.com/productos/z-floricultura/)
 - `terrafertil-growmix-z-floricultura` · ce_declarada: dudoso — Web dice 0,20 - 0,60 y la ficha PDF dice 0.20 - 0.80 mS/cm: dos fuentes discrepan. (https://terrafertil.com/productos/z-floricultura/)
 
-Productos con `verificado: false`: `amnesia-linea-eco-180w`, `gs-iluminacion-panel-led-mx50`, `cultivarg-eco-100x100x200`, `cultivarg-eco-80x80x180`, `garden-highpro-probox-propagator-s-60x40x40`.
+Productos con `verificado: false`: `gs-iluminacion-panel-led-mx50`, `cultivarg-eco-100x100x200`, `cultivarg-eco-80x80x180`, `garden-highpro-probox-propagator-s-60x40x40`.
 
 ## 6. No cargado y por qué
 
