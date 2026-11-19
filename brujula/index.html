@@ -159,6 +159,15 @@ textarea{min-height:70px;resize:vertical}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .prows{display:flex;flex-direction:column;gap:6px}
 .prow{display:grid;grid-template-columns:1fr 80px auto;gap:6px;align-items:center}
+/* productos */
+.prodbox{display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:10px}
+.dose-rows{display:flex;flex-direction:column;gap:6px}
+.dose-row{display:grid;grid-template-columns:1fr 80px 78px 80px auto;gap:6px;align-items:center}
+.dose-tot{font-size:.8rem}
+.cat-line{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:6px 0;border-top:1px solid var(--line)}
+.cat-line b{min-width:110px;font-size:.88rem}
+.cat-item{display:inline-flex;align-items:center;gap:2px;border:1px solid var(--line);border-radius:999px;padding:1px 2px 1px 10px;font-size:.84rem}
+@media (max-width:560px){.dose-row{grid-template-columns:1fr 70px 72px auto}.dose-row select[name=prodId]{grid-column:1/-1}.dose-tot{grid-column:1/3}}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -188,7 +197,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <script>
 (function(){
 const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
-const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
 function hashId(){try{return decodeURIComponent(location.hash.slice(1))}catch(e){return ''}}
 const curId=()=>S.nav!==null?S.nav:hashId();
 function go(id){S.nav=id||'';S.space=null;S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
@@ -244,6 +253,7 @@ function render(){
   const cp=current();S.pid=cp?cp.id:null;
   html+= cp?(isLedger(cp)?ledgerView(cp):detailView()):homeView();
   app.innerHTML=html;
+  app.querySelectorAll('form[data-form=event]').forEach(updateDoseTotals);
   tick();
 }
 app.addEventListener('focusout',()=>setTimeout(()=>{if(pending){const a=document.activeElement;if(!(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))render()}},0));
@@ -447,6 +457,7 @@ function evRow(e,confirming){
     <span class="num">${fmtDate(e.date)}</span>
     <span style="min-width:0"><span class="ev-title">${esc(e.title)}</span><span class="tag">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span>
       ${moved?`<span class="muted" style="font-size:.78rem;display:block">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem;display:block">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
+      ${prodSummary(e)}
       ${e.note?`<span class="muted" style="font-size:.78rem;display:block">${esc(e.note)}</span>`:''}</span>
     <span class="t-actions">
       ${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button>${confirming?`<button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`:''}`
@@ -454,16 +465,75 @@ function evRow(e,confirming){
       ${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="e${esc(e.id)}" aria-label="Borrar evento">✕</button>`}
     </span></div>`;
 }
+const RIEGO_USE={'Riego radicular':'radicular','Riego foliar':'foliar'};
+const USE_LABEL={radicular:'Riego radicular',foliar:'Riego foliar'};
+const prodLabel=x=>x.line&&x.name?x.line+' · '+x.name:(x.name||x.line||'');
+const prodsFor=use=>S.products.filter(x=>x.use===use&&x.name).sort((a,b)=>prodLabel(a).localeCompare(prodLabel(b)));
+const linesFor=use=>[...new Set(S.products.filter(x=>x.use===use&&x.line).map(x=>x.line))].sort();
+function prodOptions(use,sel){
+  const ps=prodsFor(use);if(!ps.length)return '<option value="">No hay productos: cargalos en el catálogo</option>';
+  const groups={};ps.forEach(x=>{(groups[x.line||'Sin línea']=groups[x.line||'Sin línea']||[]).push(x)});
+  return '<option value="">Elegir producto…</option>'+Object.keys(groups).sort().map(g=>`<optgroup label="${esc(g)}">${groups[g].map(x=>`<option value="${esc(x.id)}" ${x.id===sel?'selected':''}>${esc(x.name)}</option>`).join('')}</optgroup>`).join('');
+}
+function prodRow(use,it){
+  it=it||{};const pr=S.products.find(x=>x.id===it.productId);const unit=it.unit||(pr&&pr.unit)||'ml';
+  return `<div class="dose-row"><select name="prodId" aria-label="Producto">${prodOptions(use,it.productId)}</select>
+    <input name="dose" inputmode="decimal" aria-label="Dosis por litro" placeholder="Dosis" value="${esc(dec(it.dose))}">
+    <select name="unit" aria-label="Unidad"><option value="ml" ${unit==='ml'?'selected':''}>ml/L</option><option value="g" ${unit==='g'?'selected':''}>g/L</option></select>
+    <span class="num muted dose-tot"></span>
+    <button type="button" class="ghost small danger" data-act="rmDoseRow" aria-label="Quitar producto">✕</button></div>`;
+}
+function prodBox(e){
+  const use=RIEGO_USE[e.type]||'';const items=(e.products&&e.products.length)?e.products:[{}];
+  return `<div class="prodbox" ${use?'':'hidden'}>
+    <div class="row"><span class="label">Productos</span><span class="spacer"></span>
+      <label class="row" style="gap:6px"><span class="muted" style="font-size:.8rem">Litros de agua</span><input id="e-liters" name="liters" inputmode="decimal" style="width:80px" value="${esc(dec(e.liters))}"></label></div>
+    <div class="dose-rows" data-use="${use}">${use?items.map(it=>prodRow(use,it)).join(''):''}</div>
+    <button type="button" class="small" data-act="addDoseRow" style="align-self:flex-start">+ Agregar producto</button>
+  </div>`;
+}
+function updateDoseTotals(form){
+  const L=num(form.querySelector('[name=liters]')?.value);
+  form.querySelectorAll('.dose-row').forEach(r=>{const d=num(r.querySelector('[name=dose]').value);const u=r.querySelector('[name=unit]').value;
+    r.querySelector('.dose-tot').textContent=L&&d?'= '+dec(Math.round(d*L*100)/100)+' '+u:'';});
+}
+function prodSummary(e){
+  if(!e.products||!e.products.length)return '';
+  const L=num(e.liters);
+  return `<span class="muted" style="font-size:.78rem;display:block">${L?dec(L)+' L · ':''}${e.products.map(x=>`${esc(x.label)} ${dec(x.dose)} ${esc(x.unit)}/L${L&&num(x.dose)?' ('+dec(Math.round(num(x.dose)*L*100)/100)+' '+esc(x.unit)+')':''}`).join(' · ')}</span>`;
+}
+function catalogPanel(p,pc){
+  const f=S.form;const open=S.catalogOpen;
+  let h=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Catálogo de productos</h2><span class="spacer"></span>
+    <button class="small" data-act="toggleCatalog">${open?'Ocultar':'Ver y editar'}</button></div>`;
+  if(!open)return h+`<div class="muted" style="font-size:.85rem">${prodsFor('radicular').length} productos para riego radicular · ${prodsFor('foliar').length} para riego foliar</div></section>`;
+  h+=`<form class="inline-form" data-form="product">
+    <div class="grid2">
+      <label class="field"><span class="label">Uso</span><select id="c-use" name="use"><option value="radicular">Riego radicular</option><option value="foliar">Riego foliar</option></select></label>
+      <label class="field"><span class="label">Línea / marca (opcional)</span><input id="c-line" name="line" list="c-lines" placeholder="Ej.: Namaste"><datalist id="c-lines">${[...new Set(S.products.map(x=>x.line).filter(Boolean))].sort().map(l=>`<option value="${esc(l)}">`).join('')}</datalist></label>
+      <label class="field"><span class="label">Producto</span><input id="c-name" name="name" required placeholder="Nombre del producto"></label>
+      <label class="field"><span class="label">Unidad habitual</span><select id="c-unit" name="unit"><option value="ml">ml</option><option value="g">g</option></select></label>
+    </div>
+    <div class="row"><button class="primary" type="submit">Agregar al catálogo</button></div></form>`;
+  for(const use of ['radicular','foliar']){
+    const items=S.products.filter(x=>x.use===use);
+    const groups={};items.forEach(x=>{const g=x.line||'Sin línea';(groups[g]=groups[g]||[]).push(x)});
+    h+=`<div><h3 style="margin-bottom:6px">${USE_LABEL[use]}</h3>${Object.keys(groups).sort().map(g=>{const its=groups[g].filter(x=>x.name);
+      return `<div class="cat-line"><b>${esc(g)}</b>${its.length?its.map(x=>`<span class="cat-item">${esc(x.name)}${x.unit?` <span class="muted">(${esc(x.unit)})</span>`:''}${S.confirm==='pr'+x.id?`<button class="small danger" data-act="delProduct" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="pr${esc(x.id)}" aria-label="Borrar producto">✕</button>`}</span>`).join(''):'<span class="muted" style="font-size:.85rem">Sin productos cargados</span>'}</div>`}).join('')}</div>`;
+  }
+  return h+`</section>`;
+}
 function eventForm(p,e){
   const isNew=!e.id;const st=isNew?((e.date||today())>today()?'planificado':'planificado'):evStatus(e);
   return `<form class="inline-form" data-form="event" data-pid="${esc(p.id)}" data-id="${esc(e.id||'')}">
     <h3>${isNew?'Planificar / registrar':'Ajustar evento'}</h3>
     <div class="grid2">
       <label class="field"><span class="label">Fecha</span><input id="e-date" name="date" type="date" value="${esc(e.date||today())}" required></label>
-      <label class="field"><span class="label">Tipo</span><select id="e-type" name="type">${EV_TYPES.map(x=>`<option ${x===e.type?'selected':''}>${x}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Tipo</span><select id="e-type" name="type" data-evtype>${EV_TYPES.map(x=>`<option ${x===e.type?'selected':''}>${x}</option>`).join('')}</select></label>
       <label class="field"><span class="label">Estado</span><select id="e-status" name="status">${Object.entries(ST_LABEL).map(([k,v])=>`<option value="${k}" ${k===st?'selected':''}>${v}</option>`).join('')}</select></label>
     </div>
     <label class="field"><span class="label">Qué hay que hacer / qué pasó</span><input id="e-title" name="title" required value="${esc(e.title)}"></label>
+    ${prodBox(e)}
     <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note" value="${esc(e.note)}"></label>
     ${isNew?'':`<label class="field"><span class="label">Motivo del ajuste (opcional)</span><input id="e-adj" name="adjustNote" value="${esc(e.adjustNote)}" placeholder="Ej.: se atrasó por lluvia, se cambió la dosis"></label>`}
     <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button></div>
@@ -574,6 +644,7 @@ function detailView(){
   if(sp)return spaceView(p,sp,pc);
   let h=`<div class="row"><button class="ghost" data-act="home">← Inicio</button></div>`;
   h+=spacesPanel(p,pc);
+  if(spacesOf(p.id).length)h+=catalogPanel(p,pc);
   if(f&&f.type==='project'&&f.id===p.id){h+=`<div class="panel" style="--pc:${pc}">${projectForm(p)}</div>`}
   else{
   h+=`<section class="detail-head" style="--pc:${pc}">
@@ -652,6 +723,10 @@ app.addEventListener('click',e=>{
     closeSpace(){S.space=null;window.scrollTo(0,0);rerender()},
     addPlantRow(){const c=document.getElementById('prows');c.insertAdjacentHTML('beforeend',plantRow('',''));c.lastElementChild.querySelector('input').focus()},
     rmPlantRow(){const r=b.closest('.prow');const c=r.parentElement;if(c.children.length>1)r.remove();else r.querySelectorAll('input').forEach(i=>i.value='')},
+    toggleCatalog(){S.catalogOpen=!S.catalogOpen;rerender()},
+    delProduct(){safe(async()=>{await db.doc('products/'+id).delete();S.confirm=null})},
+    addDoseRow(){const fm=b.closest('form');const use=RIEGO_USE[fm.querySelector('[name=type]').value];if(!use)return;fm.querySelector('.dose-rows').insertAdjacentHTML('beforeend',prodRow(use,{}))},
+    rmDoseRow(){const r=b.closest('.dose-row');const fm=r.closest('form');const c=r.parentElement;if(c.children.length>1)r.remove();else{r.querySelector('[name=prodId]').value='';r.querySelector('[name=dose]').value=''}updateDoseTotals(fm)},
     viewImg(){S.lightbox=b.dataset.src;rerender()},
     closeLb(){S.lightbox=null;rerender()},
     delMedia(){const m=S.media.find(x=>x.id===id);safe(async()=>{if(m&&assets){try{await assets.delete(m.assetId)}catch(e){}}await db.doc('media/'+id).delete();S.confirm=null})},
@@ -687,7 +762,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','addPlantRow','rmPlantRow','closeSpace'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
@@ -697,7 +772,12 @@ async function saveTimerLog(){
 app.addEventListener('change',e=>{
   if(e.target.matches('[data-kind-toggle]')){const fm=e.target.closest('form');const led=e.target.value==='ledger';
     fm.querySelector('.only-ledger').hidden=!led;fm.querySelector('.only-project').hidden=led;}
+  if(e.target.matches('[data-evtype]')){const fm=e.target.closest('form');const use=RIEGO_USE[e.target.value]||'';const box=fm.querySelector('.prodbox');
+    box.hidden=!use;const rows=box.querySelector('.dose-rows');
+    if(use){const prev=rows.dataset.use;if(prev!==use){rows.innerHTML=prodRow(use,{});rows.dataset.use=use}}}
+  if(e.target.closest('.prodbox'))updateDoseTotals(e.target.closest('form'));
 });
+app.addEventListener('input',e=>{if(e.target.closest('.prodbox'))updateDoseTotals(e.target.closest('form'))});
 app.addEventListener('submit',e=>{
   e.preventDefault();const f=e.target;const d=Object.fromEntries(new FormData(f).entries());
   const kind=f.dataset.form;
@@ -715,11 +795,19 @@ app.addEventListener('submit',e=>{
       else{const r=await db.collection('projects').add({...data,kind:d.kind||'project',createdAt:Date.now()});go(r.id)}
     }else if(kind==='event'){
       const ev={date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),status:d.status||'planificado'};
+      if(RIEGO_USE[ev.type]){const fd=new FormData(f);const ids=fd.getAll('prodId'),ds=fd.getAll('dose'),us=fd.getAll('unit');
+        ev.liters=num(d.liters)||'';
+        ev.products=ids.map((pid,i)=>{const pr=S.products.find(x=>x.id===pid);return pr?{productId:pid,label:prodLabel(pr),dose:num(ds[i]),unit:us[i]||'ml'}:null}).filter(Boolean);}
+      else{ev.products=[];ev.liters='';}
       if(f.dataset.id){const old=S.events.find(x=>x.id===f.dataset.id)||{};
         if(!old.plannedDate&&old.date&&old.date!==ev.date)ev.plannedDate=old.date;
         ev.adjustNote=(d.adjustNote||'').trim();
         await db.doc('events/'+f.dataset.id).update(ev);}
       else await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,spaceId:S.space||'',createdAt:Date.now()});
+    }else if(kind==='product'){
+      const name=(d.name||'').trim();if(!name)return;
+      await db.collection('products').add({projectId:'cultivo',use:d.use==='foliar'?'foliar':'radicular',line:(d.line||'').trim(),name,unit:d.unit||'ml',createdAt:Date.now()});
+      S.form=null;rerender();setTimeout(()=>document.getElementById('c-name')?.focus(),0);return;
     }else if(kind==='move'){
       const amt=num(d.amount);if(amt<=0){S.err='Cargá un monto mayor a cero.';rerender();return}
       await db.collection('money').add({ledgerId:f.dataset.pid,type:d.type==='ingreso'?'ingreso':'gasto',amount:amt,category:(d.category||'').trim(),scope:d.scope||'',date:d.date||today(),note:(d.note||'').trim(),createdAt:Date.now()});
@@ -748,6 +836,7 @@ async function boot(){
   db.collection('projects').onSnapshot(s=>{clearTimeout(loadTimer);S.projects=toList(s);S.loaded.projects=true;if(S.err&&S.err.startsWith('Los datos'))S.err=null;render()},onErr);
   db.collection('tasks').onSnapshot(s=>{S.tasks=toList(s);S.loaded.tasks=true;render()},onErr);
   db.collection('logs').onSnapshot(s=>{S.logs=toList(s);S.loaded.logs=true;render()},onErr);
+  db.collection('products').onSnapshot(s=>{S.products=toList(s);render()},onErr);
   db.collection('spaces').onSnapshot(s=>{S.spaces=toList(s);render()},onErr);
   db.collection('media').onSnapshot(s=>{S.media=toList(s);render()},onErr);
   claude.use('assets').then(a=>{assets=a;rerender()}).catch(()=>{});
