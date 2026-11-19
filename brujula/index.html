@@ -117,16 +117,16 @@ textarea{min-height:70px;resize:vertical}
 @media (max-width:560px){.mov{grid-template-columns:60px 1fr auto}.mov .ma{grid-column:1/-1;justify-self:end}.cat{grid-template-columns:1fr 100px}.cat .track{grid-column:1/-1;grid-row:2}}
 /* calendario */
 .cal-wrap{overflow-x:auto}
-.cal{display:grid;grid-template-columns:repeat(7,minmax(40px,1fr));gap:4px;min-width:300px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(100px,1fr));gap:4px;min-width:740px}
 .cw{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:center;padding:2px 0}
-.cd{min-height:64px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:4px;display:flex;flex-direction:column;gap:2px;align-items:stretch;text-align:left;cursor:pointer;min-width:0;overflow:hidden}
+.cd{min-height:84px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:4px;display:flex;flex-direction:column;gap:2px;align-items:stretch;text-align:left;cursor:pointer;min-width:0;overflow:hidden}
 .cd.out{border:0;background:transparent;cursor:default}
 .cd.today{border-color:var(--pc);border-width:2px}
 .cd.has{background:color-mix(in srgb,var(--pc) 10%,var(--surface))}
 .cd .dn{font-size:.75rem;color:var(--muted)}
-.cd .ev{font-size:.66rem;line-height:1.2;background:var(--pc);color:var(--surface);border-radius:4px;padding:1px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd .ev{font-size:.72rem;line-height:1.25;background:var(--pc);color:var(--surface);border-radius:4px;padding:2px 4px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
 .cd .ev.more{background:transparent;color:var(--pc)}
-@media (max-width:560px){.cd{min-height:48px}.cd .ev{font-size:0;height:6px;padding:0}.cd .ev.more{display:none}}
+
 .cd .ev.st-planificado{background:transparent;color:var(--pc);border:1px dashed var(--pc)}
 .cd .ev.st-no-se-hizo{background:var(--line);color:var(--muted);text-decoration:line-through}
 .ev-key{display:inline-block;width:12px;height:8px;border-radius:3px;background:var(--pc);vertical-align:middle;margin-right:4px}
@@ -217,21 +217,23 @@ textarea{min-height:70px;resize:vertical}
 .ptbl{border-collapse:collapse;font-size:.84rem;width:100%;min-width:420px}
 .ptbl th,.ptbl td{border-top:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:top}
 .ptbl th{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.wkm{display:grid;grid-template-columns:64px repeat(7,minmax(0,1fr));gap:3px}
+.wkm-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.wkm{display:grid;grid-template-columns:72px repeat(7,minmax(108px,1fr));gap:4px;min-width:820px}
+.wkm-corner,.wkm-sp{position:sticky;left:0;z-index:2;background:var(--surface)}
 .wkm-corner{min-height:1px}
 .wkm-day{display:flex;flex-direction:column;align-items:center;gap:0;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:3px 0;font-size:.6rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);cursor:pointer;line-height:1.15}
 .wkm-day b{font-size:.9rem;color:var(--ink)}
 .wkm-day.today{border-color:var(--pc);border-width:2px}
 .wkm-day.sel,.wkm-cell.sel{background:color-mix(in srgb,var(--pc) 14%,var(--surface))}
 .wkm-sp{font-size:.74rem;font-weight:600;color:var(--pc);display:flex;align-items:center;border-left:3px solid var(--pc);padding-left:5px;word-break:break-word;min-width:0}
-.wkm-cell{min-height:64px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:3px;display:flex;flex-direction:column;gap:3px;align-items:stretch;text-align:left;cursor:pointer;min-width:0;overflow:hidden;color:var(--ink)}
+.wkm-cell{min-height:84px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:3px;display:flex;flex-direction:column;gap:3px;align-items:stretch;text-align:left;cursor:pointer;min-width:0;overflow:hidden;color:var(--ink)}
 .wkm-cell.today{border-color:var(--pc)}
 .wkc{min-height:110px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:4px;display:flex;flex-direction:column;gap:3px;align-items:stretch;text-align:left;cursor:pointer;min-width:0;overflow:hidden;color:var(--ink)}
 .wkc.today{border-color:var(--pc);border-width:2px}
 .wkc.sel{background:color-mix(in srgb,var(--pc) 14%,var(--surface))}
 .wkc-h{display:flex;flex-direction:column;align-items:center;font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;line-height:1.1}
 .wkc-h b{font-size:.9rem;color:var(--ink)}
-.wkc-ev{font-size:.64rem;line-height:1.2;background:var(--pc);color:var(--surface);border-radius:4px;padding:2px 3px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:break-word;hyphens:auto}
+.wkc-ev{font-size:.74rem;line-height:1.25;background:var(--pc);color:var(--surface);border-radius:5px;padding:3px 5px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow-wrap:anywhere}
 .wkc-ev.st-planificado{background:transparent;color:var(--pc);border:1px dashed var(--pc)}
 .wkc-ev.st-no-se-hizo{background:var(--line);color:var(--muted);text-decoration:line-through}
 .wkc-more{font-size:.66rem;color:var(--muted)}
@@ -346,7 +348,11 @@ function render(){
   if(S.lightbox)html+=`<div class="lightbox" data-act="closeLb"><img src="${esc(S.lightbox)}" alt="Foto ampliada"><button data-act="closeLb">Cerrar</button></div>`;
   const cp=current();S.pid=cp?cp.id:null;
   html+= cp?(cp.household?householdView(cp):isLedger(cp)?ledgerView(cp):detailView()):homeView();
+  const keep={};['.wkm-wrap','.cal-wrap'].forEach(k=>{const el=app.querySelector(k);if(el)keep[k]=el.scrollLeft});
   PICK=null;app.innerHTML=html;
+  ['.wkm-wrap','.cal-wrap'].forEach(k=>{const el=app.querySelector(k);if(!el)return;
+    if(keep[k]!=null){el.scrollLeft=keep[k];return}
+    const td=el.querySelector('.wkm-day.today,.cd.today');if(td)el.scrollLeft=Math.max(0,td.offsetLeft-(k==='.wkm-wrap'?80:8));});
   app.querySelectorAll('form[data-form=event]').forEach(f=>{updateDoseTotals(f);updateBuyTotals(f)});
   app.querySelectorAll('form[data-form=item]').forEach(applyKindVisibility);
   app.querySelectorAll('form[data-form=batch],form[data-form=product],form[data-form=event]').forEach(applyBatchVis);
@@ -458,7 +464,7 @@ function logForm(pid,tid){
 }
 
 /* ---------- finanzas personales: común / fijos / no fijos ---------- */
-const HH_TABS=[['comun','Gastos en común de la casa'],['fijo','Personales fijos'],['variable','Personales no fijos']];
+const HH_TABS=[['comun','Gastos en común de la casa'],['fijo','Personales fijos'],['variable','Personales no fijos'],['ingreso','Ingresos']];
 const hhItems=(p,scope,month)=>S.money.filter(m=>m.ledgerId===p.id&&m.scope===scope&&(m.month||(m.date||'').slice(0,7))===month);
 const hasAmt=m=>m.amount!==''&&m.amount!=null;
 function hhComunSums(p,month){
@@ -472,10 +478,11 @@ function hhForm(p,scope,m){
   m=m||{};const mem=p.members||['Eze','Agus'];
   return `<form class="inline-form" data-form="hh" data-pid="${esc(p.id)}" data-scope="${scope}" data-id="${esc(m.id||'')}">
     <div class="grid2">
-      <label class="field"><span class="label">Concepto</span><input id="hh-name" name="concept" required value="${esc(m.concept)}" placeholder="${scope==='comun'?'Ej.: Alquiler':scope==='fijo'?'Ej.: Celular':'Ej.: Supermercado'}"></label>
-      <label class="field"><span class="label">Monto ($)</span><input id="hh-amt" name="amount" inputmode="decimal" value="${esc(dec(m.amount))}" placeholder="${scope==='variable'?'':'Vacío = importe pendiente'}"></label>
+      <label class="field"><span class="label">Concepto</span><input id="hh-name" name="concept" required value="${esc(m.concept)}" placeholder="${scope==='comun'?'Ej.: Alquiler':scope==='fijo'?'Ej.: Celular':scope==='ingreso'?'Ej.: Sueldo':'Ej.: Supermercado'}"></label>
+      <label class="field"><span class="label">Monto ($)</span><input id="hh-amt" name="amount" inputmode="decimal" value="${esc(dec(m.amount))}" placeholder="${scope==='variable'||scope==='ingreso'?'':'Vacío = importe pendiente'}"></label>
       ${scope==='comun'?`<label class="field"><span class="label">Pagado por</span><select id="hh-paid" name="paidBy"><option value="">Todavía no se pagó</option>${mem.map(n=>`<option ${n===m.paidBy?'selected':''}>${esc(n)}</option>`).join('')}</select></label>`
         :scope==='fijo'?`<label class="field"><span class="label">Estado</span><select id="hh-st" name="status"><option value="pendiente" ${m.status!=='pagado'?'selected':''}>Pendiente</option><option value="pagado" ${m.status==='pagado'?'selected':''}>Pagado</option></select></label>`
+        :scope==='ingreso'?`<label class="field"><span class="label">Fecha</span><input id="hh-date" name="date" type="date" value="${esc(m.date||today())}"></label>`
         :`<label class="field"><span class="label">Fecha</span><input id="hh-date" name="date" type="date" value="${esc(m.date||today())}"></label>
           <label class="field"><span class="label">Categoría</span><input id="hh-cat" name="category" list="dl-hhcat" value="${esc(m.category)}" placeholder="Ej.: comida, salidas, transporte"><datalist id="dl-hhcat">${[...new Set(S.money.filter(x=>x.ledgerId===p.id&&x.scope==='variable'&&x.category).map(x=>x.category))].map(c=>`<option value="${esc(c)}">`).join('')}</datalist></label>`}
     </div>
@@ -490,8 +497,15 @@ function hhRow(p,scope,m){
     :scope==='fijo'?(m.status==='pagado'?'<span class="tag st-tag-cumplido">Pagado</span>':'<span class="tag st-tag-planificado">Pendiente</span>')
     :(m.category?`<span class="tag">${esc(m.category)}</span>`:'');
   return `<button class="hh-row" data-act="editHH" data-id="${esc(m.id)}">
-    <span style="min-width:0">${scope==='variable'?`<span class="num muted" style="font-size:.8rem">${fmtDate(m.date)}</span> `:''}<b style="font-weight:500">${esc(m.concept)}</b> ${st}${m.note?`<span class="muted" style="display:block;font-size:.78rem">${esc(m.note)}</span>`:''}</span>
-    <span class="num ${hasAmt(m)?'':'muted'}">${hasAmt(m)?money(num(m.amount)):'Pendiente'}</span></button>`;
+    <span style="min-width:0">${scope==='variable'||scope==='ingreso'?`<span class="num muted" style="font-size:.8rem">${fmtDate(m.date)}</span> `:''}<b style="font-weight:500">${esc(m.concept)}</b> ${st}${m.note?`<span class="muted" style="display:block;font-size:.78rem">${esc(m.note)}</span>`:''}</span>
+    <span class="num ${hasAmt(m)?(scope==='ingreso'?'inc':''):'muted'}">${hasAmt(m)?(scope==='ingreso'?'+':'')+money(num(m.amount)):'Pendiente'}</span></button>`;
+}
+function hhTotals(p,month){
+  const sumA=arr=>arr.filter(hasAmt).reduce((a,m)=>a+num(m.amount),0);
+  const fixedT=sumA(hhItems(p,'fijo',month)),varT=sumA(hhItems(p,'variable',month)),incP=sumA(hhItems(p,'ingreso',month)),myC=hhComunSums(p,month).half;
+  const apps=(p.linked||[]).map(id=>S.projects.find(x=>x.id===id)).filter(Boolean).map(a=>{const s=ledgerSums(a,month);return {name:a.name,inc:s.inc,exp:s.exp}});
+  const inc=incP+apps.reduce((a,x)=>a+x.inc,0),exp=myC+fixedT+varT+apps.reduce((a,x)=>a+x.exp,0);
+  return {fixedT,varT,incP,myC,apps,inc,exp};
 }
 function householdView(p){
   const pc=pcolor(p);const tab=S.hhTab||'comun';const month=S.month||today().slice(0,7);const f=S.form;
@@ -500,9 +514,9 @@ function householdView(p){
   <div class="tabs" role="tablist" style="--pc:${pc}">${HH_TABS.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="hhTab" data-tab="${k}">${l}</button>`).join('')}</div>
   <section class="panel" style="--pc:${pc}"><div class="row">
     <button class="small" data-act="prevMonth" aria-label="Mes anterior">‹</button><h2 style="min-width:0">${monthName(month)}</h2><button class="small" data-act="nextMonth" aria-label="Mes siguiente">›</button>
-    <span class="spacer"></span>${f&&f.type==='hh'&&!f.id?'':`<button class="small primary" data-act="newHH">+ Gasto</button>`}</div>`;
+    <span class="spacer"></span>${f&&f.type==='hh'&&!f.id?'':`<button class="small primary" data-act="newHH">${tab==='ingreso'?'+ Ingreso':'+ Gasto'}</button>`}</div>`;
   if(f&&f.type==='hh'&&!f.id)h+=hhForm(p,tab,{});
-  const its=hhItems(p,tab,month).sort((a,c)=>tab==='variable'?(c.date||'').localeCompare(a.date||''):num(a.order??a.createdAt)-num(c.order??c.createdAt));
+  const its=hhItems(p,tab,month).sort((a,c)=>tab==='variable'||tab==='ingreso'?(c.date||'').localeCompare(a.date||''):num(a.order??a.createdAt)-num(c.order??c.createdAt));
   if(tab==='comun'){const s=hhComunSums(p,month);
     h+=`<div class="money-sum">
       <div class="ms"><span class="label">Total de gastos</span><b>${money(s.total)}</b>${its.some(m=>!hasAmt(m))?'<span class="muted" style="font-size:.75rem">sin los que tienen importe pendiente</span>':''}</div>
@@ -512,15 +526,20 @@ function householdView(p){
   else{const tot=its.filter(hasAmt).reduce((a,m)=>a+num(m.amount),0);
     const paid=tab==='fijo'?its.filter(m=>m.status==='pagado'&&hasAmt(m)).reduce((a,m)=>a+num(m.amount),0):0;
     h+=`<div class="money-sum"><div class="ms"><span class="label">Total</span><b>${money(tot)}</b></div>${tab==='fijo'?`<div class="ms"><span class="label">Pagado</span><b class="inc">${money(paid)}</b></div><div class="ms"><span class="label">Falta pagar</span><b>${money(tot-paid)}</b></div>`:''}</div>`;}
-  h+=its.length?`<div class="hh-list">${its.map(m=>hhRow(p,tab,m)).join('')}</div>`:`<div class="empty">Sin gastos en ${monthName(month)}.${tab!=='variable'?' Tocá «Copiar del mes anterior» o «+ Gasto».':' Tocá «+ Gasto».'}</div>`;
+  h+=its.length?`<div class="hh-list">${its.map(m=>hhRow(p,tab,m)).join('')}</div>`:`<div class="empty">Sin gastos en ${monthName(month)}.${tab!=='variable'?' Tocá «Copiar del mes anterior» o «'+(tab==='ingreso'?'+ Ingreso':'+ Gasto')+'».':' Tocá «+ Gasto».'}</div>`;
   if(tab!=='variable'){const prev=hhItems(p,tab,shiftMonth(month,-1));
     if(prev.length&&!its.length)h+=`<button class="small" data-act="copyHH" style="align-self:flex-start">Copiar del mes anterior (${prev.length} gastos, sin estado de pago)</button>`;}
   if(tab==='variable'&&its.length){const cats={};its.forEach(m=>{const c=m.category||'Sin categoría';cats[c]=(cats[c]||0)+num(m.amount)});const cl=Object.entries(cats).sort((a,b)=>b[1]-a[1]);const mx=cl[0][1]||1;
     h+=`<h3>Por categoría</h3>${cl.map(([c,v])=>`<div class="cat"><span>${esc(c)}</span><div class="track"><div class="fill" style="width:${v/mx*100}%;background:var(--pc)"></div></div><span class="num" style="text-align:right">${money(v)}</span></div>`).join('')}`;}
   h+=`</section>`;
-  const fixedT=hhItems(p,'fijo',month).filter(hasAmt).reduce((a,m)=>a+num(m.amount),0),varT=hhItems(p,'variable',month).filter(hasAmt).reduce((a,m)=>a+num(m.amount),0),myC=hhComunSums(p,month).half;
-  h+=`<section class="panel" style="--pc:${pc}"><h3>Mi mes en total</h3><div class="money-sum">
-    <div class="ms"><span class="label">Mi parte de la casa</span><b>${money(myC)}</b></div><div class="ms"><span class="label">Fijos</span><b>${money(fixedT)}</b></div><div class="ms"><span class="label">No fijos</span><b>${money(varT)}</b></div><div class="ms"><span class="label">Total</span><b>${money(myC+fixedT+varT)}</b></div></div></section>`;
+  const t=hhTotals(p,month);
+  const line=(l,v,cls)=>`<div class="frow"><dt>${l}</dt><dd class="num ${cls||''}" style="text-align:right">${money(v)}</dd></div>`;
+  h+=`<section class="panel" style="--pc:${pc}"><h3>Mi mes en total · ${monthName(month)}</h3>
+    <div class="money-sum"><div class="ms"><span class="label">Ingresos</span><b class="inc">${money(t.inc)}</b></div><div class="ms"><span class="label">Gastos</span><b class="exp">${money(t.exp)}</b></div><div class="ms"><span class="label">Saldo</span><b class="${t.inc-t.exp<0?'exp':'inc'}">${money(t.inc-t.exp)}</b></div></div>
+    <dl class="fdl">${line('Ingresos personales',t.incP,'inc')}${t.apps.map(a=>line('Ingresos de '+esc(a.name),a.inc,'inc')).join('')}
+      ${line('Mi parte de la casa',t.myC)}${line('Personales fijos',t.fixedT)}${line('Personales no fijos',t.varT)}${t.apps.map(a=>line('Gastos de '+esc(a.name),a.exp)).join('')}</dl>
+    ${t.apps.length?`<div class="muted" style="font-size:.78rem">Los movimientos de ${t.apps.map(a=>esc(a.name)).join(', ')} se suman solos; se cargan en esa sección.</div>`:''}
+  </section>`;
   return h;
 }
 function ledgerView(p){
@@ -1195,7 +1214,7 @@ function weekPanel(p,pc){
   const wkEvs=evs.filter(e=>e.date>=ws&&e.date<=we);
   const rowDefs=rows.map(sp=>({id:sp.id,name:sp.name,color:spaceColor(sp)}));
   if(wkEvs.some(e=>!rows.find(r=>r.id===e.spaceId)))rowDefs.push({id:'',name:'General',color:'var(--muted)'});
-  h+=`<div class="wkm"><div class="wkm-corner"></div>`;
+  h+=`<div class="wkm-wrap"><div class="wkm"><div class="wkm-corner"></div>`;
   for(let i=0;i<7;i++){const ds=addDays(ws,i);
     h+=`<button class="wkm-day ${ds===t?'today':''} ${ds===sel?'sel':''}" data-act="wkDay" data-date="${ds}" aria-label="${DIAS_D[i]} ${fmtDate(ds)}"><span>${DIAS_D[i].slice(0,3)}</span><b class="num">${+ds.slice(8)}</b></button>`;}
   for(const r of rowDefs){
@@ -1205,7 +1224,7 @@ function weekPanel(p,pc){
       h+=`<button class="wkm-cell ${ds===t?'today':''} ${ds===sel?'sel':''}" style="--pc:${r.color}" data-act="wkCell" data-date="${ds}" data-sp="${esc(r.id)}" aria-label="${esc(r.name)}, ${DIAS_D[i]} ${fmtDate(ds)}: ${de.length} tarea(s)">
         ${de.slice(0,3).map(e=>`<span class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}">${esc(e.title)}</span>`).join('')}${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</button>`;}
   }
-  h+=`</div>`;
+  h+=`</div></div>`;
   if(sel){const i=(new Date(sel+'T00:00:00')).getDay();const de=evs.filter(e=>e.date===sel);
     h+=`<div class="wk-day today"><div class="wk-head"><b>${DIAS_D[i]}</b> <span class="num muted">${fmtDate(sel)}</span><span class="spacer"></span><button class="small ghost" data-act="wkClose" aria-label="Cerrar día">✕</button></div>
       ${de.length?de.slice().sort((a,c)=>(S.wkSpace&&a.spaceId===S.wkSpace?-1:0)-(S.wkSpace&&c.spaceId===S.wkSpace?-1:0)).map(e=>weekEvRow(p,e)).join(''):'<div class="muted" style="font-size:.82rem">Nada planificado.</div>'}
@@ -1806,9 +1825,10 @@ app.addEventListener('submit',e=>{
       const data={concept:(d.concept||'').trim(),amount:t===''?'':num(t),note:(d.note||'').trim()};
       if(scope==='comun')data.paidBy=d.paidBy||'';
       if(scope==='fijo')data.status=d.status||'pendiente';
-      if(scope==='variable'){data.date=d.date||today();data.category=(d.category||'').trim();data.month=data.date.slice(0,7);}
+      if(scope==='variable'||scope==='ingreso'){data.date=d.date||today();data.month=data.date.slice(0,7);}
+      if(scope==='variable')data.category=(d.category||'').trim();
       if(f.dataset.id)await db.doc('money/'+f.dataset.id).update(data);
-      else await db.collection('money').add({...data,ledgerId:f.dataset.pid,scope,type:'gasto',month:data.month||month,date:data.date||month+'-01',createdAt:Date.now()});
+      else await db.collection('money').add({...data,ledgerId:f.dataset.pid,scope,type:scope==='ingreso'?'ingreso':'gasto',month:data.month||month,date:data.date||month+'-01',createdAt:Date.now()});
     }else if(kind==='move'){
       const amt=num(d.amount);if(amt<=0){S.err='Cargá un monto mayor a cero.';rerender();return}
       await db.collection('money').add({ledgerId:f.dataset.pid,type:d.type==='ingreso'?'ingreso':'gasto',amount:amt,category:(d.category||'').trim(),scope:d.scope||'',date:d.date||today(),note:(d.note||'').trim(),createdAt:Date.now()});
