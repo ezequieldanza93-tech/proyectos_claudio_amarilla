@@ -295,7 +295,7 @@ function render(){
   app.innerHTML=html;
   app.querySelectorAll('form[data-form=event]').forEach(updateDoseTotals);
   app.querySelectorAll('form[data-form=item]').forEach(applyKindVisibility);
-  app.querySelectorAll('form[data-form=batch]').forEach(applyBatchVis);
+  app.querySelectorAll('form[data-form=batch],form[data-form=product]').forEach(applyBatchVis);
   tick();
 }
 app.addEventListener('focusout',()=>setTimeout(()=>{if(pending){const a=document.activeElement;if(!(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))render()}},0));
@@ -549,19 +549,40 @@ function prodSummary(e){
   const L=num(e.liters);
   return `<span class="muted" style="font-size:.78rem;display:block">${L?dec(L)+' L · ':''}${e.products.map(x=>`${esc(x.label)} ${dec(x.dose)} ${esc(x.unit)}/L${L&&num(x.dose)?' ('+dec(Math.round(num(x.dose)*L*100)/100)+' '+esc(x.unit)+')':''}`).join(' · ')}</span>`;
 }
+function substrateCard(x){
+  const row=(l,v)=>v?`<div class="frow"><dt>${l}</dt><dd>${esc(v)}</dd></div>`:'';
+  return `<div class="batch" style="gap:6px"><div class="row"><b class="bt">${esc(prodLabel(x))}</b>${x.verified?'<span class="tag st-tag-cumplido">Verificado</span>':'<span class="aitag">datos de tiendas · verificar</span>'}<span class="spacer"></span>
+    <button class="small ghost" data-act="toggleVerified" data-id="${esc(x.id)}">${x.verified?'Marcar sin verificar':'Marcar verificado'}</button>
+    ${S.confirm==='pr'+x.id?`<button class="small danger" data-act="delProduct" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="pr${esc(x.id)}" aria-label="Borrar sustrato">✕</button>`}</div>
+    <dl class="fdl">${row('Presentaciones',x.presentations)}${row('pH',x.ph)}${row('CE / EC',x.ce)}${row('Composición',x.composition)}${row('Uso indicado',x.usage)}${row('Peso por bolsa',x.weight)}${row('Notas',x.notes)}</dl>
+    ${(x.sources||[]).length?`<details><summary class="muted" style="font-size:.8rem">Fuentes (${x.sources.length})</summary><ul class="flist">${x.sources.map(u=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/,'').split('/')[0])}</a></li>`).join('')}</ul></details>`:''}
+  </div>`;
+}
 function catalogPanel(p,pc){
   const f=S.form;const open=S.catalogOpen;
   let h=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Catálogo de productos</h2><span class="spacer"></span>
     <button class="small" data-act="toggleCatalog">${open?'Ocultar':'Ver y editar'}</button></div>`;
-  if(!open)return h+`<div class="muted" style="font-size:.85rem">${prodsFor('radicular').length} productos para riego radicular · ${prodsFor('foliar').length} para riego foliar</div></section>`;
+  if(!open)return h+`<div class="muted" style="font-size:.85rem">${prodsFor('radicular').length} productos para riego radicular · ${prodsFor('foliar').length} para riego foliar · ${prodsFor('sustrato').length} sustratos</div></section>`;
   h+=`<form class="inline-form" data-form="product">
     <div class="grid2">
-      <label class="field"><span class="label">Uso</span><select id="c-use" name="use"><option value="radicular">Riego radicular</option><option value="foliar">Riego foliar</option></select></label>
+      <label class="field"><span class="label">Uso</span><select id="c-use" name="use" data-bvis><option value="radicular">Riego radicular</option><option value="foliar">Riego foliar</option><option value="sustrato">Sustrato</option></select></label>
       <label class="field"><span class="label">Línea / marca (opcional)</span><input id="c-line" name="line" list="c-lines" placeholder="Ej.: Namaste"><datalist id="c-lines">${[...new Set(S.products.map(x=>x.line).filter(Boolean))].sort().map(l=>`<option value="${esc(l)}">`).join('')}</datalist></label>
       <label class="field"><span class="label">Producto</span><input id="c-name" name="name" required placeholder="Nombre del producto"></label>
-      <label class="field"><span class="label">Unidad habitual</span><select id="c-unit" name="unit"><option value="ml">ml</option><option value="g">g</option></select></label>
+      <label class="field" data-bwhen="use:radicular|foliar"><span class="label">Unidad habitual</span><select id="c-unit" name="unit"><option value="ml">ml</option><option value="g">g</option></select></label>
+    </div>
+    <div class="grid2" data-bwhen="use:sustrato">
+      <label class="field"><span class="label">Presentaciones</span><input id="c-pres" name="presentations" placeholder="Ej.: 20 L, 50 L"></label>
+      <label class="field"><span class="label">pH</span><input id="c-ph" name="ph" placeholder="Ej.: 6,5 – 7,5"></label>
+      <label class="field"><span class="label">CE / EC</span><input id="c-ce" name="ce" placeholder="Ej.: 1,5 – 2,0 mS/cm"></label>
+      <label class="field"><span class="label">Uso indicado</span><input id="c-usage" name="usage" placeholder="Ej.: indoor y exterior"></label>
+      <label class="field"><span class="label">Composición</span><input id="c-comp" name="composition"></label>
+      <label class="field"><span class="label">Peso por bolsa</span><input id="c-weight" name="weight" placeholder="Ej.: 20 kg (50 L)"></label>
+      <label class="field"><span class="label">Fuentes (una URL por línea)</span><textarea id="c-src" name="sources"></textarea></label>
+      <label class="field"><span class="label">Notas / diferencias entre fuentes</span><textarea id="c-notes" name="notes"></textarea></label>
     </div>
     <div class="row"><button class="primary" type="submit">Agregar al catálogo</button></div></form>`;
+  const subs=S.products.filter(x=>x.use==='sustrato');
+  h+=`<div><h3 style="margin-bottom:6px">Sustratos</h3>${subs.length?subs.map(substrateCard).join(''):'<span class="muted" style="font-size:.85rem">Sin sustratos cargados</span>'}</div>`;
   for(const use of ['radicular','foliar']){
     const items=S.products.filter(x=>x.use===use);
     const groups={};items.forEach(x=>{const g=x.line||'Sin línea';(groups[g]=groups[g]||[]).push(x)});
@@ -946,14 +967,14 @@ function batchForm(s,b){
       <label class="field"><span class="label">Origen</span><select id="b-origin" name="origin" data-bvis><option value="">Elegir…</option>${ORIGINS.map(x=>`<option ${x===b.origin?'selected':''}>${x}</option>`).join('')}</select></label>
       <label class="field" data-bwhen="origin:Otro espacio"><span class="label">¿De qué espacio?</span><select id="b-ospace" name="originSpaceId">${others.map(x=>`<option value="${esc(x.id)}" ${x.id===b.originSpaceId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>
       <label class="field"><span class="label">Litros de maceta</span><input id="b-pot" name="potLiters" inputmode="decimal" value="${esc(dec(b.potLiters))}"></label>
-      <label class="field" data-bwhen="cropType:Sustrato"><span class="label">Sustrato</span><input id="b-sub" name="substrate" list="dl-sub" value="${esc(b.substrate)}" placeholder="Ej.: Terrafertil Growmix Indoor"><datalist id="dl-sub">${[...new Set([...SUBSTRATES,...S.batches.map(x=>x.substrate).filter(Boolean)])].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label>
+      <label class="field" data-bwhen="cropType:Sustrato"><span class="label">Sustrato</span><input id="b-sub" name="substrate" list="dl-sub" value="${esc(b.substrate)}" placeholder="Ej.: Terrafertil Growmix Indoor"><datalist id="dl-sub">${[...new Set([...S.products.filter(x=>x.use==='sustrato').map(prodLabel),...SUBSTRATES,...S.batches.map(x=>x.substrate).filter(Boolean)])].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label>
     </div>
     <label class="field"><span class="label">Nota (opcional)</span><input id="b-note" name="note" value="${esc(b.note)}"></label>
     <div class="row"><button class="primary" type="submit">Guardar lote</button><button type="button" data-act="cancelForm">Cancelar</button></div>
   </form>`;
 }
 function applyBatchVis(form){
-  form.querySelectorAll('[data-bwhen]').forEach(el=>{const [k,v]=el.dataset.bwhen.split(':');el.hidden=form.querySelector(`[name=${k}]`).value!==v});
+  form.querySelectorAll('[data-bwhen]').forEach(el=>{const [k,v]=el.dataset.bwhen.split(':');el.hidden=!v.split('|').includes(form.querySelector(`[name=${k}]`).value)});
 }
 function transferForm(s,b){
   const dests=S.spaces.filter(x=>x.projectId===s.projectId&&x.id!==s.id&&x.enabled!==false);
@@ -1095,6 +1116,7 @@ app.addEventListener('click',e=>{
       safe(async()=>{await db.doc('spaces/'+sp.id).update({[b.dataset.key]:arr});S.confirm=null})},
     aiFill(){aiFill(b.closest('form'))},
     toggleCatalog(){S.catalogOpen=!S.catalogOpen;rerender()},
+    toggleVerified(){const x=S.products.find(y=>y.id===id);safe(()=>db.doc('products/'+id).update({verified:!x.verified}))},
     delProduct(){safe(async()=>{await db.doc('products/'+id).delete();S.confirm=null})},
     addDoseRow(){const fm=b.closest('form');const use=RIEGO_USE[fm.querySelector('[name=type]').value];if(!use)return;fm.querySelector('.dose-rows').insertAdjacentHTML('beforeend',prodRow(use,{}))},
     rmDoseRow(){const r=b.closest('.dose-row');const fm=r.closest('form');const c=r.parentElement;if(c.children.length>1)r.remove();else{r.querySelector('[name=prodId]').value='';r.querySelector('[name=dose]').value=''}updateDoseTotals(fm)},
@@ -1194,6 +1216,11 @@ app.addEventListener('submit',e=>{
       else await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,spaceId:S.space||'',createdAt:Date.now()});
     }else if(kind==='product'){
       const name=(d.name||'').trim();if(!name)return;
+      if(d.use==='sustrato'){
+        await db.collection('products').add({projectId:'cultivo',use:'sustrato',line:(d.line||'').trim(),name,presentations:(d.presentations||'').trim(),ph:(d.ph||'').trim(),ce:(d.ce||'').trim(),
+          usage:(d.usage||'').trim(),composition:(d.composition||'').trim(),weight:(d.weight||'').trim(),notes:(d.notes||'').trim(),
+          sources:String(d.sources||'').split(/\s+/).filter(u=>/^https?:\/\//.test(u)),verified:false,createdAt:Date.now()});
+      }else
       await db.collection('products').add({projectId:'cultivo',use:d.use==='foliar'?'foliar':'radicular',line:(d.line||'').trim(),name,unit:d.unit||'ml',createdAt:Date.now()});
       S.form=null;rerender();setTimeout(()=>document.getElementById('c-name')?.focus(),0);return;
     }else if(kind==='move'){
