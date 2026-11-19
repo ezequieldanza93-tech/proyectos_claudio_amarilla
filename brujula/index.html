@@ -131,14 +131,14 @@ textarea{min-height:70px;resize:vertical}
 .ev-key{display:inline-block;width:12px;height:8px;border-radius:3px;background:var(--pc);vertical-align:middle;margin-right:4px}
 .ev-key.st-planificado{background:transparent;border:1px dashed var(--pc)}
 .ev-key.st-no-se-hizo{background:var(--line)}
-.evrow{display:grid;grid-template-columns:76px 1fr auto;gap:10px;align-items:start;padding:9px 0;border-top:1px solid var(--line);font-size:.88rem}
+.evrow{display:flex;flex-direction:column;gap:6px;padding:8px 0;border-top:1px solid var(--line);font-size:.88rem}
 .evrow:first-child,.confirm-box .label+.evrow{border-top:0}
 .evrow.missed .ev-title{text-decoration:line-through;color:var(--muted)}
 .st-tag-planificado{border-style:dashed;color:var(--pc)}
 .st-tag-cumplido{color:var(--ok);border-color:var(--ok)}
 .st-tag-no-se-hizo{color:var(--warn);border-color:var(--warn)}
 .confirm-box{border:1px solid var(--warn);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column}
-@media (max-width:560px){.evrow{grid-template-columns:64px 1fr}.evrow .t-actions{grid-column:1/-1;justify-content:flex-start}}
+@media (max-width:560px){.evrow .wk-det{padding-left:0!important}}
 /* registro diario */
 .day{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
@@ -495,17 +495,22 @@ function calendarPanel(p,pc){
 function evRow(e,confirming){
   const st=evStatus(e);
   const moved=e.plannedDate&&e.plannedDate!==e.date;
+  const open=S.openEv&&S.openEv.has(e.id);
   return `<div class="evrow ${st==='no se hizo'?'missed':''}">
-    <span class="num">${fmtDate(e.date)}</span>
-    <span style="min-width:0"><span class="ev-title">${esc(e.title)}</span><span class="tag">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span>
-      ${moved?`<span class="muted" style="font-size:.78rem;display:block">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem;display:block">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
+    <button class="wk-sum" data-act="toggleEv" data-id="${esc(e.id)}" aria-expanded="${!!open}">
+      <span class="num muted" style="font-size:.8rem;min-width:62px">${fmtDate(e.date)}</span>
+      <span class="st-dot st-${st.replace(/ /g,'-')}" title="${ST_LABEL[st]}"></span>
+      <span class="ev-title">${esc(e.title)}</span><span class="chev" aria-hidden="true">${open?'▴':'▾'}</span></button>
+    ${open?`<div class="wk-det" style="padding-left:70px">
+      <div><span class="tag" style="margin:0">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span></div>
+      ${moved?`<span class="muted" style="font-size:.78rem">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
       ${prodSummary(e)}
-      ${e.note?`<span class="muted" style="font-size:.78rem;display:block">${esc(e.note)}</span>`:''}</span>
-    <span class="t-actions">
-      ${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button>${confirming?`<button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`:''}`
+      ${e.note?`<span class="muted" style="font-size:.78rem">${esc(e.note)}</span>`:''}
+      <span class="t-actions" style="justify-content:flex-start">
+      ${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`
         :`<button class="small ghost" data-act="evEdit" data-id="${esc(e.id)}">Editar</button>`}
       ${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="e${esc(e.id)}" aria-label="Borrar evento">✕</button>`}
-    </span></div>`;
+      </span></div>`:''}</div>`;
 }
 const RIEGO_USE={'Riego radicular':'radicular','Riego foliar':'foliar'};
 const USE_LABEL={radicular:'Riego radicular',foliar:'Riego foliar'};
