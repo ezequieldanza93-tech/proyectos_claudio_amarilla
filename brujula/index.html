@@ -24,6 +24,7 @@
   --p1:#6fbf94; --p2:#8d9ef0; --p3:#e3a656; --p4:#5cc3cc; --p5:#c79ad9; --p6:#d49a76;
   --warn:#f0875f; --ok:#6fcf8f; color-scheme:dark}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
 .wrap{max-width:920px;margin:0 auto;padding-block:20px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
 h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
@@ -168,6 +169,13 @@ textarea{min-height:70px;resize:vertical}
 .cat-line b{min-width:110px;font-size:.88rem}
 .cat-item{display:inline-flex;align-items:center;gap:2px;border:1px solid var(--line);border-radius:999px;padding:1px 2px 1px 10px;font-size:.84rem}
 @media (max-width:560px){.dose-row{grid-template-columns:1fr 70px 72px auto}.dose-row select[name=prodId]{grid-column:1/-1}.dose-tot{grid-column:1/3}}
+/* equipamiento */
+.eq-group{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:10px}
+.eq-group:first-of-type{border-top:0;padding-top:0}
+.eq-item{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;font-size:.88rem;padding:4px 0}
+.checkf{display:flex;gap:8px;align-items:center;font-size:.88rem;align-self:end;padding-bottom:8px}
+.checkf input{width:auto}
+.aitag{font-size:.68rem;border:1px dashed var(--warn);color:var(--warn);border-radius:999px;padding:0 6px;white-space:nowrap}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -215,7 +223,7 @@ function ledgerSums(p,month){
   return {ms,inc,exp,bal:inc-exp};
 }
 window.addEventListener('hashchange',()=>{const h=hashId();if(h===S.nav)return;S.nav=h;S.form=null;S.confirm=null;window.scrollTo(0,0);rerender()});
-let db=null, assets=null, pending=false;
+let db=null, assets=null, sample=null, pending=false;
 const app=document.getElementById('app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const num=v=>{const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:0};
@@ -254,6 +262,7 @@ function render(){
   html+= cp?(isLedger(cp)?ledgerView(cp):detailView()):homeView();
   app.innerHTML=html;
   app.querySelectorAll('form[data-form=event]').forEach(updateDoseTotals);
+  app.querySelectorAll('form[data-form=item]').forEach(applyKindVisibility);
   tick();
 }
 app.addEventListener('focusout',()=>setTimeout(()=>{if(pending){const a=document.activeElement;if(!(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))render()}},0));
@@ -608,6 +617,113 @@ function spacesPanel(p,pc){
       :`<button class="space" data-act="openSpace" data-id="${esc(s.id)}"><span class="lt">${esc(s.name)}</span><span class="ls">${esc(spaceSummary(s))}</span></button>`).join('')}</div></section>`;
 }
 function plantRow(g,q){return `<div class="prow"><input name="genetics" aria-label="Genética" placeholder="Genética (ej.: Gorilla Piña, BSF)" value="${esc(g)}"><input name="qty" aria-label="Cantidad" inputmode="numeric" placeholder="Cant." value="${esc(q)}"><button type="button" class="ghost small danger" data-act="rmPlantRow" aria-label="Quitar genética">✕</button></div>`}
+const COMP_KINDS=['Cooler 220 V','Turbina simple','Turbina doble','Ventilador'];
+const COMP_SCHEMA=[
+  {k:'kind',l:'Componente',t:'select',o:COMP_KINDS},
+  {k:'size',l:'Medida',t:'select',o:['4"','6"'],whenNot:'Ventilador'},
+  {k:'power',l:'Potencia (W)',t:'num',when:'Ventilador'},
+  {k:'diameter',l:'Diámetro',t:'text',ph:'Ej.: 16" o 40 cm',when:'Ventilador'},
+  {k:'brand',l:'Marca',t:'text',when:'Ventilador'},
+  {k:'oscillating',l:'Oscilante',t:'check',when:'Ventilador'},
+  {k:'dimmer',l:'Dimmer de velocidades',t:'check'},
+  {k:'qty',l:'Cantidad',t:'num'},
+];
+const CLIMATE_TYPES=['Termómetro','Higrómetro','Termohigrómetro','Termostato','Higrostato','Controlador de clima','Humidificador','Deshumidificador','Otro'];
+const CLIMATE_SCHEMA=[
+  {k:'type',l:'Equipo',t:'select',o:CLIMATE_TYPES},
+  {k:'brand',l:'Marca',t:'text'},{k:'model',l:'Modelo',t:'text'},
+  {k:'setpoint',l:'Setpoint / capacidad',t:'text',ph:'Ej.: 60 % HR, 25 °C, 12 L/día'},
+  {k:'qty',l:'Cantidad',t:'num'},{k:'note',l:'Nota',t:'text'},
+];
+const LIGHT_TYPES=['Sodio','Full spectrum','LED galponera','LED proyector','LED alto rendimiento','Otro'];
+const LIGHT_SCHEMA=[
+  {k:'type',l:'Tipo de lámpara',t:'select',o:LIGHT_TYPES},
+  {k:'qty',l:'Cantidad',t:'num'},
+  {k:'brand',l:'Marca',t:'text'},{k:'model',l:'Modelo',t:'text'},
+  {k:'watts',l:'Potencia real (W)',t:'num',ai:1},
+  {k:'panelL',l:'Panel largo (cm)',t:'num',ai:1},{k:'panelW',l:'Panel ancho (cm)',t:'num',ai:1},{k:'panelH',l:'Panel alto (cm)',t:'num',ai:1},
+  {k:'ppf',l:'PPF (µmol/s)',t:'num',ai:1},{k:'efficacy',l:'Eficacia (µmol/J)',t:'num',ai:1},
+  {k:'spectrum',l:'Espectro / Kelvin',t:'text',ai:1},
+  {k:'dimmer',l:'Dimmer',t:'check',ai:1},
+  {k:'hangHeight',l:'Altura de colgado (cm)',t:'num'},
+];
+const EQUIP={
+  airExtraccion:{title:'Extracción',schema:COMP_SCHEMA},
+  airIntraccion:{title:'Intracción',schema:COMP_SCHEMA},
+  airVentilacion:{title:'Ventilación',schema:COMP_SCHEMA},
+  climate:{title:'Control del clima',schema:CLIMATE_SCHEMA},
+  lights:{title:'Luces',schema:LIGHT_SCHEMA},
+};
+function itemSummary(key,it){
+  const yes=v=>v?'sí':'no';
+  if(key.startsWith('air')){
+    if(it.kind==='Ventilador')return [`${it.qty>1?it.qty+' × ':''}Ventilador`,it.brand,it.power?it.power+' W':'',it.diameter,it.oscillating?'oscilante':'no oscilante',it.dimmer?'con dimmer':''].filter(Boolean).join(' · ');
+    return [`${it.qty>1?it.qty+' × ':''}${it.kind||''} ${it.size||''}`.trim(),it.dimmer?'con dimmer':''].filter(Boolean).join(' · ');
+  }
+  if(key==='climate')return [`${it.qty>1?it.qty+' × ':''}${it.type||''}`,[it.brand,it.model].filter(Boolean).join(' '),it.setpoint,it.note].filter(Boolean).join(' · ');
+  const dims=[it.panelL,it.panelW,it.panelH].filter(x=>x!==''&&x!=null);
+  return [`${it.qty>1?it.qty+' × ':''}${it.type||''}`,[it.brand,it.model].filter(Boolean).join(' '),it.watts?it.watts+' W':'',dims.length?dims.map(dec).join('×')+' cm':'',it.ppf?it.ppf+' µmol/s':'',it.efficacy?dec(it.efficacy)+' µmol/J':'',it.spectrum,it.dimmer?'dimmer':'',it.hangHeight?'colgada a '+it.hangHeight+' cm':''].filter(Boolean).join(' · ');
+}
+function fieldHTML(fd,it,key){
+  const v=it[fd.k];const id=`q-${key}-${fd.k}`;
+  const vis=fd.when?` data-when="${fd.when}"`:fd.whenNot?` data-whennot="${fd.whenNot}"`:'';
+  const ai=(it.aiFields||[]).includes(fd.k)?' <span class="aitag">IA · verificar</span>':'';
+  if(fd.t==='check')return `<label class="checkf"${vis}><input type="checkbox" id="${id}" name="${fd.k}" ${v?'checked':''}> ${fd.l}${ai}</label>`;
+  if(fd.t==='select')return `<label class="field"${vis}><span class="label">${fd.l}</span><select id="${id}" name="${fd.k}" ${fd.k==='kind'?'data-kindsel':''}>${fd.o.map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
+  return `<label class="field"${vis}><span class="label">${fd.l}${ai}</span><input id="${id}" name="${fd.k}" ${fd.t==='num'?'inputmode="decimal"':''} value="${esc(fd.t==='num'?dec(v):v)}" placeholder="${esc(fd.ph||'')}"></label>`;
+}
+function applyKindVisibility(form){
+  const sel=form.querySelector('[data-kindsel]');const kind=sel?sel.value:'';
+  form.querySelectorAll('[data-when]').forEach(el=>el.hidden=el.dataset.when!==kind);
+  form.querySelectorAll('[data-whennot]').forEach(el=>el.hidden=el.dataset.whennot===kind);
+}
+function itemForm(s,key,idx){
+  const def=EQUIP[key];const it=idx>=0?(s[key]||[])[idx]||{}:{qty:1};
+  const isLight=key==='lights';
+  return `<form class="inline-form" data-form="item" data-key="${key}" data-idx="${idx}" data-sid="${esc(s.id)}">
+    <div class="grid2">${def.schema.map(fd=>fieldHTML(fd,it,key)).join('')}</div>
+    ${isLight?`<input type="hidden" name="aiFields" value="${esc((it.aiFields||[]).join(','))}">
+      <div class="row"><button type="button" class="small" data-act="aiFill" ${sample?'':'disabled'}>Completar con IA (marca + modelo)</button>
+      <span class="muted ai-msg" style="font-size:.8rem">${sample?'Solo completa campos vacíos; lo que complete queda marcado para verificar.':'No disponible en esta vista.'}</span></div>
+      ${(it.aiFields||[]).length?`<label class="checkf"><input type="checkbox" name="verified" id="q-verified"> Verifiqué los datos con la hoja del fabricante</label>`:''}`:''}
+    <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button></div>
+  </form>`;
+}
+function equipList(s,key,showTitle=true){
+  const def=EQUIP[key];const items=s[key]||[];const f=S.form;
+  const editing=f&&f.type==='item'&&f.key===key?f.idx:null;
+  return `<div class="eq-group"><div class="row">${showTitle?`<h3>${def.title}</h3>`:''}<span class="spacer"></span>${editing===-1?'':`<button class="small" data-act="addItem" data-key="${key}">+ Agregar</button>`}</div>
+    ${items.map((it,i)=>editing===i?itemForm(s,key,i):`<div class="eq-item"><span style="min-width:0">${esc(itemSummary(key,it))}${(it.aiFields||[]).length?' <span class="aitag">datos IA · verificar</span>':''}</span>
+      <span class="t-actions"><button class="ghost small" data-act="editItem" data-key="${key}" data-i="${i}">Editar</button>
+      ${S.confirm==='it'+key+i?`<button class="small danger" data-act="delItem" data-key="${key}" data-i="${i}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="it${key}${i}" aria-label="Borrar">✕</button>`}</span></div>`).join('')}
+    ${editing===-1?itemForm(s,key,-1):''}
+    ${!items.length&&editing!==-1?'<div class="muted" style="font-size:.85rem">Sin componentes cargados.</div>':''}</div>`;
+}
+function equipPanels(s,pc){
+  return `<section class="panel" style="--pc:${pc}"><h2>Ventilación</h2>${['airExtraccion','airIntraccion','airVentilacion'].map(k=>equipList(s,k)).join('')}</section>
+  <section class="panel" style="--pc:${pc}"><h2>Control del clima</h2>${equipList(s,'climate',false)}</section>
+  <section class="panel" style="--pc:${pc}"><h2>Luces</h2>${equipList(s,'lights',false)}</section>`;
+}
+async function aiFill(form){
+  const msg=form.querySelector('.ai-msg');
+  const brand=form.querySelector('[name=brand]').value.trim(),model=form.querySelector('[name=model]').value.trim(),type=form.querySelector('[name=type]').value;
+  if(!brand||!model){msg.textContent='Cargá marca y modelo primero.';return}
+  msg.textContent='Buscando datos…';
+  const keys=LIGHT_SCHEMA.filter(f=>f.ai).map(f=>f.k);
+  const prompt=`Sos un asistente técnico de iluminación para cultivo indoor. Lámpara: tipo "${type}", marca "${brand}", modelo "${model}".
+Devolvé SOLO un objeto JSON con estas claves: watts (potencia real en W, número), panelL, panelW, panelH (dimensiones del panel o luminaria en cm, números), ppf (µmol/s, número), efficacy (µmol/J, número), spectrum (texto breve, ej. "full spectrum 3000K+660nm"), dimmer (true/false).
+REGLA ESTRICTA: si no conocés con certeza un dato para ese modelo exacto, poné null. No estimes ni completes por parecido con otros modelos. Si no reconocés el modelo, devolvé todas las claves en null.`;
+  try{
+    const r=await sample.json(prompt,{modelTier:'default'});
+    const filled=[];const cur=(form.querySelector('[name=aiFields]').value||'').split(',').filter(Boolean);
+    for(const k of keys){const v=r&&r[k];if(v===null||v===undefined||v==='')continue;
+      const el=form.querySelector(`[name=${k}]`);if(!el)continue;
+      if(el.type==='checkbox'){if(!el.checked&&v===true){el.checked=true;filled.push(k)}}
+      else if(!el.value.trim()){el.value=typeof v==='number'?dec(v):String(v);filled.push(k)}}
+    form.querySelector('[name=aiFields]').value=[...new Set([...cur,...filled])].join(',');
+    msg.textContent=filled.length?`Completó ${filled.length} campo(s). Verificalos con la hoja del fabricante antes de confiar en ellos.`:'No encontró datos confiables para ese modelo. Cargalos a mano.';
+  }catch(e){msg.textContent=e&&e.code==='not_granted'?'Permiso denegado para consultar a Claude.':e&&e.code==='rate_limited'?'Demasiadas consultas; probá en un rato.':'No se pudo consultar. Cargalos a mano.'}
+}
 function spaceView(p,s,pc){
   const sel=(name,opts,val)=>`<select id="s-${name}" name="${name}"><option value="">Elegir…</option>${opts.map(([v,l])=>`<option value="${v}" ${val===v?'selected':''}>${l}</option>`).join('')}</select>`;
   const area=num(s.width)*num(s.length);
@@ -626,7 +742,6 @@ function spaceView(p,s,pc){
       <label class="field"><span class="muted" style="font-size:.78rem">Largo</span><input id="s-length" name="length" inputmode="decimal" value="${esc(dec(s.length))}"></label>
       <label class="field"><span class="muted" style="font-size:.78rem">Alto</span><input id="s-height" name="height" inputmode="decimal" value="${esc(dec(s.height))}"></label>
     </div></div>
-    <label class="field"><span class="label">Ventilación</span><input id="s-vent" name="ventilation" value="${esc(s.ventilation)}" placeholder="Ej.: extractor, intractor, ventilador"></label>
     <div class="grid2">
       <label class="field"><span class="label">Temperatura promedio (°C)</span><input id="s-temp" name="temp" inputmode="decimal" value="${esc(dec(s.temp))}"></label>
       <label class="field"><span class="label">Humedad promedio (%)</span><input id="s-hum" name="humidity" inputmode="decimal" value="${esc(dec(s.humidity))}"></label>
@@ -635,7 +750,7 @@ function spaceView(p,s,pc){
       <div class="prows" id="prows">${plants.map(x=>plantRow(x.genetics,x.qty||'')).join('')}</div>
       <button type="button" class="small" data-act="addPlantRow" style="align-self:flex-start">+ Agregar genética</button></div>
     <div class="row"><button class="primary" type="submit">Guardar espacio</button>${S.spaceMsg?`<span class="muted" style="font-size:.85rem">${esc(S.spaceMsg)}</span>`:''}</div>
-  </form>`+(p.calendar?calendarPanel(p,pc)+mediaPanel(p,pc):'');
+  </form>`+equipPanels(s,pc)+(p.calendar?calendarPanel(p,pc)+mediaPanel(p,pc):'');
 }
 function detailView(){
   const p=S.projects.find(x=>x.id===S.pid);const st=projStats(p);const pc=pcolor(p);const dl=daysLeft(p.deadline);
@@ -723,6 +838,11 @@ app.addEventListener('click',e=>{
     closeSpace(){S.space=null;window.scrollTo(0,0);rerender()},
     addPlantRow(){const c=document.getElementById('prows');c.insertAdjacentHTML('beforeend',plantRow('',''));c.lastElementChild.querySelector('input').focus()},
     rmPlantRow(){const r=b.closest('.prow');const c=r.parentElement;if(c.children.length>1)r.remove();else r.querySelectorAll('input').forEach(i=>i.value='')},
+    addItem(){S.form={type:'item',key:b.dataset.key,idx:-1};rerender()},
+    editItem(){S.form={type:'item',key:b.dataset.key,idx:+b.dataset.i};rerender()},
+    delItem(){const sp=S.spaces.find(x=>x.id===S.space);const arr=[...(sp[b.dataset.key]||[])];arr.splice(+b.dataset.i,1);
+      safe(async()=>{await db.doc('spaces/'+sp.id).update({[b.dataset.key]:arr});S.confirm=null})},
+    aiFill(){aiFill(b.closest('form'))},
     toggleCatalog(){S.catalogOpen=!S.catalogOpen;rerender()},
     delProduct(){safe(async()=>{await db.doc('products/'+id).delete();S.confirm=null})},
     addDoseRow(){const fm=b.closest('form');const use=RIEGO_USE[fm.querySelector('[name=type]').value];if(!use)return;fm.querySelector('.dose-rows').insertAdjacentHTML('beforeend',prodRow(use,{}))},
@@ -772,6 +892,7 @@ async function saveTimerLog(){
 app.addEventListener('change',e=>{
   if(e.target.matches('[data-kind-toggle]')){const fm=e.target.closest('form');const led=e.target.value==='ledger';
     fm.querySelector('.only-ledger').hidden=!led;fm.querySelector('.only-project').hidden=led;}
+  if(e.target.matches('[data-kindsel]'))applyKindVisibility(e.target.closest('form'));
   if(e.target.matches('[data-evtype]')){const fm=e.target.closest('form');const use=RIEGO_USE[e.target.value]||'';const box=fm.querySelector('.prodbox');
     box.hidden=!use;const rows=box.querySelector('.dose-rows');
     if(use){const prev=rows.dataset.use;if(prev!==use){rows.innerHTML=prodRow(use,{});rows.dataset.use=use}}}
@@ -782,10 +903,20 @@ app.addEventListener('submit',e=>{
   e.preventDefault();const f=e.target;const d=Object.fromEntries(new FormData(f).entries());
   const kind=f.dataset.form;
   if(kind==='media'){uploadMedia(f).catch(()=>{});return}
+  if(kind==='item'){const key=f.dataset.key,idx=+f.dataset.idx;const sp=S.spaces.find(x=>x.id===f.dataset.sid);if(!sp||!EQUIP[key])return;
+    const it={};const kindV=d.kind;
+    for(const fd of EQUIP[key].schema){
+      if(fd.when&&fd.when!==kindV)continue; if(fd.whenNot&&fd.whenNot===kindV)continue;
+      if(fd.t==='check')it[fd.k]=!!f.querySelector(`[name=${fd.k}]`)?.checked;
+      else if(fd.t==='num'){const t=String(d[fd.k]||'').trim();it[fd.k]=t===''?'':num(t)}
+      else it[fd.k]=String(d[fd.k]||'').trim();}
+    if(key==='lights')it.aiFields=d.verified?[]:String(d.aiFields||'').split(',').filter(Boolean);
+    const arr=[...(sp[key]||[])];if(idx>=0)arr[idx]=it;else arr.push(it);
+    safe(async()=>{await db.doc('spaces/'+sp.id).update({[key]:arr});S.form=null;document.activeElement?.blur?.();rerender()});return}
   if(kind==='space'){const fd=new FormData(f);const gs=fd.getAll('genetics'),qs=fd.getAll('qty');
     const plants=gs.map((g,i)=>({genetics:String(g).trim(),qty:Math.round(num(qs[i]))})).filter(x=>x.genetics||x.qty);
     const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
-    const data={cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),ventilation:(d.ventilation||'').trim(),temp:n(d.temp),humidity:n(d.humidity),plants};
+    const data={cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),plants};
     safe(async()=>{await db.doc('spaces/'+f.dataset.id).update(data);S.spaceMsg='Guardado.';document.activeElement?.blur?.();rerender()});return}
   safe(async()=>{
     if(kind==='project'){
@@ -839,6 +970,7 @@ async function boot(){
   db.collection('products').onSnapshot(s=>{S.products=toList(s);render()},onErr);
   db.collection('spaces').onSnapshot(s=>{S.spaces=toList(s);render()},onErr);
   db.collection('media').onSnapshot(s=>{S.media=toList(s);render()},onErr);
+  claude.use('sample').then(x=>{sample=x;rerender()}).catch(()=>{});
   claude.use('assets').then(a=>{assets=a;rerender()}).catch(()=>{});
   db.collection('events').onSnapshot(s=>{S.events=toList(s);render()},onErr);
   db.collection('money').onSnapshot(s=>{S.money=toList(s);render()},onErr);
