@@ -15,7 +15,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "El título de la página dice Classic aunque la URL dice «eco». Caños Ø 19 mm, esquineros 100% metálicos, soporta más de 100 kg de carga según la fuente. Sin cantidad ni diámetro de bocas.",
     "largo_cm": 100,
     "ancho_cm": 100,
@@ -41,7 +41,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "El título dice Classic aunque la URL dice «eco». Caños Ø 19 mm y esquineros metálicos. Sin cantidad ni diámetro de bocas.",
     "largo_cm": 120,
     "ancho_cm": 120,
@@ -67,7 +67,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Bocas superiores: 2 de extracción en techo y 2 de ventilación en zona alta; inferiores: 2 de intracción en zona baja. Además 4 orificios de 4\" en pared trasera (ubicación no aclarada). Puertas principales 2/3 - 1/3 D-Style; bolso incluido.",
     "largo_cm": 120,
     "ancho_cm": 60,
@@ -107,7 +107,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Bocas superiores: 2 de extracción en techo y 2 de ventilación en zona alta; inferiores: 2 de intracción en zona baja. Además 4 orificios de 4\" en pared trasera (ubicación no aclarada). 12 esquineros metálicos; bolso incluido.",
     "largo_cm": 160,
     "ancho_cm": 80,
@@ -152,7 +152,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Bocas superiores: 2 de extracción en techo y 2 de ventilación en zona alta (8\"); inferiores: 2 de intracción en zona baja (8\"). Además 4 orificios de 4\" en pared trasera (ubicación no aclarada). Astrogrow la titula «240x120x2» y su ficha dice 2,00 m de alto; Goodsmoke la llama Classic 240x120x200.",
     "largo_cm": 240,
     "ancho_cm": 120,
@@ -223,14 +223,14 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Tubos de metal de 16 mm. Intración pasiva: 1 ventana inferior regulable con malla mosquitera. La fuente no da cantidad ni diámetro de las bocas. Kaizen la vende (solo se verificó el nombre).",
     "largo_cm": 120,
     "ancho_cm": 120,
     "alto_cm": 200,
     "bocas_superiores": null,
     "bocas_inferiores": null,
-    "ventanas": null,
+    "ventanas": "1 ventana inferior regulable de intracción pasiva con malla mosquitera",
     "material_reflectivo": "Mylar 480D, 98% de reflexión"
   },
   {
@@ -264,7 +264,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Bocas superiores: 1 de extracción en techo y 2 de ventilación en zona alta. Bocas inferiores: 1 manga inferior para hidroponia/cableado (sin diámetro). Además 2 orificios de 4\" en la pared trasera (la fuente no dice si son superiores o inferiores). Caños de 16 mm (0,8 mm de espesor); peso 7 kg; bolso de guardado no incluido. Datos de Astrogrow y Goodsmoke; el Mylar 480D figura solo en Goodsmoke. Kaizen y Gangagrow la venden (solo se verificó el nombre).",
     "largo_cm": 60,
     "ancho_cm": 60,
@@ -359,7 +359,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 40,
     "ancho_cm": 40,
     "alto_cm": 160,
@@ -385,7 +385,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 80,
     "ancho_cm": 80,
     "alto_cm": 160,
@@ -403,7 +403,7 @@
     ],
     "ventanas": "1",
     "material_reflectivo": "Mylar",
-    "notas": "Según Santa Planta: 2 salidas de aire de 13,5 cm (una lateral inferior y otra en el techo) y una ventana rejilla trasera inferior de 25 x 12,5 cm. La ficha dice «Garden Probox» sin nombrar la sublínea (Basic/Master) ni la marca HighPro. Santa Planta no aclara si es Probox Basic o Probox Eco Pro: puede ser el mismo producto que garden-highpro-probox-ecopro-80x80x160; no se fusionó sin prueba."
+    "notas": "Según Santa Planta: 2 salidas de aire de 13,5 cm (una lateral inferior y otra en el techo) y una ventana rejilla trasera inferior de 25 x 12,5 cm. La ficha dice «Garden Probox» sin nombrar la sublínea (Basic/Master) ni la marca HighPro. Santa Planta no aclara si es Probox Basic o Probox Eco Pro: puede ser el mismo producto que garden-highpro-probox-ecopro-80x80x160; no se fusionó sin prueba. Santa Planta la nombra «Garden Probox»; Probox es la línea de Garden HighPro según otras fuentes argentinas (ej. Gangagrow, Growshopping)."
   },
   {
     "id": "garden-highpro-probox-basic-100x100x200",
@@ -450,7 +450,7 @@
         ]
       }
     ],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 100,
     "ancho_cm": 100,
     "alto_cm": 200,
@@ -491,7 +491,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 120,
     "ancho_cm": 120,
     "alto_cm": 200,
@@ -522,7 +522,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 150,
     "ancho_cm": 150,
     "alto_cm": 200,
@@ -558,7 +558,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 240,
     "ancho_cm": 120,
     "alto_cm": 200,
@@ -589,7 +589,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 240,
     "ancho_cm": 240,
     "alto_cm": 200,
@@ -630,7 +630,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 60,
     "ancho_cm": 60,
     "alto_cm": 160,
@@ -656,7 +656,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 100,
     "ancho_cm": 100,
     "alto_cm": 200,
@@ -682,7 +682,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 120,
     "ancho_cm": 120,
     "alto_cm": 200,
@@ -708,7 +708,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 150,
     "ancho_cm": 150,
     "alto_cm": 200,
@@ -734,7 +734,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 80,
     "ancho_cm": 80,
     "alto_cm": 160,
@@ -760,7 +760,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 100,
     "ancho_cm": 60,
     "alto_cm": 160,
@@ -786,7 +786,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "largo_cm": 80,
     "ancho_cm": 80,
     "alto_cm": 180,

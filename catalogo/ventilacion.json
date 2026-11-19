@@ -58,11 +58,15 @@
           {
             "valor": 84.9,
             "url": "https://gangagrow.com.ar/productos/agroled-turbina-cooler-4-con-ruleman-irmh1/"
+          },
+          {
+            "valor": 95,
+            "url": "https://www.upgrowshop.com/productos/cooler-turbina-agroled-220v-4-pulgadas-ruleman-indoor-up/"
           }
         ]
       }
     ],
-    "verificado": false,
+    "verificado": true,
     "notas": "Agroled figura solo en el nombre que le ponen los grow shops; no se encontró sitio del fabricante. Potencia 18 W (Growshopping y Gangagrow), ruido 40 dB (solo Gangagrow). Rpm: Kaizen da 2600 a 50 Hz y 2700 a 60 Hz. Caudal: Kaizen 80 CFM a 50 Hz (85 a 60 Hz), Gangagrow 50 CFM, convertidos a m³/h. Existe también variante cableada con enchufe.",
     "tipo": "Cooler 220 V",
     "diametro": "4\"",
@@ -95,12 +99,12 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Agroled figura solo en el nombre que le ponen los grow shops; no se encontró sitio del fabricante. Caudal 175 CFM (Gangagrow) convertido a m³/h; 0,3 A, 50/60 Hz, carcasa metálica y paletas de PVC según Gangagrow. Rpm 2800 coincide en Upgrowshop y Gangagrow. Existe también variante cableada con enchufe.",
     "tipo": "Cooler 220 V",
     "diametro": "6\"",
     "caudal_m3h": 297.3,
-    "potencia_w": null,
+    "potencia_w": 35,
     "rpm": 2800,
     "ruido_db": 55,
     "oscilante": null,
@@ -111,7 +115,7 @@
     "id": "garden-highpro-profan-extractor-lineal-5",
     "categoria": "ventilacion",
     "marca": "Garden HighPro",
-    "linea": "Profan",
+    "linea": null,
     "producto": "Extractor de aire Garden HighPro 5\"",
     "modelo": "Extractor lineal 5\"",
     "descripcion_corta": "Extractor lineal de 5\" con motor 100 % cobre y dos velocidades.",
@@ -123,7 +127,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "diametro": "5\"",
     "caudal_m3h": 220,
@@ -170,7 +174,7 @@
         ]
       }
     ],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "diametro": "4\"",
     "caudal_m3h": 107,
@@ -198,7 +202,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "diametro": "6\"",
     "caudal_m3h": 305,
@@ -226,7 +230,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "diametro": "4\"",
     "caudal_m3h": null,
@@ -254,7 +258,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "diametro": "6\"",
     "caudal_m3h": 520,
@@ -292,7 +296,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Ventilador",
     "diametro": "20 cm",
     "caudal_m3h": 325,
@@ -330,7 +334,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Ventilador",
     "diametro": "15 cm",
     "caudal_m3h": 215,
@@ -382,7 +386,7 @@
         ]
       }
     ],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Ventilador",
     "diametro": null,
     "caudal_m3h": 215,
@@ -419,7 +423,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1100 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 570 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
   },
   {
@@ -447,7 +451,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1890 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 830 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
   },
   {
@@ -475,7 +479,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 700 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 400 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
   },
   {
@@ -503,7 +507,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1000 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 550 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
   },
   {
@@ -522,7 +526,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "La ficha dice «extractor doble» sin aclarar si es doble rodamiento o doble motor, por eso el tipo es una interpretación del nombre. Boca de 15 cm; 29 cm de ancho y 18 cm de alto. Recomendado para espacios de 1 a 1,60 m.",
     "tipo": "Turbina doble",
     "diametro": "6\"",
@@ -550,7 +554,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "La fuente da 48 CFM; el caudal en m³/h es conversión directa (48 x 1,699). Dimensiones según la fuente: 120x120x25 mm (el texto también menciona 120x120x38 mm). Consumo 100 mA, 220 Vac 50 Hz, seguridad eléctrica IRAM. Puede ser el mismo producto que vt-fans-turbina-cooler-extractor-4-ruleman (Ganga): el orquestador decide si se fusionan.",
     "tipo": "Cooler 220 V",
     "diametro": "4\"",
@@ -578,7 +582,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Ficha del vendedor (Ganga GrowShop); no informa caudal, potencia, rpm ni ruido. Corriente 0,06 A. Medidas 8 cm de alto x 2,5 cm de ancho.",
     "tipo": "Cooler 220 V",
     "diametro": "3\"",
@@ -606,7 +610,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Ficha del vendedor (Ganga GrowShop); no informa tensión, caudal, potencia, rpm ni ruido, por eso el tipo queda sin definir. Medidas 11 cm de alto x 3 cm de ancho. Otros vendedores (San Isidro 422) listan un modelo de 4 pulgadas a rulemán con datos técnicos, pero su página no se pudo leer.",
     "tipo": null,
     "diametro": "4\"",

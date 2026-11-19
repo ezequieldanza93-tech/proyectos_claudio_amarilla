@@ -15,7 +15,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Humidificador",
     "rango_temperatura": null,
     "rango_humedad": null,
@@ -40,7 +40,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Termohigrómetro",
     "rango_temperatura": "0 a 50 °C",
     "rango_humedad": "25 a 90 % HR",
@@ -65,7 +65,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Termohigrómetro",
     "rango_temperatura": "0 a 50 °C",
     "rango_humedad": "25 a 90 % HR",
@@ -90,7 +90,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Termohigrómetro",
     "rango_temperatura": "0 a 50 °C",
     "rango_humedad": "25 a 90 % HR",
@@ -115,7 +115,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Controlador de clima",
     "rango_temperatura": null,
     "rango_humedad": null,
@@ -140,7 +140,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Controlador de clima",
     "rango_temperatura": null,
     "rango_humedad": null,
@@ -165,7 +165,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "rango_temperatura": null,
     "rango_humedad": null,
@@ -190,7 +190,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "rango_temperatura": null,
     "rango_humedad": null,
@@ -215,7 +215,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "rango_temperatura": null,
     "rango_humedad": null,
@@ -240,7 +240,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "rango_temperatura": null,
     "rango_humedad": null,
@@ -265,11 +265,11 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "rango_temperatura": "0 °C a 50 °C (sonda de EC/temperatura del agua)",
     "rango_humedad": null,
-    "precision": null,
+    "precision": "pH: ±0.1 pH; EC: ±2% de lectura; temperatura: ±0.5 °C",
     "capacidad": "Sondas de pH y EC; hasta 6 bombas dosificadoras",
     "wifi": true,
     "notas": "Tipo null: controlador de pH/EC; la ficha no lo presenta como controlador de clima. WiFi con plataforma en la nube opcional. Precisión de pH/EC no cargada."
@@ -290,7 +290,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Controlador de clima",
     "rango_temperatura": null,
     "rango_humedad": null,
@@ -315,7 +315,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "rango_temperatura": null,
     "rango_humedad": null,
@@ -340,7 +340,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Termohigrómetro",
     "rango_temperatura": null,
     "rango_humedad": null,

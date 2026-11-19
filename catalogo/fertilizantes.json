@@ -255,13 +255,30 @@
         "fecha_captura": "2026-11-19"
       }
     ],
-    "conflictos": [],
+    "conflictos": [
+      {
+        "campo": "presentaciones_ml",
+        "valores": [
+          {
+            "valor": [
+              500,
+              2000
+            ],
+            "url": "https://namastenutrientes.com"
+          },
+          {
+            "valor": [
+              600,
+              5000
+            ],
+            "url": "https://santaplanta.com.ar/producto/namaste-detox-500-ml/"
+          }
+        ]
+      }
+    ],
     "verificado": true,
     "uso": "radicular",
-    "presentaciones_ml": [
-      500,
-      2000
-    ],
+    "presentaciones_ml": [],
     "unidad": "ml",
     "npk_declarado": null,
     "dosis_fabricante": [
@@ -274,7 +291,7 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Dosis tomada de Santa Planta. La descripción de Santa Planta menciona potes de 600 ml y 5 L, distinto de los 500 ml y 2 L del fabricante y de los productos listados. Certificado SENASA N° 18703."
+    "notas": "Dosis tomada de Santa Planta. Presentaciones en conflicto: el fabricante y los títulos de Santa Planta dicen 500 ml y 2 L, pero la descripción de Santa Planta dice «potes de 600 ml y 5 litros». Certificado SENASA N° 18703."
   },
   {
     "id": "namaste-flora-booster",
