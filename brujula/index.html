@@ -263,7 +263,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <script>
 (function(){
 const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
-const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],batches:[],plans:[],slips:[],activities:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],dbProducts:[],cat:null,batches:[],plans:[],slips:[],activities:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
 function hashId(){try{return decodeURIComponent(location.hash.slice(1))}catch(e){return ''}}
 const curId=()=>S.nav!==null?S.nav:hashId();
 function go(id){S.nav=id||'';S.space=null;S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
@@ -594,9 +594,9 @@ function prodSummary(e){
 }
 function substrateCard(x){
   const row=(l,v)=>v?`<div class="frow"><dt>${l}</dt><dd>${esc(v)}</dd></div>`:'';
-  return `<div class="batch" style="gap:6px"><div class="row"><b class="bt">${esc(prodLabel(x))}</b>${x.verified?'<span class="tag st-tag-cumplido">Verificado</span>':'<span class="aitag">datos de tiendas · verificar</span>'}<span class="spacer"></span>
-    <button class="small ghost" data-act="toggleVerified" data-id="${esc(x.id)}">${x.verified?'Marcar sin verificar':'Marcar verificado'}</button>
-    ${S.confirm==='pr'+x.id?`<button class="small danger" data-act="delProduct" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="pr${esc(x.id)}" aria-label="Borrar sustrato">✕</button>`}</div>
+  return `<div class="batch" style="gap:6px"><div class="row"><b class="bt">${esc(prodLabel(x))}</b>${x.cat?'<span class="tag">Catálogo</span>':''}${x.verified?'<span class="tag st-tag-cumplido">Verificado</span>':'<span class="aitag">sin verificar</span>'}<span class="spacer"></span>
+    ${x.cat?'':`<button class="small ghost" data-act="toggleVerified" data-id="${esc(x.id)}">${x.verified?'Marcar sin verificar':'Marcar verificado'}</button>`}
+    ${x.cat?'':S.confirm==='pr'+x.id?`<button class="small danger" data-act="delProduct" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="pr${esc(x.id)}" aria-label="Borrar sustrato">✕</button>`}</div>${x.desc?`<div style="font-size:.86rem">${esc(x.desc)}</div>`:''}
     <dl class="fdl">${row('Presentaciones',x.presentations)}${row('pH',x.ph)}${row('CE / EC',x.ce)}${row('Composición',x.composition)}${row('Uso indicado',x.usage)}${row('Peso por bolsa',x.weight)}${row('Nutre las primeras',x.feedWeeks?x.feedWeeks+' semanas':'')}${row('Notas',x.notes)}</dl>
     <form class="row" data-form="feedweeks" data-id="${esc(x.id)}"><label class="row" style="gap:6px"><span class="muted" style="font-size:.82rem">Nutre las primeras</span><input name="feedWeeks" inputmode="numeric" style="width:70px" value="${esc(x.feedWeeks??'')}"><span class="muted" style="font-size:.82rem">semanas</span></label><button class="small" type="submit">Guardar</button></form>
     ${(x.sources||[]).length?`<details><summary class="muted" style="font-size:.8rem">Fuentes (${x.sources.length})</summary><ul class="flist">${x.sources.map(u=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/,'').split('/')[0])}</a></li>`).join('')}</ul></details>`:''}
@@ -633,7 +633,7 @@ function catalogPanel(p,pc){
     const items=S.products.filter(x=>x.use===use);
     const groups={};items.forEach(x=>{const g=x.line||'Sin línea';(groups[g]=groups[g]||[]).push(x)});
     h+=`<div><h3 style="margin-bottom:6px">${USE_LABEL[use]}</h3>${Object.keys(groups).sort().map(g=>{const its=groups[g].filter(x=>x.name);
-      return `<div class="cat-line"><b>${esc(g)}</b>${its.length?its.map(x=>`<span class="cat-item">${esc(x.name)}${x.unit?` <span class="muted">(${esc(x.unit)})</span>`:''}${S.confirm==='pr'+x.id?`<button class="small danger" data-act="delProduct" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="pr${esc(x.id)}" aria-label="Borrar producto">✕</button>`}</span>`).join(''):'<span class="muted" style="font-size:.85rem">Sin productos cargados</span>'}</div>`}).join('')}</div>`;
+      return `<div class="cat-line"><b>${esc(g)}</b>${its.length?its.map(x=>`<span class="cat-item" title="${esc([x.desc,x.doses&&x.doses.length?'Dosis del fabricante: '+doseText(x.doses):''].filter(Boolean).join(' — '))}">${esc(x.name)}${x.unit?` <span class="muted">(${esc(x.unit)})</span>`:''}${x.cat?'<span class="muted" style="font-size:.7rem;padding-right:8px"> ·cat</span>':S.confirm==='pr'+x.id?`<button class="small danger" data-act="delProduct" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="pr${esc(x.id)}" aria-label="Borrar producto">✕</button>`}</span>`).join(''):'<span class="muted" style="font-size:.85rem">Sin productos cargados</span>'}</div>`}).join('')}</div>`;
   }
   return h+`</section>`;
 }
@@ -734,11 +734,70 @@ const BRANDS={
   air:['Agroled','Cogoshop','Santa Planta','Go Green','VT Fans'],
   climate:['Garden HighPro','SL Growled','Cosmel','Wentux'],
 };
+/* ---------- catálogo publicado (catalogo/*.json) ---------- */
+const CAT_FILES=['fertilizantes','foliares','sustratos','luces','carpas','ventilacion','clima','geneticas','marcas'];
+const catLine=x=>[x.marca,x.linea].filter(Boolean).join(' ');
+const catSrc=x=>(x.fuentes||[]).map(s=>s.url).filter(Boolean);
+const catConf=x=>(x.conflictos||[]).map(c=>`${c.campo}: ${(c.valores||[]).map(v=>v.valor).join(' / ')}`).join('; ');
+async function loadCatalog(){
+  const out={};
+  await Promise.all(CAT_FILES.map(async f=>{try{const r=await fetch('catalogo/'+f+'.json');if(r.ok)out[f]=await r.json()}catch(e){}}));
+  if(Object.keys(out).length){S.cat=out;rebuildProducts();rerender()}
+}
+function catProducts(){
+  if(!S.cat)return [];const a=[];
+  const base=x=>({id:'cat:'+x.id,cat:true,line:catLine(x),name:x.producto,verified:!!x.verificado,sources:catSrc(x),desc:x.descripcion_corta||''});
+  (S.cat.fertilizantes||[]).forEach(x=>a.push({...base(x),use:'radicular',unit:x.unidad||'ml',doses:x.dosis_fabricante||[],notes:x.notas||''}));
+  (S.cat.foliares||[]).forEach(x=>a.push({...base(x),use:'foliar',unit:x.unidad||'ml',doses:x.dosis_fabricante||[],notes:x.notas||''}));
+  (S.cat.sustratos||[]).forEach(x=>a.push({...base(x),use:'sustrato',presentations:(x.litros_presentacion||[]).map(l=>dec(l)+' L').join(', '),ph:x.ph_declarado||'',ce:x.ce_declarada||'',
+    composition:x.composicion_declarada||'',usage:{indoor:'Indoor',exterior:'Exterior',ambos:'Indoor y exterior'}[x.uso_indicado]||x.uso_indicado||'',notes:[x.notas,catConf(x)?'Diferencias entre fuentes: '+catConf(x):''].filter(Boolean).join(' ')}));
+  return a;
+}
+function rebuildProducts(){
+  const over={};S.dbProducts.filter(x=>x.overrideOf).forEach(x=>over[x.overrideOf]=x);
+  const cats=catProducts().map(x=>over[x.id]?{...x,feedWeeks:over[x.id].feedWeeks,overrideDocId:over[x.id].id}:x);
+  const catLabels=new Set(cats.map(prodLabel));
+  S.products=[...S.dbProducts.filter(x=>!x.overrideOf&&!(x.name&&catLabels.has(prodLabel(x))&&x.use==='sustrato')),...cats];
+}
+const doseText=ds=>(ds||[]).map(x=>`${x.etapa&&x.etapa!=='otra'?x.etapa+': ':''}${x.min===x.max||x.max==null?dec(x.min):dec(x.min)+'–'+dec(x.max)} ${x.unidad_por_litro||''}${x.detalle?' ('+x.detalle+')':''}`).join(' · ');
+const CAT_EQUIP={lights:'luces',airExtraccion:'ventilacion',airIntraccion:'ventilacion',airVentilacion:'ventilacion',climate:'clima'};
+const catItemLabel=x=>x.producto||[x.marca,x.modelo].filter(Boolean).join(' ');
+function catEquip(key){return S.cat&&CAT_EQUIP[key]?(S.cat[CAT_EQUIP[key]]||[]):[]}
+function catFill(form,key){
+  const msg=form.querySelector('.cat-msg');const mv=form.querySelector('[name=model]').value.trim();if(!mv)return;
+  const x=catEquip(key).find(c=>catItemLabel(c)===mv||c.modelo===mv);if(!x)return;
+  const set=(k,v,force)=>{const el=form.querySelector(`[name=${k}]`);if(!el||v==null||v==='')return 0;
+    if(el.type==='checkbox'){if(v===true&&!el.checked){el.checked=true;return 1}return 0}
+    if(el.tagName==='SELECT'){if([...el.options].some(o=>o.value===String(v))&&(force||!el.value)){el.value=String(v);return 1}return 0}
+    if(!el.value.trim()||force){el.value=typeof v==='number'?dec(v):String(v);return 1}return 0};
+  let c=set('brand',x.marca);
+  if(key==='lights'){c+=set('type',x.tipo,true)+set('watts',x.potencia_real_w)+set('panelL',x.panel_largo_cm)+set('panelW',x.panel_ancho_cm)+set('panelH',x.panel_alto_cm)+set('ppf',x.ppf_umol_s)+set('efficacy',x.eficacia_umol_j)+set('spectrum',x.espectro)+set('dimmer',x.dimmer)}
+  else if(key==='climate'){c+=set('type',x.tipo,true)+set('setpoint',x.capacidad||[x.rango_temperatura,x.rango_humedad].filter(Boolean).join(' · '))}
+  else{if(COMP_KINDS.includes(x.tipo)){c+=set('kind',x.tipo,true);applyKindVisibility(form)}
+    if(x.tipo==='Ventilador')c+=set('diameter',x.diametro);else c+=set('size',x.diametro,true);
+    c+=set('power',x.potencia_w)+set('oscillating',x.oscilante)+set('dimmer',x.dimmer)}
+  if(msg)msg.innerHTML=`Datos del catálogo${x.verificado?'':' (sin verificar)'}: completé ${c} campo(s).${catSrc(x).length?` <a href="${esc(catSrc(x)[0])}" target="_blank" rel="noopener">Fuente</a>`:''}${catConf(x)?' · Diferencias entre fuentes: '+esc(catConf(x)):''}`;
+}
+function tentFill(form){
+  const mv=form.querySelector('[name=tentModel]').value.trim();const x=(S.cat&&S.cat.carpas||[]).find(c=>c.producto===mv||c.modelo===mv);if(!x)return;
+  const set=(k,v)=>{const el=form.querySelector(`[name=${k}]`);if(el&&v!=null&&v!==''&&!el.value.trim())el.value=typeof v==='number'?dec(v):String(v)};
+  set('tentBrand',x.marca);set('width',x.ancho_cm?x.ancho_cm/100:null);set('length',x.largo_cm?x.largo_cm/100:null);set('height',x.alto_cm?x.alto_cm/100:null);
+  for(const [pos,arr] of [['Top',x.bocas_superiores],['Bottom',x.bocas_inferiores]]){if(!arr||!arr.length)continue;const el=form.querySelector(`[name=ports${pos}]`);if(el.value.trim())continue;
+    const ds=[];arr.forEach(b=>{for(let i=0;i<num(b.cantidad);i++)ds.push(b.diametro||'')});el.value=ds.length;document.getElementById('ports-'+pos).innerHTML=portInputs(pos,ds.length,ds);}
+  const m=form.querySelector('.tent-msg');if(m)m.textContent=`Datos de la carpa del catálogo${x.verificado?'':' (sin verificar)'}${x.bocas_superiores==null&&x.bocas_inferiores==null?'; la fuente no informa bocas':''}.`;
+}
+const genLabel=x=>`${x.marca} · ${x.producto}`;
+function genOf(b){if(!S.cat||!S.cat.geneticas)return null;const g=S.cat.geneticas;return g.find(x=>'cat:'+x.id===b.geneticsId)||g.find(x=>genLabel(x)===b.genetics)}
+function genSheet(b){const x=genOf(b);if(!x)return '';
+  const parts=[x.tipo,x.proporcion,x.ciclo_total_dias?'ciclo '+x.ciclo_total_dias:'',x.floracion?'floración '+x.floracion:'',x.altura_interior?'altura int. '+x.altura_interior:'',x.altura_exterior?'altura ext. '+x.altura_exterior:'',x.rendimiento_interior?'int. '+x.rendimiento_interior:'',x.rendimiento_exterior?'ext. '+x.rendimiento_exterior:''].filter(Boolean);
+  return `<div class="muted" style="font-size:.82rem">Ficha ${esc(genLabel(x))}: ${esc(parts.join(' · '))}${catSrc(x).length?` · <a href="${esc(catSrc(x)[0])}" target="_blank" rel="noopener">fuente</a>`:''}${x.verificado?'':' · sin verificar'}</div>`;}
 function brandDatalists(){
   const used={lights:[],tents:[],air:[],climate:[]};
   S.spaces.forEach(sp=>{if(sp.tentBrand)used.tents.push(sp.tentBrand);
     (sp.lights||[]).forEach(x=>x.brand&&used.lights.push(x.brand));(sp.climate||[]).forEach(x=>x.brand&&used.climate.push(x.brand));
     ['airExtraccion','airIntraccion','airVentilacion'].forEach(k=>(sp[k]||[]).forEach(x=>x.brand&&used.air.push(x.brand)));});
+  const cm=S.cat&&S.cat.marcas||{};const fromCat={lights:cm.luces||[],tents:cm.carpas||[],air:cm.ventilacion||[],climate:cm.clima||[]};
+  for(const k in used)used[k].push(...fromCat[k]);
   return '<datalist id="dl-diam"><option value=\'4"\'><option value=\'6"\'><option value=\'8"\'></datalist>'+Object.keys(BRANDS).map(k=>`<datalist id="dl-${k}">${[...new Set([...BRANDS[k],...used[k]])].sort((a,b)=>a.localeCompare(b)).map(b=>`<option value="${esc(b)}">`).join('')}</datalist>`).join('');
 }
 const COMP_KINDS=['Cooler 220 V','Turbina simple','Turbina doble','Ventilador'];
@@ -795,7 +854,7 @@ function fieldHTML(fd,it,key){
   const ai=(it.aiFields||[]).includes(fd.k)?' <span class="aitag">IA · verificar</span>':'';
   if(fd.t==='check')return `<label class="checkf"${vis}><input type="checkbox" id="${id}" name="${fd.k}" ${v?'checked':''}> ${fd.l}${ai}</label>`;
   if(fd.t==='select')return `<label class="field"${vis}><span class="label">${fd.l}</span><select id="${id}" name="${fd.k}" ${fd.k==='kind'?'data-kindsel':''}>${fd.o.map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
-  return `<label class="field"${vis}><span class="label">${fd.l}${ai}</span><input id="${id}" name="${fd.k}" ${fd.dl?`list="dl-${fd.dl}"`:''} ${fd.t==='num'?'inputmode="decimal"':''} value="${esc(fd.t==='num'?dec(v):v)}" placeholder="${esc(fd.ph||'')}"></label>`;
+  return `<label class="field"${vis}><span class="label">${fd.l}${ai}</span><input id="${id}" name="${fd.k}" ${fd.dl?`list="dl-${fd.dl}"`:fd.k==='model'&&CAT_EQUIP[key]?`list="dl-model-${key}" data-catfill="${key}"`:''} ${fd.t==='num'?'inputmode="decimal"':''} value="${esc(fd.t==='num'?dec(v):v)}" placeholder="${esc(fd.ph||'')}"></label>`;
 }
 function applyKindVisibility(form){
   const sel=form.querySelector('[data-kindsel]');const kind=sel?sel.value:'';
@@ -807,6 +866,7 @@ function itemForm(s,key,idx){
   const isLight=key==='lights';
   return `<form class="inline-form" data-form="item" data-key="${key}" data-idx="${idx}" data-sid="${esc(s.id)}">
     <div class="grid2">${def.schema.map(fd=>fieldHTML(fd,it,key)).join('')}</div>
+    ${catEquip(key).length?`<datalist id="dl-model-${key}">${catEquip(key).map(x=>`<option value="${esc(catItemLabel(x))}">`).join('')}</datalist><div class="muted cat-msg" style="font-size:.8rem">Elegí el modelo del catálogo y se completan los datos técnicos.</div>`:''}
     ${isLight?`<input type="hidden" name="aiFields" value="${esc((it.aiFields||[]).join(','))}">
       <div class="row"><button type="button" class="small" data-act="aiFill" ${sample?'':'disabled'}>Completar con IA (marca + modelo)</button>
       <span class="muted ai-msg" style="font-size:.8rem">${sample?'Solo completa campos vacíos; lo que complete queda marcado para verificar.':'No disponible en esta vista.'}</span></div>
@@ -944,7 +1004,7 @@ function spaceEditForm(s,pc){
     </div>
     <div class="grid2">
       <label class="field"><span class="label">Carpa: marca</span><input id="s-tentBrand" name="tentBrand" list="dl-tents" value="${esc(s.tentBrand)}" placeholder="Ej.: Garden HighPro"></label>
-      <label class="field"><span class="label">Carpa: modelo y medida</span><input id="s-tentModel" name="tentModel" value="${esc(s.tentModel)}" placeholder="Ej.: Probox Basic 120x120x200"></label>
+      <label class="field"><span class="label">Carpa: modelo y medida</span><input id="s-tentModel" name="tentModel" list="dl-tentmodels" data-tentfill value="${esc(s.tentModel)}" placeholder="Ej.: Probox Basic 120x120x200"><datalist id="dl-tentmodels">${(S.cat&&S.cat.carpas||[]).map(x=>`<option value="${esc(x.producto)}">`).join('')}</datalist><span class="muted tent-msg" style="font-size:.78rem"></span></label>
       <div class="field"><label class="field"><span class="label">Bocas superiores (extracción / intracción)</span><input id="s-portsTop" name="portsTop" data-ports="Top" inputmode="numeric" value="${esc(s.portsTop??'')}"></label>
         <div class="ports" id="ports-Top">${portInputs('Top',num(s.portsTop),s.portsTopD||[])}</div></div>
       <div class="field"><label class="field"><span class="label">Bocas inferiores (extracción / intracción)</span><input id="s-portsBottom" name="portsBottom" data-ports="Bottom" inputmode="numeric" value="${esc(s.portsBottom??'')}"></label>
@@ -1108,6 +1168,7 @@ function plannerView(p,s,pc){
         <span class="muted num" style="font-size:.8rem">Inicio ${fmtDate(b.startDate)}</span></div>
       <div class="muted" style="font-size:.86rem">${esc(batchLine(b))||'Completá tipo de cultivo, maceta y sustrato con «Editar».'}</div>
       ${b.note?`<div style="font-size:.86rem">${esc(b.note)}</div>`:''}
+      ${genSheet(b)}
       ${riegoAssist(b)}
       ${f&&f.type==='transfer'&&f.id===b.id?transferForm(s,b):''}
       ${f&&f.type==='finish'&&f.id===b.id?finishForm(b):''}
@@ -1124,7 +1185,7 @@ function plannerView(p,s,pc){
   return h+`</section>`;
 }
 function batchForm(s,b){
-  const gens=[...new Set(S.batches.map(x=>x.genetics).filter(Boolean))];
+  const gens=[...new Set([...S.batches.map(x=>x.genetics).filter(Boolean),...(S.cat&&S.cat.geneticas||[]).map(genLabel)])];
   const others=S.spaces.filter(x=>x.projectId===s.projectId&&x.id!==s.id);
   return `<form class="inline-form" data-form="batch" data-id="${esc(b.id||'')}" data-sid="${esc(s.id)}">
     <h3>${b.id?'Editar lote':'Nuevo lote'}</h3>
@@ -1171,6 +1232,7 @@ async function saveBatch(f,d){
   const sid=f.dataset.sid;const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
   const data={genetics:(d.genetics||'').trim(),qty:Math.max(0,Math.round(num(d.qty))),startDate:d.startDate||today(),cropType:d.cropType||'',origin:d.origin||'',
     originSpaceId:d.origin==='Otro espacio'?(d.originSpaceId||''):'',potLiters:n(d.potLiters),substrate:d.cropType==='Sustrato'?(d.substrate||'').trim():'',note:(d.note||'').trim(),planId:d.planId||'',wateringPct:n(d.wateringPct)};
+  {const g=(S.cat&&S.cat.geneticas||[]).find(x=>genLabel(x)===data.genetics);if(g)data.geneticsId='cat:'+g.id;else if(f.dataset.id){const old=S.batches.find(x=>x.id===f.dataset.id);if(old&&old.genetics!==data.genetics)data.geneticsId=''}}
   if(!data.qty){S.err='Cargá la cantidad de plantas.';rerender();return}
   if(f.dataset.id)await db.doc('batches/'+f.dataset.id).update(data);
   else await db.collection('batches').add({...data,projectId:'cultivo',spaceId:sid,status:'activo',history:[{date:data.startDate,text:`Inicio: ${data.qty} plantas en ${spaceName(sid)}`}],createdAt:Date.now()});
@@ -1411,6 +1473,8 @@ app.addEventListener('change',e=>{
   if(e.target.matches('[data-kind-toggle]')){const fm=e.target.closest('form');const led=e.target.value==='ledger';
     fm.querySelector('.only-ledger').hidden=!led;fm.querySelector('.only-project').hidden=led;}
   if(e.target.matches('[data-bvis]'))applyBatchVis(e.target.closest('form'));
+  if(e.target.matches('[data-catfill]'))catFill(e.target.closest('form'),e.target.dataset.catfill);
+  if(e.target.matches('[data-tentfill]'))tentFill(e.target.closest('form'));
   if(e.target.matches('[data-kindsel]'))applyKindVisibility(e.target.closest('form'));
   if(e.target.matches('[data-evtype]')){const fm=e.target.closest('form');const use=RIEGO_USE[e.target.value]||'';const box=fm.querySelector('.prodbox');
     box.hidden=!use;const rows=box.querySelector('.dose-rows');
@@ -1440,7 +1504,9 @@ app.addEventListener('submit',e=>{
     safe(async()=>{await db.collection('slips').add({projectId:f.dataset.pid,date:d.date||today(),kind:d.kind||'Comida',what,occasion:(d.occasion||'').trim(),createdAt:Date.now()});document.activeElement?.blur?.();rerender()});return}
   if(kind==='plan'){const rows=readPlanForm(f);const data={name:(d.name||'').trim(),rows,sources:String(d.sources||'').split(/\s+/).filter(u=>/^https?:\/\//.test(u))};
     safe(async()=>{if(f.dataset.id)await db.doc('plans/'+f.dataset.id).update(data);else await db.collection('plans').add({...data,projectId:'cultivo',verified:false,createdAt:Date.now()});S.form=null;rerender()});return}
-  if(kind==='feedweeks'){safe(async()=>{await db.doc('products/'+f.dataset.id).update({feedWeeks:n2(d.feedWeeks)});document.activeElement?.blur?.();rerender()});return}
+  if(kind==='feedweeks'){const pid=f.dataset.id;safe(async()=>{
+    if(pid.startsWith('cat:')){const o=S.dbProducts.find(x=>x.overrideOf===pid);if(o)await db.doc('products/'+o.id).update({feedWeeks:n2(d.feedWeeks)});else await db.collection('products').add({overrideOf:pid,use:'override',projectId:'cultivo',feedWeeks:n2(d.feedWeeks),createdAt:Date.now()});}
+    else await db.doc('products/'+pid).update({feedWeeks:n2(d.feedWeeks)});document.activeElement?.blur?.();rerender()});return}
   if(kind==='batch'){safe(async()=>{await saveBatch(f,d);S.form=null;document.activeElement?.blur?.();rerender()});return}
   if(kind==='transfer'){const b=S.batches.find(x=>x.id===f.dataset.id);safe(async()=>{await transferBatch(b,num(d.qty),d.dest,d.date||today());S.form=null;rerender()});return}
   if(kind==='finish'){const b=S.batches.find(x=>x.id===f.dataset.id);safe(async()=>{await db.doc('batches/'+b.id).update({status:'finalizado',endDate:d.date||today(),endNote:(d.note||'').trim(),history:[...(b.history||[]),{date:d.date||today(),text:'Finalizado'+(d.note?': '+d.note.trim():'')}]});S.form=null;rerender()});return}
@@ -1495,6 +1561,7 @@ app.addEventListener('submit',e=>{
 const toList=snap=>snap.docs.map(d=>({id:d.id,...d.data()}));
 async function boot(){
   rerender();
+  loadCatalog();
   const timeout=setTimeout(()=>{if(!db){S.err='No se pudo conectar con el almacenamiento. Abrí esta página con tu sesión de claude.ai iniciada para ver y guardar tus objetivos.';rerender()}},10000);
   try{db=window.claude&&await window.claude.use('db')}catch(e){db=null}
   if(!db){clearTimeout(timeout);S.err='No se pudo conectar con el almacenamiento. Abrí esta página con tu sesión de claude.ai iniciada para ver y guardar tus objetivos.';rerender();return}
@@ -1504,7 +1571,7 @@ async function boot(){
   db.collection('projects').onSnapshot(s=>{clearTimeout(loadTimer);S.projects=toList(s);S.loaded.projects=true;if(S.err&&S.err.startsWith('Los datos'))S.err=null;render()},onErr);
   db.collection('tasks').onSnapshot(s=>{S.tasks=toList(s);S.loaded.tasks=true;render()},onErr);
   db.collection('logs').onSnapshot(s=>{S.logs=toList(s);S.loaded.logs=true;render()},onErr);
-  db.collection('products').onSnapshot(s=>{S.products=toList(s);render()},onErr);
+  db.collection('products').onSnapshot(s=>{S.dbProducts=toList(s);rebuildProducts();render()},onErr);
   db.collection('activities').onSnapshot(s=>{S.activities=toList(s);render()},onErr);
   db.collection('slips').onSnapshot(s=>{S.slips=toList(s);render()},onErr);
   db.collection('plans').onSnapshot(s=>{S.plans=toList(s);render()},onErr);
