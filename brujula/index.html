@@ -627,7 +627,7 @@ function calendarPanel(p,pc){
   const month=S.calMonth||today().slice(0,7);const f=S.form;
   const evs=S.events.filter(e=>e.projectId===p.id&&(e.spaceId||'')===(S.space||''));
   const [y,m]=month.split('-').map(Number);
-  const first=new Date(y,m-1,1);const lead=first.getDay();const days=new Date(y,m,0).getDate();
+  const first=new Date(y,m-1,1);const lead=(first.getDay()+6)%7;const days=new Date(y,m,0).getDate();
   const t=today();
   let cells='';
   for(let i=0;i<lead;i++)cells+='<div class="cd out"></div>';
@@ -650,7 +650,7 @@ function calendarPanel(p,pc){
     ${toConfirm.length?`<div class="confirm-box"><div class="label" style="color:var(--warn)">Para confirmar (${toConfirm.length})</div>
       ${toConfirm.map(e=>editing===e.id?eventForm(p,e):evRow(e,true)).join('')}</div>`:''}
     ${f&&f.type==='event'&&!f.id?eventForm(p,f.prefill||{date:f.date}):''}
-    <div class="cal-wrap"><div class="cal">${['dom','lun','mar','mié','jue','vie','sáb'].map(d=>`<div class="cw">${d}</div>`).join('')}${cells}</div></div>
+    <div class="cal-wrap"><div class="cal">${['lun','mar','mié','jue','vie','sáb','dom'].map(d=>`<div class="cw">${d}</div>`).join('')}${cells}</div></div>
     <div class="row muted" style="font-size:.75rem;gap:14px"><span><span class="ev-key st-planificado"></span> planificado</span><span><span class="ev-key st-cumplido"></span> cumplido</span><span><span class="ev-key st-no-se-hizo"></span> no se hizo</span></div>
     ${list.length?`<div class="logs">${list.map(e=>editing===e.id&&!toConfirm.includes(e)?eventForm(p,e):evRow(e,false)).join('')}</div>`
       :'<div class="empty">Sin eventos este mes. Tocá un día para planificar algo o registrar lo que pasó.</div>'}
@@ -1218,7 +1218,7 @@ function weekEvRow(p,e){
   </div>`;
 }
 function spaceColor(sp){const i=spacesOf(sp.projectId).findIndex(x=>x.id===sp.id);return 'var('+PCOL[(i+1)%PCOL.length]+')'}
-const sundayOf=s=>{const d=new Date(s+'T00:00:00');return addDays(s,-d.getDay())};
+const sundayOf=s=>{const d=new Date(s+'T00:00:00');return addDays(s,-((d.getDay()+6)%7))}; // inicio de semana: lunes
 const DIAS_D=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 function weekPanel(p,pc){
   const t=today();const ws=S.calWeek||sundayOf(t);const we=addDays(ws,6);const f=S.form;
@@ -1240,12 +1240,12 @@ function weekPanel(p,pc){
   if(wkEvs.some(e=>!rows.find(r=>r.id===e.spaceId)))rowDefs.push({id:'',name:'General',color:'var(--muted)'});
   h+=`<div class="wkm-wrap"><div class="wkm"><div class="wkm-corner"></div>`;
   for(let i=0;i<7;i++){const ds=addDays(ws,i);
-    h+=`<button class="wkm-day ${ds===t?'today':''} ${ds===sel?'sel':''}" data-act="wkDay" data-date="${ds}" aria-label="${DIAS_D[i]} ${fmtDate(ds)}"><span>${DIAS_D[i].slice(0,3)}</span><b class="num">${+ds.slice(8)}</b></button>`;}
+    h+=`<button class="wkm-day ${ds===t?'today':''} ${ds===sel?'sel':''}" data-act="wkDay" data-date="${ds}" aria-label="${DIAS_D[(i+1)%7]} ${fmtDate(ds)}"><span>${DIAS_D[(i+1)%7].slice(0,3)}</span><b class="num">${+ds.slice(8)}</b></button>`;}
   for(const r of rowDefs){
     h+=`<div class="wkm-sp" style="--pc:${r.color}">${esc(r.name)}</div>`;
     for(let i=0;i<7;i++){const ds=addDays(ws,i);
       const de=wkEvs.filter(e=>e.date===ds&&(r.id?e.spaceId===r.id:!rows.find(x=>x.id===e.spaceId)));
-      h+=`<button class="wkm-cell ${ds===t?'today':''} ${ds===sel?'sel':''}" style="--pc:${r.color}" data-act="wkCell" data-date="${ds}" data-sp="${esc(r.id)}" aria-label="${esc(r.name)}, ${DIAS_D[i]} ${fmtDate(ds)}: ${de.length} tarea(s)">
+      h+=`<button class="wkm-cell ${ds===t?'today':''} ${ds===sel?'sel':''}" style="--pc:${r.color}" data-act="wkCell" data-date="${ds}" data-sp="${esc(r.id)}" aria-label="${esc(r.name)}, ${DIAS_D[(i+1)%7]} ${fmtDate(ds)}: ${de.length} tarea(s)">
         ${de.slice(0,3).map(e=>`<span class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}">${esc(e.title)}</span>`).join('')}${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</button>`;}
   }
   h+=`</div></div>`;
