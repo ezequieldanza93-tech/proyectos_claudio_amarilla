@@ -257,6 +257,7 @@ function render(){
   let html='';
   if(S.timer)html+=timerBar();
   if(S.err)html+=`<div class="notice">${esc(S.err)}</div>`;
+  html+=brandDatalists();
   if(S.lightbox)html+=`<div class="lightbox" data-act="closeLb"><img src="${esc(S.lightbox)}" alt="Foto ampliada"><button data-act="closeLb">Cerrar</button></div>`;
   const cp=current();S.pid=cp?cp.id:null;
   html+= cp?(isLedger(cp)?ledgerView(cp):detailView()):homeView();
@@ -602,6 +603,7 @@ const plantTotal=s=>(s.plants||[]).reduce((a,x)=>a+num(x.qty),0);
 const dec=v=>v===''||v==null?'':String(v).replace('.',',');
 function spaceSummary(s){
   const parts=[];
+  if(s.tentBrand||s.tentModel)parts.push([s.tentBrand,s.tentModel].filter(Boolean).join(' '));
   if(s.cropType)parts.push(s.cropType==='indoor'?'Indoor':'Exterior');
   const w=num(s.width),l=num(s.length),hh=num(s.height);
   if(w&&l)parts.push(`${dec(w)}×${dec(l)}${hh?'×'+dec(hh):''} m`);
@@ -617,13 +619,27 @@ function spacesPanel(p,pc){
       :`<button class="space" data-act="openSpace" data-id="${esc(s.id)}"><span class="lt">${esc(s.name)}</span><span class="ls">${esc(spaceSummary(s))}</span></button>`).join('')}</div></section>`;
 }
 function plantRow(g,q){return `<div class="prow"><input name="genetics" aria-label="Genética" placeholder="Genética (ej.: Gorilla Piña, BSF)" value="${esc(g)}"><input name="qty" aria-label="Cantidad" inputmode="numeric" placeholder="Cant." value="${esc(q)}"><button type="button" class="ghost small danger" data-act="rmPlantRow" aria-label="Quitar genética">✕</button></div>`}
+// Marcas vistas en grow shops argentinos (sugerencias; se puede escribir cualquier otra)
+const BRANDS={
+  lights:['Growtech','Mars','GS Iluminación','Lux','Amnesia','Bioled'],
+  tents:['Garden HighPro','cultivARG'],
+  air:['Agroled','Cogoshop','Santa Planta','Go Green','VT Fans'],
+  climate:['Garden HighPro','SL Growled','Cosmel','Wentux'],
+};
+function brandDatalists(){
+  const used={lights:[],tents:[],air:[],climate:[]};
+  S.spaces.forEach(sp=>{if(sp.tentBrand)used.tents.push(sp.tentBrand);
+    (sp.lights||[]).forEach(x=>x.brand&&used.lights.push(x.brand));(sp.climate||[]).forEach(x=>x.brand&&used.climate.push(x.brand));
+    ['airExtraccion','airIntraccion','airVentilacion'].forEach(k=>(sp[k]||[]).forEach(x=>x.brand&&used.air.push(x.brand)));});
+  return Object.keys(BRANDS).map(k=>`<datalist id="dl-${k}">${[...new Set([...BRANDS[k],...used[k]])].sort((a,b)=>a.localeCompare(b)).map(b=>`<option value="${esc(b)}">`).join('')}</datalist>`).join('');
+}
 const COMP_KINDS=['Cooler 220 V','Turbina simple','Turbina doble','Ventilador'];
 const COMP_SCHEMA=[
   {k:'kind',l:'Componente',t:'select',o:COMP_KINDS},
   {k:'size',l:'Medida',t:'select',o:['4"','6"'],whenNot:'Ventilador'},
   {k:'power',l:'Potencia (W)',t:'num',when:'Ventilador'},
   {k:'diameter',l:'Diámetro',t:'text',ph:'Ej.: 16" o 40 cm',when:'Ventilador'},
-  {k:'brand',l:'Marca',t:'text',when:'Ventilador'},
+  {k:'brand',l:'Marca',t:'text',dl:'air'},{k:'model',l:'Modelo',t:'text'},
   {k:'oscillating',l:'Oscilante',t:'check',when:'Ventilador'},
   {k:'dimmer',l:'Dimmer de velocidades',t:'check'},
   {k:'qty',l:'Cantidad',t:'num'},
@@ -631,7 +647,7 @@ const COMP_SCHEMA=[
 const CLIMATE_TYPES=['Termómetro','Higrómetro','Termohigrómetro','Termostato','Higrostato','Controlador de clima','Humidificador','Deshumidificador','Otro'];
 const CLIMATE_SCHEMA=[
   {k:'type',l:'Equipo',t:'select',o:CLIMATE_TYPES},
-  {k:'brand',l:'Marca',t:'text'},{k:'model',l:'Modelo',t:'text'},
+  {k:'brand',l:'Marca',t:'text',dl:'climate'},{k:'model',l:'Modelo',t:'text'},
   {k:'setpoint',l:'Setpoint / capacidad',t:'text',ph:'Ej.: 60 % HR, 25 °C, 12 L/día'},
   {k:'qty',l:'Cantidad',t:'num'},{k:'note',l:'Nota',t:'text'},
 ];
@@ -639,7 +655,7 @@ const LIGHT_TYPES=['Sodio','Full spectrum','LED galponera','LED proyector','LED 
 const LIGHT_SCHEMA=[
   {k:'type',l:'Tipo de lámpara',t:'select',o:LIGHT_TYPES},
   {k:'qty',l:'Cantidad',t:'num'},
-  {k:'brand',l:'Marca',t:'text'},{k:'model',l:'Modelo',t:'text'},
+  {k:'brand',l:'Marca',t:'text',dl:'lights'},{k:'model',l:'Modelo',t:'text'},
   {k:'watts',l:'Potencia real (W)',t:'num',ai:1},
   {k:'panelL',l:'Panel largo (cm)',t:'num',ai:1},{k:'panelW',l:'Panel ancho (cm)',t:'num',ai:1},{k:'panelH',l:'Panel alto (cm)',t:'num',ai:1},
   {k:'ppf',l:'PPF (µmol/s)',t:'num',ai:1},{k:'efficacy',l:'Eficacia (µmol/J)',t:'num',ai:1},
@@ -657,8 +673,8 @@ const EQUIP={
 function itemSummary(key,it){
   const yes=v=>v?'sí':'no';
   if(key.startsWith('air')){
-    if(it.kind==='Ventilador')return [`${it.qty>1?it.qty+' × ':''}Ventilador`,it.brand,it.power?it.power+' W':'',it.diameter,it.oscillating?'oscilante':'no oscilante',it.dimmer?'con dimmer':''].filter(Boolean).join(' · ');
-    return [`${it.qty>1?it.qty+' × ':''}${it.kind||''} ${it.size||''}`.trim(),it.dimmer?'con dimmer':''].filter(Boolean).join(' · ');
+    if(it.kind==='Ventilador')return [`${it.qty>1?it.qty+' × ':''}Ventilador`,[it.brand,it.model].filter(Boolean).join(' '),it.power?it.power+' W':'',it.diameter,it.oscillating?'oscilante':'no oscilante',it.dimmer?'con dimmer':''].filter(Boolean).join(' · ');
+    return [`${it.qty>1?it.qty+' × ':''}${it.kind||''} ${it.size||''}`.trim(),[it.brand,it.model].filter(Boolean).join(' '),it.dimmer?'con dimmer':''].filter(Boolean).join(' · ');
   }
   if(key==='climate')return [`${it.qty>1?it.qty+' × ':''}${it.type||''}`,[it.brand,it.model].filter(Boolean).join(' '),it.setpoint,it.note].filter(Boolean).join(' · ');
   const dims=[it.panelL,it.panelW,it.panelH].filter(x=>x!==''&&x!=null);
@@ -670,7 +686,7 @@ function fieldHTML(fd,it,key){
   const ai=(it.aiFields||[]).includes(fd.k)?' <span class="aitag">IA · verificar</span>':'';
   if(fd.t==='check')return `<label class="checkf"${vis}><input type="checkbox" id="${id}" name="${fd.k}" ${v?'checked':''}> ${fd.l}${ai}</label>`;
   if(fd.t==='select')return `<label class="field"${vis}><span class="label">${fd.l}</span><select id="${id}" name="${fd.k}" ${fd.k==='kind'?'data-kindsel':''}>${fd.o.map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
-  return `<label class="field"${vis}><span class="label">${fd.l}${ai}</span><input id="${id}" name="${fd.k}" ${fd.t==='num'?'inputmode="decimal"':''} value="${esc(fd.t==='num'?dec(v):v)}" placeholder="${esc(fd.ph||'')}"></label>`;
+  return `<label class="field"${vis}><span class="label">${fd.l}${ai}</span><input id="${id}" name="${fd.k}" ${fd.dl?`list="dl-${fd.dl}"`:''} ${fd.t==='num'?'inputmode="decimal"':''} value="${esc(fd.t==='num'?dec(v):v)}" placeholder="${esc(fd.ph||'')}"></label>`;
 }
 function applyKindVisibility(form){
   const sel=form.querySelector('[data-kindsel]');const kind=sel?sel.value:'';
@@ -735,6 +751,10 @@ function spaceView(p,s,pc){
     <div class="grid2">
       <label class="field"><span class="label">Tipo de cultivo</span>${sel('cropType',[['indoor','Indoor'],['exterior','Exterior']],s.cropType)}</label>
       <label class="field"><span class="label">Iluminación</span>${sel('lighting',[['natural','Natural'],['artificial','Artificial'],['mixta','Mixta']],s.lighting)}</label>
+    </div>
+    <div class="grid2">
+      <label class="field"><span class="label">Carpa: marca</span><input id="s-tentBrand" name="tentBrand" list="dl-tents" value="${esc(s.tentBrand)}" placeholder="Ej.: Garden HighPro"></label>
+      <label class="field"><span class="label">Carpa: modelo y medida</span><input id="s-tentModel" name="tentModel" value="${esc(s.tentModel)}" placeholder="Ej.: Probox Basic 120x120x200"></label>
     </div>
     <div><div class="label" style="margin-bottom:4px">Dimensiones (metros)</div>
     <div class="grid3">
@@ -916,7 +936,7 @@ app.addEventListener('submit',e=>{
   if(kind==='space'){const fd=new FormData(f);const gs=fd.getAll('genetics'),qs=fd.getAll('qty');
     const plants=gs.map((g,i)=>({genetics:String(g).trim(),qty:Math.round(num(qs[i]))})).filter(x=>x.genetics||x.qty);
     const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
-    const data={cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),plants};
+    const data={tentBrand:(d.tentBrand||'').trim(),tentModel:(d.tentModel||'').trim(),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),plants};
     safe(async()=>{await db.doc('spaces/'+f.dataset.id).update(data);S.spaceMsg='Guardado.';document.activeElement?.blur?.();rerender()});return}
   safe(async()=>{
     if(kind==='project'){
