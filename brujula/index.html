@@ -534,8 +534,8 @@ function evRow(e,confirming){
       ${prodSummary(e)}
       ${e.note?`<span class="muted" style="font-size:.78rem">${esc(e.note)}</span>`:''}
       <span class="t-actions" style="justify-content:flex-start">
-      ${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`
-        :`<button class="small ghost" data-act="evEdit" data-id="${esc(e.id)}">Editar</button>`}
+      ${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`
+        :`<button class="small ghost" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button>`}
       ${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="e${esc(e.id)}" aria-label="Borrar evento">✕</button>`}
       </span></div>`:''}</div>`;
 }
@@ -639,18 +639,20 @@ function catalogPanel(p,pc){
 }
 function eventForm(p,e){
   const isNew=!e.id;const st=isNew?((e.date||today())>today()?'planificado':'planificado'):evStatus(e);
-  return `<form class="inline-form" data-form="event" data-pid="${esc(p.id)}" data-id="${esc(e.id||'')}">
-    <h3>${isNew?'Planificar / registrar':'Ajustar evento'}</h3>
+  const mode=!isNew&&S.form&&S.form.id===e.id&&S.form.mode==='edit'?'edit':'adjust';
+  return `<form class="inline-form" data-form="event" data-pid="${esc(p.id)}" data-id="${esc(e.id||'')}" data-mode="${isNew?'new':mode}">
+    <h3>${isNew?'Planificar / registrar':mode==='edit'?'Editar tarea':'Ajustar tarea'}</h3>
+    ${mode==='edit'?'<div class="muted" style="font-size:.8rem">Completá o corregí los datos. No queda registrado como ajuste.</div>':''}
     <div class="grid2">
       ${e.fixedDate?`<input type="hidden" name="date" value="${esc(e.date)}"><div class="field"><span class="label">Día</span><b class="num" style="padding:7px 0">${fmtDate(e.date)}</b></div>`:`<label class="field"><span class="label">Fecha</span><input id="e-date" name="date" type="date" value="${esc(e.date||today())}" required></label>`}
-      ${isNew&&!S.space?`<label class="field"><span class="label">Espacio</span><select id="e-space" name="spaceId" required>${S.spaces.filter(x=>x.projectId===p.id&&x.enabled!==false).sort((a,c)=>num(a.order)-num(c.order)).map(x=>`<option value="${esc(x.id)}" ${x.id===e.spaceId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>`:''}
+      ${(isNew||mode==='edit')&&!S.space?`<label class="field"><span class="label">Espacio</span><select id="e-space" name="spaceId" required>${S.spaces.filter(x=>x.projectId===p.id&&x.enabled!==false).sort((a,c)=>num(a.order)-num(c.order)).map(x=>`<option value="${esc(x.id)}" ${x.id===e.spaceId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>`:''}
       <label class="field"><span class="label">Tipo</span><select id="e-type" name="type" data-evtype data-bvis>${EV_TYPES.map(x=>`<option ${x===e.type?'selected':''}>${x}</option>`).join('')}</select></label>
       <label class="field"><span class="label">Estado</span><select id="e-status" name="status">${Object.entries(ST_LABEL).map(([k,v])=>`<option value="${k}" ${k===st?'selected':''}>${v}</option>`).join('')}</select></label>
     </div>
     <label class="field"><span class="label">Qué hay que hacer / qué pasó</span><input id="e-title" name="title" required value="${esc(e.title)}"></label>
     ${prodBox(e)}
     <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note" value="${esc(e.note)}"></label>
-    ${isNew?'':`<label class="field"><span class="label">Motivo del ajuste (opcional)</span><input id="e-adj" name="adjustNote" value="${esc(e.adjustNote)}" placeholder="Ej.: se atrasó por lluvia, se cambió la dosis"></label>`}
+    ${isNew||mode==='edit'?'':`<label class="field"><span class="label">Motivo del ajuste (opcional)</span><input id="e-adj" name="adjustNote" value="${esc(e.adjustNote)}" placeholder="Ej.: se atrasó por lluvia, se cambió la dosis"></label>`}
     <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button></div>
   </form>`;
 }
@@ -876,7 +878,7 @@ function weekEvRow(p,e){
       ${prodSummary(e)}
       ${moved?`<span class="muted" style="font-size:.78rem">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
       ${e.note?`<span class="muted" style="font-size:.78rem">${esc(e.note)}</span>`:''}
-    <span class="t-actions">${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`:`<button class="small ghost" data-act="evEdit" data-id="${esc(e.id)}">Editar</button>`}</span>
+    <span class="t-actions">${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`:`<button class="small ghost" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button>`}</span>
     </div>`:''}
   </div>`;
 }
@@ -1263,7 +1265,8 @@ app.addEventListener('click',e=>{
     calDay(){S.form={type:'event',date:b.dataset.date};rerender();document.getElementById('e-title')?.focus()},
     evDone(){safe(()=>db.doc('events/'+id).update({status:'cumplido',confirmedAt:Date.now()}))},
     evMiss(){safe(()=>db.doc('events/'+id).update({status:'no se hizo',confirmedAt:Date.now()}))},
-    evEdit(){S.form={type:'event',id};rerender();document.getElementById('e-date')?.focus()},
+    evEditFull(){S.form={type:'event',id,mode:'edit'};rerender();document.getElementById('e-title')?.focus()},
+    evEdit(){S.form={type:'event',id,mode:'adjust'};rerender();document.getElementById('e-date')?.focus()},
     toggleEv(){S.openEv=S.openEv||new Set();S.openEv.has(id)?S.openEv.delete(id):S.openEv.add(id);rerender()},
     wkPrev(){S.calWeek=addDays(S.calWeek||sundayOf(today()),-7);S.wkSel=null;rerender()},
     wkNext(){S.calWeek=addDays(S.calWeek||sundayOf(today()),7);S.wkSel=null;rerender()},
@@ -1400,8 +1403,8 @@ app.addEventListener('submit',e=>{
       else{ev.products=[];ev.liters='';}
       if(ev.type==='Riego radicular'){ev.batchId=d.batchId||'';ev.perPlant=n2(d.perPlant);ev.drained=d.drained||'';ev.ecIn=n2(d.ecIn);ev.phIn=n2(d.phIn);ev.ecOut=n2(d.ecOut);ev.phOut=n2(d.phOut);}
       if(f.dataset.id){const old=S.events.find(x=>x.id===f.dataset.id)||{};
-        if(!old.plannedDate&&old.date&&old.date!==ev.date)ev.plannedDate=old.date;
-        ev.adjustNote=(d.adjustNote||'').trim();
+        if(f.dataset.mode==='edit'){if(d.spaceId)ev.spaceId=d.spaceId;if(ev.status==='planificado'&&(!old.plannedDate||old.plannedDate===old.date))ev.plannedDate=ev.date;}
+        else{if(!old.plannedDate&&old.date&&old.date!==ev.date)ev.plannedDate=old.date;ev.adjustNote=(d.adjustNote||'').trim();}
         await db.doc('events/'+f.dataset.id).update(ev);}
       else await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,spaceId:d.spaceId||S.space||'',createdAt:Date.now()});
     }else if(kind==='product'){
