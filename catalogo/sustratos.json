@@ -1,0 +1,1147 @@
+[
+  {
+    "id": "biobizz-coco-mix",
+    "categoria": "sustrato",
+    "marca": "Biobizz",
+    "linea": null,
+    "producto": "Coco·Mix",
+    "modelo": null,
+    "descripcion_corta": "Sustrato de fibra de coco liviano y aireado.",
+    "fuentes": [
+      {
+        "url": "https://biobizz.com/products/coco-mix",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/us/productos/bio-bizz-sustrato-coco-mix-50l/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      50
+    ],
+    "composicion_declarada": "Fibra de coco (coco coir) tratada y lavada.",
+    "ph_declarado": "5.8 - 6.4",
+    "ce_declarada": "< 0.1 mS/cm",
+    "uso_indicado": "ambos",
+    "notas": "pH y CE provienen del vendedor argentino (Ganga Grow), no del fabricante."
+  },
+  {
+    "id": "biobizz-light-mix",
+    "categoria": "sustrato",
+    "marca": "Biobizz",
+    "linea": null,
+    "producto": "Light·Mix",
+    "modelo": null,
+    "descripcion_corta": "Sustrato ligeramente pre-fertilizado para semillas, esquejes y plantas jóvenes; buen drenaje para riego automático.",
+    "fuentes": [
+      {
+        "url": "https://biobizz.com/products/light-mix",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.divinogrow.com.ar/cultivo/sustratos/sustrato-biobizz-light-mix-20-l",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      20,
+      50,
+      90
+    ],
+    "composicion_declarada": null,
+    "ph_declarado": null,
+    "ce_declarada": null,
+    "uso_indicado": "ambos",
+    "notas": "El fabricante no publica valores de pH ni CE (dice «CE media» y pH autorregulado). Presentaciones 20, 50 y 90 L según biobizz.com; en el vendedor argentino figura la de 20 L."
+  },
+  {
+    "id": "cultivate-completo",
+    "categoria": "sustrato",
+    "marca": "Cultivate",
+    "linea": null,
+    "producto": "Completo",
+    "modelo": null,
+    "descripcion_corta": "Sustrato con compost de hojas y el doble de trichoderma y micorrizas para la fase de crecimiento.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/cultivate-sustrato-completo-25-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      25
+    ],
+    "composicion_declarada": "Humus de lombriz de alta calidad, mix de turbas sphagnum fueguinas, compost de hojas, perlita y vermiculita, tricodermas y micorrizas.",
+    "ph_declarado": null,
+    "ce_declarada": null,
+    "uso_indicado": null
+  },
+  {
+    "id": "cultivate-indoor",
+    "categoria": "sustrato",
+    "marca": "Cultivate",
+    "linea": null,
+    "producto": "Indoor",
+    "modelo": null,
+    "descripcion_corta": "Sustrato liviano con mayor porosidad y drenaje para cultivo indoor y autoflorecientes.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/cultivate-sustrato-indoor-25-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/cultivate-sustrato-indoor-80-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      25,
+      80
+    ],
+    "composicion_declarada": "Mix de turbas, humus de lombriz, perlita, vermiculita, fibra de coco seleccionada e hidratada, tricodermas.",
+    "ph_declarado": null,
+    "ce_declarada": null,
+    "uso_indicado": "indoor"
+  },
+  {
+    "id": "cultivate-living-soil",
+    "categoria": "sustrato",
+    "marca": "Cultivate",
+    "linea": null,
+    "producto": "Living Soil",
+    "modelo": null,
+    "descripcion_corta": "Sustrato regenerativo basado en la vida microbiológica del suelo, sin agregados químicos.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/sustrato-living-soil-cultivate-25-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      25
+    ],
+    "composicion_declarada": "Compost, humus, bokashi, cascarilla de arroz, resaca de río, carbón, vermiculita, dolomita, sulfato de yeso, harina de pescado, fosfito.",
+    "ph_declarado": null,
+    "ce_declarada": null,
+    "uso_indicado": null
+  },
+  {
+    "id": "cultivate-premium",
+    "categoria": "sustrato",
+    "marca": "Cultivate",
+    "linea": null,
+    "producto": "Premium",
+    "modelo": null,
+    "descripcion_corta": "Sustrato completo con compost de hojas y el doble de trichodermas y micorrizas.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/cultivate-sustrato-premium-25-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      25
+    ],
+    "composicion_declarada": null,
+    "ph_declarado": null,
+    "ce_declarada": null,
+    "uso_indicado": null,
+    "notas": "La ficha solo dice «plus de compost de hojas y el doble de trichodermas y micorrizas»; no lista la composición completa."
+  },
+  {
+    "id": "growers-light-soil",
+    "categoria": "sustrato",
+    "marca": "Growers",
+    "linea": null,
+    "producto": "Light Soil",
+    "modelo": null,
+    "descripcion_corta": "Sustrato liviano, bajo en nutrientes, para fertilización agregada o primeros estadios.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/growers-sustrato-ligth-soil-20-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      20
+    ],
+    "composicion_declarada": null,
+    "ph_declarado": "6 - 6,5",
+    "ce_declarada": "0,5 - 1,0 mS/cm",
+    "uso_indicado": "indoor",
+    "notas": "La ficha lista cultivo interior, crecimiento, floración y autoflorecientes (no menciona exterior). Composición no detallada."
+  },
+  {
+    "id": "growers-original",
+    "categoria": "sustrato",
+    "marca": "Growers",
+    "linea": null,
+    "producto": "Original",
+    "modelo": null,
+    "descripcion_corta": "Sustrato orgánico para cultivos intensivos en contenedores, con nutrición orgánica completa.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/sustrato-original-growers-50-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/growers-sustrato-original-20-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      20,
+      50
+    ],
+    "composicion_declarada": null,
+    "ph_declarado": "6 - 7",
+    "ce_declarada": "1 - 1,5 mS/cm",
+    "uso_indicado": "ambos",
+    "notas": "La ficha no detalla la composición (el texto «Compuesto por:» queda vacío en la fuente)."
+  },
+  {
+    "id": "growers-super-soil",
+    "categoria": "sustrato",
+    "marca": "Growers",
+    "linea": null,
+    "producto": "Super Soil",
+    "modelo": null,
+    "descripcion_corta": "Sustrato orgánico de alto rendimiento para cultivos intensivos en contenedores.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/sustrato-super-soil-growers-50-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/growers-sustrato-super-soil-20-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      20,
+      50
+    ],
+    "composicion_declarada": null,
+    "ph_declarado": "6,5 - 7,5",
+    "ce_declarada": "1,5 - 2,0 mS/cm",
+    "uso_indicado": "ambos",
+    "notas": "La ficha no detalla la composición (el texto «Compuesto por:» queda vacío en la fuente)."
+  },
+  {
+    "id": "landiner-full-grow",
+    "categoria": "sustrato",
+    "marca": "Landiner",
+    "linea": null,
+    "producto": "Full Grow",
+    "modelo": null,
+    "descripcion_corta": "Sustrato orgánico premium para cultivos exigentes en contenedores, indoor y outdoor.",
+    "fuentes": [
+      {
+        "url": "https://divinogrow.com.ar/cultivo/sustratos/sustrato-landiner-full-grow-50l",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      50
+    ],
+    "composicion_declarada": "Turba de musgo sphagnum, compost orgánico, humus de lombriz, perlita, harina de hueso, micorrizas, trichodermas.",
+    "ph_declarado": "6,5 - 7,5",
+    "ce_declarada": "0,3 - 0,45 mS/cm",
+    "uso_indicado": "ambos",
+    "notas": "Materia orgánica declarada por Divino Grow: 85-90 %. Otros vendedores (visto solo en buscador) indican pH 6,5-7; no verificado."
+  },
+  {
+    "id": "lizard-sustrato-enraizador",
+    "categoria": "sustrato",
+    "marca": "Lizard",
+    "linea": null,
+    "producto": "Sustrato Enraizador",
+    "modelo": null,
+    "descripcion_corta": "Sustrato para favorecer el desarrollo de las raíces, con micorrizas y auxinas naturales.",
+    "fuentes": [
+      {
+        "url": "https://growshopganesh.com/productos/sustrato-enraizador",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      2,
+      4,
+      10
+    ],
+    "composicion_declarada": "Turba de musgo sphagnum, compost de corteza fina, perlita, corrector de pH, fertilizante y micorrizas. Contiene auxinas naturales.",
+    "ph_declarado": null,
+    "ce_declarada": null,
+    "uso_indicado": null,
+    "notas": "La ficha dice «recomendado para todo tipo de cultivos» sin precisar indoor/exterior."
+  },
+  {
+    "id": "silver-base",
+    "categoria": "sustrato",
+    "marca": "Silver",
+    "linea": null,
+    "producto": "Base",
+    "modelo": null,
+    "descripcion_corta": "Sustrato base para germinación y trasplante, para personalizar con fertilización líquida.",
+    "fuentes": [
+      {
+        "url": "https://bairesgrow.com.ar/tienda/sustrato-silver-base/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [],
+    "composicion_declarada": "Turba rubia y negra seleccionada, perlita de granulometría media, enmiendas orgánicas y minerales.",
+    "ph_declarado": "5,5 - 6,5",
+    "ce_declarada": "Baja a media (sin valor numérico)",
+    "uso_indicado": "ambos",
+    "notas": "Presentaciones no confirmadas en la ficha. Uso: macetas indoor y outdoor."
+  },
+  {
+    "id": "silver-premium",
+    "categoria": "sustrato",
+    "marca": "Silver",
+    "linea": null,
+    "producto": "Premium",
+    "modelo": null,
+    "descripcion_corta": "Mezcla premium con alta aireación, buen drenaje y nutrición orgánica inicial.",
+    "fuentes": [
+      {
+        "url": "https://growshopganesh.com/productos/silver-sustrato-premium/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      20,
+      80
+    ],
+    "composicion_declarada": "Turba fueguina (rubia) / turba de musgo sphagnum, humus de lombriz, perlita y vermiculita, dolomita, arena de río.",
+    "ph_declarado": "Aproximado 5,8",
+    "ce_declarada": "~0,56 dS/m (estimada, según algunos reportes de la presentación grande)",
+    "uso_indicado": "ambos",
+    "notas": "Uso indicado: todas las etapas, indoor y outdoor. Los litros 20 y 80 salen de los datos técnicos de la ficha."
+  },
+  {
+    "id": "terrafertil-growmix-citrus",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Citrus",
+    "modelo": null,
+    "descripcion_corta": "Fórmula tradicional con óptimo drenaje y alta porosidad de aire para frutales en contenedores medianos y grandes.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/citrus/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_Citrus.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      60
+    ],
+    "composicion_declarada": "Corteza de pino compostada. Turba de musgo Sphagnum de fibras medias y gruesas. Perlita. Corrector de pH. Fertilizantes. Humectante.",
+    "ph_declarado": "5,10 - 6,00",
+    "ce_declarada": "0,20 - 0,60 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha."
+  },
+  {
+    "id": "terrafertil-growmix-citrus-ii",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Citrus II",
+    "modelo": null,
+    "descripcion_corta": "Para frutales en contenedores medianos y grandes; mayor retención hídrica y estabilidad durante el ciclo.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/citrus-ii/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_Citrus_II.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      60
+    ],
+    "composicion_declarada": "Turba de musgo Sphagnum de fibras medias y gruesas. Compost de corteza fina. Corrector de pH. Perlita. Fertilizante.",
+    "ph_declarado": "5,10 - 6,00",
+    "ce_declarada": "0,20 - 0,60 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha."
+  },
+  {
+    "id": "terrafertil-growmix-compost-de-corteza",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Compost de Corteza",
+    "modelo": null,
+    "descripcion_corta": "Uso versátil en medianos y grandes contenedores, indicado en combinación con turbas de distinta granulometría.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/compost-de-corteza/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_CompostCorteza.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      80
+    ],
+    "composicion_declarada": "Corteza de pino compostada.",
+    "ph_declarado": "5,00 - 5,90",
+    "ce_declarada": "0,20 - 0,50 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+  },
+  {
+    "id": "terrafertil-growmix-hydro-p",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Hydro P",
+    "modelo": null,
+    "descripcion_corta": "Saco de cultivo para frutillas y otros cultivos hortícolas hidropónicos.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/hydro-p/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_HydroP.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [
+      {
+        "campo": "ph_declarado",
+        "valores": [
+          {
+            "valor": "50 – 55%",
+            "url": "https://terrafertil.com/productos/hydro-p/"
+          },
+          {
+            "valor": "5.20 - 6.00",
+            "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_HydroP.pdf"
+          }
+        ]
+      }
+    ],
+    "verificado": false,
+    "litros_presentacion": [
+      25
+    ],
+    "composicion_declarada": "Corteza de pino compostada. Turba de musgo Sphagnum de fibras medias y gruesas. Perlita. Corrector de pH. Fertilizantes. Humectante.",
+    "ph_declarado": null,
+    "ce_declarada": "0,20 - 0,60 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sacos de cultivo hidropónico». La web muestra el pH como «50 – 55%», y la ficha técnica PDF del fabricante dice 5.20 - 6.00: el valor de la web parece la humedad corrida de columna, pero queda en conflicto sin elegir. Saco de 92 x 25,5 x 9,5 cm; 90 sacos por pallet."
+  },
+  {
+    "id": "terrafertil-growmix-master-e",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Master E",
+    "modelo": null,
+    "descripcion_corta": "Para el enraizamiento de esquejes leñosos y semileñosos.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/master-e/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_MasterE.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      80,
+      60
+    ],
+    "composicion_declarada": "Turba de musgo Sphagnum de fibras finas. Compost de corteza fina. Perlita. Corrector de pH. Fertilizante. Humectante.",
+    "ph_declarado": "5,00 - 5,80",
+    "ce_declarada": "0,20 - 0,60 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha."
+  },
+  {
+    "id": "terrafertil-growmix-master-e-p",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Master E/P",
+    "modelo": null,
+    "descripcion_corta": "Para el desarrollo radicular de esquejes, especialmente en sistemas de propagación Ellepot.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/master-e-p/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_MasterEP.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      50,
+      60
+    ],
+    "composicion_declarada": "Compost de corteza fina. Turba de musgo Sphagnum de fibras finas. Perlita. Vermiculita. Corrector de pH. Fertilizantes. Humectante.",
+    "ph_declarado": "5,00 - 5,90",
+    "ce_declarada": "0,40 - 0,70 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha."
+  },
+  {
+    "id": "terrafertil-growmix-multipro",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Multipro",
+    "modelo": null,
+    "descripcion_corta": "Para una amplia gama de cultivos, apto para siembra y repique; el compost de corteza amortigua desbalances hídricos y nutritivos.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/multipro/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_Multipro.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      80,
+      60
+    ],
+    "composicion_declarada": "Turba de musgo Sphagnum de fibras finas. Compost de corteza fina. Perlita. Corrector de pH. Fertilizante. Humectante.",
+    "ph_declarado": "5,00 - 5,80",
+    "ce_declarada": "0,20 - 0,60 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha. Es la línea profesional; el «MultiPro Indoor» de 20 L es otro producto (línea de jardín)."
+  },
+  {
+    "id": "terrafertil-growmix-maximo",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Máximo",
+    "modelo": null,
+    "descripcion_corta": "Formulación para precisar el momento y la dosis de nutrientes disponibles para las raíces; apto para siembra de una amplia gama de cultivos.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/maximo/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      80
+    ],
+    "composicion_declarada": "Turba de musgo Sphagnum de fibras finas. Perlita. Corrector de pH. Fertilizante.",
+    "ph_declarado": "5,20 - 5,90",
+    "ce_declarada": "0,18 - 0,40 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Datos de la web; el PDF de ficha técnica enlazado da 404."
+  },
+  {
+    "id": "terrafertil-growmix-premium-t",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Premium T",
+    "modelo": null,
+    "descripcion_corta": "Para trasplante a contenedores medianos y grandes de plantas arbustivas y arbóreas; buen drenaje y nutrición.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/premium-t/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_PremiumT.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      80
+    ],
+    "composicion_declarada": "Corteza de pino compostada. Turba de musgo Sphagnum de fibras medias y gruesas. Perlita. Corrector de pH. Fertilizantes. Humectante.",
+    "ph_declarado": "5,1 - 6,0",
+    "ce_declarada": "0,20 - 0,60 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+  },
+  {
+    "id": "terrafertil-growmix-special-v",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Special V",
+    "modelo": null,
+    "descripcion_corta": "Para semillas de pequeño tamaño, como las florales; fibras de turba muy finas con vermiculita.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/special-v/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_SpecialV.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      80
+    ],
+    "composicion_declarada": "Turba de musgo Sphagnum de fibras muy finas. Vermiculita. Corrector de pH. Fertilizantes. Humectante.",
+    "ph_declarado": "5,00 - 5,80",
+    "ce_declarada": "0,20 - 0,60 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+  },
+  {
+    "id": "terrafertil-growmix-tabaco-a1",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Tabaco A1",
+    "modelo": null,
+    "descripcion_corta": "Almácigos de tabaco: favorece el desarrollo radicular de los plantines y el crecimiento foliar.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/tabaco-a1/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_Tabaco.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      80,
+      60
+    ],
+    "composicion_declarada": "Turba de musgo Sphagnum de fibras finas. Compost de corteza fina. Perlita. Corrector de pH. Fertilizante.",
+    "ph_declarado": "5,00 - 5,70",
+    "ce_declarada": "0,20 - 0,60 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha. En el PDF la CE figura como «0.20 - 0.60 ds/m»; la web dice mS/cm."
+  },
+  {
+    "id": "terrafertil-growmix-tr-flor",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "TR-Flor",
+    "modelo": null,
+    "descripcion_corta": "Para el trasplante de plantines florales; alta proporción de compost.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/tr-flor/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_TRFlor.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      80
+    ],
+    "composicion_declarada": "Turba de musgo Sphagnum. Corteza fina compostada. Compost.",
+    "ph_declarado": "5,20 - 6,20",
+    "ce_declarada": "0,20 - 0,50 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+  },
+  {
+    "id": "terrafertil-growmix-transplante-y-repique",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Trasplante y Repique",
+    "modelo": null,
+    "descripcion_corta": "Para semillado y trasplante de una amplia variedad de cultivos; equilibrio entre porosidad de aire y agua.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/transplante-y-repique/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_TrasplanteyRepique.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      80
+    ],
+    "composicion_declarada": "Compost. Turba de musgo Sphagnum. Perlita. Corrector de pH. Fertilizantes. Humectante.",
+    "ph_declarado": "5,40 - 5,90",
+    "ce_declarada": "0,40 - 0,70 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+  },
+  {
+    "id": "terrafertil-growmix-z-floricultura",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Growmix",
+    "producto": "Z-Floricultura",
+    "modelo": null,
+    "descripcion_corta": "Desarrollado con el Instituto de Floricultura del INTA para investigación en el sector floricultor.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/z-floricultura/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_ZFloricultura.pdf",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      80
+    ],
+    "composicion_declarada": "Compost. Turba de musgo Sphagnum. Perlita. Corrector de pH. Fertilizantes. Humectante.",
+    "ph_declarado": "5,00 - 5,80",
+    "ce_declarada": "0,20 - 0,80 mS/cm",
+    "uso_indicado": null,
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+  },
+  {
+    "id": "terrafertil-bonsai",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Bonsái",
+    "modelo": null,
+    "descripcion_corta": "Estructura fina con nutrientes para bonsái.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/bonsai/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      5
+    ],
+    "composicion_declarada": "Compuesto de arena gruesa. Turba de musgo Sphagnum. Compost orgánico.",
+    "ph_declarado": "5.5-6.5",
+    "ce_declarada": "0.1-0.5 mS/cm",
+    "uso_indicado": null
+  },
+  {
+    "id": "terrafertil-cactus-y-suculentas",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Cactus y Suculentas",
+    "modelo": null,
+    "descripcion_corta": "Para cactus y suculentas, sensibles a la humedad.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/cactus-y-suculentas/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      5
+    ],
+    "composicion_declarada": "Compost orgánico. Arena gruesa y grava. Perlita.",
+    "ph_declarado": "6.5-7.5",
+    "ce_declarada": "0.3-0.8 mS/cm",
+    "uso_indicado": null
+  },
+  {
+    "id": "terrafertil-compost",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Compost",
+    "modelo": null,
+    "descripcion_corta": "Sustrato 100% orgánico.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/compost/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      5,
+      10,
+      20,
+      50
+    ],
+    "composicion_declarada": "Compost de corteza de pino. Compost orgánico de poda urbana. Turba de musgo Sphagnum.",
+    "ph_declarado": "5.5-6.5",
+    "ce_declarada": "0.3-1.0 mS/cm",
+    "uso_indicado": null
+  },
+  {
+    "id": "terrafertil-citricos-y-palmeras",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Cítricos y Palmeras",
+    "modelo": null,
+    "descripcion_corta": "Con compost y fertilizante Basacote Plus para cítricos y palmeras; alta porosidad de aire.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/citricos-y-palmeras/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      20
+    ],
+    "composicion_declarada": "Compost orgánico. Compost de corteza de pino. Turbas de musgo Sphagnum seleccionadas. Perlita gruesa. Fertilizante.",
+    "ph_declarado": "5,50-6,50",
+    "ce_declarada": "0,30-0,60 mS/cm",
+    "uso_indicado": null
+  },
+  {
+    "id": "terrafertil-huertas",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Huertas",
+    "modelo": null,
+    "descripcion_corta": "Sustrato de compost y turbas seleccionadas para huertas.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/huertas/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      50
+    ],
+    "composicion_declarada": "Compuesto de turba. Compost. Perlita. Corrector de pH. Humectante.",
+    "ph_declarado": "5.5-6.5",
+    "ce_declarada": "0.2-0.6 mS/cm",
+    "uso_indicado": null
+  },
+  {
+    "id": "terrafertil-iniciador-de-huertas",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Iniciador de Huertas",
+    "modelo": null,
+    "descripcion_corta": "Para siembra de huerta; buena retención de agua para la semilla.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/iniciador-de-huertas/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      10
+    ],
+    "composicion_declarada": "Turba de musgo Sphagnum seleccionada. Perlita. Bioestimulantes a base de extracto de algas (Durvillea antártica). Regulador de pH y humectante.",
+    "ph_declarado": "5,2-5,9",
+    "ce_declarada": "0,18-0,40 mS/cm",
+    "uso_indicado": null
+  },
+  {
+    "id": "terrafertil-multipro-indoor",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "MultiPro Indoor",
+    "modelo": null,
+    "descripcion_corta": "Sustrato para una amplia gama de cultivos; apto para siembra y repique.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/multipro-indoor/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      20
+    ],
+    "composicion_declarada": "Compost de corteza. Turba. Perlita. Fertilizante. Corrector de pH. Humectante.",
+    "ph_declarado": "5.5-6.2",
+    "ce_declarada": "0.2-0.6 mS/cm",
+    "uso_indicado": "indoor"
+  },
+  {
+    "id": "terrafertil-orquideas",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Orquídeas",
+    "modelo": null,
+    "descripcion_corta": "A base de fibras de musgo Sphagnum; controla la retención hídrica.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/orquideas/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      5
+    ],
+    "composicion_declarada": "Compuesto de fibras de musgo Sphagnum. Corteza de pino seleccionada. Carbón vegetal.",
+    "ph_declarado": "5.5-7.5",
+    "ce_declarada": "0,1–0,4 mS/cm",
+    "uso_indicado": null
+  },
+  {
+    "id": "terrafertil-plantas-de-flor-exterior",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Plantas de Flor Exterior",
+    "modelo": null,
+    "descripcion_corta": "Para favorecer la máxima floración de plantas de flor.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/plantas-de-flor-exterior/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      20,
+      50
+    ],
+    "composicion_declarada": "Compost de corteza de pino. Compost orgánico. Turba musgo Sphagnum / acículas de pino. Perlita. Corrector de pH. Fertilizante.",
+    "ph_declarado": "6-6.5",
+    "ce_declarada": "0.5 – 1.0 mS/cm",
+    "uso_indicado": "exterior"
+  },
+  {
+    "id": "terrafertil-plantas-de-interior",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Plantas de Interior",
+    "modelo": null,
+    "descripcion_corta": "Sustrato para plantas de interior.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/plantas-de-interior/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      5,
+      10,
+      20
+    ],
+    "composicion_declarada": "Compost de corteza de pino. Compost orgánico. Turba musgo Sphagnum / acículas de pino. Perlita. Fertilizante.",
+    "ph_declarado": "5.5-6.5",
+    "ce_declarada": "0.2-0.6 mS/cm",
+    "uso_indicado": "indoor"
+  },
+  {
+    "id": "terrafertil-rosales",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Rosales",
+    "modelo": null,
+    "descripcion_corta": "Para rosales en jardines y macetas.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/rosales/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      20,
+      50
+    ],
+    "composicion_declarada": "Compost de corteza de pino. Compost orgánico. Turba musgo Sphagnum. Abono compostado. Corrector de pH.",
+    "ph_declarado": "5.5-6.5",
+    "ce_declarada": "0.2-0.6 mS/cm",
+    "uso_indicado": null
+  },
+  {
+    "id": "terrafertil-arboles-y-arbustos",
+    "categoria": "sustrato",
+    "marca": "Terrafertil",
+    "linea": "Línea de jardín",
+    "producto": "Árboles y Arbustos",
+    "modelo": null,
+    "descripcion_corta": "Para plantaciones nuevas o reemplazo de sustrato en trasplante o mantenimiento.",
+    "fuentes": [
+      {
+        "url": "https://terrafertil.com/productos/arboles-y-arbustos/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [
+      20,
+      50
+    ],
+    "composicion_declarada": "Compost de corteza de pino. Compost orgánico. Turba de musgo Sphagnum. Abono compostado. Perlita. Fertilizante.",
+    "ph_declarado": "6.0-7.0",
+    "ce_declarada": "0.3-0.8 mS/cm",
+    "uso_indicado": null
+  },
+  {
+    "id": "vamp-sustrato-magico",
+    "categoria": "sustrato",
+    "marca": "Vamp",
+    "linea": null,
+    "producto": "Sustrato Mágico",
+    "modelo": null,
+    "descripcion_corta": "Sustrato vivo, alternativa a la tierra negra para macetas, canteros y trasplantes; también para almácigo.",
+    "fuentes": [
+      {
+        "url": "https://vamp.com.ar/productos/sustrato-magico/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "litros_presentacion": [],
+    "composicion_declarada": "Fermentación de cascarilla de arroz y carbonilla, compost de producción propia, Bokashi y Polvos de Roca. Sin turba ni perlita.",
+    "ph_declarado": null,
+    "ce_declarada": null,
+    "uso_indicado": null,
+    "notas": "La ficha no informa litros de la presentación."
+  }
+]

@@ -1,5 +1,11 @@
 [
   {
+    "categoria": "clima",
+    "marca": "(sin marca visible)",
+    "url": "https://growtech.com.ar/clima/deshumidificadores/",
+    "motivo": "Deshumidificadores industriales y de techo y humidificador ultrasónico 3 L/h que vende Growtech sin nombrar marca."
+  },
+  {
     "categoria": "fertilizante",
     "marca": "Green Leaf",
     "url": "https://santaplanta.com.ar/producto/green-leaf-preventivo-4-en-1-5-lt/",
@@ -28,6 +34,30 @@
     "marca": "Marimba (esquejes)",
     "url": "https://marimba.com.ar/producto/esqueje-craig-feminizado/",
     "motivo": "Grow shop que vende esquejes de varios viveros (declara clones bajo INASE/REPROCANN); sirve para relevar otros viveros argentinos."
+  },
+  {
+    "categoria": "luz",
+    "marca": "Cogordo",
+    "url": "https://growtech.com.ar/iluminacion/cogordo/",
+    "motivo": "Paneles Cogordo P1000/P1500 en la tienda de Growtech, sin datos técnicos y en outlet."
+  },
+  {
+    "categoria": "luz",
+    "marca": "Lucius",
+    "url": "https://growtech.com.ar/iluminacion/lucius/",
+    "motivo": "Parrillas LED «importadas» que Growtech vende (120/240/400/720 W, Green Label, Triple Black, Under Canopy): la marca es Lucius, no se dice que sea de Growtech; hay datos técnicos para el 400, 720 y Green Label."
+  },
+  {
+    "categoria": "luz",
+    "marca": "Yxo",
+    "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-300w-full-spectrum/",
+    "motivo": "Amnesia Grow vende paneles COB «Cob Yxo» 100-600 W (marca de chips/driver Yxo) con ficha técnica y garantía 12 meses; no se cargó por no estar claro que la marca sea Amnesia."
+  },
+  {
+    "categoria": "sustrato",
+    "marca": "Phitonat",
+    "url": "https://gangagrow.com.ar/us/productos/bio-bizz-sustrato-coco-mix-50l/",
+    "motivo": "Aparece como marca de sustratos (turba, coco) en la tienda Ganga Grow; no se investigó."
   },
   {
     "categoria": "ventilacion",
