@@ -355,7 +355,7 @@ function render(){
     const td=el.querySelector('.wkm-day.today,.cd.today');if(td)el.scrollLeft=Math.max(0,td.offsetLeft-(k==='.wkm-wrap'?80:8));});
   app.querySelectorAll('form[data-form=event]').forEach(f=>{updateDoseTotals(f);updateBuyTotals(f)});
   app.querySelectorAll('form[data-form=item]').forEach(applyKindVisibility);
-  app.querySelectorAll('form[data-form=batch],form[data-form=product],form[data-form=event]').forEach(applyBatchVis);
+  app.querySelectorAll('form[data-form=batch],form[data-form=product],form[data-form=event],form[data-form=hh]').forEach(applyBatchVis);
   tick();
 }
 app.addEventListener('focusout',()=>setTimeout(()=>{if(pending){const a=document.activeElement;if(!(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))render()}},0));
@@ -478,7 +478,10 @@ function hhForm(p,scope,m){
   m=m||{};const mem=p.members||['Eze','Agus'];
   return `<form class="inline-form" data-form="hh" data-pid="${esc(p.id)}" data-scope="${scope}" data-id="${esc(m.id||'')}">
     <div class="grid2">
-      <label class="field"><span class="label">Concepto</span><input id="hh-name" name="concept" required value="${esc(m.concept)}" placeholder="${scope==='comun'?'Ej.: Alquiler':scope==='fijo'?'Ej.: Celular':scope==='ingreso'?'Ej.: Sueldo':'Ej.: Supermercado'}"></label>
+      ${scope==='comun'||scope==='fijo'?(()=>{const lib=libOf(p,scope);const opts=[...lib];if(m.concept&&!opts.includes(m.concept))opts.unshift(m.concept);
+        return `<label class="field"><span class="label">Concepto</span><select id="hh-name" name="conceptSel" data-bvis required><option value="">Elegí de la librería…</option>${opts.map(c=>`<option ${c===m.concept?'selected':''}>${esc(c)}</option>`).join('')}<option value="__new">+ Nuevo concepto…</option></select></label>
+        <label class="field" data-bwhen="conceptSel:__new"><span class="label">Nuevo concepto (se agrega a la librería)</span><input id="hh-new" name="conceptNew" placeholder="${scope==='comun'?'Ej.: Expensas':'Ej.: Celular'}"></label>`})()
+      :`<label class="field"><span class="label">Concepto</span><input id="hh-name" name="concept" required value="${esc(m.concept)}" placeholder="${scope==='ingreso'?'Ej.: Sueldo':'Ej.: Supermercado'}"></label>`}
       <label class="field"><span class="label">Monto ($)</span><input id="hh-amt" name="amount" inputmode="decimal" value="${esc(dec(m.amount))}" placeholder="${scope==='variable'||scope==='ingreso'?'':'Vacío = importe pendiente'}"></label>
       ${scope==='comun'?`<label class="field"><span class="label">Pagado por</span><select id="hh-paid" name="paidBy"><option value="">Todavía no se pagó</option>${mem.map(n=>`<option ${n===m.paidBy?'selected':''}>${esc(n)}</option>`).join('')}</select></label>`
         :scope==='fijo'?`<label class="field"><span class="label">Estado</span><select id="hh-st" name="status"><option value="pendiente" ${m.status!=='pagado'?'selected':''}>Pendiente</option><option value="pagado" ${m.status==='pagado'?'selected':''}>Pagado</option></select></label>`
@@ -507,6 +510,14 @@ function hhTotals(p,month){
   const inc=incP+apps.reduce((a,x)=>a+x.inc,0),exp=myC+fixedT+varT+apps.reduce((a,x)=>a+x.exp,0);
   return {fixedT,varT,incP,myC,apps,inc,exp};
 }
+const libOf=(p,scope)=>((p.conceptLib||{})[scope]||[]).slice();
+function libPanel(p,scope){
+  const lib=libOf(p,scope);const open=S.libOpen===scope;
+  return `<details ${open?'open':''} data-libtoggle="${scope}"><summary class="muted" style="font-size:.85rem">Librería de conceptos ${scope==='comun'?'de la casa':'personales fijos'} (${lib.length})</summary>
+    <div class="row" style="gap:6px;margin-top:6px">${lib.map((c,i)=>`<span class="cat-item">${esc(c)}<button type="button" class="ghost small" data-act="libDel" data-scope="${scope}" data-i="${i}" aria-label="Quitar ${esc(c)} de la librería">✕</button></span>`).join('')||'<span class="muted" style="font-size:.85rem">Vacía</span>'}</div>
+    <form class="row" data-form="lib" data-scope="${scope}" style="margin-top:6px"><input name="concept" placeholder="Agregar concepto" style="flex:1;min-width:140px"><button class="small" type="submit">Agregar</button></form></details>`;
+}
+async function libSave(p,scope,list){const lib={...(p.conceptLib||{})};lib[scope]=[...new Set(list.map(x=>x.trim()).filter(Boolean))];await db.doc('projects/'+p.id).update({conceptLib:lib})}
 function householdView(p){
   const pc=pcolor(p);const tab=S.hhTab||'comun';const month=S.month||today().slice(0,7);const f=S.form;
   let h=`<div class="row"><button class="ghost" data-act="home">← Inicio</button></div>
@@ -517,6 +528,7 @@ function householdView(p){
     <span class="spacer"></span>${f&&f.type==='hh'&&!f.id?'':`<button class="small primary" data-act="newHH">${tab==='ingreso'?'+ Ingreso':'+ Gasto'}</button>`}</div>`;
   if(f&&f.type==='hh'&&!f.id)h+=hhForm(p,tab,{});
   const its=hhItems(p,tab,month).sort((a,c)=>tab==='variable'||tab==='ingreso'?(c.date||'').localeCompare(a.date||''):num(a.order??a.createdAt)-num(c.order??c.createdAt));
+  if(tab==='comun'||tab==='fijo')h+=libPanel(p,tab);
   if(tab==='comun'){const s=hhComunSums(p,month);
     h+=`<div class="money-sum">
       <div class="ms"><span class="label">Total de gastos</span><b>${money(s.total)}</b>${its.some(m=>!hasAmt(m))?'<span class="muted" style="font-size:.75rem">sin los que tienen importe pendiente</span>':''}</div>
@@ -1663,6 +1675,7 @@ app.addEventListener('click',e=>{
     openPick(){openPicker(b)},
     closePick(){closePicker()},
     pickItem(){pickItem(+b.dataset.i)},
+    libDel(){const pj=current();const sc=b.dataset.scope;const l=libOf(pj,sc);l.splice(+b.dataset.i,1);S.libOpen=sc;safe(()=>libSave(pj,sc,l))},
     hhTab(){S.hhTab=b.dataset.tab;S.form=null;rerender()},
     newHH(){S.form={type:'hh'};rerender();document.getElementById('hh-name')?.focus()},
     editHH(){S.form={type:'hh',id};rerender()},
@@ -1753,6 +1766,7 @@ app.addEventListener('change',e=>{
     if(use){const prev=rows.dataset.use;if(prev!==use){rows.innerHTML=prodRow(use,{});rows.dataset.use=use}}}
   if(e.target.closest('.prodbox'))updateDoseTotals(e.target.closest('form'));
 });
+document.addEventListener('toggle',e=>{const t=e.target;if(t.matches&&t.matches('[data-libtoggle]'))S.libOpen=t.open?t.dataset.libtoggle:null},true);
 app.addEventListener('input',e=>{
   if(PICK&&e.target.matches('[data-pq]')){PICK.q=e.target.value;renderPicker(false);return}
   if(e.target.closest('.buybox'))updateBuyTotals(e.target.closest('form'));
@@ -1774,6 +1788,8 @@ app.addEventListener('submit',e=>{
     safe(async()=>{await db.doc('spaces/'+sp.id).update({[key]:arr});S.form=null;document.activeElement?.blur?.();rerender()});return}
   if(kind==='activity'){const act=(d.activity||'').trim();const mins=num(d.minutes);if(!act||!(mins>0)){S.err='Cargá la actividad y el tiempo en minutos.';rerender();return}
     safe(async()=>{await db.collection('activities').add({projectId:f.dataset.pid,date:d.date||today(),activity:act,minutes:mins,km:n2(d.km),note:(d.note||'').trim(),createdAt:Date.now()});document.activeElement?.blur?.();rerender()});return}
+  if(kind==='lib'){const pj=current();const sc=f.dataset.scope;const c=(d.concept||'').trim();if(!c)return;S.libOpen=sc;
+    safe(async()=>{await libSave(pj,sc,[...libOf(pj,sc),c]);rerender()});return}
   if(kind==='slip'){const what=(d.what||'').trim();if(!what)return;
     safe(async()=>{await db.collection('slips').add({projectId:f.dataset.pid,date:d.date||today(),kind:d.kind||'Comida',what,occasion:(d.occasion||'').trim(),createdAt:Date.now()});document.activeElement?.blur?.();rerender()});return}
   if(kind==='plan'){const rows=readPlanForm(f);const data={name:(d.name||'').trim(),rows,sources:String(d.sources||'').split(/\s+/).filter(u=>/^https?:\/\//.test(u))};
@@ -1823,7 +1839,11 @@ app.addEventListener('submit',e=>{
       S.form=null;rerender();setTimeout(()=>document.getElementById('c-name')?.focus(),0);return;
     }else if(kind==='hh'){
       const scope=f.dataset.scope;const month=S.month||today().slice(0,7);const t=String(d.amount||'').trim();
-      const data={concept:(d.concept||'').trim(),amount:t===''?'':num(t),note:(d.note||'').trim()};
+      let concept=(d.concept||'').trim();const pj=S.projects.find(x=>x.id===f.dataset.pid);
+      if(scope==='comun'||scope==='fijo'){concept=d.conceptSel==='__new'?(d.conceptNew||'').trim():(d.conceptSel||'').trim();
+        if(!concept){S.err='Elegí un concepto de la librería o cargá uno nuevo.';rerender();return}
+        if(!libOf(pj,scope).includes(concept))await libSave(pj,scope,[...libOf(pj,scope),concept]);}
+      const data={concept,amount:t===''?'':num(t),note:(d.note||'').trim()};
       if(scope==='comun')data.paidBy=d.paidBy||'';
       if(scope==='fijo')data.status=d.status||'pendiente';
       if(scope==='variable'||scope==='ingreso'){data.date=d.date||today();data.month=data.date.slice(0,7);}
