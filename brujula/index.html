@@ -714,20 +714,37 @@ function prodBox(e){
   const use=RIEGO_USE[e.type]||'';const items=(e.products&&e.products.length)?e.products:[{}];
   return riegoFields(e)+`<div class="prodbox" ${use?'':'hidden'}>
     <div class="row"><span class="label">Productos</span><span class="spacer"></span>
-      <label class="row" style="gap:6px"><span class="muted" style="font-size:.8rem">Litros de agua</span><input id="e-liters" name="liters" inputmode="decimal" style="width:80px" value="${esc(dec(e.liters))}"></label></div>
+      <label class="row" style="gap:6px"><span class="muted" style="font-size:.8rem">Litros de agua</span><input id="e-liters" name="liters" inputmode="decimal" style="width:70px" value="${esc(dec(e.liters))}"></label>
+      <label class="row" style="gap:6px"><span class="muted" style="font-size:.8rem">Recipiente (L)</span><input id="e-tank" name="tank" inputmode="decimal" style="width:70px" placeholder="Ej.: 10" value="${esc(dec(e.tank??lastTank()))}"></label></div>
     <div class="dose-rows" data-use="${use}">${use?items.map(it=>prodRow(use,it)).join(''):''}</div>
     <button type="button" class="small" data-act="addDoseRow" style="align-self:flex-start">+ Agregar producto</button>
+    <div class="tank-calc notice" hidden></div>
   </div>`;
+}
+function lastTank(){const e=[...S.events].filter(x=>num(x.tank)>0).sort((a,b)=>num(b.createdAt)-num(a.createdAt))[0];return e?e.tank:''}
+const r2=v=>dec(Math.round(v*100)/100);
+function tankPlan(L,T,prods){
+  // prods: [{label,dose,unit}] ; devuelve texto con tandas
+  L=num(L);T=num(T);const ps=prods.filter(x=>num(x.dose)>0);
+  if(!T||!ps.length)return '';
+  if(!L||L<=T){const vol=L||T;return `<b>Preparación en recipiente de ${r2(T)} L</b>${L&&L<T?` (cargalo con ${r2(L)} L)`:''}: ${ps.map(x=>`${esc(x.label)} ${r2(num(x.dose)*vol)} ${esc(x.unit)}`).join(' · ')}`}
+  const full=Math.floor(L/T),rest=Math.round((L-full*T)*100)/100;
+  const line=v=>ps.map(x=>`${esc(x.label)} ${r2(num(x.dose)*v)} ${esc(x.unit)}`).join(' · ');
+  return `<b>${full+(rest>0?1:0)} tandas en recipiente de ${r2(T)} L</b> para ${r2(L)} L:<br>• ${full} ${full===1?'tanda llena':'tandas llenas'} de ${r2(T)} L: ${line(T)}${rest>0?`<br>• 1 tanda de ${r2(rest)} L: ${line(rest)}`:''}`;
 }
 function updateDoseTotals(form){
   const L=num(form.querySelector('[name=liters]')?.value);
   form.querySelectorAll('.dose-row').forEach(r=>{const d=num(r.querySelector('[name=dose]').value);const u=r.querySelector('[name=unit]').value;
     r.querySelector('.dose-tot').textContent=L&&d?'= '+dec(Math.round(d*L*100)/100)+' '+u:'';});
+  const box=form.querySelector('.tank-calc');if(!box)return;
+  const prods=[...form.querySelectorAll('.dose-wrap')].map(w=>{const sel=w.querySelector('[name=prodId]');const pr=sel&&S.products.find(x=>x.id===sel.value);return {label:pr?prodLabel(pr):'',dose:w.querySelector('[name=dose]').value,unit:w.querySelector('[name=unit]').value}}).filter(x=>x.label);
+  const html=tankPlan(L,form.querySelector('[name=tank]')?.value,prods);box.innerHTML=html;box.hidden=!html;
 }
 function prodSummary(e){
   if(!e.products||!e.products.length)return '';
   const L=num(e.liters);
-  return `<span class="muted" style="font-size:.78rem;display:block">${L?dec(L)+' L · ':''}${e.products.map(x=>`${esc(x.label)} ${dec(x.dose)} ${esc(x.unit)}/L${L&&num(x.dose)?' ('+dec(Math.round(num(x.dose)*L*100)/100)+' '+esc(x.unit)+')':''}`).join(' · ')}</span>`;
+  const tp=tankPlan(L,e.tank,e.products);
+  return `<span class="muted" style="font-size:.78rem;display:block">${L?dec(L)+' L · ':''}${e.products.map(x=>`${esc(x.label)} ${num(x.dose)?dec(x.dose)+' '+esc(x.unit)+'/L':'(dosis a completar)'}${L&&num(x.dose)?' ('+dec(Math.round(num(x.dose)*L*100)/100)+' '+esc(x.unit)+')':''}`).join(' · ')}</span>${tp?`<span class="muted" style="font-size:.78rem;display:block">${tp}</span>`:''}`;
 }
 function substrateCard(x){
   const row=(l,v)=>v?`<div class="frow"><dt>${l}</dt><dd>${esc(v)}</dd></div>`:'';
@@ -1892,7 +1909,7 @@ app.addEventListener('submit',e=>{
     }else if(kind==='event'){
       const ev={date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),status:d.status||'planificado'};
       if(RIEGO_USE[ev.type]){const fd=new FormData(f);const ids=fd.getAll('prodId'),ds=fd.getAll('dose'),us=fd.getAll('unit');
-        ev.liters=num(d.liters)||'';
+        ev.liters=num(d.liters)||'';ev.tank=n2(d.tank);
         ev.products=ids.map((pid,i)=>{const pr=S.products.find(x=>x.id===pid);return pr?{productId:pid,label:prodLabel(pr),dose:num(ds[i]),unit:us[i]||'ml'}:null}).filter(Boolean);}
       else{ev.products=[];ev.liters='';}
       if(ev.type==='Compra'){const fd=new FormData(f);const ns=fd.getAll('biName'),qs=fd.getAll('biQty'),ps=fd.getAll('biPrice');
