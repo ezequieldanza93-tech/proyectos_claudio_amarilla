@@ -7,7 +7,7 @@
 :root{
   --bg:#f3f5f2; --surface:#ffffff; --ink:#18221d; --muted:#5d6b63; --line:#d9e0db;
   --accent:#2f6b4f; --accent-soft:#e2eee7;
-  --p1:#2f6b4f; --p2:#3d4f9a; --p3:#a5651a; --p4:#1f7a83; --p5:#7a4a8c;
+  --p1:#2f6b4f; --p2:#3d4f9a; --p3:#a5651a; --p4:#1f7a83; --p5:#7a4a8c; --p6:#8a5a3c;
   --warn:#b4471f; --ok:#2f7d4a;
   --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -16,12 +16,12 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#121815; --surface:#1a221e; --ink:#e6ece8; --muted:#9aa9a0; --line:#2c3832;
   --accent:#6fbf94; --accent-soft:#213229;
-  --p1:#6fbf94; --p2:#8d9ef0; --p3:#e3a656; --p4:#5cc3cc; --p5:#c79ad9;
+  --p1:#6fbf94; --p2:#8d9ef0; --p3:#e3a656; --p4:#5cc3cc; --p5:#c79ad9; --p6:#d49a76;
   --warn:#f0875f; --ok:#6fcf8f; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#121815; --surface:#1a221e; --ink:#e6ece8; --muted:#9aa9a0; --line:#2c3832;
   --accent:#6fbf94; --accent-soft:#213229;
-  --p1:#6fbf94; --p2:#8d9ef0; --p3:#e3a656; --p4:#5cc3cc; --p5:#c79ad9;
+  --p1:#6fbf94; --p2:#8d9ef0; --p3:#e3a656; --p4:#5cc3cc; --p5:#c79ad9; --p6:#d49a76;
   --warn:#f0875f; --ok:#6fcf8f; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
@@ -91,6 +91,28 @@ textarea{min-height:70px;resize:vertical}
 .log:first-child{border-top:0}
 .empty{border:1px dashed var(--line);border-radius:10px;padding:16px;color:var(--muted);font-size:.9rem}
 
+/* link tree */
+.hub-head{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:10px}
+.hub-head p{margin:0}
+.links{display:flex;flex-direction:column;gap:12px;max-width:580px;margin:0 auto;width:100%}
+.link{display:grid;grid-template-columns:42px 1fr auto;gap:14px;align-items:center;padding:15px 16px;border-radius:14px;border:1px solid var(--line);border-left:5px solid var(--pc);background:var(--surface);color:var(--ink);text-align:left;cursor:pointer;width:100%}
+.link:hover{border-color:var(--pc);box-shadow:0 2px 14px color-mix(in srgb,var(--pc) 18%,transparent)}
+.link .ico{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-weight:500;background:color-mix(in srgb,var(--pc) 16%,transparent);color:var(--pc)}
+.link .lt{font-family:var(--f-display);font-size:1.08rem;font-weight:600;line-height:1.2}
+.link .ls{font-size:.8rem;color:var(--muted);margin-top:2px}
+.link .arr{color:var(--pc);font-size:1.2rem}
+.hub-week{max-width:580px;margin:0 auto;width:100%}
+/* finanzas */
+.money-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.ms{background:var(--bg);border-radius:10px;padding:12px}
+.ms b{display:block;font-family:var(--f-mono);font-size:1.15rem;font-weight:500;font-variant-numeric:tabular-nums}
+.inc{color:var(--ok)} .exp{color:var(--warn)}
+.cat{display:grid;grid-template-columns:minmax(90px,160px) 1fr 110px;gap:10px;align-items:center;font-size:.86rem}
+.mov{display:grid;grid-template-columns:70px 1fr 120px auto;gap:10px;align-items:center;font-size:.86rem;padding:7px 0;border-top:1px solid var(--line)}
+.mov:first-child{border-top:0}
+.mov .amt{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.tag{font-size:.72rem;border:1px solid var(--line);border-radius:999px;padding:1px 7px;color:var(--muted);margin-left:6px}
+@media (max-width:560px){.mov{grid-template-columns:60px 1fr auto}.mov .ma{grid-column:1/-1;justify-self:end}.cat{grid-template-columns:1fr 100px}.cat .track{grid-column:1/-1;grid-row:2}}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -119,8 +141,23 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 <script>
 (function(){
-const PCOL=['--p1','--p2','--p3','--p4','--p5'];
-const S={projects:[],tasks:[],logs:[],timer:null,view:'home',pid:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
+const S={projects:[],tasks:[],logs:[],money:[],timer:null,month:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const curId=()=>decodeURIComponent(location.hash.slice(1));
+const current=()=>S.projects.find(p=>p.id===curId());
+const isLedger=p=>p&&p.kind==='ledger';
+const ARS=new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
+const money=v=>ARS.format(Math.round(v));
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const monthName=m=>{const [y,mm]=m.split('-');return MESES[+mm-1]+' '+y};
+const shiftMonth=(m,d)=>{let [y,mm]=m.split('-').map(Number);mm+=d;while(mm<1){mm+=12;y--}while(mm>12){mm-=12;y++}return y+'-'+String(mm).padStart(2,'0')};
+function ledgerSums(p,month){
+  const ms=S.money.filter(m=>m.ledgerId===p.id&&(m.date||'').startsWith(month));
+  const inc=ms.filter(m=>m.type==='ingreso').reduce((s,m)=>s+num(m.amount),0);
+  const exp=ms.filter(m=>m.type!=='ingreso').reduce((s,m)=>s+num(m.amount),0);
+  return {ms,inc,exp,bal:inc-exp};
+}
+window.addEventListener('hashchange',()=>{S.form=null;S.confirm=null;window.scrollTo(0,0);rerender()});
 let db=null, pending=false;
 const app=document.getElementById('app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -155,7 +192,8 @@ function render(){
   let html='';
   if(S.timer)html+=timerBar();
   if(S.err)html+=`<div class="notice">${esc(S.err)}</div>`;
-  html+= S.view==='project'&&S.projects.find(p=>p.id===S.pid)?detailView():homeView();
+  const cp=current();S.pid=cp?cp.id:null;
+  html+= cp?(isLedger(cp)?ledgerView(cp):detailView()):homeView();
   app.innerHTML=html;
   tick();
 }
@@ -179,51 +217,54 @@ setInterval(tick,1000);
 function homeView(){
   const ps=sortedProjects();
   const loading=!db||!(S.loaded.projects&&S.loaded.tasks&&S.loaded.logs);
-  let h=`<header class="top"><div><h1>Brújula de Objetivos</h1>
-    <p class="muted">Qué quiero lograr, por qué, y cuánto tiempo le estoy dedicando.</p></div>
-    ${db?'<button class="primary" data-act="newProject">+ Nuevo objetivo</button>':''}</header>`;
-  if(S.form&&S.form.type==='project'&&!S.form.id)h+=`<div class="panel">${projectForm({})}</div>`;
-  if(loading&&!S.err){return h+`<div class="empty">Cargando objetivos, tareas y horas…</div>`}
-  if(!ps.length){return h+`<div class="empty">Todavía no hay objetivos cargados. Tocá «+ Nuevo objetivo» y escribí qué querés lograr y por qué.</div>`}
-  // semana
+  let h=`<header class="hub-head"><h1>Brújula</h1>
+    <p class="muted">Mis objetivos, mis números y el tiempo que le dedico a cada cosa.</p></header>`;
+  if(loading&&!S.err){return h+`<div class="empty links">Cargando…</div>`}
+  if(S.form&&S.form.type==='project'&&!S.form.id)h+=`<div class="panel links">${projectForm({})}</div>`;
+  h+=`<nav class="links">${ps.map(linkItem).join('')||'<div class="empty">Todavía no hay secciones. Tocá «+ Agregar sección».</div>'}
+    ${db&&!(S.form&&S.form.type==='project')?'<button class="ghost" data-act="newProject" style="align-self:center">+ Agregar sección</button>':''}</nav>`;
+  const pj=ps.filter(p=>!isLedger(p));
+  if(!pj.length)return h;
   const ws=weekStart();let tot=0,goal=0;
-  const bars=ps.map(p=>{const st=projStats(p);tot+=st.week;const g=num(p.weeklyHours);goal+=g;
+  const bars=pj.map(p=>{const st=projStats(p);tot+=st.week;const g=num(p.weeklyHours);goal+=g;
     const max=Math.max(g,st.week,1);
     return `<div class="wb" style="--pc:${pcolor(p)}"><span class="name">${esc(p.name)}</span>
       <div class="track" title="${h1(st.week)} h de ${g?h1(g)+' h':'sin meta'}"><div class="fill" style="width:${Math.min(100,st.week/max*100)}%;background:var(--pc)"></div>
       ${g?`<div style="position:absolute;top:-1px;bottom:-1px;left:calc(${Math.min(100,g/max*100)}% - 2px);width:2px;background:var(--ink)"></div>`:''}</div>
       <span class="val num">${h1(st.week)}${g?' / '+h1(g):''} h</span></div>`}).join('');
-  h+=`<section class="panel"><div class="row"><h2>Esta semana</h2><span class="spacer"></span>
-    <span class="num muted">${h1(tot)} h${goal?' de '+h1(goal)+' h planificadas':''} · desde el lun ${fmtDate(ws)}</span></div>
+  h+=`<section class="panel hub-week"><div class="row"><h3>Tiempo esta semana</h3><span class="spacer"></span>
+    <span class="num muted" style="font-size:.8rem">${h1(tot)} h${goal?' de '+h1(goal)+' h':''} · desde el lun ${fmtDate(ws)}</span></div>
     <div class="week-bars">${bars}</div>
-    <span class="muted" style="font-size:.78rem">La raya negra marca la meta semanal de horas de cada objetivo (se carga en «Editar objetivo»).</span></section>`;
-  h+=`<section class="cards">${ps.map(card).join('')}</section>`;
+    <span class="muted" style="font-size:.75rem">La raya marca la meta semanal de horas (se carga en «Editar objetivo»).</span></section>`;
   return h;
 }
-function card(p){
-  const st=projStats(p);const dl=daysLeft(p.deadline);
-  return `<button class="card" style="--pc:${pcolor(p)}" data-act="open" data-id="${esc(p.id)}">
-    <div class="row"><span class="chip">N${esc(p.priority||'–')}</span>${p.deadline?`<span class="muted num" style="font-size:.75rem">${dl<0?'<span class="over">vencido</span>':dl+' días'} · ${fmtDate(p.deadline)}</span>`:''}</div>
-    <h3>${esc(p.name)}</h3>
-    ${p.goal?`<div style="font-size:.9rem">${esc(p.goal)}</div>`:''}
-    ${p.why?`<div class="why"><b>Por qué:</b> ${esc(p.why)}</div>`:''}
-    <div class="prog"><i style="width:${Math.round(st.pct*100)}%"></i></div>
-    <div class="stats">
-      <div class="stat"><b>${st.done.length}/${st.ts.length}</b><span>tareas hechas</span></div>
-      <div class="stat"><b>${h1(st.dedicated)}/${h1(st.est)}</b><span>h dedicadas / estimadas</span></div>
-      <div class="stat"><b>${h1(st.week)}</b><span>h esta semana</span></div>
-    </div>
-    <div class="next muted">${st.next?'Próxima: <span style="color:var(--ink)">'+esc(st.next.title)+'</span>':(st.ts.length?'Todas las tareas hechas':'Sin tareas: entrá y armá el plan')}</div>
-  </button>`;
+function linkItem(p,i){
+  let sub;
+  if(isLedger(p)){const m=today().slice(0,7);const s=ledgerSums(p,m);
+    sub=`Saldo de ${MESES[+m.slice(5)-1]}: <span class="num ${s.bal<0?'exp':''}">${money(s.bal)}</span>`;}
+  else{const st=projStats(p);
+    sub=st.ts.length?`${st.done.length}/${st.ts.length} tareas · ${h1(st.week)} h esta semana${st.next?' · Próxima: '+esc(st.next.title):''}`:'Sin tareas: entrá y armá el plan';}
+  return `<button class="link" style="--pc:${pcolor(p)}" data-act="open" data-id="${esc(p.id)}">
+    <span class="ico">${isLedger(p)?'$':i+1}</span>
+    <span style="min-width:0"><span class="lt">${esc(p.name)}</span><span class="ls" style="display:block">${sub}</span></span>
+    <span class="arr" aria-hidden="true">→</span></button>`;
 }
 
 function projectForm(p){
+  const led=p.id?isLedger(p):false;
+  const showP=p.id?!led:true, showL=p.id?led:false;
   return `<form class="field" data-form="project" data-id="${esc(p.id||'')}" style="gap:12px">
-    <h3>${p.id?'Editar objetivo':'Nuevo objetivo'}</h3>
+    <h3>${p.id?'Editar sección':'Nueva sección'}</h3>
     <div class="grid2">
       <label class="field"><span class="label">Nombre</span><input id="f-name" name="name" required value="${esc(p.name)}"></label>
-      <label class="field"><span class="label">Prioridad (1 = más importante)</span><input id="f-prio" name="priority" type="number" min="1" value="${esc(p.priority||'')}"></label>
+      <label class="field"><span class="label">Orden / prioridad (1 = arriba)</span><input id="f-prio" name="priority" type="number" min="1" value="${esc(p.priority||'')}"></label>
+      ${p.id?'':`<label class="field"><span class="label">Tipo</span><select id="f-kind" name="kind" data-kind-toggle>
+        <option value="project">Objetivo con tareas y horas</option><option value="ledger">Finanzas (ingresos y gastos)</option></select></label>`}
     </div>
+    <div class="field only-ledger" style="gap:12px" ${showL?'':'hidden'}>
+      <label class="field"><span class="label">Separar movimientos por (opcional, separado por comas)</span><input id="f-scopes" name="scopes" value="${esc((p.scopes||[]).join(', '))}" placeholder="Ej.: Casa, Mío"></label>
+    </div>
+    <div class="field only-project" style="gap:12px" ${showP?'':'hidden'}>
     <label class="field"><span class="label">Objetivo (qué quiero lograr, medible)</span><textarea id="f-goal" name="goal">${esc(p.goal)}</textarea></label>
     <label class="field"><span class="label">Por qué tengo que cumplirlo</span><textarea id="f-why" name="why">${esc(p.why)}</textarea></label>
     <div class="grid2">
@@ -231,6 +272,7 @@ function projectForm(p){
       <label class="field"><span class="label">Meta de horas por semana</span><input id="f-weekly" name="weeklyHours" inputmode="decimal" value="${esc(p.weeklyHours||'')}"></label>
     </div>
     <label class="field"><span class="label">Recursos generales (dinero, materiales, personas, herramientas)</span><textarea id="f-res" name="resources">${esc(p.resources)}</textarea></label>
+    </div>
     <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button></div>
   </form>`;
 }
@@ -258,10 +300,65 @@ function logForm(pid,tid){
   </form>`;
 }
 
+function ledgerView(p){
+  const pc=pcolor(p);const month=S.month||today().slice(0,7);const f=S.form;
+  const scopes=p.scopes||[];const s=ledgerSums(p,month);
+  let h=`<div class="row"><button class="ghost" data-act="home">← Inicio</button></div>`;
+  if(f&&f.type==='project'&&f.id===p.id)return h+`<div class="panel" style="--pc:${pc}">${projectForm(p)}</div>`;
+  h+=`<section class="detail-head" style="--pc:${pc}"><div class="row"><span class="chip">Finanzas</span><span class="spacer"></span>
+    <button class="small" data-act="editProject">Editar sección</button>
+    ${S.confirm==='p'+p.id?`<button class="small danger" data-act="delProject">Confirmar borrado (borra todos los movimientos)</button><button class="small" data-act="noConfirm">No</button>`:`<button class="small danger" data-act="askDel" data-key="p${esc(p.id)}">Borrar</button>`}</div>
+    <h1>${esc(p.name)}</h1></section>`;
+  h+=`<section class="panel" style="--pc:${pc}"><div class="row">
+      <button class="small" data-act="prevMonth" aria-label="Mes anterior">‹</button>
+      <h2 style="min-width:0">${monthName(month)}</h2>
+      <button class="small" data-act="nextMonth" aria-label="Mes siguiente">›</button>
+      <span class="spacer"></span><button class="primary small" data-act="newMove">+ Movimiento</button></div>
+    ${f&&f.type==='move'?moveForm(p):''}
+    <div class="money-sum">
+      <div class="ms"><span class="label">Ingresos</span><b class="inc">${money(s.inc)}</b></div>
+      <div class="ms"><span class="label">Gastos</span><b class="exp">${money(s.exp)}</b></div>
+      <div class="ms"><span class="label">Saldo</span><b class="${s.bal<0?'exp':''}">${money(s.bal)}</b></div>
+    </div>
+    ${scopes.length?`<div class="money-sum">${[...scopes,''].map(sc=>{const ms=s.ms.filter(m=>(m.scope||'')===sc);if(!sc&&!ms.length)return '';
+      const i=ms.filter(m=>m.type==='ingreso').reduce((a,m)=>a+num(m.amount),0),e=ms.filter(m=>m.type!=='ingreso').reduce((a,m)=>a+num(m.amount),0);
+      return `<div class="ms"><span class="label">${esc(sc||'Sin asignar')}</span><div class="num" style="font-size:.85rem"><span class="inc">+${money(i)}</span> · <span class="exp">−${money(e)}</span></div><b class="${i-e<0?'exp':''}" style="font-size:1rem">${money(i-e)}</b></div>`}).join('')}</div>`:''}
+  </section>`;
+  // categorías de gasto
+  const cats={};s.ms.filter(m=>m.type!=='ingreso').forEach(m=>{const c=m.category||'Sin categoría';cats[c]=(cats[c]||0)+num(m.amount)});
+  const cl=Object.entries(cats).sort((a,b)=>b[1]-a[1]);const mx=cl.length?cl[0][1]:1;
+  h+=`<section class="panel" style="--pc:${pc}"><h2>Gastos por categoría</h2>${cl.length?cl.map(([c,v])=>`<div class="cat"><span>${esc(c)}</span>
+    <div class="track"><div class="fill" style="width:${v/mx*100}%;background:var(--pc)"></div></div><span class="num" style="text-align:right">${money(v)}</span></div>`).join('')
+    :'<div class="empty">Sin gastos cargados en este mes.</div>'}</section>`;
+  const list=[...s.ms].sort((a,b)=>(b.date||'').localeCompare(a.date||'')||num(b.createdAt)-num(a.createdAt));
+  h+=`<section class="panel"><h2>Movimientos</h2>${list.length?`<div>${list.map(m=>`<div class="mov"><span class="num">${fmtDate(m.date)}</span>
+    <span style="min-width:0">${esc(m.category||'Sin categoría')}${m.scope?`<span class="tag">${esc(m.scope)}</span>`:''}${m.note?' <span class="muted">· '+esc(m.note)+'</span>':''}</span>
+    <span class="amt ${m.type==='ingreso'?'inc':'exp'}">${m.type==='ingreso'?'+':'−'}${money(num(m.amount))}</span>
+    <span class="ma">${S.confirm==='m'+m.id?`<button class="small danger" data-act="delMove" data-id="${esc(m.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="m${esc(m.id)}" aria-label="Borrar movimiento">✕</button>`}</span></div>`).join('')}</div>`
+    :'<div class="empty">Sin movimientos en este mes. Tocá «+ Movimiento» para cargar un ingreso o un gasto.</div>'}</section>`;
+  return h;
+}
+function moveForm(p){
+  const cats=[...new Set(S.money.filter(m=>m.ledgerId===p.id&&m.category).map(m=>m.category))].sort();
+  const scopes=p.scopes||[];
+  return `<form class="inline-form" data-form="move" data-pid="${esc(p.id)}">
+    <div class="grid2">
+      <label class="field"><span class="label">Tipo</span><select id="m-type" name="type"><option value="gasto">Gasto</option><option value="ingreso">Ingreso</option></select></label>
+      <label class="field"><span class="label">Monto ($)</span><input id="m-amount" name="amount" inputmode="decimal" required></label>
+      <label class="field"><span class="label">Fecha</span><input id="m-date" name="date" type="date" value="${today()}"></label>
+    </div>
+    <div class="grid2">
+      <label class="field"><span class="label">Categoría</span><input id="m-cat" name="category" list="m-cats" placeholder="Ej.: supermercado, sueldo, servicios"><datalist id="m-cats">${cats.map(c=>`<option value="${esc(c)}">`).join('')}</datalist></label>
+      ${scopes.length?`<label class="field"><span class="label">De quién</span><select id="m-scope" name="scope">${scopes.map(sc=>`<option>${esc(sc)}</option>`).join('')}</select></label>`:''}
+      <label class="field"><span class="label">Nota (opcional)</span><input id="m-note" name="note"></label>
+    </div>
+    <div class="row"><button class="primary" type="submit">Guardar movimiento</button><button type="button" data-act="cancelForm">Cancelar</button></div>
+  </form>`;
+}
 function detailView(){
   const p=S.projects.find(x=>x.id===S.pid);const st=projStats(p);const pc=pcolor(p);const dl=daysLeft(p.deadline);
   const f=S.form;
-  let h=`<div class="row"><button class="ghost" data-act="home">← Todos los objetivos</button></div>`;
+  let h=`<div class="row"><button class="ghost" data-act="home">← Inicio</button></div>`;
   if(f&&f.type==='project'&&f.id===p.id){h+=`<div class="panel" style="--pc:${pc}">${projectForm(p)}</div>`}
   else{
   h+=`<section class="detail-head" style="--pc:${pc}">
@@ -327,8 +424,12 @@ app.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b)return;
   const act=b.dataset.act,id=b.dataset.id;
   const A={
-    open(){S.view='project';S.pid=id;S.form=null;S.confirm=null;window.scrollTo(0,0);rerender()},
-    home(){S.view='home';S.form=null;S.confirm=null;rerender()},
+    open(){location.hash=id},
+    home(){location.hash=''},
+    prevMonth(){S.month=shiftMonth(S.month||today().slice(0,7),-1);rerender()},
+    nextMonth(){S.month=shiftMonth(S.month||today().slice(0,7),1);rerender()},
+    newMove(){S.form={type:'move'};rerender();document.getElementById('m-amount')?.focus()},
+    delMove(){safe(async()=>{await db.doc('money/'+id).delete();S.confirm=null})},
     newProject(){S.form={type:'project'};rerender();document.getElementById('f-name')?.focus()},
     editProject(){S.form={type:'project',id:S.pid};rerender()},
     newTask(){S.form={type:'task'};rerender();document.getElementById('t-title')?.focus()},
@@ -351,7 +452,8 @@ app.addEventListener('click',e=>{
     delProject(){const pid=S.pid;safe(async()=>{
       for(const t of S.tasks.filter(t=>t.projectId===pid))await db.doc('tasks/'+t.id).delete();
       for(const l of S.logs.filter(l=>l.projectId===pid))await db.doc('logs/'+l.id).delete();
-      await db.doc('projects/'+pid).delete();S.view='home';S.confirm=null;rerender()})},
+      for(const m of S.money.filter(m=>m.ledgerId===pid))await db.doc('money/'+m.id).delete();
+      await db.doc('projects/'+pid).delete();S.confirm=null;location.hash='';rerender()})},
   };
   if(A[act]&&(db||act==='home'||act==='open'))A[act]();
 });
@@ -360,14 +462,22 @@ async function saveTimerLog(){
   const mins=Math.round((Date.now()-num(T.startedAt))/60000);
   if(mins>=1)await db.collection('logs').add({projectId:T.projectId,taskId:T.taskId||'',minutes:mins,date:today(),note:'Cronómetro',createdAt:Date.now()});
 }
+app.addEventListener('change',e=>{
+  if(e.target.matches('[data-kind-toggle]')){const fm=e.target.closest('form');const led=e.target.value==='ledger';
+    fm.querySelector('.only-ledger').hidden=!led;fm.querySelector('.only-project').hidden=led;}
+});
 app.addEventListener('submit',e=>{
   e.preventDefault();const f=e.target;const d=Object.fromEntries(new FormData(f).entries());
   const kind=f.dataset.form;
   safe(async()=>{
     if(kind==='project'){
-      const data={name:d.name.trim(),priority:num(d.priority)||null,goal:d.goal.trim(),why:d.why.trim(),deadline:d.deadline||'',weeklyHours:num(d.weeklyHours),resources:d.resources.trim()};
+      const data={name:d.name.trim(),priority:num(d.priority)||null,goal:(d.goal||'').trim(),why:(d.why||'').trim(),deadline:d.deadline||'',weeklyHours:num(d.weeklyHours),resources:(d.resources||'').trim(),
+        scopes:String(d.scopes||'').split(',').map(x=>x.trim()).filter(Boolean)};
       if(f.dataset.id)await db.doc('projects/'+f.dataset.id).update(data);
-      else{const r=await db.collection('projects').add({...data,createdAt:Date.now()});S.view='project';S.pid=r.id}
+      else{const r=await db.collection('projects').add({...data,kind:d.kind||'project',createdAt:Date.now()});S.form=null;location.hash=r.id}
+    }else if(kind==='move'){
+      const amt=num(d.amount);if(amt<=0){S.err='Cargá un monto mayor a cero.';rerender();return}
+      await db.collection('money').add({ledgerId:f.dataset.pid,type:d.type==='ingreso'?'ingreso':'gasto',amount:amt,category:(d.category||'').trim(),scope:d.scope||'',date:d.date||today(),note:(d.note||'').trim(),createdAt:Date.now()});
     }else if(kind==='task'){
       const data={title:d.title.trim(),estHours:num(d.estHours),due:d.due||'',status:d.status||'pendiente',resources:d.resources.trim()};
       if(f.dataset.id)await db.doc('tasks/'+f.dataset.id).update(data);
@@ -393,6 +503,7 @@ async function boot(){
   db.collection('projects').onSnapshot(s=>{clearTimeout(loadTimer);S.projects=toList(s);S.loaded.projects=true;if(S.err&&S.err.startsWith('Los datos'))S.err=null;render()},onErr);
   db.collection('tasks').onSnapshot(s=>{S.tasks=toList(s);S.loaded.tasks=true;render()},onErr);
   db.collection('logs').onSnapshot(s=>{S.logs=toList(s);S.loaded.logs=true;render()},onErr);
+  db.collection('money').onSnapshot(s=>{S.money=toList(s);render()},onErr);
   db.doc('timer/current').onSnapshot(s=>{S.timer=s.exists?s.data():null;render()},onErr);
 }
 boot();
