@@ -15,7 +15,7 @@
     "ppf_umol_s": null,
     "eficacia_umol_j": null,
     "espectro": "3000 K + 5000 K + 660 nm + 730 nm + 370-780 nm + 395 nm",
-    "dimmer": true,
+    "dimmer": null,
     "cobertura_recomendada_cm": null,
     "fuentes": [
       {
@@ -25,8 +25,8 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
-    "notas": "Ficha: «Potencia de extracción de pared: 180 W», driver Yxo, entrada 85-277 V CA, 50/60 Hz, 50.000 h, flujo 15000 lm/32000 lm (sin aclarar), peso 1,9 kg. La ficha dice «espectro completo» pero no se clasificó el tipo. Tamaño 280 x 280 x 14 mm."
+    "verificado": true,
+    "notas": "Ficha: «Potencia de extracción de pared: 180 W», driver Yxo, entrada 85-277 V CA, 50/60 Hz, 50.000 h, flujo 15000 lm/32000 lm (sin aclarar), peso 1,9 kg. La ficha dice «espectro completo» pero no se clasificó el tipo. Tamaño 280 x 280 x 14 mm. Dimmer en null: la ficha no lo menciona (verificado el 19/11)."
   },
   {
     "id": "bioled-110i",
