@@ -244,6 +244,18 @@ textarea{min-height:70px;resize:vertical}
 .catlist{display:flex;flex-direction:column}
 .catrow{border-top:1px solid var(--line);padding:8px 0;display:flex;flex-direction:column;gap:6px}
 .catrow:first-child{border-top:0}
+.pick-wrap{display:flex;gap:4px;align-items:center;min-width:0}
+.pick-wrap>input,.pick-wrap>select{flex:1;min-width:0}
+.pick-btn{flex:none}
+.picker{border:1px solid var(--pc,var(--accent));border-radius:10px;background:var(--surface);padding:8px;display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.pick-filters{display:flex;flex-wrap:wrap;gap:6px}
+.pick-filters select{width:auto;flex:1;min-width:120px}
+.pick-count{font-size:.75rem}
+.pick-list{display:flex;flex-direction:column;max-height:280px;overflow-y:auto;border-top:1px solid var(--line)}
+.pick-item{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:7px 4px;font-size:.86rem}
+.pick-item .muted{font-size:.75rem}
+.pick-item:hover{background:var(--bg)}
+.dose-row .pick-wrap{grid-column:auto}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -329,7 +341,7 @@ function render(){
   if(S.lightbox)html+=`<div class="lightbox" data-act="closeLb"><img src="${esc(S.lightbox)}" alt="Foto ampliada"><button data-act="closeLb">Cerrar</button></div>`;
   const cp=current();S.pid=cp?cp.id:null;
   html+= cp?(isLedger(cp)?ledgerView(cp):detailView()):homeView();
-  app.innerHTML=html;
+  PICK=null;app.innerHTML=html;
   app.querySelectorAll('form[data-form=event]').forEach(f=>{updateDoseTotals(f);updateBuyTotals(f)});
   app.querySelectorAll('form[data-form=item]').forEach(applyKindVisibility);
   app.querySelectorAll('form[data-form=batch],form[data-form=product],form[data-form=event]').forEach(applyBatchVis);
@@ -561,11 +573,11 @@ function prodOptions(use,sel){
 }
 function prodRow(use,it){
   it=it||{};const pr=S.products.find(x=>x.id===it.productId);const unit=it.unit||(pr&&pr.unit)||'ml';
-  return `<div class="dose-row"><select name="prodId" aria-label="Producto">${prodOptions(use,it.productId)}</select>
+  return `<div data-pickfield class="dose-wrap"><div class="dose-row"><span class="pick-wrap"><select name="prodId" data-picktarget aria-label="Producto">${prodOptions(use,it.productId)}</select>${pickBtn({subs:use})}</span>
     <input name="dose" inputmode="decimal" aria-label="Dosis por litro" placeholder="Dosis" value="${esc(dec(it.dose))}">
     <select name="unit" aria-label="Unidad"><option value="ml" ${unit==='ml'?'selected':''}>ml/L</option><option value="g" ${unit==='g'?'selected':''}>g/L</option></select>
     <span class="num muted dose-tot"></span>
-    <button type="button" class="ghost small danger" data-act="rmDoseRow" aria-label="Quitar producto">✕</button></div>`;
+    <button type="button" class="ghost small danger" data-act="rmDoseRow" aria-label="Quitar producto">✕</button></div></div>`;
 }
 function riegoFields(e){
   const sc=e.spaceId||S.space;const bs=S.batches.filter(b=>b.status!=='finalizado'&&(!sc||b.spaceId===sc));
@@ -630,7 +642,7 @@ function catalogIndex(){
     push('equipo','carpas',x,x.producto,j([x.largo_cm?`${x.largo_cm}×${x.ancho_cm}×${x.alto_cm} cm`:'',b(x.bocas_superiores)?'bocas sup. '+b(x.bocas_superiores):'',b(x.bocas_inferiores)?'bocas inf. '+b(x.bocas_inferiores):'',x.material_reflectivo]))});
   (C.ventilacion||[]).forEach(x=>push('equipo',/filtro|carb[oó]n/i.test(x.producto)?'olores':'ventilacion',x,x.producto,j([x.tipo,x.diametro,x.caudal_m3h?x.caudal_m3h+' m³/h':'',x.potencia_w?x.potencia_w+' W':'',x.oscilante?'oscilante':'',x.dimmer?'regulable':''])));
   (C.clima||[]).forEach(x=>push('equipo',/filtro|carb[oó]n|olor/i.test(x.producto)?'olores':'clima',x,x.producto,j([x.tipo,x.capacidad,x.rango_temperatura,x.rango_humedad,x.precision,x.wifi?'WiFi':''])));
-  (C.sustratos||[]).forEach(x=>push('sustrato',subOfSustrato(x.producto),x,`${x.marca} · ${x.producto}`,j([(x.litros_presentacion||[]).map(l=>l+' L').join(', '),x.ph_declarado?'pH '+x.ph_declarado:'',x.ce_declarada?'CE '+x.ce_declarada:''])));
+  (C.sustratos||[]).forEach(x=>push('sustrato',subOfSustrato(x.producto),x,`${catLine(x)} · ${x.producto}`,j([(x.litros_presentacion||[]).map(l=>l+' L').join(', '),x.ph_declarado?'pH '+x.ph_declarado:'',x.ce_declarada?'CE '+x.ce_declarada:''])));
   (C.fertilizantes||[]).forEach(x=>push('fert','radicular',x,`${catLine(x)} · ${x.producto}`,j([x.npk_declarado?'NPK '+x.npk_declarado:'',doseText(x.dosis_fabricante)])));
   (C.foliares||[]).forEach(x=>push('fert','foliar',x,`${catLine(x)} · ${x.producto}`,j([x.composicion_declarada,doseText(x.dosis_fabricante)])));
   (C.geneticas||[]).forEach(x=>{const t=(x.tipo||'').toLowerCase();const sub=/clon|esqueje/.test(t)?'esqueje':/auto/.test(t)?'auto':'fem';
@@ -848,6 +860,47 @@ function genSheet(b){const x=genOf(b);if(!x)return '';
   const parts=[x.tipo,x.proporcion,x.ciclo_total_dias?'ciclo '+x.ciclo_total_dias:'',x.floracion?'floración '+x.floracion:'',x.altura_interior?'altura int. '+x.altura_interior:'',x.altura_exterior?'altura ext. '+x.altura_exterior:'',x.rendimiento_interior?'int. '+x.rendimiento_interior:'',x.rendimiento_exterior?'ext. '+x.rendimiento_exterior:''].filter(Boolean);
   return `<div class="muted" style="font-size:.82rem">Ficha ${esc(genLabel(x))}: ${esc(parts.join(' · '))}${catSrc(x).length?` · <a href="${esc(catSrc(x)[0])}" target="_blank" rel="noopener">fuente</a>`:''}${x.verificado?'':' · sin verificar'}</div>`;}
 /* ---------- compras ---------- */
+/* ---------- buscador de catálogo ---------- */
+const pickBtn=(opts)=>`<button type="button" class="small pick-btn" data-act="openPick" data-cats="${opts.cats||''}" data-subs="${opts.subs||''}" aria-label="Buscar en el catálogo">Buscar</button>`;
+let PICK=null;
+function openPicker(btn){
+  closePicker();
+  const field=btn.closest('[data-pickfield]');if(!field)return;
+  const cats=btn.dataset.cats?btn.dataset.cats.split(','):null,subs=btn.dataset.subs?btn.dataset.subs.split(','):null;
+  const box=document.createElement('div');box.className='picker';field.after(box);
+  PICK={box,field,cats,subs,q:'',cat:'',sub:'',brand:''};renderPicker(true);
+  setTimeout(()=>box.querySelector('[data-pq]')?.focus(),0);
+}
+function closePicker(){if(PICK&&PICK.box)PICK.box.remove();PICK=null}
+function pickBase(){return catalogIndex().filter(x=>(!PICK.cats||PICK.cats.includes(x.cat))&&(!PICK.subs||PICK.subs.includes(x.sub)))}
+function renderPicker(full){
+  const base=pickBase();
+  const catsAvail=CAT_TREE.filter(c=>base.some(x=>x.cat===c.k)||(PICK.cats||[]).includes(c.k));
+  const subsAvail=CAT_TREE.flatMap(c=>c.subs.map(([k,l])=>({c:c.k,k,l}))).filter(s=>(!PICK.subs||PICK.subs.includes(s.k))&&(!PICK.cats||PICK.cats.includes(s.c))&&(!PICK.cat||s.c===PICK.cat));
+  const pre=base.filter(x=>(!PICK.cat||x.cat===PICK.cat)&&(!PICK.sub||x.sub===PICK.sub));
+  const brands=[...new Set(pre.map(x=>x.brand).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  const qs=PICK.q.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').split(/\s+/).filter(Boolean);
+  const norm=t=>t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const res=pre.filter(x=>(!PICK.brand||x.brand===PICK.brand)&&qs.every(q=>norm(x.label+' '+x.brand+' '+x.facts).includes(q))).sort((a,b)=>a.label.localeCompare(b.label));
+  PICK.res=res;
+  const list=`<div class="pick-count muted">${res.length} resultado${res.length===1?'':'s'}</div><div class="pick-list">${res.slice(0,80).map((x,i)=>`<button type="button" class="pick-item" data-act="pickItem" data-i="${i}"><b>${esc(x.label)}</b><span class="muted">${esc(subLabel(x.sub))}${x.facts?' · '+esc(x.facts):''}</span></button>`).join('')||'<div class="muted" style="padding:8px">Sin resultados. Probá con otra palabra o escribí el nombre a mano.</div>'}${res.length>80?'<div class="muted" style="padding:6px">Escribí para acotar la lista.</div>':''}</div>`;
+  const brandSel=`<select data-pbrand aria-label="Marca"><option value="">Todas las marcas</option>${brands.map(b=>`<option ${b===PICK.brand?'selected':''}>${esc(b)}</option>`).join('')}</select>`;
+  if(full){
+    PICK.box.innerHTML=`<div class="row"><input data-pq placeholder="Escribí para buscar…" aria-label="Buscar en el catálogo" value="${esc(PICK.q)}" style="flex:1;min-width:140px"><button type="button" class="small ghost" data-act="closePick" aria-label="Cerrar buscador">✕</button></div>
+      <div class="pick-filters">
+        ${catsAvail.length>1?`<select data-pcat aria-label="Categoría"><option value="">Todas las categorías</option>${catsAvail.map(c=>`<option value="${c.k}" ${c.k===PICK.cat?'selected':''}>${c.l}</option>`).join('')}</select>`:''}
+        ${subsAvail.length>1?`<select data-psub aria-label="Subcategoría"><option value="">Todas las subcategorías</option>${subsAvail.map(s=>`<option value="${s.k}" ${s.k===PICK.sub?'selected':''}>${s.l}</option>`).join('')}</select>`:''}
+        <span class="pick-brand">${brandSel}</span></div><div class="pick-res">${list}</div>`;
+  }else{PICK.box.querySelector('.pick-res').innerHTML=list;PICK.box.querySelector('.pick-brand').innerHTML=brandSel;}
+}
+function pickItem(i){
+  const x=PICK&&PICK.res[i];if(!x)return;const t=PICK.field.querySelector('[data-picktarget]');
+  if(t.tagName==='SELECT'){if(![...t.options].some(o=>o.value===x.key)){const o=document.createElement('option');o.value=x.key;o.textContent=x.label;t.appendChild(o)}t.value=x.key}
+  else t.value=x.label;
+  const sb=PICK.field.querySelector('[data-picksub]');if(sb)sb.value=x.sub;
+  t.dispatchEvent(new Event('change',{bubbles:true}));t.dispatchEvent(new Event('input',{bubbles:true}));
+  closePicker();
+}
 function buyPickOptions(sub,sel){
   if(!sub)return '<option value="">Primero elegí la categoría</option>';
   const its=catalogIndex().filter(x=>x.sub===sub).sort((a,c)=>a.label.localeCompare(c.label));
@@ -855,11 +908,8 @@ function buyPickOptions(sub,sel){
   return '<option value="">Elegí el producto…</option>'+Object.keys(byB).sort().map(bn=>`<optgroup label="${esc(bn)}">${byB[bn].map(x=>`<option value="${esc(x.label)}" ${x.label===sel?'selected':''}>${esc(x.label)}</option>`).join('')}</optgroup>`).join('')+`<option value="__otro" ${sel==='__otro'?'selected':''}>Otro (escribir)</option>`;
 }
 function buyItemRow(it){it=it||{};
-  const inCat=it.sub&&catalogIndex().some(x=>x.sub===it.sub&&x.label===it.name);
-  return `<div class="buy-item"><div class="buy-sel">
-    <select name="biSub" data-buysub aria-label="Categoría"><option value="">Categoría…</option>${CAT_TREE.map(c=>`<optgroup label="${esc(c.l)}">${c.subs.map(([k,l])=>`<option value="${k}" ${k===it.sub?'selected':''}>${esc(l)}</option>`).join('')}</optgroup>`).join('')}</select>
-    <select name="biPick" data-buypick aria-label="Producto">${buyPickOptions(it.sub,inCat?it.name:(it.name?'__otro':''))}</select></div>
-    <div class="buy-row"><input name="biName" aria-label="Ítem" placeholder="Producto (o escribilo)" value="${esc(it.name)}">
+  return `<div class="buy-item" data-pickfield><input type="hidden" name="biSub" data-picksub value="${esc(it.sub||'')}">
+    <div class="buy-row"><span class="pick-wrap"><input name="biName" data-picktarget aria-label="Ítem" placeholder="Buscá en el catálogo o escribilo" value="${esc(it.name)}">${pickBtn({})}</span>
     <input name="biQty" inputmode="decimal" aria-label="Cantidad" placeholder="Cant." value="${esc(dec(it.qty??1))}">
     <input name="biPrice" inputmode="decimal" aria-label="Precio unitario estimado" placeholder="$ unit." value="${esc(dec(it.price))}">
     <span class="num muted bi-sub"></span>
@@ -957,7 +1007,8 @@ function fieldHTML(fd,it,key){
   const ai=(it.aiFields||[]).includes(fd.k)?' <span class="aitag">IA · verificar</span>':'';
   if(fd.t==='check')return `<label class="checkf"${vis}><input type="checkbox" id="${id}" name="${fd.k}" ${v?'checked':''}> ${fd.l}${ai}</label>`;
   if(fd.t==='select')return `<label class="field"${vis}><span class="label">${fd.l}</span><select id="${id}" name="${fd.k}" ${fd.k==='kind'?'data-kindsel':''}>${fd.o.map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
-  return `<label class="field"${vis}><span class="label">${fd.l}${ai}</span><input id="${id}" name="${fd.k}" ${fd.dl?`list="dl-${fd.dl}"`:fd.k==='model'&&CAT_EQUIP[key]?`list="dl-model-${key}" data-catfill="${key}"`:''} ${fd.t==='num'?'inputmode="decimal"':''} value="${esc(fd.t==='num'?dec(v):v)}" placeholder="${esc(fd.ph||'')}"></label>`;
+  const pk=fd.k==='model'&&CAT_EQUIP[key];const PSUB={lights:'luces',climate:'clima'}[key]||'ventilacion';
+  return `<label class="field"${vis} ${pk?'data-pickfield':''}><span class="label">${fd.l}${ai}</span>${pk?'<span class="pick-wrap">':''}<input id="${id}" name="${fd.k}" ${fd.dl?`list="dl-${fd.dl}"`:pk?`list="dl-model-${key}" data-catfill="${key}" data-picktarget`:''} ${fd.t==='num'?'inputmode="decimal"':''} value="${esc(fd.t==='num'?dec(v):v)}" placeholder="${esc(fd.ph||'')}">${pk?pickBtn({subs:PSUB})+'</span>':''}</label>`;
 }
 function applyKindVisibility(form){
   const sel=form.querySelector('[data-kindsel]');const kind=sel?sel.value:'';
@@ -1107,7 +1158,7 @@ function spaceEditForm(s,pc){
     </div>
     <div class="grid2">
       <label class="field"><span class="label">Carpa: marca</span><input id="s-tentBrand" name="tentBrand" list="dl-tents" value="${esc(s.tentBrand)}" placeholder="Ej.: Garden HighPro"></label>
-      <label class="field"><span class="label">Carpa: modelo y medida</span><input id="s-tentModel" name="tentModel" list="dl-tentmodels" data-tentfill value="${esc(s.tentModel)}" placeholder="Ej.: Probox Basic 120x120x200"><datalist id="dl-tentmodels">${(S.cat&&S.cat.carpas||[]).map(x=>`<option value="${esc(x.producto)}">`).join('')}</datalist><span class="muted tent-msg" style="font-size:.78rem"></span></label>
+      <label class="field" data-pickfield><span class="label">Carpa: modelo y medida</span><span class="pick-wrap"><input id="s-tentModel" name="tentModel" list="dl-tentmodels" data-tentfill data-picktarget value="${esc(s.tentModel)}" placeholder="Ej.: Probox Basic 120x120x200">${pickBtn({subs:'carpas'})}</span><datalist id="dl-tentmodels">${(S.cat&&S.cat.carpas||[]).map(x=>`<option value="${esc(x.producto)}">`).join('')}</datalist><span class="muted tent-msg" style="font-size:.78rem"></span></label>
       <div class="field"><label class="field"><span class="label">Bocas superiores (extracción / intracción)</span><input id="s-portsTop" name="portsTop" data-ports="Top" inputmode="numeric" value="${esc(s.portsTop??'')}"></label>
         <div class="ports" id="ports-Top">${portInputs('Top',num(s.portsTop),s.portsTopD||[])}</div></div>
       <div class="field"><label class="field"><span class="label">Bocas inferiores (extracción / intracción)</span><input id="s-portsBottom" name="portsBottom" data-ports="Bottom" inputmode="numeric" value="${esc(s.portsBottom??'')}"></label>
@@ -1164,10 +1215,10 @@ const n2=v=>{const t=String(v??'').trim();return t===''?'':num(t)};
 const rng=(a,b,u)=>a===''&&b===''||a==null&&b==null?'':`${a===''||a==null?'?':dec(a)}–${b===''||b==null?'?':dec(b)}${u?' '+u:''}`;
 function planDoseRow(it){
   it=it||{};
-  return `<div class="dose-row pd-row"><select name="pdProd" aria-label="Producto">${prodOptions('radicular',it.productId)}</select>
+  return `<div data-pickfield class="dose-wrap pd-wrap"><div class="dose-row pd-row"><span class="pick-wrap"><select name="pdProd" data-picktarget aria-label="Producto">${prodOptions('radicular',it.productId)}</select>${pickBtn({subs:'radicular'})}</span>
     <input name="pdDose" inputmode="decimal" aria-label="Dosis por litro" placeholder="Dosis" value="${esc(dec(it.dose))}">
     <select name="pdUnit" aria-label="Unidad"><option value="ml" ${(it.unit||'ml')==='ml'?'selected':''}>ml/L</option><option value="g" ${it.unit==='g'?'selected':''}>g/L</option></select>
-    <span></span><button type="button" class="ghost small danger" data-act="rmPlanDose" aria-label="Quitar producto">✕</button></div>`;
+    <span></span><button type="button" class="ghost small danger" data-act="rmPlanDose" aria-label="Quitar producto">✕</button></div></div>`;
 }
 function planRow(r){
   r=r||{};
@@ -1295,12 +1346,12 @@ function batchForm(s,b){
     <div class="grid2">
       <label class="field"><span class="label">Fecha de inicio</span><input id="b-start" name="startDate" type="date" required value="${esc(b.startDate||today())}"></label>
       <label class="field"><span class="label">Cantidad de plantas</span><input id="b-qty" name="qty" inputmode="numeric" required value="${esc(b.qty??'')}"></label>
-      <label class="field"><span class="label">Genética</span><input id="b-gen" name="genetics" list="dl-gen" value="${esc(b.genetics)}" placeholder="Ej.: Gorilla Piña autofloreciente (BSF)"><datalist id="dl-gen">${gens.map(g=>`<option value="${esc(g)}">`).join('')}</datalist></label>
+      <label class="field" data-pickfield><span class="label">Genética</span><span class="pick-wrap"><input id="b-gen" name="genetics" data-picktarget list="dl-gen" value="${esc(b.genetics)}" placeholder="Ej.: Gorilla Piña autofloreciente (BSF)">${pickBtn({cats:'plantas'})}</span><datalist id="dl-gen">${gens.map(g=>`<option value="${esc(g)}">`).join('')}</datalist></label>
       <label class="field"><span class="label">Tipo de cultivo</span><select id="b-crop" name="cropType" data-bvis><option value="">Elegir…</option>${CROP_TYPES.map(x=>`<option ${x===b.cropType?'selected':''}>${x}</option>`).join('')}</select></label>
       <label class="field"><span class="label">Origen</span><select id="b-origin" name="origin" data-bvis><option value="">Elegir…</option>${ORIGINS.map(x=>`<option ${x===b.origin?'selected':''}>${x}</option>`).join('')}</select></label>
       <label class="field" data-bwhen="origin:Otro espacio"><span class="label">¿De qué espacio?</span><select id="b-ospace" name="originSpaceId">${others.map(x=>`<option value="${esc(x.id)}" ${x.id===b.originSpaceId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>
       <label class="field"><span class="label">Litros de maceta</span><input id="b-pot" name="potLiters" inputmode="decimal" value="${esc(dec(b.potLiters))}"></label>
-      <label class="field" data-bwhen="cropType:Sustrato"><span class="label">Sustrato</span><input id="b-sub" name="substrate" list="dl-sub" value="${esc(b.substrate)}" placeholder="Ej.: Terrafertil Growmix Indoor"><datalist id="dl-sub">${[...new Set([...S.products.filter(x=>x.use==='sustrato').map(prodLabel),...SUBSTRATES,...S.batches.map(x=>x.substrate).filter(Boolean)])].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label>
+      <label class="field" data-bwhen="cropType:Sustrato" data-pickfield><span class="label">Sustrato</span><span class="pick-wrap"><input id="b-sub" name="substrate" data-picktarget list="dl-sub" value="${esc(b.substrate)}" placeholder="Ej.: Terrafertil Growmix Indoor">${pickBtn({cats:'sustrato'})}</span><datalist id="dl-sub">${[...new Set([...S.products.filter(x=>x.use==='sustrato').map(prodLabel),...SUBSTRATES,...S.batches.map(x=>x.substrate).filter(Boolean)])].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label>
     </div>
     <div class="grid2">
       <label class="field"><span class="label">Tabla de fertilización</span><select id="b-plan" name="planId"><option value="">Sin tabla</option>${S.plans.map(x=>`<option value="${esc(x.id)}" ${x.id===b.planId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>
@@ -1512,6 +1563,9 @@ app.addEventListener('click',e=>{
     delItem(){const sp=S.spaces.find(x=>x.id===S.space);const arr=[...(sp[b.dataset.key]||[])];arr.splice(+b.dataset.i,1);
       safe(async()=>{await db.doc('spaces/'+sp.id).update({[b.dataset.key]:arr});S.confirm=null})},
     aiFill(){aiFill(b.closest('form'))},
+    openPick(){openPicker(b)},
+    closePick(){closePicker()},
+    pickItem(){pickItem(+b.dataset.i)},
     catPick(){const c=CAT_TREE.find(x=>x.k===b.dataset.cat);S.catSel={cat:c.k,sub:c.subs[0][0],brand:''};S.catItem=null;rerender()},
     subPick(){S.catSel={...(S.catSel||{cat:'equipo'}),sub:b.dataset.sub,brand:''};S.catItem=null;rerender()},
     catItem(){S.catItem=S.catItem===b.dataset.key?null:b.dataset.key;rerender()},
@@ -1526,7 +1580,7 @@ app.addEventListener('click',e=>{
     addPlanRow(){b.closest('form').querySelector('.plan-rows').insertAdjacentHTML('beforeend',planRow({}))},
     rmPlanRow(){const r=b.closest('.plan-row');if(r.parentElement.children.length>1)r.remove()},
     addPlanDose(){b.closest('.plan-row').querySelector('.pd-rows').insertAdjacentHTML('beforeend',planDoseRow({}))},
-    rmPlanDose(){const r=b.closest('.pd-row');if(r.parentElement.children.length>1)r.remove();else{r.querySelector('[name=pdProd]').value='';r.querySelector('[name=pdDose]').value=''}},
+    rmPlanDose(){const r=b.closest('.pd-wrap');if(r.parentElement.children.length>1)r.remove();else{r.querySelector('[name=pdProd]').value='';r.querySelector('[name=pdDose]').value=''}},
     planRiego(){const bt=S.batches.find(x=>x.id===id);let pre={};try{pre=JSON.parse(decodeURIComponent(b.dataset.pre||''))||{}}catch(e){}
       S.form={type:'event',prefill:{date:today(),type:'Riego radicular',title:'Riego '+(bt?bt.genetics:''),status:'planificado',batchId:id,spaceId:bt&&bt.spaceId,liters:pre.liters||'',perPlant:pre.perPlant||'',products:pre.products||[]}};
       rerender();setTimeout(()=>{const el=document.getElementById('e-title');if(el){el.scrollIntoView({block:'center'});}},0)},
@@ -1535,7 +1589,7 @@ app.addEventListener('click',e=>{
     addBuyRow(){b.closest('form').querySelector('.buy-rows').insertAdjacentHTML('beforeend',buyItemRow({}))},
     rmBuyRow(){const r=b.closest('.buy-item');const fm=r.closest('form');if(r.parentElement.children.length>1)r.remove();else r.querySelectorAll('input').forEach(i=>i.value='');updateBuyTotals(fm)},
     addDoseRow(){const fm=b.closest('form');const use=RIEGO_USE[fm.querySelector('[name=type]').value];if(!use)return;fm.querySelector('.dose-rows').insertAdjacentHTML('beforeend',prodRow(use,{}))},
-    rmDoseRow(){const r=b.closest('.dose-row');const fm=r.closest('form');const c=r.parentElement;if(c.children.length>1)r.remove();else{r.querySelector('[name=prodId]').value='';r.querySelector('[name=dose]').value=''}updateDoseTotals(fm)},
+    rmDoseRow(){const r=b.closest('.dose-wrap');const fm=r.closest('form');const c=r.parentElement;if(c.children.length>1)r.remove();else{r.querySelector('[name=prodId]').value='';r.querySelector('[name=dose]').value=''}updateDoseTotals(fm)},
     viewImg(){S.lightbox=b.dataset.src;rerender()},
     closeLb(){S.lightbox=null;rerender()},
     delMedia(){const m=S.media.find(x=>x.id===id);safe(async()=>{if(m&&assets){try{await assets.delete(m.assetId)}catch(e){}}await db.doc('media/'+id).delete();S.confirm=null})},
@@ -1571,7 +1625,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
@@ -1584,6 +1638,9 @@ app.addEventListener('change',e=>{
   if(e.target.matches('[data-bvis]'))applyBatchVis(e.target.closest('form'));
   if(e.target.matches('[data-buysub]')){const it=e.target.closest('.buy-item');it.querySelector('[data-buypick]').innerHTML=buyPickOptions(e.target.value,'');}
   if(e.target.matches('[data-buypick]')){const it=e.target.closest('.buy-item');const v=e.target.value;const nm=it.querySelector('[name=biName]');if(v==='__otro'){nm.value='';nm.focus()}else if(v)nm.value=v;}
+  if(PICK&&e.target.matches('[data-pcat]')){PICK.cat=e.target.value;PICK.sub='';PICK.brand='';renderPicker(true);return}
+  if(PICK&&e.target.matches('[data-psub]')){PICK.sub=e.target.value;PICK.brand='';renderPicker(true);return}
+  if(PICK&&e.target.matches('[data-pbrand]')){PICK.brand=e.target.value;renderPicker(false);return}
   if(e.target.matches('[data-brandpick]')){S.catSel={...(S.catSel||{cat:'equipo',sub:'carpas'}),brand:e.target.value};S.catItem=null;rerender()}
   if(e.target.matches('[data-catfill]'))catFill(e.target.closest('form'),e.target.dataset.catfill);
   if(e.target.matches('[data-tentfill]'))tentFill(e.target.closest('form'));
@@ -1594,6 +1651,7 @@ app.addEventListener('change',e=>{
   if(e.target.closest('.prodbox'))updateDoseTotals(e.target.closest('form'));
 });
 app.addEventListener('input',e=>{
+  if(PICK&&e.target.matches('[data-pq]')){PICK.q=e.target.value;renderPicker(false);return}
   if(e.target.closest('.buybox'))updateBuyTotals(e.target.closest('form'));
   if(e.target.matches('[data-ports]')){const pos=e.target.dataset.ports;const box=document.getElementById('ports-'+pos);
     const vals=[...box.querySelectorAll('input')].map(i=>i.value);box.innerHTML=portInputs(pos,num(e.target.value),vals);}if(e.target.closest('.prodbox'))updateDoseTotals(e.target.closest('form'))});
