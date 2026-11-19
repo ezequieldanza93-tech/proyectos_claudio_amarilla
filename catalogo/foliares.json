@@ -1273,5 +1273,102 @@
       250
     ],
     "notas": "En autoflorecientes se puede empezar la primera semana de crecimiento. La página de Santa Planta de 250 ml es un pack x 24. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "vamp-pocion-impkble",
+    "categoria": "foliar",
+    "marca": "Vamp",
+    "linea": null,
+    "producto": "Poción Impkble",
+    "modelo": null,
+    "descripcion_corta": "Controlador orgánico de insectos de cuerpo blando que además bioestimula y corrige carencias.",
+    "fuentes": [
+      {
+        "url": "https://vamp.com.ar/productos/pocion-impkble/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": null,
+    "composicion_declarada": "Sílice que se adhiere a los insectos; aporta silicio, potasio y fósforo.",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 25,
+        "max": 25,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Rociar toda la planta; solo foliar, nunca en riego"
+      }
+    ],
+    "presentaciones": [],
+    "notas": "La ficha no informa presentaciones."
+  },
+  {
+    "id": "vamp-pocion-infernal",
+    "categoria": "foliar",
+    "marca": "Vamp",
+    "linea": null,
+    "producto": "Poción Infernal",
+    "modelo": null,
+    "descripcion_corta": "Controlador de plagas y enfermedades que además bioestimula y corrige carencias (ácaros, hongos, trips, pulgones).",
+    "fuentes": [
+      {
+        "url": "https://vamp.com.ar/productos/pocion-infernal/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": null,
+    "composicion_declarada": "Contiene azufre, calcio y zinc.",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 25,
+        "max": 25,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Rociar toda la planta; solo foliar, nunca en riego"
+      }
+    ],
+    "presentaciones": [],
+    "notas": "No aplicar en cucurbitáceas ni en flores; no recomendado en cannabis salvo prevención antes del cultivo o al renovar el ciclo. La ficha no informa presentaciones."
+  },
+  {
+    "id": "vamp-vampimelaza",
+    "categoria": "foliar",
+    "marca": "Vamp",
+    "linea": null,
+    "producto": "Vampimelaza",
+    "modelo": null,
+    "descripcion_corta": "Fermento de frutas a base de remolacha (FFJ), con carbohidratos, enzimas, aminoácidos y betacarotenos.",
+    "fuentes": [
+      {
+        "url": "https://vamp.com.ar/productos/vampimelaza/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": null,
+    "composicion_declarada": "Fermento de frutas a base de remolacha (FFJ): carbohidratos, microbiología de fermentación, enzimas, coenzimas, aminoácidos y betacarotenos.",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 25,
+        "max": 25,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Riego o foliar"
+      }
+    ],
+    "presentaciones": [],
+    "modo_aplicacion": "Riego o foliar (25 ml por litro); también complemento de abonos Bokashi.",
+    "notas": "La ficha no informa presentaciones."
   }
 ]
