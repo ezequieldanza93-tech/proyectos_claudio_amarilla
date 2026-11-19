@@ -744,12 +744,13 @@ function brandDatalists(){
 const COMP_KINDS=['Cooler 220 V','Turbina simple','Turbina doble','Ventilador'];
 const COMP_SCHEMA=[
   {k:'kind',l:'Componente',t:'select',o:COMP_KINDS},
-  {k:'size',l:'Medida',t:'select',o:['4"','6"'],whenNot:'Ventilador'},
+  {k:'size',l:'Medida de boca',t:'select',o:['4"','6"'],whenNot:'Ventilador'},
+  {k:'mount',l:'Tipo de ventilador',t:'select',o:['De pinza','De pie','De pared'],when:'Ventilador'},
+  {k:'diameter',l:'Diámetro de aspas',t:'text',ph:'Ej.: 16", 20" o 40 cm',when:'Ventilador'},
   {k:'power',l:'Potencia (W)',t:'num',when:'Ventilador'},
-  {k:'diameter',l:'Diámetro',t:'text',ph:'Ej.: 16" o 40 cm',when:'Ventilador'},
   {k:'brand',l:'Marca',t:'text',dl:'air'},{k:'model',l:'Modelo',t:'text'},
   {k:'oscillating',l:'Oscilante',t:'check',when:'Ventilador'},
-  {k:'dimmer',l:'Dimmer de velocidades',t:'check'},
+  {k:'dimmer',l:'Regulador de velocidad (dimmer)',t:'check'},
   {k:'qty',l:'Cantidad',t:'num'},
 ];
 const CLIMATE_TYPES=['Termómetro','Higrómetro','Termohigrómetro','Termostato','Higrostato','Controlador de clima','Humidificador','Deshumidificador','Otro'];
@@ -781,7 +782,7 @@ const EQUIP={
 function itemSummary(key,it){
   const yes=v=>v?'sí':'no';
   if(key.startsWith('air')){
-    if(it.kind==='Ventilador')return [`${it.qty>1?it.qty+' × ':''}Ventilador`,[it.brand,it.model].filter(Boolean).join(' '),it.power?it.power+' W':'',it.diameter,it.oscillating?'oscilante':'no oscilante',it.dimmer?'con dimmer':''].filter(Boolean).join(' · ');
+    if(it.kind==='Ventilador')return [`${it.qty>1?it.qty+' × ':''}Ventilador${it.mount?' '+it.mount.toLowerCase():''}`,[it.brand,it.model].filter(Boolean).join(' '),it.diameter,it.power?it.power+' W':'',it.oscillating?'oscilante':'no oscilante',it.dimmer?'con regulador de velocidad':'sin regulador'].filter(Boolean).join(' · ');
     return [`${it.qty>1?it.qty+' × ':''}${it.kind||''} ${it.size||''}`.trim(),[it.brand,it.model].filter(Boolean).join(' '),it.dimmer?'con dimmer':''].filter(Boolean).join(' · ');
   }
   if(key==='climate')return [`${it.qty>1?it.qty+' × ':''}${it.type||''}`,[it.brand,it.model].filter(Boolean).join(' '),it.setpoint,it.note].filter(Boolean).join(' · ');
