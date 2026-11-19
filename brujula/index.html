@@ -176,6 +176,8 @@ textarea{min-height:70px;resize:vertical}
 .checkf{display:flex;gap:8px;align-items:center;font-size:.88rem;align-self:end;padding-bottom:8px}
 .checkf input{width:auto}
 .aitag{font-size:.68rem;border:1px dashed var(--warn);color:var(--warn);border-radius:999px;padding:0 6px;white-space:nowrap}
+.ports{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px}
+.port{display:flex;flex-direction:column;gap:2px;font-size:.75rem}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -604,7 +606,7 @@ const dec=v=>v===''||v==null?'':String(v).replace('.',',');
 function spaceSummary(s){
   const parts=[];
   if(s.tentBrand||s.tentModel)parts.push([s.tentBrand,s.tentModel].filter(Boolean).join(' '));
-  if(s.portsTop!==''&&s.portsTop!=null||s.portsBottom!==''&&s.portsBottom!=null)parts.push(`Bocas: ${s.portsTop||0} sup. / ${s.portsBottom||0} inf.`);
+  if(s.portsTop!==''&&s.portsTop!=null||s.portsBottom!==''&&s.portsBottom!=null)parts.push(`Bocas: ${portsText(s.portsTop,s.portsTopD)} sup. / ${portsText(s.portsBottom,s.portsBottomD)} inf.`);
   if(s.cropType)parts.push(s.cropType==='indoor'?'Indoor':'Exterior');
   const w=num(s.width),l=num(s.length),hh=num(s.height);
   if(w&&l)parts.push(`${dec(w)}×${dec(l)}${hh?'×'+dec(hh):''} m`);
@@ -632,7 +634,7 @@ function brandDatalists(){
   S.spaces.forEach(sp=>{if(sp.tentBrand)used.tents.push(sp.tentBrand);
     (sp.lights||[]).forEach(x=>x.brand&&used.lights.push(x.brand));(sp.climate||[]).forEach(x=>x.brand&&used.climate.push(x.brand));
     ['airExtraccion','airIntraccion','airVentilacion'].forEach(k=>(sp[k]||[]).forEach(x=>x.brand&&used.air.push(x.brand)));});
-  return Object.keys(BRANDS).map(k=>`<datalist id="dl-${k}">${[...new Set([...BRANDS[k],...used[k]])].sort((a,b)=>a.localeCompare(b)).map(b=>`<option value="${esc(b)}">`).join('')}</datalist>`).join('');
+  return '<datalist id="dl-diam"><option value=\'4"\'><option value=\'6"\'><option value=\'8"\'></datalist>'+Object.keys(BRANDS).map(k=>`<datalist id="dl-${k}">${[...new Set([...BRANDS[k],...used[k]])].sort((a,b)=>a.localeCompare(b)).map(b=>`<option value="${esc(b)}">`).join('')}</datalist>`).join('');
 }
 const COMP_KINDS=['Cooler 220 V','Turbina simple','Turbina doble','Ventilador'];
 const COMP_SCHEMA=[
@@ -741,6 +743,12 @@ REGLA ESTRICTA: si no conocés con certeza un dato para ese modelo exacto, poné
     msg.textContent=filled.length?`Completó ${filled.length} campo(s). Verificalos con la hoja del fabricante antes de confiar en ellos.`:'No encontró datos confiables para ese modelo. Cargalos a mano.';
   }catch(e){msg.textContent=e&&e.code==='not_granted'?'Permiso denegado para consultar a Claude.':e&&e.code==='rate_limited'?'Demasiadas consultas; probá en un rato.':'No se pudo consultar. Cargalos a mano.'}
 }
+function portInputs(pos,n,vals){
+  n=Math.max(0,Math.min(20,Math.round(n||0)));let h='';
+  for(let i=0;i<n;i++)h+=`<label class="port"><span class="muted">Boca ${i+1}</span><input name="ports${pos}D" list="dl-diam" placeholder='Ej.: 6"' aria-label="Diámetro boca ${i+1}" value="${esc(vals[i]||'')}"></label>`;
+  return h;
+}
+const portsText=(n,ds)=>{n=num(n);if(!n)return '0';const v=(ds||[]).slice(0,n).filter(Boolean);return n+(v.length?' ('+v.join(', ')+')':'')};
 function spaceView(p,s,pc){
   const sel=(name,opts,val)=>`<select id="s-${name}" name="${name}"><option value="">Elegir…</option>${opts.map(([v,l])=>`<option value="${v}" ${val===v?'selected':''}>${l}</option>`).join('')}</select>`;
   const area=num(s.width)*num(s.length);
@@ -756,8 +764,10 @@ function spaceView(p,s,pc){
     <div class="grid2">
       <label class="field"><span class="label">Carpa: marca</span><input id="s-tentBrand" name="tentBrand" list="dl-tents" value="${esc(s.tentBrand)}" placeholder="Ej.: Garden HighPro"></label>
       <label class="field"><span class="label">Carpa: modelo y medida</span><input id="s-tentModel" name="tentModel" value="${esc(s.tentModel)}" placeholder="Ej.: Probox Basic 120x120x200"></label>
-      <label class="field"><span class="label">Bocas superiores (extracción / intracción)</span><input id="s-portsTop" name="portsTop" inputmode="numeric" value="${esc(s.portsTop??'')}"></label>
-      <label class="field"><span class="label">Bocas inferiores (extracción / intracción)</span><input id="s-portsBottom" name="portsBottom" inputmode="numeric" value="${esc(s.portsBottom??'')}"></label>
+      <div class="field"><label class="field"><span class="label">Bocas superiores (extracción / intracción)</span><input id="s-portsTop" name="portsTop" data-ports="Top" inputmode="numeric" value="${esc(s.portsTop??'')}"></label>
+        <div class="ports" id="ports-Top">${portInputs('Top',num(s.portsTop),s.portsTopD||[])}</div></div>
+      <div class="field"><label class="field"><span class="label">Bocas inferiores (extracción / intracción)</span><input id="s-portsBottom" name="portsBottom" data-ports="Bottom" inputmode="numeric" value="${esc(s.portsBottom??'')}"></label>
+        <div class="ports" id="ports-Bottom">${portInputs('Bottom',num(s.portsBottom),s.portsBottomD||[])}</div></div>
     </div>
     <div><div class="label" style="margin-bottom:4px">Dimensiones (metros)</div>
     <div class="grid3">
@@ -921,7 +931,9 @@ app.addEventListener('change',e=>{
     if(use){const prev=rows.dataset.use;if(prev!==use){rows.innerHTML=prodRow(use,{});rows.dataset.use=use}}}
   if(e.target.closest('.prodbox'))updateDoseTotals(e.target.closest('form'));
 });
-app.addEventListener('input',e=>{if(e.target.closest('.prodbox'))updateDoseTotals(e.target.closest('form'))});
+app.addEventListener('input',e=>{
+  if(e.target.matches('[data-ports]')){const pos=e.target.dataset.ports;const box=document.getElementById('ports-'+pos);
+    const vals=[...box.querySelectorAll('input')].map(i=>i.value);box.innerHTML=portInputs(pos,num(e.target.value),vals);}if(e.target.closest('.prodbox'))updateDoseTotals(e.target.closest('form'))});
 app.addEventListener('submit',e=>{
   e.preventDefault();const f=e.target;const d=Object.fromEntries(new FormData(f).entries());
   const kind=f.dataset.form;
@@ -939,7 +951,8 @@ app.addEventListener('submit',e=>{
   if(kind==='space'){const fd=new FormData(f);const gs=fd.getAll('genetics'),qs=fd.getAll('qty');
     const plants=gs.map((g,i)=>({genetics:String(g).trim(),qty:Math.round(num(qs[i]))})).filter(x=>x.genetics||x.qty);
     const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
-    const data={tentBrand:(d.tentBrand||'').trim(),tentModel:(d.tentModel||'').trim(),portsTop:n(d.portsTop),portsBottom:n(d.portsBottom),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),plants};
+    const data={tentBrand:(d.tentBrand||'').trim(),tentModel:(d.tentModel||'').trim(),portsTop:n(d.portsTop),portsBottom:n(d.portsBottom),
+      portsTopD:new FormData(f).getAll('portsTopD').map(x=>String(x).trim()),portsBottomD:new FormData(f).getAll('portsBottomD').map(x=>String(x).trim()),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),plants};
     safe(async()=>{await db.doc('spaces/'+f.dataset.id).update(data);S.spaceMsg='Guardado.';document.activeElement?.blur?.();rerender()});return}
   safe(async()=>{
     if(kind==='project'){
