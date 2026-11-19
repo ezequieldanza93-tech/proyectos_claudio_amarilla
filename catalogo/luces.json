@@ -1,0 +1,1531 @@
+[
+  {
+    "id": "amnesia-linea-eco-180w",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Línea Eco",
+    "producto": "Amnesia Línea Eco 180w",
+    "modelo": "AMNESIA LED 180w",
+    "descripcion_corta": "Panel LED Samsung LM281B+ PRO de espectro completo de 180 W de Amnesia LED (industria argentina).",
+    "tipo": null,
+    "potencia_real_w": 180,
+    "panel_largo_cm": 28,
+    "panel_ancho_cm": 28,
+    "panel_alto_cm": 1.4,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "3000 K + 5000 K + 660 nm + 730 nm + 370-780 nm + 395 nm",
+    "dimmer": true,
+    "cobertura_recomendada_cm": null,
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/amnesia-linea-eco-180w/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Ficha: «Potencia de extracción de pared: 180 W», driver Yxo, entrada 85-277 V CA, 50/60 Hz, 50.000 h, flujo 15000 lm/32000 lm (sin aclarar), peso 1,9 kg. La ficha dice «espectro completo» pero no se clasificó el tipo. Tamaño 280 x 280 x 14 mm."
+  },
+  {
+    "id": "bioled-110i",
+    "categoria": "luz",
+    "marca": "Bioled",
+    "linea": null,
+    "producto": "Bioled 110i",
+    "modelo": "110i",
+    "descripcion_corta": null,
+    "fuentes": [
+      {
+        "url": "https://bushigrowshop.com.ar/productos/panel-led-bioled-rg110i/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://olivosgrowshop.com/producto/led-bioled-full-spectrum-rg110i-336-9pvljf/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/bioled-110i/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Panel LED RG110I (Bushi lo llama RG110i). Bushi: consumo en línea 50 W a 220 V y 98 W de «potencia lumínica»; 0,23 A, 50 Hz, 22.250 lm, CRI 70, lente 98°, distancia de trabajo 30 cm, 50.000 h de vida útil, armazón metálico, peso 2 kg en la ficha (5 kg en datos estructurados). potencia_real_w = consumo en línea de 50 W. Sin espectro en nm ni dimensiones. La marca no se contrastó con la empresa fabricante (posible Bioledarg SRL).",
+    "tipo": "Full spectrum",
+    "potencia_real_w": 50,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Más azules y rojos (sin rango en nm)",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "80x80"
+  },
+  {
+    "id": "bioled-220i",
+    "categoria": "luz",
+    "marca": "Bioled",
+    "linea": null,
+    "producto": "Bioled 220i",
+    "modelo": "220i",
+    "descripcion_corta": null,
+    "fuentes": [
+      {
+        "url": "https://olivosgrowshop.com/producto/led-bioled-full-spectrum-rg220i-337-198vto/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://puntoverdegrowshop.com.ar/producto/panel-led-bioled-rg220i-196w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/bioled-220i/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Panel LED RG220I. Puntoverde lo titula «196w» (no aclara si es consumo o potencia lumínica), por eso la potencia queda sin cargar. La marca no se contrastó con la empresa fabricante (posible Bioledarg SRL).",
+    "tipo": "Full spectrum",
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null
+  },
+  {
+    "id": "bioled-330i",
+    "categoria": "luz",
+    "marca": "Bioled",
+    "linea": null,
+    "producto": "Bioled 330i",
+    "modelo": "330i",
+    "descripcion_corta": null,
+    "fuentes": [
+      {
+        "url": "https://www.growshopping.com.ar/productos/bioled-330i/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Solo figura nombre y modelo en Grow Shopping; sin ficha técnica. Tipo sin cargar.",
+    "tipo": null,
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null
+  },
+  {
+    "id": "bioled-440i",
+    "categoria": "luz",
+    "marca": "Bioled",
+    "linea": null,
+    "producto": "Bioled 440i",
+    "modelo": "440i",
+    "descripcion_corta": null,
+    "fuentes": [
+      {
+        "url": "https://www.growshopping.com.ar/productos/bioled-440i/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Solo figura nombre y modelo en Grow Shopping; sin ficha técnica. Tipo sin cargar.",
+    "tipo": null,
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null
+  },
+  {
+    "id": "bioled-55i",
+    "categoria": "luz",
+    "marca": "Bioled",
+    "linea": null,
+    "producto": "Bioled 55i",
+    "modelo": "55i",
+    "descripcion_corta": null,
+    "fuentes": [
+      {
+        "url": "https://olivosgrowshop.com/producto/led-bioled-full-spectrum-rg55i-176-4y7pgl/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://puntoverdegrowshop.com.ar/producto/panel-led-bioled-rg55i-50w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/bioled-55i/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Panel LED RG55I. Puntoverde lo titula «50w» (no aclara si es consumo o potencia lumínica), por eso la potencia queda sin cargar. Tipo «Full spectrum» según el título de Olivos Grow Shop. La marca no se contrastó con la empresa fabricante (posible Bioledarg SRL).",
+    "tipo": "Full spectrum",
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null
+  },
+  {
+    "id": "bioled-pf-100",
+    "categoria": "luz",
+    "marca": "Bioled",
+    "linea": null,
+    "producto": "Bioled PF 100",
+    "modelo": "PF 100",
+    "descripcion_corta": null,
+    "fuentes": [
+      {
+        "url": "https://www.growshopping.com.ar/productos/bioled-pf-100/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Solo figura nombre y modelo en Grow Shopping; sin ficha técnica. Tipo sin cargar.",
+    "tipo": null,
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null
+  },
+  {
+    "id": "cosmel-cob-150w-full-spectrum",
+    "categoria": "luz",
+    "marca": "Cosmel",
+    "linea": null,
+    "producto": "Led Cosmel Cob 150W Full Spectrum",
+    "modelo": "COB 150W Full Spectrum",
+    "descripcion_corta": "Panel LED COB full spectrum de 150 W, con disipador y cooler, para todas las etapas.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/led-cosmel-cob-150w-full-spectrum/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 150,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Espectro completo para crecimiento y floración",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "El grow shop dice «150 W de consumo aprox.». Vida útil estimada 50.000 h. Sin dimensiones ni PPF en la fuente."
+  },
+  {
+    "id": "cosmel-hortic-200-uv",
+    "categoria": "luz",
+    "marca": "Cosmel",
+    "linea": null,
+    "producto": "Led Cosmel Hortic-200+Uv",
+    "modelo": "Hortic-200 +UV",
+    "descripcion_corta": "Panel LED nacional de 4 chips COB espectro completo más módulo UV-A, disipación pasiva.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/led-cosmel-hortic-200uv/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 200,
+    "panel_largo_cm": 35,
+    "panel_ancho_cm": 35,
+    "panel_alto_cm": 10,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Espectro completo 380-780 nm con UV-A",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "60x60 a 80x80 cm",
+    "notas": "La fuente da PPFD medido de 448 µmol/m²/s a 40 cm (densidad, no PPF total), por eso ppf_umol_s queda null. Lentes de 90°, sin ventiladores."
+  },
+  {
+    "id": "cosmel-hortic-300",
+    "categoria": "luz",
+    "marca": "Cosmel",
+    "linea": null,
+    "producto": "Led Cosmel Hortic-300",
+    "modelo": "Hortic-300",
+    "descripcion_corta": "Panel LED nacional de 112 LEDs CREE JP3535 espectro completo con UV-A y 2 coolers magnéticos.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/led-cosmel-hortic-300/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 300,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Espectro completo con UV-A, picos en 462 nm (azul) y 687 nm (rojo)",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La fuente informa «PPFD total: 784 µmol/m²/s» (unidad de densidad), por eso ppf_umol_s queda null. 2 coolers magnéticos de 8x8 cm."
+  },
+  {
+    "id": "cosmel-sunshine-300",
+    "categoria": "luz",
+    "marca": "Cosmel",
+    "linea": null,
+    "producto": "Led Cosmel Sunshine 300",
+    "modelo": "Sunshine 300",
+    "descripcion_corta": "Panel LED nacional con LEDs CREE cerámicos 3535, lentes LEDLINK de 60° y disipación pasiva.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/led-cosmel-sunshine-300/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 300,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Espectro completo 380-780 nm con leve aporte UV",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "100x100 cm",
+    "notas": "PPFD medido 622 µmol/m²/s a 40 cm (densidad, no PPF total). Alimentación 220 V 50/60 Hz."
+  },
+  {
+    "id": "cosmel-sunshine-600",
+    "categoria": "luz",
+    "marca": "Cosmel",
+    "linea": null,
+    "producto": "Led Cosmel Sunshine 600w",
+    "modelo": "Sunshine 600",
+    "descripcion_corta": "Panel LED nacional de 600 W, luz blanca amplia con rojo profundo, rojo lejano y refuerzo de azul.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/led-cosmel-sunshine-600w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 600,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Espectro Sunshine: luz blanca amplia con rojo profundo, rojo lejano y refuerzo de azul",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "Disipación pasiva, sin ventiladores. La fuente dice «Potencia: 600 W» sin aclarar si es real."
+  },
+  {
+    "id": "growtech-cob-100w",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "COB",
+    "producto": "Panel COB 100W Full Spectrum",
+    "modelo": "COB 100W",
+    "descripcion_corta": "Panel LED COB de Growtech para todo el ciclo (vegetativo y floración), con disipación activa por turbina.",
+    "tipo": "Full spectrum",
+    "potencia_real_w": 105,
+    "panel_largo_cm": 14.5,
+    "panel_ancho_cm": 9,
+    "panel_alto_cm": 9.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "380-840 nm",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "40x40 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/panel-100w-full-spectrum/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "potencia_anunciada_w": 100,
+    "notas": "Linea COB. Los datos son los de la ficha: «Consumo Eléctrico» = potencia real; el PPFD informado (484 µmol/m²/s, medido a 25 cm) no es PPF, por eso ppf_umol_s queda null. Medidas de la ficha en mm (145x90x95 mm), orden tal cual figura; no indica cuál es largo y ancho. Garantía 1 año, vida útil 20.000 h, alimentación 220 V."
+  },
+  {
+    "id": "growtech-cob-200w",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "COB",
+    "producto": "Panel COB 200W Full Spectrum",
+    "modelo": "COB 200W",
+    "descripcion_corta": "Panel LED COB de Growtech para todo el ciclo (vegetativo y floración), con disipación activa por turbina.",
+    "tipo": "Full spectrum",
+    "potencia_real_w": 214,
+    "panel_largo_cm": 19.3,
+    "panel_ancho_cm": 14.2,
+    "panel_alto_cm": 11.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "380-840 nm",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "60x60 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/panel-200w-full-spectrum/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "potencia_anunciada_w": 200,
+    "notas": "Linea COB. Los datos son los de la ficha: «Consumo Eléctrico» = potencia real; el PPFD informado (1110 µmol/m²/s, medido a 25 cm) no es PPF, por eso ppf_umol_s queda null. Medidas de la ficha en mm (193x142x115 mm), orden tal cual figura; no indica cuál es largo y ancho. Garantía 1 año, vida útil 20.000 h, alimentación 220 V."
+  },
+  {
+    "id": "growtech-cob-300w",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "COB",
+    "producto": "Panel COB 300W Full Spectrum",
+    "modelo": "COB 300W",
+    "descripcion_corta": "Panel LED COB de Growtech para todo el ciclo (vegetativo y floración), con disipación activa por turbina.",
+    "tipo": "Full spectrum",
+    "potencia_real_w": 314,
+    "panel_largo_cm": 29.7,
+    "panel_ancho_cm": 14.2,
+    "panel_alto_cm": 11.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "380-840 nm",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "80x80 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/panel-300w-full-spectrum/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "potencia_anunciada_w": 300,
+    "notas": "Linea COB. Los datos son los de la ficha: «Consumo Eléctrico» = potencia real; el PPFD informado (1667 µmol/m²/s, medido a 25 cm) no es PPF, por eso ppf_umol_s queda null. Medidas de la ficha en mm (297x142x115 mm), orden tal cual figura; no indica cuál es largo y ancho. Garantía 1 año, vida útil 20.000 h, alimentación 220 V."
+  },
+  {
+    "id": "growtech-cob-400w",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "COB",
+    "producto": "Panel COB 400W Full Spectrum",
+    "modelo": "COB 400W",
+    "descripcion_corta": "Panel LED COB de Growtech para todo el ciclo (vegetativo y floración), con disipación activa por turbina.",
+    "tipo": "Full spectrum",
+    "potencia_real_w": 414,
+    "panel_largo_cm": 40.1,
+    "panel_ancho_cm": 14.2,
+    "panel_alto_cm": 11.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "380-840 nm",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "100x100 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/panel-400w-full-spectrum/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "potencia_anunciada_w": 400,
+    "notas": "Linea COB. Los datos son los de la ficha: «Consumo Eléctrico» = potencia real; el PPFD informado (2217 µmol/m²/s, medido a 25 cm) no es PPF, por eso ppf_umol_s queda null. Medidas de la ficha en mm (401x142x115 mm), orden tal cual figura; no indica cuál es largo y ancho. Garantía 1 año, vida útil 20.000 h, alimentación 220 V."
+  },
+  {
+    "id": "growtech-cob-600w",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "COB",
+    "producto": "Panel COB 600W Full Spectrum",
+    "modelo": "COB 600W",
+    "descripcion_corta": "Panel LED COB de Growtech para todo el ciclo (vegetativo y floración), con disipación activa por turbina.",
+    "tipo": "Full spectrum",
+    "potencia_real_w": 614,
+    "panel_largo_cm": 43,
+    "panel_ancho_cm": 19.3,
+    "panel_alto_cm": 11.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "380-840 nm",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "120x120 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/panel-600w-full-spectrum/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "potencia_anunciada_w": 600,
+    "notas": "Linea COB. Los datos son los de la ficha: «Consumo Eléctrico» = potencia real; el PPFD informado (3289 µmol/m²/s, medido a 25 cm) no es PPF, por eso ppf_umol_s queda null. Medidas de la ficha en mm (430x193x115 mm), orden tal cual figura; no indica cuál es largo y ancho. Garantía 1 año, vida útil 20.000 h, alimentación 220 V."
+  },
+  {
+    "id": "growtech-helion-120",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "Helion",
+    "producto": "Helion 120",
+    "modelo": "Helion 120",
+    "descripcion_corta": "Panel LED de alto rendimiento Helion de Growtech, de espectro completo, con driver incorporado y dimmer de 10 niveles.",
+    "tipo": "LED alto rendimiento",
+    "potencia_real_w": 120,
+    "panel_largo_cm": 46,
+    "panel_ancho_cm": 45,
+    "panel_alto_cm": 8.5,
+    "ppf_umol_s": 336,
+    "eficacia_umol_j": 3.0,
+    "espectro": "Espectro completo: 3000K, 5000K, 660nm y 730nm",
+    "dimmer": true,
+    "cobertura_recomendada_cm": "60x60 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/helion-120-nuevo-alto-rendimiento-jyokb/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Datos de la ficha. La ficha da «Potencia: 120W», sin aclarar si es consumo medido; se carga como potencia_real_w. El valor «PPFD» de la ficha está en µmol/s (es PPF) y viene con «+» en algunos modelos. Vida útil +50.000 h, IP20, espectro mixto con rojo lejano (efecto Emerson)."
+  },
+  {
+    "id": "growtech-helion-240",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "Helion",
+    "producto": "Helion 240",
+    "modelo": "Helion 240",
+    "descripcion_corta": "Panel LED de alto rendimiento Helion de Growtech, de espectro completo, con driver incorporado y dimmer de 10 niveles.",
+    "tipo": "LED alto rendimiento",
+    "potencia_real_w": 240,
+    "panel_largo_cm": 74,
+    "panel_ancho_cm": 64,
+    "panel_alto_cm": 8.5,
+    "ppf_umol_s": 672,
+    "eficacia_umol_j": 3.0,
+    "espectro": "Espectro completo: 3000K, 5000K, 660nm y 730nm",
+    "dimmer": true,
+    "cobertura_recomendada_cm": "80x80 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/helion-240-nuevo-alto-rendimiento-1ytyf/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Datos de la ficha. La ficha da «Potencia: 240W», sin aclarar si es consumo medido; se carga como potencia_real_w. El valor «PPFD» de la ficha está en µmol/s (es PPF) y viene con «+» en algunos modelos. Vida útil +50.000 h, IP20, espectro mixto con rojo lejano (efecto Emerson)."
+  },
+  {
+    "id": "growtech-helion-400",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "Helion",
+    "producto": "Helion 400",
+    "modelo": "Helion 400",
+    "descripcion_corta": "Panel LED de alto rendimiento Helion de Growtech, de espectro completo, con driver incorporado y dimmer de 10 niveles.",
+    "tipo": "LED alto rendimiento",
+    "potencia_real_w": 400,
+    "panel_largo_cm": 84,
+    "panel_ancho_cm": 74,
+    "panel_alto_cm": 8.5,
+    "ppf_umol_s": 896,
+    "eficacia_umol_j": 3.0,
+    "espectro": "Espectro completo: 3000K, 5000K, 660nm y 730nm",
+    "dimmer": true,
+    "cobertura_recomendada_cm": "1 m2",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/helion-400-nuevo-alto-rendimiento-zjt8u/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Datos de la ficha. La ficha da «Potencia: 400W», sin aclarar si es consumo medido; se carga como potencia_real_w. El valor «PPFD» de la ficha está en µmol/s (es PPF) y viene con «+» en algunos modelos. Vida útil +50.000 h, IP20, espectro mixto con rojo lejano (efecto Emerson). El texto de la ficha del 400 menciona también «HELION 720» (copia de otra ficha); se tomaron solo los datos de la lista «Características clave»."
+  },
+  {
+    "id": "growtech-helion-720",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "Helion",
+    "producto": "Helion 720",
+    "modelo": "Helion 720",
+    "descripcion_corta": "Panel LED de alto rendimiento Helion de Growtech, de espectro completo, con driver incorporado y dimmer de 10 niveles.",
+    "tipo": "LED alto rendimiento",
+    "potencia_real_w": 720,
+    "panel_largo_cm": 116,
+    "panel_ancho_cm": 57,
+    "panel_alto_cm": 8.5,
+    "ppf_umol_s": 2016,
+    "eficacia_umol_j": 3.0,
+    "espectro": "Espectro completo: 3000K, 5000K, 660nm y 730nm",
+    "dimmer": true,
+    "cobertura_recomendada_cm": "120x120 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/helion-720-nuevo-panel-led-de-alto-rendimiento/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Datos de la ficha. La ficha da «Potencia: 720W», sin aclarar si es consumo medido; se carga como potencia_real_w. El valor «PPFD» de la ficha está en µmol/s (es PPF) y viene con «+» en algunos modelos. Vida útil +50.000 h, IP20, espectro mixto con rojo lejano (efecto Emerson). Estructura de aluminio plegable; conexión en cadena."
+  },
+  {
+    "id": "growtech-quantum-q150",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "Quantum",
+    "producto": "Quantum Q150 nueva generación",
+    "modelo": "Q150",
+    "descripcion_corta": "Panel LED Quantum de Growtech para crecimiento y floración, pensado para cultivos verticales o salas de poca altura.",
+    "tipo": null,
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "LED SMD 4000K + 660nm + 730nm",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "80x80 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/quantum-q150w-nueva-generacion/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "potencia_anunciada_w": 150,
+    "notas": "Línea Quantum de Growtech. La ficha da «Potencia: 150w», sin aclarar si es consumo real, por eso potencia_real_w queda null y se carga la anunciada. Sin datos de medidas, PPF ni eficacia en la ficha. Cobertura según la ficha: 80x80cm a 45 cm de altura. Vida útil 50.000 h, 220 V AC."
+  },
+  {
+    "id": "growtech-quantum-q300-cuadrado",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "Quantum",
+    "producto": "Quantum Q300 cuadrado",
+    "modelo": "Q300 cuadrado",
+    "descripcion_corta": "Panel LED Quantum Q300 de formato cuadrado de Growtech para crecimiento y floración.",
+    "tipo": null,
+    "potencia_real_w": 300,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": 2.9,
+    "espectro": "SMD 4000 K y 5000 K + 660 nm + 730 nm",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "100x100 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/quantum-q300w-cuadrado-ewztn/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Ficha en tabla: consumo 300 W, factor de potencia 0,9, eficiencia 2,9 µmol/J, IP20, vida útil 50.000 h, 220 V AC. La tabla de la página aparece cortada: puede tener más datos (medidas) no capturados."
+  },
+  {
+    "id": "growtech-quantum-q300",
+    "categoria": "luz",
+    "marca": "Growtech",
+    "linea": "Quantum",
+    "producto": "Quantum Q300 nueva generación",
+    "modelo": "Q300",
+    "descripcion_corta": "Panel LED Quantum de Growtech para crecimiento y floración, pensado para cultivos verticales o salas de poca altura.",
+    "tipo": null,
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "LED SMD 4000K + 660nm + 730nm",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "hasta 100x100 cm",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/quantum-q300w-nueva-generacion/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "potencia_anunciada_w": 300,
+    "notas": "Línea Quantum de Growtech. La ficha da «Potencia: 300w», sin aclarar si es consumo real, por eso potencia_real_w queda null y se carga la anunciada. Sin datos de medidas, PPF ni eficacia en la ficha. Cobertura según la ficha: hasta 100x100cm a 45 cm de altura. Vida útil 50.000 h, 220 V AC."
+  },
+  {
+    "id": "gs-iluminacion-panel-led-mx150",
+    "categoria": "luz",
+    "marca": "GS Iluminación",
+    "linea": null,
+    "producto": "Panel Led MX 150 Full Spectrum",
+    "modelo": "MX150",
+    "descripcion_corta": "Panel LED Full Spectrum de GS Iluminación; la tienda no publica ficha técnica.",
+    "tipo": "Full spectrum",
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "fuentes": [
+      {
+        "url": "https://www.growshopping.com.ar/productos/panel-led-mx-150-full-spectrum-gs-iluminacion/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://puntoverdegrowshop.com.ar/producto/panel-master-led-150w-mx150-black-gs-iluminaciones/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "potencia_anunciada_w": 150,
+    "notas": "Growshopping no publica datos técnicos en la ficha. La potencia anunciada sale del nombre en Punto Verde («Panel Master Led …w»)."
+  },
+  {
+    "id": "gs-iluminacion-panel-led-mx50",
+    "categoria": "luz",
+    "marca": "GS Iluminación",
+    "linea": null,
+    "producto": "Panel Led MX 50 Full Spectrum",
+    "modelo": "MX50",
+    "descripcion_corta": "Panel LED de la serie Black MX con LED CREE (MHB y XPE), IP65 y refrigeración pasiva sin ventilador.",
+    "tipo": "Full spectrum",
+    "potencia_real_w": 65,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Espectro completo, para crecimiento y floración",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "60 x 60",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/led-mx50/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/panel-led-mx-50-full-spectrum-gs-iluminacion/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://puntoverdegrowshop.com.ar/producto/panel-master-led-50w-mx50-black-gs-iluminaciones/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://martinezgrow.com/producto/led-gs-mx50/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "potencia_anunciada_w": 50,
+    "notas": "Datos técnicos de la ficha de Kaizen Growshop (modelo MX50, categoría GSIluminaciones). Growshopping lo vende como «Panel Led MX 50 Full Spectrum - GS Iluminación» sin ficha técnica; se asume que es el mismo modelo. Martínez Grow («Led gs mx50») coincide en cobertura 60x60 cm. Potencia anunciada 50 W según el nombre en Punto Verde; real 65 W según Kaizen. LED CREE MHB y XPE, IP65, 220 V, refrigeración pasiva."
+  },
+  {
+    "id": "gs-iluminacion-panel-led-mx200",
+    "categoria": "luz",
+    "marca": "GS Iluminación",
+    "linea": null,
+    "producto": "Panel Led MX200 Full Spectrum",
+    "modelo": "MX200",
+    "descripcion_corta": "Panel LED Full Spectrum de GS Iluminación; la tienda no publica ficha técnica.",
+    "tipo": "Full spectrum",
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "fuentes": [
+      {
+        "url": "https://www.growshopping.com.ar/productos/panel-led-mx200-full-spectrum-gs-iluminacion/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://puntoverdegrowshop.com.ar/producto/panel-master-led-200w-mx200/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "potencia_anunciada_w": 200,
+    "notas": "Growshopping no publica datos técnicos en la ficha. La potencia anunciada sale del nombre en Punto Verde («Panel Master Led …w»)."
+  },
+  {
+    "id": "gs-iluminacion-panel-led-mx300",
+    "categoria": "luz",
+    "marca": "GS Iluminación",
+    "linea": null,
+    "producto": "Panel Led MX300 Full Spectrum",
+    "modelo": "MX300",
+    "descripcion_corta": "Panel LED Full Spectrum de GS Iluminación; la tienda no publica ficha técnica.",
+    "tipo": "Full spectrum",
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "fuentes": [
+      {
+        "url": "https://www.growshopping.com.ar/productos/panel-led-mx300-full-spectrum-gs-iluminacion/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Growshopping no publica datos técnicos en la ficha. La potencia anunciada sale del nombre en Punto Verde («Panel Master Led …w»)."
+  },
+  {
+    "id": "gs-iluminacion-panel-led-px430b",
+    "categoria": "luz",
+    "marca": "GS Iluminación",
+    "linea": null,
+    "producto": "Panel Led PX430B",
+    "modelo": "PX430B",
+    "descripcion_corta": "Panel LED de alta eficiencia con chips CREE, disipación pasiva y silencioso.",
+    "tipo": null,
+    "potencia_real_w": 430,
+    "panel_largo_cm": 110,
+    "panel_ancho_cm": 67.5,
+    "panel_alto_cm": 11,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": 3.0,
+    "espectro": "Espectro optimizado de amplio rango para vegetativo y floración",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "100x100 en floración; hasta 120x120 en vegetativo",
+    "fuentes": [
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/led-gs-iluminaciones-px430b-107zf/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "CRI 87, 1,95 A, 220-240 V AC, 4,4 kg, vida útil 50.000 h, temperatura de trabajo 35 a 45 °C, chips CREE."
+  },
+  {
+    "id": "gs-iluminacion-panel-led-px630b",
+    "categoria": "luz",
+    "marca": "GS Iluminación",
+    "linea": null,
+    "producto": "Panel Led PX630B",
+    "modelo": "PX630B",
+    "descripcion_corta": "Panel LED de alta eficiencia con chips CREE, disipación pasiva y silencioso.",
+    "tipo": null,
+    "potencia_real_w": 630,
+    "panel_largo_cm": 110,
+    "panel_ancho_cm": 110,
+    "panel_alto_cm": 11,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": 3.0,
+    "espectro": "Espectro optimizado de amplio rango para vegetativo y floración",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "hasta 120x120 en floración; hasta 150x150 en vegetativo",
+    "fuentes": [
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/led-gs-iluminaciones-px630b-e0kdp/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "CRI 87, 2,86 A, 220-240 V AC, 6,5 kg, vida útil 50.000 h, temperatura de trabajo 35 a 45 °C, chips CREE."
+  },
+  {
+    "id": "lux-eco-full-spectrum-100w",
+    "categoria": "luz",
+    "marca": "Lux",
+    "linea": "Eco",
+    "producto": "Eco Full Spectrum 100W",
+    "modelo": "100W",
+    "descripcion_corta": "Panel LED de espectro completo para interior, para todas las etapas del cultivo.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/lux-eco-full-spectrum-100w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 100,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "hasta 60x60 cm en floración y hasta 80x80 cm en crecimiento",
+    "notas": "Cuerpo metálico con disipador y ventilador integrado. Altura sugerida de colgado: 30 a 40 cm en crecimiento. Datos de la descripción del vendedor."
+  },
+  {
+    "id": "lux-eco-full-spectrum-200w",
+    "categoria": "luz",
+    "marca": "Lux",
+    "linea": "Eco",
+    "producto": "Eco Full Spectrum 200W",
+    "modelo": "200W",
+    "descripcion_corta": null,
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/lux-eco-full-spectrum-200w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": null,
+    "potencia_anunciada_w": 200,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La ficha del vendedor solo trae el nombre; sin datos técnicos."
+  },
+  {
+    "id": "lux-eco-full-spectrum-300w",
+    "categoria": "luz",
+    "marca": "Lux",
+    "linea": "Eco",
+    "producto": "Eco Full Spectrum 300W",
+    "modelo": "300W",
+    "descripcion_corta": null,
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/lux-eco-full-spectrum-300w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": null,
+    "potencia_anunciada_w": 300,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La ficha del vendedor solo trae el nombre; sin datos técnicos."
+  },
+  {
+    "id": "lux-eco-full-spectrum-400w",
+    "categoria": "luz",
+    "marca": "Lux",
+    "linea": "Eco",
+    "producto": "Eco Full Spectrum 400W",
+    "modelo": "400W",
+    "descripcion_corta": "Panel LED de espectro completo para interior, para todas las etapas del cultivo.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/lux-eco-full-spectrum-400w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": null,
+    "potencia_anunciada_w": 400,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La descripción del vendedor es genérica y no indica la potencia real ni la cobertura."
+  },
+  {
+    "id": "lux-eco-full-spectrum-600w",
+    "categoria": "luz",
+    "marca": "Lux",
+    "linea": "Eco",
+    "producto": "Eco Full Spectrum 600W",
+    "modelo": "600W",
+    "descripcion_corta": null,
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/lux-eco-full-spectrum-600w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": null,
+    "potencia_anunciada_w": 600,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La ficha del vendedor solo trae el nombre; sin datos técnicos."
+  },
+  {
+    "id": "lux-samsung-yxo-eco-full-spectrum-200w",
+    "categoria": "luz",
+    "marca": "Lux",
+    "linea": "Samsung YXO Eco",
+    "producto": "Samsung YXO Eco Full Spectrum 200W",
+    "modelo": "200W",
+    "descripcion_corta": "Panel LED de espectro completo para interior, para todas las etapas del cultivo.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/lux-samsung-yxo-eco-full-spectrum-200w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 200,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "carpas de 80x80 cm hasta 100x100 cm",
+    "notas": "Chips Samsung; disipador de aluminio con cooler; vida útil +50.000 horas según el vendedor; cable con enchufe estándar."
+  },
+  {
+    "id": "lux-samsung-yxo-eco-full-spectrum-300w",
+    "categoria": "luz",
+    "marca": "Lux",
+    "linea": "Samsung YXO Eco",
+    "producto": "Samsung YXO Eco Full Spectrum 300W",
+    "modelo": "300W",
+    "descripcion_corta": "Panel LED de espectro completo para interior, para todas las etapas del cultivo.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/lux-samsung-yxo-eco-full-spectrum-300w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 300,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "80x80 a 100x100 cm en floración; hasta 120x120 cm en crecimiento",
+    "notas": "Chips Samsung YXO; cuerpo metálico con ventilación activa. Altura sugerida: 40 a 50 cm en crecimiento. El vendedor dice equivalente a sodio de 600 W."
+  },
+  {
+    "id": "lux-samsung-yxo-eco-full-spectrum-400w",
+    "categoria": "luz",
+    "marca": "Lux",
+    "linea": "Samsung YXO Eco",
+    "producto": "Samsung YXO Eco Full Spectrum 400W",
+    "modelo": "400W",
+    "descripcion_corta": "Panel LED de espectro completo para interior, para todas las etapas del cultivo.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/lux-samsung-yxo-eco-full-spectrum-400w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 400,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "100x100 a 120x120 cm en floración; hasta 140x140 cm en crecimiento",
+    "notas": "Chips Samsung YXO; cuerpo metálico con disipador y ventiladores. Altura sugerida: 40 a 50 cm en crecimiento. El vendedor dice equivalente a sodio de 800 W."
+  },
+  {
+    "id": "lux-samsung-yxo-eco-full-spectrum-600w",
+    "categoria": "luz",
+    "marca": "Lux",
+    "linea": "Samsung YXO Eco",
+    "producto": "Samsung YXO Eco Full Spectrum 600W",
+    "modelo": "600W",
+    "descripcion_corta": "Panel LED de espectro completo para interior, para todas las etapas del cultivo.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/lux-samsung-yxo-eco-full-spectrum-600w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": null,
+    "potencia_anunciada_w": 600,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La descripción del vendedor es genérica y no indica la potencia real ni la cobertura."
+  },
+  {
+    "id": "mars-hydro-aura-320",
+    "categoria": "luz",
+    "marca": "Mars Hydro",
+    "linea": null,
+    "producto": "Aura 320",
+    "modelo": "320",
+    "descripcion_corta": "Panel LED de 320 W para 110x110 cm, chasis ultradelgado.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-aura-320",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/mars-panel-led-aura-320w-1iqlv/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "potencia_real_w": 320,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": 2.9,
+    "espectro": "Espectro solar completo 2800K, CRI 95%",
+    "dimmer": true,
+    "cobertura_recomendada_cm": "110x110",
+    "notas": "Fabricada en Argentina según la fuente."
+  },
+  {
+    "id": "mars-hydro-infinitta-225",
+    "categoria": "luz",
+    "marca": "Mars Hydro",
+    "linea": null,
+    "producto": "Infinitta 225",
+    "modelo": "225",
+    "descripcion_corta": "Panel LED IP65 apto interior y exterior, cobertura 120x60 cm.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-infinitta-225",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/mars-panel-led-infinitta-225-225w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/led-mars-infinitta-225-ou62z/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [
+      {
+        "campo": "potencia_real_w",
+        "valores": [
+          {
+            "valor": 220,
+            "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-infinitta-225"
+          },
+          {
+            "valor": 225,
+            "url": "https://gangagrow.com.ar/productos/mars-panel-led-infinitta-225-225w/"
+          }
+        ]
+      }
+    ],
+    "verificado": false,
+    "tipo": null,
+    "potencia_real_w": 220,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": 2.8,
+    "espectro": "CRI 95, R9 97",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "120x60"
+  },
+  {
+    "id": "mars-hydro-marsmachine-225cx",
+    "categoria": "luz",
+    "marca": "Mars Hydro",
+    "linea": null,
+    "producto": "Mars Machine 225CX",
+    "modelo": "225CX",
+    "descripcion_corta": "Panel LED para espacios de hasta 100x100 cm, LEDs rojos de 4,8 µmol/J.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-marsmachine-225cx",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/mars-panel-led-marsmachine-225cx-220w-kiu7l/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://donahuana.com.ar/product/panel-led-mars-225cx/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [
+      {
+        "campo": "potencia_real_w",
+        "valores": [
+          {
+            "valor": 225,
+            "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-marsmachine-225cx"
+          },
+          {
+            "valor": 220,
+            "url": "https://gangagrow.com.ar/productos/mars-panel-led-marsmachine-225cx-220w-kiu7l/"
+          }
+        ]
+      }
+    ],
+    "verificado": false,
+    "tipo": null,
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": 3.0,
+    "espectro": "4 tipos de LEDs, 95% similar a la luz solar",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "100x100",
+    "notas": "PPFD máximo 1225 µmol/m²/s según la fuente."
+  },
+  {
+    "id": "mars-hydro-marsmachine-420cx",
+    "categoria": "luz",
+    "marca": "Mars Hydro",
+    "linea": null,
+    "producto": "Mars Machine 420CX",
+    "modelo": "420CX",
+    "descripcion_corta": "Panel LED de 420 W para 120x120 cm, driver Mean Well, IP54.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-marsmachine-420-cx",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/mars-panel-led-marsmachine-420cx-420w-ga5l9/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/led-mars-machine-420cx-149j9/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "potencia_real_w": 420,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": 2.9,
+    "espectro": "2800K, CRI 95",
+    "dimmer": true,
+    "cobertura_recomendada_cm": "120x120",
+    "notas": "PPFD promedio 606 µmol/m²/s según la fuente."
+  },
+  {
+    "id": "mars-hydro-marsmachine-696cx",
+    "categoria": "luz",
+    "marca": "Mars Hydro",
+    "linea": null,
+    "producto": "Mars Machine 696CX",
+    "modelo": "696CX",
+    "descripcion_corta": "Panel LED de 690 W para 150x150 cm, Mean Well con dimmer.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-marsmachine-696-cx",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/mars-panel-led-marsmachine-696cx-690w-cbx0f/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/led-mars-machine-696cx-1lons/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "potencia_real_w": 690,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": 3.1,
+    "espectro": "2800K, CRI 95, R9 97",
+    "dimmer": true,
+    "cobertura_recomendada_cm": "150x150",
+    "notas": "PPFD promedio 533 µmol/m²/s a 30 cm, picos 1158."
+  },
+  {
+    "id": "mars-hydro-marsmachine-710",
+    "categoria": "luz",
+    "marca": "Mars Hydro",
+    "linea": null,
+    "producto": "Mars Machine 710",
+    "modelo": "710",
+    "descripcion_corta": "Panel LED de 710 W para 180x180 cm con LEDs Samsung LM301H.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-marsmachine-710",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/led-mars-machine-710-s3w9j/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "potencia_real_w": 710,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": 3.1,
+    "espectro": "95% de reproducción de la luz solar",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "180x180",
+    "notas": "PPFD promedio 905 µmol/m²/s, picos 1716."
+  },
+  {
+    "id": "mars-hydro-orbiter-evolution-120",
+    "categoria": "luz",
+    "marca": "Mars Hydro",
+    "linea": null,
+    "producto": "Orbiter Evolution 120W",
+    "modelo": "120W",
+    "descripcion_corta": "Campana LED IP66 de 120 W, sucesora de la Orbiter 80SL.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-orbiter-evolution-120w",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://donahuana.com.ar/product/lampara-led-mars-orbiter-evolution-120w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://martinezgrow.com/producto/led-mars-orbiter-evolution-120w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "potencia_real_w": 120,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "CRI > 95%",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null
+  },
+  {
+    "id": "mars-hydro-sunflash-153e",
+    "categoria": "luz",
+    "marca": "Mars Hydro",
+    "linea": null,
+    "producto": "Sunflash 153E",
+    "modelo": "153E",
+    "descripcion_corta": "Panel LED de 150 W, full spectrum, para espacios de 80x80 cm.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-sunflash-153-e",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/mars-panel-led-sunflash-153e-150w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/led-mars-sunflash-153e-pabec/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 150,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": 3.0,
+    "espectro": "Full Spectrum, CRI 95, R9 97, 2800K, 670 nm",
+    "dimmer": true,
+    "cobertura_recomendada_cm": "80x80",
+    "notas": "PPFD 379 µmol/s/m² a 30 cm según la fuente; dimmer industrial IP54."
+  }
+]
