@@ -604,6 +604,7 @@ const dec=v=>v===''||v==null?'':String(v).replace('.',',');
 function spaceSummary(s){
   const parts=[];
   if(s.tentBrand||s.tentModel)parts.push([s.tentBrand,s.tentModel].filter(Boolean).join(' '));
+  if(s.portsTop!==''&&s.portsTop!=null||s.portsBottom!==''&&s.portsBottom!=null)parts.push(`Bocas: ${s.portsTop||0} sup. / ${s.portsBottom||0} inf.`);
   if(s.cropType)parts.push(s.cropType==='indoor'?'Indoor':'Exterior');
   const w=num(s.width),l=num(s.length),hh=num(s.height);
   if(w&&l)parts.push(`${dec(w)}×${dec(l)}${hh?'×'+dec(hh):''} m`);
@@ -755,6 +756,8 @@ function spaceView(p,s,pc){
     <div class="grid2">
       <label class="field"><span class="label">Carpa: marca</span><input id="s-tentBrand" name="tentBrand" list="dl-tents" value="${esc(s.tentBrand)}" placeholder="Ej.: Garden HighPro"></label>
       <label class="field"><span class="label">Carpa: modelo y medida</span><input id="s-tentModel" name="tentModel" value="${esc(s.tentModel)}" placeholder="Ej.: Probox Basic 120x120x200"></label>
+      <label class="field"><span class="label">Bocas superiores (extracción / intracción)</span><input id="s-portsTop" name="portsTop" inputmode="numeric" value="${esc(s.portsTop??'')}"></label>
+      <label class="field"><span class="label">Bocas inferiores (extracción / intracción)</span><input id="s-portsBottom" name="portsBottom" inputmode="numeric" value="${esc(s.portsBottom??'')}"></label>
     </div>
     <div><div class="label" style="margin-bottom:4px">Dimensiones (metros)</div>
     <div class="grid3">
@@ -936,7 +939,7 @@ app.addEventListener('submit',e=>{
   if(kind==='space'){const fd=new FormData(f);const gs=fd.getAll('genetics'),qs=fd.getAll('qty');
     const plants=gs.map((g,i)=>({genetics:String(g).trim(),qty:Math.round(num(qs[i]))})).filter(x=>x.genetics||x.qty);
     const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
-    const data={tentBrand:(d.tentBrand||'').trim(),tentModel:(d.tentModel||'').trim(),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),plants};
+    const data={tentBrand:(d.tentBrand||'').trim(),tentModel:(d.tentModel||'').trim(),portsTop:n(d.portsTop),portsBottom:n(d.portsBottom),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),plants};
     safe(async()=>{await db.doc('spaces/'+f.dataset.id).update(data);S.spaceMsg='Guardado.';document.activeElement?.blur?.();rerender()});return}
   safe(async()=>{
     if(kind==='project'){
