@@ -178,6 +178,18 @@ textarea{min-height:70px;resize:vertical}
 .aitag{font-size:.68rem;border:1px dashed var(--warn);color:var(--warn);border-radius:999px;padding:0 6px;white-space:nowrap}
 .ports{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px}
 .port{display:flex;flex-direction:column;gap:2px;font-size:.75rem}
+/* pestañas, ficha y planificador */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;padding:10px 14px;font-weight:600;color:var(--muted);white-space:nowrap}
+.tab.on{color:var(--ink);border-bottom-color:var(--pc)}
+.fdl{display:flex;flex-direction:column;margin:0}
+.frow{display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:.9rem}
+.frow:first-child{border-top:0}
+.frow dt{color:var(--muted)} .frow dd{margin:0;min-width:0}
+.flist{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px;font-size:.9rem}
+.batch{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-left:4px solid var(--pc);border-radius:10px;padding:12px}
+.batch .bt{font-family:var(--f-display);font-size:1.05rem}
+@media (max-width:560px){.frow{grid-template-columns:1fr;gap:0}}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -207,7 +219,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <script>
 (function(){
 const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
-const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],batches:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
 function hashId(){try{return decodeURIComponent(location.hash.slice(1))}catch(e){return ''}}
 const curId=()=>S.nav!==null?S.nav:hashId();
 function go(id){S.nav=id||'';S.space=null;S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
@@ -266,6 +278,7 @@ function render(){
   app.innerHTML=html;
   app.querySelectorAll('form[data-form=event]').forEach(updateDoseTotals);
   app.querySelectorAll('form[data-form=item]').forEach(applyKindVisibility);
+  app.querySelectorAll('form[data-form=batch]').forEach(applyBatchVis);
   tick();
 }
 app.addEventListener('focusout',()=>setTimeout(()=>{if(pending){const a=document.activeElement;if(!(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))render()}},0));
@@ -601,7 +614,7 @@ async function uploadMedia(f){
   rerender();
 }
 const spacesOf=pid=>S.spaces.filter(s=>s.projectId===pid).sort((a,b)=>num(a.order)-num(b.order));
-const plantTotal=s=>(s.plants||[]).reduce((a,x)=>a+num(x.qty),0);
+const plantTotal=s=>S.batches.filter(b=>b.spaceId===s.id&&b.status!=='finalizado').reduce((a,x)=>a+num(x.qty),0);
 const dec=v=>v===''||v==null?'':String(v).replace('.',',');
 function spaceSummary(s){
   const parts=[];
@@ -749,14 +762,27 @@ function portInputs(pos,n,vals){
   return h;
 }
 const portsText=(n,ds)=>{n=num(n);if(!n)return '0';const v=(ds||[]).slice(0,n).filter(Boolean);return n+(v.length?' ('+v.join(', ')+')':'')};
+const CROP_TYPES=['Sustrato','Coco','Hidroponía','Aeroponía'];
+const ORIGINS=['Semilla','Esqueje','Otro espacio'];
+const SUBSTRATES=['Terrafertil Growmix Indoor','Terrafertil Growmix Multipro','Cultivate','Vamp','Biobizz','Growers','Lizard','Silver','Landiner'];
+const spaceName=id=>(S.spaces.find(x=>x.id===id)||{}).name||'otro espacio';
+const activeBatches=sid=>S.batches.filter(b=>b.spaceId===sid&&b.status!=='finalizado').sort((a,b)=>(a.startDate||'').localeCompare(b.startDate||''));
 function spaceView(p,s,pc){
-  const sel=(name,opts,val)=>`<select id="s-${name}" name="${name}"><option value="">Elegir…</option>${opts.map(([v,l])=>`<option value="${v}" ${val===v?'selected':''}>${l}</option>`).join('')}</select>`;
-  const area=num(s.width)*num(s.length);
-  const plants=(s.plants&&s.plants.length)?s.plants:[{genetics:'',qty:''}];
-  return `<div class="row"><button class="ghost" data-act="closeSpace">← ${esc(p.name)}</button></div>
+  const area=num(s.width)*num(s.length);const tab=S.spaceTab||'ficha';
+  const tabs=[['ficha','Ficha técnica'],['plan','Planificador'],['seg','Seguimiento']];
+  let h=`<div class="row"><button class="ghost" data-act="closeSpace">← ${esc(p.name)}</button></div>
   <section class="detail-head" style="--pc:${pc}"><span class="chip" style="align-self:flex-start">Espacio de cultivo</span><h1>${esc(s.name)}</h1>
     <div class="muted">${esc(spaceSummary(s))}${area?` · ${dec(Math.round(area*100)/100)} m²`:''}</div></section>
-  <form class="panel" data-form="space" data-id="${esc(s.id)}" style="--pc:${pc}">
+  <div class="tabs" role="tablist" style="--pc:${pc}">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="spaceTab" data-tab="${k}">${l}</button>`).join('')}</div>`;
+  if(tab==='ficha')h+=S.fichaEdit?spaceEditForm(s,pc)+equipPanels(s,pc)+`<div class="row"><button class="primary" data-act="fichaDone">Listo, ver ficha</button></div>`:fichaView(s,pc);
+  else if(tab==='plan')h+=plannerView(p,s,pc);
+  else h+=(p.calendar?calendarPanel(p,pc)+mediaPanel(p,pc):'');
+  return h;
+}
+function spaceEditForm(s,pc){
+  const sel=(name,opts,val)=>`<select id="s-${name}" name="${name}"><option value="">Elegir…</option>${opts.map(([v,l])=>`<option value="${v}" ${val===v?'selected':''}>${l}</option>`).join('')}</select>`;
+  return `<form class="panel" data-form="space" data-id="${esc(s.id)}" style="--pc:${pc}">
+    <h2>Editar ficha</h2>
     <div class="grid2">
       <label class="field"><span class="label">Tipo de cultivo</span>${sel('cropType',[['indoor','Indoor'],['exterior','Exterior']],s.cropType)}</label>
       <label class="field"><span class="label">Iluminación</span>${sel('lighting',[['natural','Natural'],['artificial','Artificial'],['mixta','Mixta']],s.lighting)}</label>
@@ -779,11 +805,126 @@ function spaceView(p,s,pc){
       <label class="field"><span class="label">Temperatura promedio (°C)</span><input id="s-temp" name="temp" inputmode="decimal" value="${esc(dec(s.temp))}"></label>
       <label class="field"><span class="label">Humedad promedio (%)</span><input id="s-hum" name="humidity" inputmode="decimal" value="${esc(dec(s.humidity))}"></label>
     </div>
-    <div class="field"><div class="row"><span class="label">Plantas por genética</span><span class="spacer"></span><span class="num muted" style="font-size:.85rem">Total: ${plantTotal(s)}</span></div>
-      <div class="prows" id="prows">${plants.map(x=>plantRow(x.genetics,x.qty||'')).join('')}</div>
-      <button type="button" class="small" data-act="addPlantRow" style="align-self:flex-start">+ Agregar genética</button></div>
-    <div class="row"><button class="primary" type="submit">Guardar espacio</button>${S.spaceMsg?`<span class="muted" style="font-size:.85rem">${esc(S.spaceMsg)}</span>`:''}</div>
-  </form>`+equipPanels(s,pc)+(p.calendar?calendarPanel(p,pc)+mediaPanel(p,pc):'');
+    <div class="muted" style="font-size:.82rem">Las plantas se cargan en la pestaña Planificador.</div>
+    <div class="row"><button class="primary" type="submit">Guardar ficha</button>${S.spaceMsg?`<span class="muted" style="font-size:.85rem">${esc(S.spaceMsg)}</span>`:''}</div>
+  </form>`;
+}
+function fichaView(s,pc){
+  const v=x=>x===''||x==null?'<span class="muted">—</span>':esc(x);
+  const row=(l,x)=>`<div class="frow"><dt>${l}</dt><dd>${x}</dd></div>`;
+  const area=num(s.width)*num(s.length);const vol=area*num(s.height);
+  const dims=[s.width,s.length,s.height].some(x=>x!==''&&x!=null)?[s.width,s.length,s.height].map(x=>x===''||x==null?'?':dec(x)).join(' × ')+' m':'';
+  const bs=activeBatches(s.id);const byG={};bs.forEach(b=>{byG[b.genetics||'Sin genética']=(byG[b.genetics||'Sin genética']||0)+num(b.qty)});
+  const list=(key)=>{const it=s[key]||[];return it.length?`<ul class="flist">${it.map(x=>`<li>${esc(itemSummary(key,x))}${(x.aiFields||[]).length?' <span class="aitag">IA · verificar</span>':''}</li>`).join('')}</ul>`:'<span class="muted">—</span>'};
+  return `<section class="panel" style="--pc:${pc}"><div class="row"><h2>Ficha técnica</h2><span class="spacer"></span><button class="small" data-act="fichaEdit">Editar ficha</button></div>
+    <h3>Espacio</h3><dl class="fdl">
+      ${row('Tipo de cultivo',v(s.cropType==='indoor'?'Indoor':s.cropType==='exterior'?'Exterior':''))}
+      ${row('Carpa',v([s.tentBrand,s.tentModel].filter(Boolean).join(' ')))}
+      ${row('Dimensiones',v(dims))}
+      ${row('Superficie / volumen',area?`${dec(Math.round(area*100)/100)} m²${vol?' · '+dec(Math.round(vol*100)/100)+' m³':''}`:v(''))}
+      ${row('Bocas superiores',v(num(s.portsTop)?portsText(s.portsTop,s.portsTopD):''))}
+      ${row('Bocas inferiores',v(num(s.portsBottom)?portsText(s.portsBottom,s.portsBottomD):''))}
+      ${row('Iluminación',v(s.lighting?s.lighting[0].toUpperCase()+s.lighting.slice(1):''))}
+      ${row('Temperatura promedio',v(s.temp!==''&&s.temp!=null?dec(s.temp)+' °C':''))}
+      ${row('Humedad promedio',v(s.humidity!==''&&s.humidity!=null?dec(s.humidity)+' %':''))}
+    </dl>
+    <h3>Plantas (según el planificador)</h3>
+    ${Object.keys(byG).length?`<ul class="flist">${Object.entries(byG).map(([g,q])=>`<li>${q} × ${esc(g)}</li>`).join('')}</ul><div class="num muted" style="font-size:.85rem">Total: ${plantTotal(s)}</div>`:'<span class="muted">Sin plantas en este espacio.</span>'}
+    <h3>Ventilación</h3><dl class="fdl">${row('Extracción',list('airExtraccion'))}${row('Intracción',list('airIntraccion'))}${row('Ventilación',list('airVentilacion'))}</dl>
+    <h3>Control del clima</h3>${list('climate')}
+    <h3>Luces</h3>${list('lights')}
+  </section>`;
+}
+function batchLine(b){
+  const parts=[b.cropType,b.cropType==='Sustrato'&&b.substrate?b.substrate:'',b.potLiters?'maceta '+dec(b.potLiters)+' L':'',
+    b.origin==='Otro espacio'?'desde '+spaceName(b.originSpaceId):(b.origin?'desde '+b.origin.toLowerCase():'')].filter(Boolean);
+  return parts.join(' · ');
+}
+function plannerView(p,s,pc){
+  const f=S.form;const bs=activeBatches(s.id);
+  const done=S.batches.filter(b=>b.spaceId===s.id&&b.status==='finalizado');
+  let h=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Planificador de cultivo</h2><span class="spacer"></span>
+    ${f&&f.type==='batch'&&!f.id?'':'<button class="small primary" data-act="newBatch">+ Nuevo lote</button>'}</div>
+    ${f&&f.type==='batch'&&!f.id?batchForm(s,{}):''}`;
+  if(!bs.length&&!(f&&f.type==='batch'))h+=`<div class="empty">Sin plantas en este espacio. Tocá «+ Nuevo lote» y cargá fecha de inicio, cantidad, genética, tipo de cultivo, origen, maceta y sustrato.</div>`;
+  h+=bs.map(b=>{
+    if(f&&f.type==='batch'&&f.id===b.id)return batchForm(s,b);
+    const day=b.startDate?-daysLeft(b.startDate):null;
+    return `<div class="batch">
+      <div class="row"><b class="bt">${num(b.qty)} × ${esc(b.genetics||'Sin genética')}</b>${day!==null&&day>=0?`<span class="chip">día ${day}</span>`:''}<span class="spacer"></span>
+        <span class="muted num" style="font-size:.8rem">Inicio ${fmtDate(b.startDate)}</span></div>
+      <div class="muted" style="font-size:.86rem">${esc(batchLine(b))||'Completá tipo de cultivo, maceta y sustrato con «Editar».'}</div>
+      ${b.note?`<div style="font-size:.86rem">${esc(b.note)}</div>`:''}
+      ${f&&f.type==='transfer'&&f.id===b.id?transferForm(s,b):''}
+      ${f&&f.type==='finish'&&f.id===b.id?finishForm(b):''}
+      <div class="row">
+        <button class="small" data-act="transferBatch" data-id="${esc(b.id)}">Transferir</button>
+        <button class="small ghost" data-act="editBatch" data-id="${esc(b.id)}">Editar</button>
+        <button class="small ghost" data-act="finishBatch" data-id="${esc(b.id)}">Finalizar</button>
+        <span class="spacer"></span>
+        ${S.confirm==='b'+b.id?`<button class="small danger" data-act="delBatch" data-id="${esc(b.id)}">Confirmar borrado</button>`:`<button class="small ghost danger" data-act="askDel" data-key="b${esc(b.id)}" aria-label="Borrar lote">✕</button>`}
+      </div>
+      ${(b.history||[]).length?`<details><summary class="muted" style="font-size:.8rem">Historial (${b.history.length})</summary><ul class="flist">${b.history.map(x=>`<li><span class="num">${fmtDate(x.date)}</span> · ${esc(x.text)}</li>`).join('')}</ul></details>`:''}
+    </div>`}).join('');
+  if(done.length)h+=`<details><summary class="muted">Lotes finalizados (${done.length})</summary><ul class="flist">${done.map(b=>`<li>${num(b.qty)} × ${esc(b.genetics)} · ${fmtDate(b.startDate)} → ${fmtDate(b.endDate)}${b.endNote?' · '+esc(b.endNote):''}</li>`).join('')}</ul></details>`;
+  return h+`</section>`;
+}
+function batchForm(s,b){
+  const gens=[...new Set(S.batches.map(x=>x.genetics).filter(Boolean))];
+  const others=S.spaces.filter(x=>x.projectId===s.projectId&&x.id!==s.id);
+  return `<form class="inline-form" data-form="batch" data-id="${esc(b.id||'')}" data-sid="${esc(s.id)}">
+    <h3>${b.id?'Editar lote':'Nuevo lote'}</h3>
+    <div class="grid2">
+      <label class="field"><span class="label">Fecha de inicio</span><input id="b-start" name="startDate" type="date" required value="${esc(b.startDate||today())}"></label>
+      <label class="field"><span class="label">Cantidad de plantas</span><input id="b-qty" name="qty" inputmode="numeric" required value="${esc(b.qty??'')}"></label>
+      <label class="field"><span class="label">Genética</span><input id="b-gen" name="genetics" list="dl-gen" value="${esc(b.genetics)}" placeholder="Ej.: Gorilla Piña autofloreciente (BSF)"><datalist id="dl-gen">${gens.map(g=>`<option value="${esc(g)}">`).join('')}</datalist></label>
+      <label class="field"><span class="label">Tipo de cultivo</span><select id="b-crop" name="cropType" data-bvis><option value="">Elegir…</option>${CROP_TYPES.map(x=>`<option ${x===b.cropType?'selected':''}>${x}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Origen</span><select id="b-origin" name="origin" data-bvis><option value="">Elegir…</option>${ORIGINS.map(x=>`<option ${x===b.origin?'selected':''}>${x}</option>`).join('')}</select></label>
+      <label class="field" data-bwhen="origin:Otro espacio"><span class="label">¿De qué espacio?</span><select id="b-ospace" name="originSpaceId">${others.map(x=>`<option value="${esc(x.id)}" ${x.id===b.originSpaceId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Litros de maceta</span><input id="b-pot" name="potLiters" inputmode="decimal" value="${esc(dec(b.potLiters))}"></label>
+      <label class="field" data-bwhen="cropType:Sustrato"><span class="label">Sustrato</span><input id="b-sub" name="substrate" list="dl-sub" value="${esc(b.substrate)}" placeholder="Ej.: Terrafertil Growmix Indoor"><datalist id="dl-sub">${[...new Set([...SUBSTRATES,...S.batches.map(x=>x.substrate).filter(Boolean)])].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label>
+    </div>
+    <label class="field"><span class="label">Nota (opcional)</span><input id="b-note" name="note" value="${esc(b.note)}"></label>
+    <div class="row"><button class="primary" type="submit">Guardar lote</button><button type="button" data-act="cancelForm">Cancelar</button></div>
+  </form>`;
+}
+function applyBatchVis(form){
+  form.querySelectorAll('[data-bwhen]').forEach(el=>{const [k,v]=el.dataset.bwhen.split(':');el.hidden=form.querySelector(`[name=${k}]`).value!==v});
+}
+function transferForm(s,b){
+  const dests=S.spaces.filter(x=>x.projectId===s.projectId&&x.id!==s.id&&x.enabled!==false);
+  if(!dests.length)return `<div class="notice">No hay otro espacio habilitado para transferir.</div>`;
+  return `<form class="inline-form" data-form="transfer" data-id="${esc(b.id)}">
+    <div class="grid3">
+      <label class="field"><span class="label">Cantidad</span><input id="tr-qty" name="qty" inputmode="numeric" required value="${num(b.qty)}"></label>
+      <label class="field"><span class="label">A qué espacio</span><select id="tr-dest" name="dest">${dests.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Fecha</span><input id="tr-date" name="date" type="date" value="${today()}"></label>
+    </div>
+    <div class="muted" style="font-size:.8rem">Hay ${num(b.qty)}. Si pasás menos, el resto queda en ${esc(s.name)}.</div>
+    <div class="row"><button class="primary" type="submit">Transferir</button><button type="button" data-act="cancelForm">Cancelar</button></div></form>`;
+}
+function finishForm(b){
+  return `<form class="inline-form" data-form="finish" data-id="${esc(b.id)}">
+    <div class="grid2"><label class="field"><span class="label">Fecha</span><input id="fi-date" name="date" type="date" value="${today()}"></label>
+    <label class="field"><span class="label">Motivo</span><input id="fi-note" name="note" list="dl-fin" placeholder="Ej.: cosecha"><datalist id="dl-fin"><option value="Cosecha"><option value="Descarte"></datalist></label></div>
+    <div class="row"><button class="primary" type="submit">Finalizar lote</button><button type="button" data-act="cancelForm">Cancelar</button></div></form>`;
+}
+async function saveBatch(f,d){
+  const sid=f.dataset.sid;const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
+  const data={genetics:(d.genetics||'').trim(),qty:Math.max(0,Math.round(num(d.qty))),startDate:d.startDate||today(),cropType:d.cropType||'',origin:d.origin||'',
+    originSpaceId:d.origin==='Otro espacio'?(d.originSpaceId||''):'',potLiters:n(d.potLiters),substrate:d.cropType==='Sustrato'?(d.substrate||'').trim():'',note:(d.note||'').trim()};
+  if(!data.qty){S.err='Cargá la cantidad de plantas.';rerender();return}
+  if(f.dataset.id)await db.doc('batches/'+f.dataset.id).update(data);
+  else await db.collection('batches').add({...data,projectId:'cultivo',spaceId:sid,status:'activo',history:[{date:data.startDate,text:`Inicio: ${data.qty} plantas en ${spaceName(sid)}`}],createdAt:Date.now()});
+}
+async function transferBatch(b,qty,dest,date){
+  const src=spaceName(b.spaceId),dst=spaceName(dest);qty=Math.round(qty);
+  if(!(qty>0)||qty>num(b.qty)){S.err=`La cantidad tiene que ser entre 1 y ${num(b.qty)}.`;rerender();return}
+  const h=b.history||[];
+  if(qty>=num(b.qty)){await db.doc('batches/'+b.id).update({spaceId:dest,history:[...h,{date,text:`Transferidas ${qty} plantas de ${src} a ${dst}`}]});return}
+  await db.doc('batches/'+b.id).update({qty:num(b.qty)-qty,history:[...h,{date,text:`Se transfirieron ${qty} plantas a ${dst}`}]});
+  const {id,...rest}=b;
+  await db.collection('batches').add({...rest,qty,spaceId:dest,parentId:b.id,history:[...h,{date,text:`Llegaron ${qty} plantas desde ${src}`}],createdAt:Date.now()});
 }
 function detailView(){
   const p=S.projects.find(x=>x.id===S.pid);const st=projStats(p);const pc=pcolor(p);const dl=daysLeft(p.deadline);
@@ -867,7 +1008,15 @@ app.addEventListener('click',e=>{
     evDone(){safe(()=>db.doc('events/'+id).update({status:'cumplido',confirmedAt:Date.now()}))},
     evMiss(){safe(()=>db.doc('events/'+id).update({status:'no se hizo',confirmedAt:Date.now()}))},
     evEdit(){S.form={type:'event',id};rerender();document.getElementById('e-date')?.focus()},
-    openSpace(){S.space=id;S.spaceMsg='';S.form=null;window.scrollTo(0,0);rerender()},
+    spaceTab(){S.spaceTab=b.dataset.tab;S.form=null;S.fichaEdit=false;rerender()},
+    fichaEdit(){S.fichaEdit=true;S.spaceMsg='';rerender()},
+    fichaDone(){S.fichaEdit=false;S.form=null;window.scrollTo(0,0);rerender()},
+    newBatch(){S.form={type:'batch'};rerender()},
+    editBatch(){S.form={type:'batch',id};rerender()},
+    transferBatch(){S.form={type:'transfer',id};rerender()},
+    finishBatch(){S.form={type:'finish',id};rerender()},
+    delBatch(){safe(async()=>{await db.doc('batches/'+id).delete();S.confirm=null})},
+    openSpace(){S.space=id;S.spaceTab='ficha';S.fichaEdit=false;S.spaceMsg='';S.form=null;window.scrollTo(0,0);rerender()},
     closeSpace(){S.space=null;window.scrollTo(0,0);rerender()},
     addPlantRow(){const c=document.getElementById('prows');c.insertAdjacentHTML('beforeend',plantRow('',''));c.lastElementChild.querySelector('input').focus()},
     rmPlantRow(){const r=b.closest('.prow');const c=r.parentElement;if(c.children.length>1)r.remove();else r.querySelectorAll('input').forEach(i=>i.value='')},
@@ -925,6 +1074,7 @@ async function saveTimerLog(){
 app.addEventListener('change',e=>{
   if(e.target.matches('[data-kind-toggle]')){const fm=e.target.closest('form');const led=e.target.value==='ledger';
     fm.querySelector('.only-ledger').hidden=!led;fm.querySelector('.only-project').hidden=led;}
+  if(e.target.matches('[data-bvis]'))applyBatchVis(e.target.closest('form'));
   if(e.target.matches('[data-kindsel]'))applyKindVisibility(e.target.closest('form'));
   if(e.target.matches('[data-evtype]')){const fm=e.target.closest('form');const use=RIEGO_USE[e.target.value]||'';const box=fm.querySelector('.prodbox');
     box.hidden=!use;const rows=box.querySelector('.dose-rows');
@@ -948,11 +1098,13 @@ app.addEventListener('submit',e=>{
     if(key==='lights')it.aiFields=d.verified?[]:String(d.aiFields||'').split(',').filter(Boolean);
     const arr=[...(sp[key]||[])];if(idx>=0)arr[idx]=it;else arr.push(it);
     safe(async()=>{await db.doc('spaces/'+sp.id).update({[key]:arr});S.form=null;document.activeElement?.blur?.();rerender()});return}
-  if(kind==='space'){const fd=new FormData(f);const gs=fd.getAll('genetics'),qs=fd.getAll('qty');
-    const plants=gs.map((g,i)=>({genetics:String(g).trim(),qty:Math.round(num(qs[i]))})).filter(x=>x.genetics||x.qty);
+  if(kind==='batch'){safe(async()=>{await saveBatch(f,d);S.form=null;document.activeElement?.blur?.();rerender()});return}
+  if(kind==='transfer'){const b=S.batches.find(x=>x.id===f.dataset.id);safe(async()=>{await transferBatch(b,num(d.qty),d.dest,d.date||today());S.form=null;rerender()});return}
+  if(kind==='finish'){const b=S.batches.find(x=>x.id===f.dataset.id);safe(async()=>{await db.doc('batches/'+b.id).update({status:'finalizado',endDate:d.date||today(),endNote:(d.note||'').trim(),history:[...(b.history||[]),{date:d.date||today(),text:'Finalizado'+(d.note?': '+d.note.trim():'')}]});S.form=null;rerender()});return}
+  if(kind==='space'){
     const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
     const data={tentBrand:(d.tentBrand||'').trim(),tentModel:(d.tentModel||'').trim(),portsTop:n(d.portsTop),portsBottom:n(d.portsBottom),
-      portsTopD:new FormData(f).getAll('portsTopD').map(x=>String(x).trim()),portsBottomD:new FormData(f).getAll('portsBottomD').map(x=>String(x).trim()),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),plants};
+      portsTopD:new FormData(f).getAll('portsTopD').map(x=>String(x).trim()),portsBottomD:new FormData(f).getAll('portsBottomD').map(x=>String(x).trim()),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity)};
     safe(async()=>{await db.doc('spaces/'+f.dataset.id).update(data);S.spaceMsg='Guardado.';document.activeElement?.blur?.();rerender()});return}
   safe(async()=>{
     if(kind==='project'){
@@ -1004,6 +1156,7 @@ async function boot(){
   db.collection('tasks').onSnapshot(s=>{S.tasks=toList(s);S.loaded.tasks=true;render()},onErr);
   db.collection('logs').onSnapshot(s=>{S.logs=toList(s);S.loaded.logs=true;render()},onErr);
   db.collection('products').onSnapshot(s=>{S.products=toList(s);render()},onErr);
+  db.collection('batches').onSnapshot(s=>{S.batches=toList(s);render()},onErr);
   db.collection('spaces').onSnapshot(s=>{S.spaces=toList(s);render()},onErr);
   db.collection('media').onSnapshot(s=>{S.media=toList(s);render()},onErr);
   claude.use('sample').then(x=>{sample=x;rerender()}).catch(()=>{});
