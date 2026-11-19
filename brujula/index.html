@@ -207,6 +207,15 @@ textarea{min-height:70px;resize:vertical}
 .wk-ev.missed .ev-title{text-decoration:line-through;color:var(--muted)}
 .wk-day-ev{display:flex;flex-direction:column;gap:2px;padding-top:6px}
 .sp-chip{font-size:.72rem;font-weight:600;color:var(--pc)}
+/* asistente de riego */
+.assist{background:color-mix(in srgb,var(--pc) 8%,var(--surface));border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:.88rem}
+.plan-rows{display:flex;flex-direction:column;gap:10px}
+.plan-row{border:1px dashed var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.pd-rows{display:flex;flex-direction:column;gap:6px}
+.tbl-wrap{overflow-x:auto}
+.ptbl{border-collapse:collapse;font-size:.84rem;width:100%;min-width:420px}
+.ptbl th,.ptbl td{border-top:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:top}
+.ptbl th{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -236,7 +245,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <script>
 (function(){
 const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
-const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],batches:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],batches:[],plans:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
 function hashId(){try{return decodeURIComponent(location.hash.slice(1))}catch(e){return ''}}
 const curId=()=>S.nav!==null?S.nav:hashId();
 function go(id){S.nav=id||'';S.space=null;S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
@@ -295,7 +304,7 @@ function render(){
   app.innerHTML=html;
   app.querySelectorAll('form[data-form=event]').forEach(updateDoseTotals);
   app.querySelectorAll('form[data-form=item]').forEach(applyKindVisibility);
-  app.querySelectorAll('form[data-form=batch],form[data-form=product]').forEach(applyBatchVis);
+  app.querySelectorAll('form[data-form=batch],form[data-form=product],form[data-form=event]').forEach(applyBatchVis);
   tick();
 }
 app.addEventListener('focusout',()=>setTimeout(()=>{if(pending){const a=document.activeElement;if(!(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)))render()}},0));
@@ -485,7 +494,7 @@ function calendarPanel(p,pc){
     ${germ.map(g=>`<div class="notice"><b>${esc(g.title)}</b> · día <span class="num">${-daysLeft(g.date)}</span> desde la germinación (${fmtDate(g.date)})</div>`).join('')}
     ${toConfirm.length?`<div class="confirm-box"><div class="label" style="color:var(--warn)">Para confirmar (${toConfirm.length})</div>
       ${toConfirm.map(e=>editing===e.id?eventForm(p,e):evRow(e,true)).join('')}</div>`:''}
-    ${f&&f.type==='event'&&!f.id?eventForm(p,{date:f.date}):''}
+    ${f&&f.type==='event'&&!f.id?eventForm(p,f.prefill||{date:f.date}):''}
     <div class="cal-wrap"><div class="cal">${['lun','mar','mié','jue','vie','sáb','dom'].map(d=>`<div class="cw">${d}</div>`).join('')}${cells}</div></div>
     <div class="row muted" style="font-size:.75rem;gap:14px"><span><span class="ev-key st-planificado"></span> planificado</span><span><span class="ev-key st-cumplido"></span> cumplido</span><span><span class="ev-key st-no-se-hizo"></span> no se hizo</span></div>
     ${list.length?`<div class="logs">${list.map(e=>editing===e.id&&!toConfirm.includes(e)?eventForm(p,e):evRow(e,false)).join('')}</div>`
@@ -530,9 +539,25 @@ function prodRow(use,it){
     <span class="num muted dose-tot"></span>
     <button type="button" class="ghost small danger" data-act="rmDoseRow" aria-label="Quitar producto">✕</button></div>`;
 }
+function riegoFields(e){
+  const bs=S.batches.filter(b=>b.status!=='finalizado'&&b.spaceId===(e.spaceId||S.space));
+  return `<div class="field riegobox" data-bwhen="type:Riego radicular" style="gap:8px">
+    <div class="grid3">
+      <label class="field"><span class="label">Lote</span><select name="batchId"><option value="">Sin lote</option>${bs.map(b=>`<option value="${esc(b.id)}" ${b.id===e.batchId?'selected':''}>${num(b.qty)} × ${esc(b.genetics)}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Litros por planta</span><input name="perPlant" inputmode="decimal" value="${esc(dec(e.perPlant))}"></label>
+      <label class="field"><span class="label">¿Drenó?</span><select name="drained"><option value="">—</option><option value="si" ${e.drained==='si'?'selected':''}>Sí</option><option value="no" ${e.drained==='no'?'selected':''}>No</option></select></label>
+    </div>
+    <details ${[e.ecIn,e.phIn,e.ecOut,e.phOut].some(v=>v!==''&&v!=null)?'open':''}><summary class="muted" style="font-size:.85rem">Mediciones CE / pH (opcional)</summary>
+    <div class="grid2" style="margin-top:6px">
+      <label class="field"><span class="label">CE agua (mS/cm)</span><input name="ecIn" inputmode="decimal" value="${esc(dec(e.ecIn))}"></label>
+      <label class="field"><span class="label">pH agua</span><input name="phIn" inputmode="decimal" value="${esc(dec(e.phIn))}"></label>
+      <label class="field"><span class="label">CE drenaje (mS/cm)</span><input name="ecOut" inputmode="decimal" value="${esc(dec(e.ecOut))}"></label>
+      <label class="field"><span class="label">pH drenaje</span><input name="phOut" inputmode="decimal" value="${esc(dec(e.phOut))}"></label>
+    </div></details></div>`;
+}
 function prodBox(e){
   const use=RIEGO_USE[e.type]||'';const items=(e.products&&e.products.length)?e.products:[{}];
-  return `<div class="prodbox" ${use?'':'hidden'}>
+  return riegoFields(e)+`<div class="prodbox" ${use?'':'hidden'}>
     <div class="row"><span class="label">Productos</span><span class="spacer"></span>
       <label class="row" style="gap:6px"><span class="muted" style="font-size:.8rem">Litros de agua</span><input id="e-liters" name="liters" inputmode="decimal" style="width:80px" value="${esc(dec(e.liters))}"></label></div>
     <div class="dose-rows" data-use="${use}">${use?items.map(it=>prodRow(use,it)).join(''):''}</div>
@@ -554,7 +579,8 @@ function substrateCard(x){
   return `<div class="batch" style="gap:6px"><div class="row"><b class="bt">${esc(prodLabel(x))}</b>${x.verified?'<span class="tag st-tag-cumplido">Verificado</span>':'<span class="aitag">datos de tiendas · verificar</span>'}<span class="spacer"></span>
     <button class="small ghost" data-act="toggleVerified" data-id="${esc(x.id)}">${x.verified?'Marcar sin verificar':'Marcar verificado'}</button>
     ${S.confirm==='pr'+x.id?`<button class="small danger" data-act="delProduct" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="pr${esc(x.id)}" aria-label="Borrar sustrato">✕</button>`}</div>
-    <dl class="fdl">${row('Presentaciones',x.presentations)}${row('pH',x.ph)}${row('CE / EC',x.ce)}${row('Composición',x.composition)}${row('Uso indicado',x.usage)}${row('Peso por bolsa',x.weight)}${row('Notas',x.notes)}</dl>
+    <dl class="fdl">${row('Presentaciones',x.presentations)}${row('pH',x.ph)}${row('CE / EC',x.ce)}${row('Composición',x.composition)}${row('Uso indicado',x.usage)}${row('Peso por bolsa',x.weight)}${row('Nutre las primeras',x.feedWeeks?x.feedWeeks+' semanas':'')}${row('Notas',x.notes)}</dl>
+    <form class="row" data-form="feedweeks" data-id="${esc(x.id)}"><label class="row" style="gap:6px"><span class="muted" style="font-size:.82rem">Nutre las primeras</span><input name="feedWeeks" inputmode="numeric" style="width:70px" value="${esc(x.feedWeeks??'')}"><span class="muted" style="font-size:.82rem">semanas</span></label><button class="small" type="submit">Guardar</button></form>
     ${(x.sources||[]).length?`<details><summary class="muted" style="font-size:.8rem">Fuentes (${x.sources.length})</summary><ul class="flist">${x.sources.map(u=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/,'').split('/')[0])}</a></li>`).join('')}</ul></details>`:''}
   </div>`;
 }
@@ -577,10 +603,12 @@ function catalogPanel(p,pc){
       <label class="field"><span class="label">Uso indicado</span><input id="c-usage" name="usage" placeholder="Ej.: indoor y exterior"></label>
       <label class="field"><span class="label">Composición</span><input id="c-comp" name="composition"></label>
       <label class="field"><span class="label">Peso por bolsa</span><input id="c-weight" name="weight" placeholder="Ej.: 20 kg (50 L)"></label>
+      <label class="field"><span class="label">Nutre las primeras (semanas)</span><input id="c-feed" name="feedWeeks" inputmode="numeric" placeholder="Según la etiqueta"></label>
       <label class="field"><span class="label">Fuentes (una URL por línea)</span><textarea id="c-src" name="sources"></textarea></label>
       <label class="field"><span class="label">Notas / diferencias entre fuentes</span><textarea id="c-notes" name="notes"></textarea></label>
     </div>
     <div class="row"><button class="primary" type="submit">Agregar al catálogo</button></div></form>`;
+  h+=plansPanel();
   const subs=S.products.filter(x=>x.use==='sustrato');
   h+=`<div><h3 style="margin-bottom:6px">Sustratos</h3>${subs.length?subs.map(substrateCard).join(''):'<span class="muted" style="font-size:.85rem">Sin sustratos cargados</span>'}</div>`;
   for(const use of ['radicular','foliar']){
@@ -597,7 +625,7 @@ function eventForm(p,e){
     <h3>${isNew?'Planificar / registrar':'Ajustar evento'}</h3>
     <div class="grid2">
       <label class="field"><span class="label">Fecha</span><input id="e-date" name="date" type="date" value="${esc(e.date||today())}" required></label>
-      <label class="field"><span class="label">Tipo</span><select id="e-type" name="type" data-evtype>${EV_TYPES.map(x=>`<option ${x===e.type?'selected':''}>${x}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Tipo</span><select id="e-type" name="type" data-evtype data-bvis>${EV_TYPES.map(x=>`<option ${x===e.type?'selected':''}>${x}</option>`).join('')}</select></label>
       <label class="field"><span class="label">Estado</span><select id="e-status" name="status">${Object.entries(ST_LABEL).map(([k,v])=>`<option value="${k}" ${k===st?'selected':''}>${v}</option>`).join('')}</select></label>
     </div>
     <label class="field"><span class="label">Qué hay que hacer / qué pasó</span><input id="e-title" name="title" required value="${esc(e.title)}"></label>
@@ -925,6 +953,104 @@ function batchLine(b){
     b.origin==='Otro espacio'?'desde '+spaceName(b.originSpaceId):(b.origin?'desde '+b.origin.toLowerCase():'')].filter(Boolean);
   return parts.join(' · ');
 }
+/* ---------- asistente de riego ---------- */
+const STAGES=['Plántula','Enraizamiento','Vegetativo','Prefloración','Floración','Engorde','Lavado','Otra'];
+const n2=v=>{const t=String(v??'').trim();return t===''?'':num(t)};
+const rng=(a,b,u)=>a===''&&b===''||a==null&&b==null?'':`${a===''||a==null?'?':dec(a)}–${b===''||b==null?'?':dec(b)}${u?' '+u:''}`;
+function planDoseRow(it){
+  it=it||{};
+  return `<div class="dose-row pd-row"><select name="pdProd" aria-label="Producto">${prodOptions('radicular',it.productId)}</select>
+    <input name="pdDose" inputmode="decimal" aria-label="Dosis por litro" placeholder="Dosis" value="${esc(dec(it.dose))}">
+    <select name="pdUnit" aria-label="Unidad"><option value="ml" ${(it.unit||'ml')==='ml'?'selected':''}>ml/L</option><option value="g" ${it.unit==='g'?'selected':''}>g/L</option></select>
+    <span></span><button type="button" class="ghost small danger" data-act="rmPlanDose" aria-label="Quitar producto">✕</button></div>`;
+}
+function planRow(r){
+  r=r||{};
+  return `<div class="plan-row">
+    <div class="grid3">
+      <label class="field"><span class="label">Etapa</span><select name="prStage">${STAGES.map(x=>`<option ${x===r.stage?'selected':''}>${x}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Semana desde</span><input name="prFrom" inputmode="numeric" value="${esc(r.fromWeek??'')}"></label>
+      <label class="field"><span class="label">Semana hasta</span><input name="prTo" inputmode="numeric" value="${esc(r.toWeek??'')}"></label>
+      <label class="field"><span class="label">CE mín. (mS/cm)</span><input name="prEcMin" inputmode="decimal" value="${esc(dec(r.ecMin))}"></label>
+      <label class="field"><span class="label">CE máx. (mS/cm)</span><input name="prEcMax" inputmode="decimal" value="${esc(dec(r.ecMax))}"></label>
+      <span></span>
+      <label class="field"><span class="label">pH mín.</span><input name="prPhMin" inputmode="decimal" value="${esc(dec(r.phMin))}"></label>
+      <label class="field"><span class="label">pH máx.</span><input name="prPhMax" inputmode="decimal" value="${esc(dec(r.phMax))}"></label>
+    </div>
+    <div class="label">Dosis por litro</div>
+    <div class="pd-rows">${((r.doses&&r.doses.length)?r.doses:[{}]).map(planDoseRow).join('')}</div>
+    <div class="row"><button type="button" class="small" data-act="addPlanDose">+ Producto</button><span class="spacer"></span><button type="button" class="small ghost danger" data-act="rmPlanRow">Quitar etapa</button></div>
+  </div>`;
+}
+function planForm(pl){
+  pl=pl||{};
+  return `<form class="inline-form" data-form="plan" data-id="${esc(pl.id||'')}">
+    <h3>${pl.id?'Editar tabla de fertilización':'Nueva tabla de fertilización'}</h3>
+    <div class="grid2">
+      <label class="field"><span class="label">Nombre</span><input id="pl-name" name="name" required value="${esc(pl.name)}" placeholder="Ej.: Namaste – tabla sustrato"></label>
+      <label class="field"><span class="label">Fuentes (una URL por línea)</span><textarea id="pl-src" name="sources">${esc((pl.sources||[]).join('\n'))}</textarea></label>
+    </div>
+    <div class="plan-rows">${((pl.rows&&pl.rows.length)?pl.rows:[{}]).map(planRow).join('')}</div>
+    <button type="button" class="small" data-act="addPlanRow" style="align-self:flex-start">+ Agregar etapa</button>
+    <div class="row"><button class="primary" type="submit">Guardar tabla</button><button type="button" data-act="cancelForm">Cancelar</button></div>
+  </form>`;
+}
+function readPlanForm(f){
+  return [...f.querySelectorAll('.plan-row')].map(r=>{
+    const q=n=>r.querySelector(`[name=${n}]`).value;
+    const doses=[...r.querySelectorAll('.pd-row')].map(x=>({productId:x.querySelector('[name=pdProd]').value,dose:num(x.querySelector('[name=pdDose]').value),unit:x.querySelector('[name=pdUnit]').value}))
+      .filter(x=>x.productId&&x.dose).map(x=>({...x,label:prodLabel(S.products.find(p=>p.id===x.productId)||{})}));
+    return {stage:q('prStage'),fromWeek:n2(q('prFrom')),toWeek:n2(q('prTo')),ecMin:n2(q('prEcMin')),ecMax:n2(q('prEcMax')),phMin:n2(q('prPhMin')),phMax:n2(q('prPhMax')),doses};
+  }).filter(r=>r.fromWeek!==''||r.toWeek!==''||r.doses.length||r.ecMin!=='');
+}
+function plansPanel(){
+  const f=S.form;
+  let h=`<div><div class="row"><h3>Tablas de fertilización</h3><span class="spacer"></span>${f&&f.type==='plan'&&!f.id?'':'<button class="small" data-act="newPlan">+ Nueva tabla</button>'}</div>
+    <div class="muted" style="font-size:.8rem;margin:4px 0 8px">Cargá la tabla de cultivo del fabricante (por semana: CE, pH y dosis). El asistente de riego de cada lote la usa.</div>`;
+  if(f&&f.type==='plan'&&!f.id)h+=planForm({});
+  h+=S.plans.map(pl=>f&&f.type==='plan'&&f.id===pl.id?planForm(pl):`<div class="batch" style="gap:6px"><div class="row"><b class="bt">${esc(pl.name)}</b>${pl.verified?'<span class="tag st-tag-cumplido">Verificada</span>':'<span class="aitag">verificar</span>'}<span class="spacer"></span>
+      <button class="small ghost" data-act="editPlan" data-id="${esc(pl.id)}">Editar</button>
+      <button class="small ghost" data-act="togglePlanVerified" data-id="${esc(pl.id)}">${pl.verified?'Marcar sin verificar':'Marcar verificada'}</button>
+      ${S.confirm==='pl'+pl.id?`<button class="small danger" data-act="delPlan" data-id="${esc(pl.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="pl${esc(pl.id)}" aria-label="Borrar tabla">✕</button>`}</div>
+    <div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Semanas</th><th>Etapa</th><th>CE</th><th>pH</th><th>Dosis</th></tr></thead><tbody>
+    ${(pl.rows||[]).map(r=>`<tr><td class="num">${r.fromWeek||'?'}–${r.toWeek||'?'}</td><td>${esc(r.stage)}</td><td class="num">${rng(r.ecMin,r.ecMax)}</td><td class="num">${rng(r.phMin,r.phMax)}</td><td>${(r.doses||[]).map(x=>`${esc(x.label)} ${dec(x.dose)} ${esc(x.unit)}/L`).join('<br>')||'—'}</td></tr>`).join('')}
+    </tbody></table></div></div>`).join('');
+  if(!S.plans.length&&!(f&&f.type==='plan'))h+='<div class="muted" style="font-size:.85rem">Sin tablas cargadas.</div>';
+  return h+'</div>';
+}
+function substrateOf(b){return S.products.find(x=>x.use==='sustrato'&&prodLabel(x)===b.substrate)}
+function riegoAssist(b){
+  if(!b.startDate)return '';
+  const days=-daysLeft(b.startDate);if(days<0)return '';
+  const week=Math.floor(days/7)+1;
+  const pot=num(b.potLiters),qty=num(b.qty),pct=num(b.wateringPct);
+  const sub=substrateOf(b);const feed=sub?num(sub.feedWeeks):0;
+  const plan=S.plans.find(x=>x.id===b.planId);
+  const row=plan&&(plan.rows||[]).find(r=>num(r.fromWeek)<=week&&week<=num(r.toWeek||999));
+  // litros
+  const ruleL=pot&&pct?pot*pct/100:0;
+  const hist=S.events.filter(e=>e.batchId===b.id&&e.type==='Riego radicular'&&evStatus(e)==='cumplido'&&num(e.perPlant)>0&&e.drained==='si').sort((a,c)=>c.date.localeCompare(a.date)).slice(0,5);
+  const learnL=hist.length>=3?hist.reduce((a,e)=>a+num(e.perPlant),0)/hist.length:0;
+  const useL=learnL||ruleL;const totL=useL*qty;
+  const r1=v=>dec(Math.round(v*100)/100);
+  let lit=ruleL?`<div>Por tu regla (${dec(pct)} % de ${dec(pot)} L): <b class="num">${r1(ruleL)} L por planta</b> · ${r1(ruleL*qty)} L para las ${qty}</div>`:`<div class="muted">Definí tu regla de riego (% de la maceta) y los litros de maceta con «Editar».</div>`;
+  lit+=learnL?`<div>Según tus últimos ${hist.length} riegos con drenaje: <b class="num">${r1(learnL)} L por planta</b></div>`:`<div class="muted" style="font-size:.8rem">Con 3 riegos registrados con litros por planta y drenaje, se suma el promedio de tus riegos (${hist.length}/3).</div>`;
+  // fertilizante
+  let fert;
+  if(sub&&feed&&week<=feed)fert=`<div><b>Sin fertilizante:</b> el sustrato nutre hasta la semana ${feed} (${fmtDate(addDays(b.startDate,feed*7))}). Desde ahí, según la tabla.</div>`;
+  else if(!plan)fert=`<div class="muted">Elegí una tabla de fertilización para el lote con «Editar».${sub&&!feed?' Cargá también cuántas semanas nutre el sustrato.':''}</div>`;
+  else if(!row)fert=`<div class="muted">La tabla «${esc(plan.name)}» no tiene una etapa para la semana ${week}.</div>`;
+  else fert=`<div><b>${esc(row.stage)}</b> (tabla «${esc(plan.name)}»${plan.verified?'':', a verificar'})${sub&&!feed?' · <span class="muted">no sé cuántas semanas nutre el sustrato</span>':''}</div>
+    ${(row.doses||[]).map(x=>`<div class="num">${esc(x.label)}: ${dec(x.dose)} ${esc(x.unit)}/L${totL?` → ${r1(num(x.dose)*totL)} ${esc(x.unit)} en ${r1(totL)} L`:''}</div>`).join('')||'<div class="muted">Esta etapa no tiene dosis cargadas.</div>'}
+    ${row.ecMin!==''||row.ecMax!==''?`<div class="muted" style="font-size:.82rem">Objetivo: CE ${rng(row.ecMin,row.ecMax,'mS/cm')}${row.phMin!==''||row.phMax!==''?' · pH '+rng(row.phMin,row.phMax):''}</div>`:''}`;
+  // mediciones
+  const last=S.events.filter(e=>e.batchId===b.id&&(e.ecIn!==''&&e.ecIn!=null||e.phIn!==''&&e.phIn!=null||e.ecOut!==''&&e.ecOut!=null||e.phOut!==''&&e.phOut!=null)).sort((a,c)=>c.date.localeCompare(a.date))[0];
+  const flag=(v,a,c)=>v===''||v==null?'':(a!==''&&a!=null&&num(v)<num(a))?' <span class="exp">bajo</span>':(c!==''&&c!=null&&num(v)>num(c))?' <span class="exp">alto</span>':(row&&(a!==''||c!=='')?' <span class="inc">en rango</span>':'');
+  const meas=last?`<div class="muted" style="font-size:.82rem">Última medición (${fmtDate(last.date)}): agua CE ${last.ecIn!==''&&last.ecIn!=null?dec(last.ecIn):'—'}${row?flag(last.ecIn,row.ecMin,row.ecMax):''} · pH ${last.phIn!==''&&last.phIn!=null?dec(last.phIn):'—'}${row?flag(last.phIn,row.phMin,row.phMax):''} · drenaje CE ${last.ecOut!==''&&last.ecOut!=null?dec(last.ecOut):'—'} · pH ${last.phOut!==''&&last.phOut!=null?dec(last.phOut):'—'}</div>`:'';
+  const pre=useL?encodeURIComponent(JSON.stringify({liters:Math.round(totL*100)/100,perPlant:Math.round(useL*100)/100,products:row&&!(sub&&feed&&week<=feed)?(row.doses||[]):[]})):'';
+  return `<div class="assist"><div class="row"><span class="label">Riego sugerido · semana ${week} (día ${days})</span><span class="spacer"></span>
+    <button class="small" data-act="planRiego" data-id="${esc(b.id)}" data-pre="${pre}">Planificar este riego</button></div>${lit}${fert}${meas}</div>`;
+}
 function plannerView(p,s,pc){
   const f=S.form;const bs=activeBatches(s.id);
   const done=S.batches.filter(b=>b.spaceId===s.id&&b.status==='finalizado');
@@ -940,6 +1066,7 @@ function plannerView(p,s,pc){
         <span class="muted num" style="font-size:.8rem">Inicio ${fmtDate(b.startDate)}</span></div>
       <div class="muted" style="font-size:.86rem">${esc(batchLine(b))||'Completá tipo de cultivo, maceta y sustrato con «Editar».'}</div>
       ${b.note?`<div style="font-size:.86rem">${esc(b.note)}</div>`:''}
+      ${riegoAssist(b)}
       ${f&&f.type==='transfer'&&f.id===b.id?transferForm(s,b):''}
       ${f&&f.type==='finish'&&f.id===b.id?finishForm(b):''}
       <div class="row">
@@ -969,6 +1096,10 @@ function batchForm(s,b){
       <label class="field"><span class="label">Litros de maceta</span><input id="b-pot" name="potLiters" inputmode="decimal" value="${esc(dec(b.potLiters))}"></label>
       <label class="field" data-bwhen="cropType:Sustrato"><span class="label">Sustrato</span><input id="b-sub" name="substrate" list="dl-sub" value="${esc(b.substrate)}" placeholder="Ej.: Terrafertil Growmix Indoor"><datalist id="dl-sub">${[...new Set([...S.products.filter(x=>x.use==='sustrato').map(prodLabel),...SUBSTRATES,...S.batches.map(x=>x.substrate).filter(Boolean)])].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></label>
     </div>
+    <div class="grid2">
+      <label class="field"><span class="label">Tabla de fertilización</span><select id="b-plan" name="planId"><option value="">Sin tabla</option>${S.plans.map(x=>`<option value="${esc(x.id)}" ${x.id===b.planId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Mi regla de riego (% del volumen de maceta)</span><input id="b-pct" name="wateringPct" inputmode="decimal" value="${esc(dec(b.wateringPct))}" placeholder="Ej.: 20"></label>
+    </div>
     <label class="field"><span class="label">Nota (opcional)</span><input id="b-note" name="note" value="${esc(b.note)}"></label>
     <div class="row"><button class="primary" type="submit">Guardar lote</button><button type="button" data-act="cancelForm">Cancelar</button></div>
   </form>`;
@@ -997,7 +1128,7 @@ function finishForm(b){
 async function saveBatch(f,d){
   const sid=f.dataset.sid;const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
   const data={genetics:(d.genetics||'').trim(),qty:Math.max(0,Math.round(num(d.qty))),startDate:d.startDate||today(),cropType:d.cropType||'',origin:d.origin||'',
-    originSpaceId:d.origin==='Otro espacio'?(d.originSpaceId||''):'',potLiters:n(d.potLiters),substrate:d.cropType==='Sustrato'?(d.substrate||'').trim():'',note:(d.note||'').trim()};
+    originSpaceId:d.origin==='Otro espacio'?(d.originSpaceId||''):'',potLiters:n(d.potLiters),substrate:d.cropType==='Sustrato'?(d.substrate||'').trim():'',note:(d.note||'').trim(),planId:d.planId||'',wateringPct:n(d.wateringPct)};
   if(!data.qty){S.err='Cargá la cantidad de plantas.';rerender();return}
   if(f.dataset.id)await db.doc('batches/'+f.dataset.id).update(data);
   else await db.collection('batches').add({...data,projectId:'cultivo',spaceId:sid,status:'activo',history:[{date:data.startDate,text:`Inicio: ${data.qty} plantas en ${spaceName(sid)}`}],createdAt:Date.now()});
@@ -1116,6 +1247,17 @@ app.addEventListener('click',e=>{
       safe(async()=>{await db.doc('spaces/'+sp.id).update({[b.dataset.key]:arr});S.confirm=null})},
     aiFill(){aiFill(b.closest('form'))},
     toggleCatalog(){S.catalogOpen=!S.catalogOpen;rerender()},
+    newPlan(){S.form={type:'plan'};rerender()},
+    editPlan(){S.form={type:'plan',id};rerender()},
+    delPlan(){safe(async()=>{await db.doc('plans/'+id).delete();S.confirm=null})},
+    togglePlanVerified(){const x=S.plans.find(y=>y.id===id);safe(()=>db.doc('plans/'+id).update({verified:!x.verified}))},
+    addPlanRow(){b.closest('form').querySelector('.plan-rows').insertAdjacentHTML('beforeend',planRow({}))},
+    rmPlanRow(){const r=b.closest('.plan-row');if(r.parentElement.children.length>1)r.remove()},
+    addPlanDose(){b.closest('.plan-row').querySelector('.pd-rows').insertAdjacentHTML('beforeend',planDoseRow({}))},
+    rmPlanDose(){const r=b.closest('.pd-row');if(r.parentElement.children.length>1)r.remove();else{r.querySelector('[name=pdProd]').value='';r.querySelector('[name=pdDose]').value=''}},
+    planRiego(){const bt=S.batches.find(x=>x.id===id);let pre={};try{pre=JSON.parse(decodeURIComponent(b.dataset.pre||''))||{}}catch(e){}
+      S.form={type:'event',prefill:{date:today(),type:'Riego radicular',title:'Riego '+(bt?bt.genetics:''),status:'planificado',batchId:id,spaceId:bt&&bt.spaceId,liters:pre.liters||'',perPlant:pre.perPlant||'',products:pre.products||[]}};
+      rerender();setTimeout(()=>{const el=document.getElementById('e-title');if(el){el.scrollIntoView({block:'center'});}},0)},
     toggleVerified(){const x=S.products.find(y=>y.id===id);safe(()=>db.doc('products/'+id).update({verified:!x.verified}))},
     delProduct(){safe(async()=>{await db.doc('products/'+id).delete();S.confirm=null})},
     addDoseRow(){const fm=b.closest('form');const use=RIEGO_USE[fm.querySelector('[name=type]').value];if(!use)return;fm.querySelector('.dose-rows').insertAdjacentHTML('beforeend',prodRow(use,{}))},
@@ -1155,7 +1297,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
@@ -1189,6 +1331,9 @@ app.addEventListener('submit',e=>{
     if(key==='lights')it.aiFields=d.verified?[]:String(d.aiFields||'').split(',').filter(Boolean);
     const arr=[...(sp[key]||[])];if(idx>=0)arr[idx]=it;else arr.push(it);
     safe(async()=>{await db.doc('spaces/'+sp.id).update({[key]:arr});S.form=null;document.activeElement?.blur?.();rerender()});return}
+  if(kind==='plan'){const rows=readPlanForm(f);const data={name:(d.name||'').trim(),rows,sources:String(d.sources||'').split(/\s+/).filter(u=>/^https?:\/\//.test(u))};
+    safe(async()=>{if(f.dataset.id)await db.doc('plans/'+f.dataset.id).update(data);else await db.collection('plans').add({...data,projectId:'cultivo',verified:false,createdAt:Date.now()});S.form=null;rerender()});return}
+  if(kind==='feedweeks'){safe(async()=>{await db.doc('products/'+f.dataset.id).update({feedWeeks:n2(d.feedWeeks)});document.activeElement?.blur?.();rerender()});return}
   if(kind==='batch'){safe(async()=>{await saveBatch(f,d);S.form=null;document.activeElement?.blur?.();rerender()});return}
   if(kind==='transfer'){const b=S.batches.find(x=>x.id===f.dataset.id);safe(async()=>{await transferBatch(b,num(d.qty),d.dest,d.date||today());S.form=null;rerender()});return}
   if(kind==='finish'){const b=S.batches.find(x=>x.id===f.dataset.id);safe(async()=>{await db.doc('batches/'+b.id).update({status:'finalizado',endDate:d.date||today(),endNote:(d.note||'').trim(),history:[...(b.history||[]),{date:d.date||today(),text:'Finalizado'+(d.note?': '+d.note.trim():'')}]});S.form=null;rerender()});return}
@@ -1209,6 +1354,7 @@ app.addEventListener('submit',e=>{
         ev.liters=num(d.liters)||'';
         ev.products=ids.map((pid,i)=>{const pr=S.products.find(x=>x.id===pid);return pr?{productId:pid,label:prodLabel(pr),dose:num(ds[i]),unit:us[i]||'ml'}:null}).filter(Boolean);}
       else{ev.products=[];ev.liters='';}
+      if(ev.type==='Riego radicular'){ev.batchId=d.batchId||'';ev.perPlant=n2(d.perPlant);ev.drained=d.drained||'';ev.ecIn=n2(d.ecIn);ev.phIn=n2(d.phIn);ev.ecOut=n2(d.ecOut);ev.phOut=n2(d.phOut);}
       if(f.dataset.id){const old=S.events.find(x=>x.id===f.dataset.id)||{};
         if(!old.plannedDate&&old.date&&old.date!==ev.date)ev.plannedDate=old.date;
         ev.adjustNote=(d.adjustNote||'').trim();
@@ -1218,7 +1364,7 @@ app.addEventListener('submit',e=>{
       const name=(d.name||'').trim();if(!name)return;
       if(d.use==='sustrato'){
         await db.collection('products').add({projectId:'cultivo',use:'sustrato',line:(d.line||'').trim(),name,presentations:(d.presentations||'').trim(),ph:(d.ph||'').trim(),ce:(d.ce||'').trim(),
-          usage:(d.usage||'').trim(),composition:(d.composition||'').trim(),weight:(d.weight||'').trim(),notes:(d.notes||'').trim(),
+          usage:(d.usage||'').trim(),composition:(d.composition||'').trim(),weight:(d.weight||'').trim(),feedWeeks:n2(d.feedWeeks),notes:(d.notes||'').trim(),
           sources:String(d.sources||'').split(/\s+/).filter(u=>/^https?:\/\//.test(u)),verified:false,createdAt:Date.now()});
       }else
       await db.collection('products').add({projectId:'cultivo',use:d.use==='foliar'?'foliar':'radicular',line:(d.line||'').trim(),name,unit:d.unit||'ml',createdAt:Date.now()});
@@ -1252,6 +1398,7 @@ async function boot(){
   db.collection('tasks').onSnapshot(s=>{S.tasks=toList(s);S.loaded.tasks=true;render()},onErr);
   db.collection('logs').onSnapshot(s=>{S.logs=toList(s);S.loaded.logs=true;render()},onErr);
   db.collection('products').onSnapshot(s=>{S.products=toList(s);render()},onErr);
+  db.collection('plans').onSnapshot(s=>{S.plans=toList(s);render()},onErr);
   db.collection('batches').onSnapshot(s=>{S.batches=toList(s);render()},onErr);
   db.collection('spaces').onSnapshot(s=>{S.spaces=toList(s);render()},onErr);
   db.collection('media').onSnapshot(s=>{S.media=toList(s);render()},onErr);
