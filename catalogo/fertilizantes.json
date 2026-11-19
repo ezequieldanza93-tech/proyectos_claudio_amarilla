@@ -1,0 +1,992 @@
+[
+  {
+    "id": "cannabiogen-delta-9",
+    "categoria": "fertilizante",
+    "marca": "Cannabiogen",
+    "linea": null,
+    "producto": "Delta 9",
+    "modelo": null,
+    "descripcion_corta": "Bioestimulador de floración a base de algas.",
+    "fuentes": [
+      {
+        "url": "https://www.ballestergrow.com.ar/productos/cannabiogen-delta-9/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "modo_aplicacion": "Foliar y riego (suelo e hidropónico)",
+    "presentaciones_ml": [
+      150,
+      500
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "floracion",
+        "min": 4,
+        "max": 6,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Suelo e hidropónico: al inicio de floración y en el pico floral (~30 días después)"
+      },
+      {
+        "etapa": "floracion",
+        "min": 6,
+        "max": 8,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Suelo e hidropónico: 3ra aplicación a los 15 días de la anterior (~45 días de iniciada la floración)"
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Se vende en Argentina en grow shops; la ficha usada es de un vendedor AR. C.E. 1240 µS/cm a 25 °C a 5 ml/L; compatible con pH 5-8. Composición declarada: Estimulador a base de algas (bioestimulante de floración). Dosis foliar según la fuente: 4-6 ml/L; dos aplicaciones, la 1ra en prefloración (una semana antes de inducir) y la 2da 10 días después de inducida la floración. El pedido lo nombra «Delta 9»: es un producto de Cannabiogen."
+  },
+  {
+    "id": "mamboreta-smarter",
+    "categoria": "fertilizante",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Bio Mamboretá SMARTER",
+    "modelo": null,
+    "descripcion_corta": "Fertilizante orgánico líquido de origen vegetal antiestrés, certificado como apto para agricultura orgánica (ARGENCERT).",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-smarter-fertilizante-organico-no-estres/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      250
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 15,
+        "max": 15,
+        "unidad_por_litro": "ml/L",
+        "detalle": "1 y 1/2 medida o 15 cm³ por litro; mínimo 3 aplicaciones, con regadera"
+      }
+    ],
+    "tabla_cultivo_url": null
+  },
+  {
+    "id": "mamboreta-trico",
+    "categoria": "fertilizante",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "TRICO",
+    "modelo": null,
+    "descripcion_corta": "Trichoderma harzianum (cepa Th-1 INTA) liofilizado; previene hongos del suelo (fusarium, phytophthora, pythium) y promueve el crecimiento.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/trico/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      30
+    ],
+    "unidad": "g",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 2,
+        "max": 2,
+        "unidad_por_litro": "g/L",
+        "detalle": "2 g o 3 medidas por litro de agua libre de cloro, por riego, cada 10 a 15 días"
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Principio activo: Trichoderma harzianum cepa Th-1 INTA (1x10^9 conidios/g). Presentación de 30 g."
+  },
+  {
+    "id": "namaste-amazonia",
+    "categoria": "fertilizante",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Amazonia",
+    "modelo": null,
+    "descripcion_corta": "Bio-estimulante radicular con micorrizas (Glomus intraradices) y Azospirillum brasilense, para etapa vegetativa y trasplantes.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-amazonia-150-gr/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-amazonia-300-gr/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-amazonia-2-kg/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      150,
+      300,
+      2000
+    ],
+    "unidad": "g",
+    "npk_declarado": null,
+    "dosis_fabricante": [],
+    "tabla_cultivo_url": null,
+    "notas": "Presentaciones en gramos (polvo). Rendimiento según el fabricante: 150 g rinde 50 L, 300 g 167 L, 2000 g 667 L; no publica dosis por litro. Certificado SENASA N° 19097. Sin NPK declarado."
+  },
+  {
+    "id": "namaste-calmagste",
+    "categoria": "fertilizante",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Calmagste",
+    "modelo": null,
+    "descripcion_corta": "Corrector de calcio y magnesio para prevenir y corregir carencias en indoor, outdoor e hidroponía.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      100,
+      500,
+      2000,
+      10000
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [],
+    "tabla_cultivo_url": null,
+    "notas": "Solo figura en el sitio del fabricante; no se encontró en Santa Planta. Sin dosis ni composición detallada publicadas. Certificado SENASA N° 61.277."
+  },
+  {
+    "id": "namaste-clonaste",
+    "categoria": "fertilizante",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Clonaste",
+    "modelo": null,
+    "descripcion_corta": "Gel enraizante para esquejes y clones.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-clonaste-30-gr/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [
+      {
+        "campo": "presentaciones_ml",
+        "valores": [
+          {
+            "valor": "300 cc",
+            "url": "https://namastenutrientes.com"
+          },
+          {
+            "valor": "30 cc",
+            "url": "https://santaplanta.com.ar/producto/namaste-clonaste-30-gr/"
+          }
+        ]
+      }
+    ],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [],
+    "tabla_cultivo_url": null,
+    "notas": "Se aplica sobre la base del esqueje (cubrir 1 cm de tallo, 10 segundos) o con pincel; no es dosis por litro. El envase difiere entre fuentes: sitio oficial 300 cc, Santa Planta 30 cc (nombre «30 GR», texto «envase de 30 CC»)."
+  },
+  {
+    "id": "namaste-detox",
+    "categoria": "fertilizante",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Detox",
+    "modelo": null,
+    "descripcion_corta": "Lavador de raíces con ácidos orgánicos quelantes para eliminar el exceso de sales antes de la cosecha.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-detox-500-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-detox-2-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      500,
+      2000
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 3,
+        "max": 3,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Regar hasta que escurra por debajo de la maceta; repetir 4 veces durante las últimas 2 semanas antes de la cosecha (Santa Planta)."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Dosis tomada de Santa Planta. La descripción de Santa Planta menciona potes de 600 ml y 5 L, distinto de los 500 ml y 2 L del fabricante y de los productos listados. Certificado SENASA N° 18703."
+  },
+  {
+    "id": "namaste-flora-booster",
+    "categoria": "fertilizante",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Flora Booster",
+    "modelo": null,
+    "descripcion_corta": "Potenciador PK de floración con fósforo, potasio, algas (Ascophyllum nodosum) y aminoácidos.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-flora-booster-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-flora-booster-500-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-flora-booster-2-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      100,
+      500,
+      2000,
+      10000
+    ],
+    "unidad": "ml",
+    "npk_declarado": "P2O5 9% · K2O 18% · Fe 1% · otros microelementos 1%",
+    "dosis_fabricante": [],
+    "tabla_cultivo_url": null,
+    "notas": "Uso en interior: 1 vez por semana (4 aplicaciones en toda la floración), la primera puede ser con rociador. El fabricante indica rendimiento: 100 ml rinde 25 L, 500 ml 125 L, 2 L 500 L, 10 L 2500 L; no publica dosis por litro. La descripción de Santa Planta del Flora Booster de 2 L parece copiada de otro producto (Green House Feeding) y no se usó. Certificado SENASA N° 18504."
+  },
+  {
+    "id": "namaste-oro-negro",
+    "categoria": "fertilizante",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Oro Negro",
+    "modelo": null,
+    "descripcion_corta": "Potenciador de crecimiento con nitrato de calcio y ácidos húmicos, para vegetativo y primeras semanas de floración.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-oro-negro-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-oro-negro-500-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-oro-negro-2-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      100,
+      500,
+      2000,
+      10000
+    ],
+    "unidad": "ml",
+    "npk_declarado": "N 7,5% (orgánico) · P 1,6% · K 10% · Fe 0,10% · S 0,6% · Ca 0,5% · Mn 0,3% · Cu 0,2% · B 0,25% · materia orgánica 86%",
+    "dosis_fabricante": [],
+    "tabla_cultivo_url": null,
+    "notas": "El fabricante indica rendimiento: 100 ml rinde 25 L, 500 ml 125 L, 2 L 500 L, 10 L 2500 L; no publica dosis por litro en el sitio. Se aplica 1 vez por semana en vegetativo. Certificado SENASA N° 19039. Santa Planta vende 100 ml, 500 ml y 2 L."
+  },
+  {
+    "id": "namaste-ph-menos",
+    "categoria": "fertilizante",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Ph -",
+    "modelo": null,
+    "descripcion_corta": "Reductor de pH a base de ácidos orgánicos para ajustar el agua de riego.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-ph-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-ph-500-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-ph-2-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      100,
+      500,
+      2000,
+      10000
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [],
+    "tabla_cultivo_url": null,
+    "notas": "Sin dosis por litro: Santa Planta indica agregar de a 3 o 4 gotas y volver a medir (baja 0,5 puntos). El fabricante menciona la ventana de pH 5,5 a 6,5. Certificado SENASA N° 18717."
+  },
+  {
+    "id": "namaste-shanti",
+    "categoria": "fertilizante",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Shanti",
+    "modelo": null,
+    "descripcion_corta": "Bio-estimulante orgánico a base de 3 tipos de algas marinas con fitohormonas, aminoácidos y vitaminas; riego o foliar.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-shanti-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-shanti-500-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      100,
+      500
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 3,
+        "max": 6,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Cada 15 días desde mitad del ciclo vegetativo y primeras semanas de floración; primera aplicación 3 ml, segunda 6 ml y luego regular según sustrato; la segunda aplicación puede ser foliar (Santa Planta)."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Dosis tomada de la descripción de Santa Planta; el sitio del fabricante no publica dosis. Rendimiento del fabricante: 100 ml rinde 25 L, 500 ml 125 L. Certificado SENASA N° 19038."
+  },
+  {
+    "id": "namaste-trico-plus",
+    "categoria": "fertilizante",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Trico+",
+    "modelo": null,
+    "descripcion_corta": "Potenciador de floración en polvo a base de melaza deshidratada, levaduras, yucca y zeolita, para resina, aroma y peso.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-trico-100-gr/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-trico-250-gr/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-trico-1100-gr/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      100,
+      250,
+      1100
+    ],
+    "unidad": "g",
+    "npk_declarado": "P 1% · Ca 7% · vitaminas B1, B6 y B12 · carbohidratos · aminoácidos",
+    "dosis_fabricante": [],
+    "tabla_cultivo_url": null,
+    "notas": "Presentaciones en gramos. Rendimiento del fabricante: 100 g rinde 50 L, 250 g 150 L, 1100 g 550 L; no publica dosis por litro. Se aplica en floración; las dos primeras aplicaciones pueden ser foliares. Certificado SENASA N° 18849."
+  },
+  {
+    "id": "top-crop-calmag",
+    "categoria": "fertilizante",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "CalMag",
+    "modelo": null,
+    "descripcion_corta": "Corrector de calcio y magnesio; acondiciona agua de ósmosis o blanda y previene carencias.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-calmag-250-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.jardinerocorrentino.com.ar/productos/calmag-250-ml-top-crop/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      250,
+      1000
+    ],
+    "unidad": "ml",
+    "npk_declarado": "N total 6,6% (nítrico 5,6%, ureico 0,8%) · CaO 6,7% · MgO 2,4% según jardinerocorrentino.com.ar",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 0.1,
+        "max": 1,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Dosis orientativa por litro de solución nutritiva; para agua de ósmosis o blanda, 0,2 a 1 ml/L hasta la EC deseada (jardinerocorrentino.com.ar)."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Santa Planta lista 250 ml; el grow shop lista también 1 L (calmag-1l-top-crop). Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "top-crop-deeper-underground",
+    "categoria": "fertilizante",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Deeper Underground",
+    "modelo": null,
+    "descripcion_corta": "Fertilizante estimulante de raíces con ácidos húmicos y fúlvicos, para las primeras semanas y trasplantes.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-deeper-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-deeper-250-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/deeper-top-crop-fertilizante-para-crecimiento-y-radicular-250-ml/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      100,
+      250
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "enraizamiento",
+        "min": null,
+        "max": null,
+        "unidad_por_litro": "ml/L",
+        "detalle": "1 a 2 ml cada 1,5 litros de agua de riego, una vez por semana en las primeras semanas de vida (growshopping.com.ar); la fuente no la expresa por litro."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Otras tiendas citan dosis distintas (1 ml/L; 2-4 ml/L): ver pendientes. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "top-crop-top-auto",
+    "categoria": "fertilizante",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Top Auto",
+    "modelo": null,
+    "descripcion_corta": "Fertilizante líquido de crecimiento y floración para autoflorecientes, con quelatos y ácidos húmicos y fúlvicos.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-auto-1-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/top-auto-top-crop-fertilizante-de-crecimiento-y-floracion-1-litro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.jardinerocorrentino.com.ar/productos/top-auto-1-lts-top-crop/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      1000
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 1,
+        "max": 2.5,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Empezar con 1 a 1,5 ml/L una vez por semana desde el tercer nudo (2ª-3ª semana) y subir hasta un máximo de 2,5 ml/L (growshopping.com.ar)."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "No combinar con Top Veg ni Top Bloom. Los grow shops también venden 250 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "top-crop-top-bloom",
+    "categoria": "fertilizante",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Top Bloom",
+    "modelo": null,
+    "descripcion_corta": "Fertilizante base de floración rico en fósforo y potasio, con ácidos húmicos y fúlvicos.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-bloom-250-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-bloom-1-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/top-bloom-top-crop-fertilizante-para-floracion-1-litro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.jardinerocorrentino.com.ar/productos/topbloo/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      250,
+      1000
+    ],
+    "unidad": "ml",
+    "npk_declarado": "4-8-8 (N 4,4% · P 8,2% · K 8,6%) según jardinerocorrentino.com.ar",
+    "dosis_fabricante": [
+      {
+        "etapa": "floracion",
+        "min": 2,
+        "max": 4,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Empezar con 2 ml/L en las primeras semanas de floración y subir hasta un máximo de 4 ml/L (growshopping.com.ar); desde la 6ª semana de vida o prefloración hasta el lavado de raíces."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "No usar en autoflorecientes ni en coco. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "top-crop-top-bud",
+    "categoria": "fertilizante",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Top Bud",
+    "modelo": null,
+    "descripcion_corta": "Fertilizante de floración media-final rico en fósforo y potasio, con aminoácidos y baja concentración de nitrógeno.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-bud-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/top-bud-top-crop-fertilizante-para-floracion-100-ml/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.jardinerocorrentino.com.ar/productos/top-bud-250-ml/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      100,
+      250
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "floracion",
+        "min": 0.5,
+        "max": 1,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Una vez por semana (growshopping.com.ar y jardinerocorrentino.com.ar)."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Los grow shops también venden 250 ml; Santa Planta lista 100 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "top-crop-top-candy",
+    "categoria": "fertilizante",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Top Candy",
+    "modelo": null,
+    "descripcion_corta": "Aditivo de floración a base de extractos vegetales ricos en hidratos de carbono, para volumen, terpenos y resina.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-candy-pack-x-24-u-10-desc-250-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-candy-pack-x-12-u-10-desc-1-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/top-candy-top-crop-fertilizante-para-floracion-1-litro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.jardinerocorrentino.com.ar/productos/topcan/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      250,
+      1000
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "floracion",
+        "min": 2,
+        "max": 2,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Desde la 3ª o 4ª semana de floración, una vez por semana hasta el final del ciclo (growshopping.com.ar)."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Las páginas de Santa Planta son packs (24 u de 250 ml, 12 u de 1 L); se cargó el producto unitario. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "top-crop-top-coco-a",
+    "categoria": "fertilizante",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Top Coco A",
+    "modelo": null,
+    "descripcion_corta": "Parte A del abono líquido para sustrato de coco; se usa junto con Top Coco B en todo el ciclo.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-coco-a-1-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/top-coco-a-top-crop-fertilizante-de-crecimiento-y-floracion-1-litro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.jardinerocorrentino.com.ar/productos/top-coco-a-250-ml-top-crop/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      250,
+      1000,
+      5000
+    ],
+    "unidad": "ml",
+    "npk_declarado": "N total 5,0% · K2O 4,0% · CaO 4,4% · MgO 1,3% · Fe 0,04% (quelado EDDHSA) · pH 6,7",
+    "dosis_fabricante": [
+      {
+        "etapa": "enraizamiento",
+        "min": 0.5,
+        "max": 1,
+        "unidad_por_litro": "ml/L",
+        "detalle": "De Top Coco A, junto con la misma cantidad de Top Coco B (orientativa, growshopping.com.ar)."
+      },
+      {
+        "etapa": "vegetativo",
+        "min": 1,
+        "max": 2,
+        "unidad_por_litro": "ml/L",
+        "detalle": "De Top Coco A, junto con la misma cantidad de Top Coco B."
+      },
+      {
+        "etapa": "floracion",
+        "min": 2,
+        "max": 3,
+        "unidad_por_litro": "ml/L",
+        "detalle": "De Top Coco A, junto con la misma cantidad de Top Coco B; general 1-3 ml/L de cada parte, una vez por semana."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Formatos de 1 y 5 L según el vendedor; los grow shops también venden 250 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "top-crop-top-coco-b",
+    "categoria": "fertilizante",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Top Coco B",
+    "modelo": null,
+    "descripcion_corta": "Parte B del abono líquido para sustrato de coco; se usa junto con Top Coco A en todo el ciclo.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-coco-b-1-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/top-coco-b-top-crop-fertilizante-de-crecimiento-y-floracion-y-litro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.jardinerocorrentino.com.ar/productos/top-coco-b-250-ml-top-crop/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      250,
+      1000,
+      5000
+    ],
+    "unidad": "ml",
+    "npk_declarado": "N total 1,4% · P2O5 6,0% · MgO 0,7% · B 0,02% · Cu 0,003% (quelado EDTA) · Mn 0,04% (quelado EDTA) · Zn 0,031% · pH 6,7",
+    "dosis_fabricante": [
+      {
+        "etapa": "enraizamiento",
+        "min": 0.5,
+        "max": 1,
+        "unidad_por_litro": "ml/L",
+        "detalle": "De Top Coco B, junto con la misma cantidad de Top Coco A (orientativa, growshopping.com.ar)."
+      },
+      {
+        "etapa": "vegetativo",
+        "min": 1,
+        "max": 2,
+        "unidad_por_litro": "ml/L",
+        "detalle": "De Top Coco B, junto con la misma cantidad de Top Coco A."
+      },
+      {
+        "etapa": "floracion",
+        "min": 2,
+        "max": 3,
+        "unidad_por_litro": "ml/L",
+        "detalle": "De Top Coco B, junto con la misma cantidad de Top Coco A; general 1-3 ml/L de cada parte, una vez por semana."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Formatos de 1 y 5 L según el vendedor; los grow shops también venden 250 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "top-crop-top-veg",
+    "categoria": "fertilizante",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Top Veg",
+    "modelo": null,
+    "descripcion_corta": "Fertilizante base de crecimiento con macro y micronutrientes y ácidos húmicos y fúlvicos; desde la 3ª semana hasta prefloración.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-veg-250-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-veg-1-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/top-veg-top-crop-fertilizante-para-crecimiento-1-litro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      250,
+      1000
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "vegetativo",
+        "min": 2,
+        "max": 4,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Empezar con 2 ml/L con plantas chicas y subir hasta un máximo de 4 ml/L (growshopping.com.ar)."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "No usar en autoflorecientes (Top Auto) ni en coco (Top Coco A y B). Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "top-crop-top-wash",
+    "categoria": "fertilizante",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Top Wash",
+    "modelo": null,
+    "descripcion_corta": "Aditivo que elimina el exceso de sales del sustrato; útil en los últimos riegos o ante sobrefertilización.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-wash-1-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.jardinerocorrentino.com.ar/productos/top-wash-1-lts-top-crop/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "uso": "radicular",
+    "presentaciones_ml": [
+      1000
+    ],
+    "unidad": "ml",
+    "npk_declarado": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 2,
+        "max": 2,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Últimos 15 días de cultivo; en sobrefertilización, un riego solo con agua y agregar Top Wash desde el tercer día (jardinerocorrentino.com.ar)."
+      }
+    ],
+    "tabla_cultivo_url": null,
+    "notas": "Sin otra información de composición. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  }
+]

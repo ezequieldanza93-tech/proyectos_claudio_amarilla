@@ -1,0 +1,59 @@
+{
+  "luces": [
+    "Amnesia",
+    "Bioled",
+    "Cosmel",
+    "Growtech",
+    "GS Iluminación",
+    "Lux",
+    "Mars Hydro"
+  ],
+  "carpas": [
+    "cultivARG",
+    "Garden HighPro"
+  ],
+  "ventilacion": [
+    "Agroled",
+    "Garden HighPro",
+    "Growtech",
+    "Santa Planta",
+    "VT Fans"
+  ],
+  "clima": [
+    "Garden HighPro",
+    "Wentux"
+  ],
+  "fertilizantes": [
+    "Cannabiogen",
+    "Mamboretá",
+    "Namaste",
+    "Top Crop"
+  ],
+  "foliares": [
+    "BioProyect",
+    "Green Leaf",
+    "La Pota",
+    "Mamboretá",
+    "Namaste",
+    "NoStress",
+    "Pangea",
+    "Power",
+    "Revienta",
+    "Top Crop",
+    "Vamp"
+  ],
+  "sustratos": [
+    "Biobizz",
+    "Cultivate",
+    "Growers",
+    "Landiner",
+    "Lizard",
+    "Silver",
+    "Terrafertil",
+    "Vamp"
+  ],
+  "geneticas": [
+    "BSF Seeds",
+    "Clon Factory"
+  ]
+}

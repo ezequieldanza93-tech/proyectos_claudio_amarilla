@@ -1,0 +1,621 @@
+[
+  {
+    "id": "agroled-cooler-turbina-4-ruleman-220v",
+    "categoria": "ventilacion",
+    "marca": "Agroled",
+    "linea": null,
+    "producto": "Cooler Turbina 4\" Ruleman 220 V",
+    "modelo": null,
+    "descripcion_corta": "Cooler metálico de 4\" con rulemán, 220 V, para extraer o inyectar aire en carpas. Dimensiones 120 x 120 x 38 mm.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/cooler-turbina-agroled-220v-4-pulgadas-ruleman-indoor-up/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/agroled-turbina-cooler-4-con-ruleman-irmh1/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://kaizengrowshop.com/productos/cooler-ruleman-220v-4-agroled/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/cooler-ruleman-agroled/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/cooler-ruleman-4-agroled-xjls7/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [
+      {
+        "campo": "rpm",
+        "valores": [
+          {
+            "valor": 2600,
+            "url": "https://www.upgrowshop.com/productos/cooler-turbina-agroled-220v-4-pulgadas-ruleman-indoor-up/"
+          },
+          {
+            "valor": 2700,
+            "url": "https://gangagrow.com.ar/productos/agroled-turbina-cooler-4-con-ruleman-irmh1/"
+          }
+        ]
+      },
+      {
+        "campo": "caudal_m3h",
+        "valores": [
+          {
+            "valor": 135.9,
+            "url": "https://kaizengrowshop.com/productos/cooler-ruleman-220v-4-agroled/"
+          },
+          {
+            "valor": 84.9,
+            "url": "https://gangagrow.com.ar/productos/agroled-turbina-cooler-4-con-ruleman-irmh1/"
+          }
+        ]
+      }
+    ],
+    "verificado": false,
+    "notas": "Agroled figura solo en el nombre que le ponen los grow shops; no se encontró sitio del fabricante. Potencia 18 W (Growshopping y Gangagrow), ruido 40 dB (solo Gangagrow). Rpm: Kaizen da 2600 a 50 Hz y 2700 a 60 Hz. Caudal: Kaizen 80 CFM a 50 Hz (85 a 60 Hz), Gangagrow 50 CFM, convertidos a m³/h. Existe también variante cableada con enchufe.",
+    "tipo": "Cooler 220 V",
+    "diametro": "4\"",
+    "caudal_m3h": null,
+    "potencia_w": 18,
+    "rpm": null,
+    "ruido_db": 40,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220 V"
+  },
+  {
+    "id": "agroled-cooler-turbina-6-ruleman-220v",
+    "categoria": "ventilacion",
+    "marca": "Agroled",
+    "linea": null,
+    "producto": "Cooler Turbina 6\" Ruleman 220 V",
+    "modelo": null,
+    "descripcion_corta": "Cooler metálico de 6\" con rulemán, 220 V, para extraer o inyectar aire en carpas. Dimensiones 170 x 170 x 48 mm.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/cooler-turbina-agroled-220v-6-pulgadas-ruleman-indoor/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/agroled-turbina-cooler-6-con-ruleman-7u8uj/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Agroled figura solo en el nombre que le ponen los grow shops; no se encontró sitio del fabricante. Caudal 175 CFM (Gangagrow) convertido a m³/h; 0,3 A, 50/60 Hz, carcasa metálica y paletas de PVC según Gangagrow. Rpm 2800 coincide en Upgrowshop y Gangagrow. Existe también variante cableada con enchufe.",
+    "tipo": "Cooler 220 V",
+    "diametro": "6\"",
+    "caudal_m3h": 297.3,
+    "potencia_w": null,
+    "rpm": 2800,
+    "ruido_db": 55,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220 V"
+  },
+  {
+    "id": "garden-highpro-profan-extractor-lineal-5",
+    "categoria": "ventilacion",
+    "marca": "Garden HighPro",
+    "linea": "Profan",
+    "producto": "Extractor de aire Garden HighPro 5\"",
+    "modelo": "Extractor lineal 5\"",
+    "descripcion_corta": "Extractor lineal de 5\" con motor 100 % cobre y dos velocidades.",
+    "fuentes": [
+      {
+        "url": "https://gangagrow.com.ar/productos/garden-highpro-extractor-lineal-5/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "diametro": "5\"",
+    "caudal_m3h": 220,
+    "potencia_w": null,
+    "rpm": 1950,
+    "ruido_db": null,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "210-220 V",
+    "notas": "Gangagrow: pensado para hasta 40.000 horas de operación continua, protección térmica contra recalentamiento, 2 velocidades. No indica potencia ni si es turbina simple; la ficha no nombra la línea Profan."
+  },
+  {
+    "id": "garden-highpro-profan-extractor-4-15w",
+    "categoria": "ventilacion",
+    "marca": "Garden HighPro",
+    "linea": "Profan",
+    "producto": "Extractor Turbina Garden High Pro Profan Axial Inline 4\" (15 W)",
+    "modelo": "Axial Inline 4\" 15 W",
+    "descripcion_corta": "Turbina extractora axial inline de 4\" con 15 W y 107 m³/h.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/extractor-axial-inline-garden-high-pro-profan-4-pulgadas/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.upgrowshop.com/productos/extractor-axial-inline-profan-4-pulgadas-cultivo-indoor/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [
+      {
+        "campo": "rpm",
+        "valores": [
+          {
+            "valor": 2300,
+            "url": "https://www.upgrowshop.com/productos/extractor-axial-inline-garden-high-pro-profan-4-pulgadas/"
+          },
+          {
+            "valor": 2200,
+            "url": "https://www.upgrowshop.com/productos/extractor-axial-inline-profan-4-pulgadas-cultivo-indoor/"
+          }
+        ]
+      }
+    ],
+    "verificado": false,
+    "tipo": null,
+    "diametro": "4\"",
+    "caudal_m3h": 107,
+    "potencia_w": 15,
+    "rpm": null,
+    "ruido_db": null,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220 V",
+    "notas": "UP! Growshop publica dos fichas de esta turbina: una dice 2300 rpm y la otra 2200 rpm (la segunda no da caudal). Es distinta de la Profan Extractor 100 ya cargada (21-33 W)."
+  },
+  {
+    "id": "garden-highpro-profan-extractor-6-30w",
+    "categoria": "ventilacion",
+    "marca": "Garden HighPro",
+    "linea": "Profan",
+    "producto": "Extractor Turbina Garden High Pro Profan Axial Inline 6\" (30 W)",
+    "modelo": "Axial Inline 6\" 30 W",
+    "descripcion_corta": "Turbina extractora axial inline de 6\" con 30 W y 305 m³/h.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/extractor-turbina-garden-high-pro-indoor-6-pulgadas-up/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "diametro": "6\"",
+    "caudal_m3h": 305,
+    "potencia_w": 30,
+    "rpm": 2400,
+    "ruido_db": null,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220 V",
+    "notas": "UP! Growshop: 220 V, 50 Hz, cable con enchufe incluido. UP! tiene otra ficha de 6\" con 60 W y 520 m³/h que coincide con la Profan Extractor 150 ya cargada."
+  },
+  {
+    "id": "garden-highpro-profan-extractor-100",
+    "categoria": "ventilacion",
+    "marca": "Garden HighPro",
+    "linea": "Profan",
+    "producto": "Turbina Garden Profan Extractor 100",
+    "modelo": "TT 4\" 100 mm",
+    "descripcion_corta": "Turbina extractora de 100 mm (4\") con motor de cobre.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/turbina-garden-profan-extractor-100/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "diametro": "4\"",
+    "caudal_m3h": null,
+    "potencia_w": null,
+    "rpm": null,
+    "ruido_db": null,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "210-220 V",
+    "notas": "Caudal 145 a 187 m³/h, potencia 21 a 33 W y 2.180 a 2.385 rpm según la ficha (rangos, no se cargan como valor único). Tipo de equipo no indicado por la fuente."
+  },
+  {
+    "id": "garden-highpro-profan-extractor-150",
+    "categoria": "ventilacion",
+    "marca": "Garden HighPro",
+    "linea": "Profan",
+    "producto": "Turbina Garden Profan Extractor 150",
+    "modelo": "TTMAX 6\" 150 mm",
+    "descripcion_corta": "Extractor de doble velocidad de 150 mm (6\") con motor de cobre.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/turbina-garden-profan-extractor-150/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "diametro": "6\"",
+    "caudal_m3h": 520,
+    "potencia_w": null,
+    "rpm": null,
+    "ruido_db": null,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220-240 V",
+    "notas": "Doble velocidad: caudal 405 a 520 m³/h (se carga el máximo), potencia 30 a 60 W y ruido 33-44 dB según la ficha (rangos, no cargados). Tipo de equipo no indicado por la fuente."
+  },
+  {
+    "id": "garden-highpro-profan-clip-fan-12w",
+    "categoria": "ventilacion",
+    "marca": "Garden HighPro",
+    "linea": "Profan",
+    "producto": "Ventilador Garden HighPro Profan Clip Fan 12W",
+    "modelo": "Clip Fan 12W",
+    "descripcion_corta": "Ventilador de clip de 20 cm y 12 W para carpas de cultivo.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/ventilador-professional-garden-high-pro-clip-fan-12w-20cm/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/garden-highpro-ventilador-clip-profan-8-12w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.cordobagrowshop.com.ar/productos/ventilador-profan-clip-5w-garden-copia/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Ventilador",
+    "diametro": "20 cm",
+    "caudal_m3h": 325,
+    "potencia_w": 12,
+    "rpm": 1800,
+    "ruido_db": null,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "110-220 V",
+    "notas": "UP! Growshop: se adapta a tubos de hasta 3 cm. Gangagrow: motor magnético de accionamiento directo, muy silencioso, clip adaptable a tubo de 3 cm. Cordoba Grow Shop lo lista como «Profan Clip 12w» sin ficha."
+  },
+  {
+    "id": "garden-highpro-profan-clip-fan-5w",
+    "categoria": "ventilacion",
+    "marca": "Garden HighPro",
+    "linea": "Profan",
+    "producto": "Ventilador Garden HighPro Profan Clip Fan 5W",
+    "modelo": "Clip Fan 5W",
+    "descripcion_corta": "Ventilador de clip de 15 cm y 5 W para carpas de cultivo.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/ventilador-profesional-garden-high-pro-clip-fan-5w-20cm/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/ventilacion/garden-highpro-ventilador-clip-fan-15cm5w",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.cordobagrowshop.com.ar/productos/ventilador-profan-clip-garden-highpro-cultivo-indoor-5-w/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Ventilador",
+    "diametro": "15 cm",
+    "caudal_m3h": 215,
+    "potencia_w": 5,
+    "rpm": 2100,
+    "ruido_db": null,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "110-220 V",
+    "notas": "UP! Growshop: se adapta a tubos de hasta 3 cm de diámetro. El título de UP! dice «20cm» pero su especificación y la de Goblin dicen 15 cm. Caudal y rpm solo en UP! Growshop."
+  },
+  {
+    "id": "garden-highpro-profan-clip-fan-20w-oscilante",
+    "categoria": "ventilacion",
+    "marca": "Garden HighPro",
+    "linea": "Profan",
+    "producto": "Ventilador Garden HighPro Profan Oscilante 20W",
+    "modelo": "Clip Fan 20W",
+    "descripcion_corta": "Ventilador oscilante de clip de 20 W, dos velocidades, para carpas de cultivo.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/ventilador-profesional-garden-high-pro-oscilante-clipfan-20w-15cm/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://cultivourbano.com.ar/cultivadores/herramientas/ventilador-oscilante-indoor-profan-garden-highpro-carpa-clip",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/ventilador-garden-highpro-profan-20-20w-1ldna/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [
+      {
+        "campo": "diametro",
+        "valores": [
+          {
+            "valor": "15 cm",
+            "url": "https://www.upgrowshop.com/productos/ventilador-profesional-garden-high-pro-oscilante-clipfan-20w-15cm/"
+          },
+          {
+            "valor": "20 cm",
+            "url": "https://cultivourbano.com.ar/cultivadores/herramientas/ventilador-oscilante-indoor-profan-garden-highpro-carpa-clip"
+          }
+        ]
+      }
+    ],
+    "verificado": false,
+    "tipo": "Ventilador",
+    "diametro": null,
+    "caudal_m3h": 215,
+    "potencia_w": 20,
+    "rpm": 2100,
+    "ruido_db": null,
+    "oscilante": true,
+    "dimmer": null,
+    "tension": "110-220 V",
+    "notas": "Cultivo Urbano: motor de cobre, cabezal giratorio de 180 grados, dos velocidades, 2100 rpm. El diámetro no coincide entre fuentes (UP! 15 cm, Cultivo Urbano 20 cm). Caudal y tensión solo en UP! Growshop."
+  },
+  {
+    "id": "growtech-extractor-lineal-10",
+    "categoria": "ventilacion",
+    "marca": "Growtech",
+    "linea": null,
+    "producto": "Extractor de aire lineal 10\"",
+    "modelo": "10\"",
+    "descripcion_corta": "Extractor de aire lineal de acero galvanizado de Growtech, con soportes de montaje, cable con ficha y caja de interconexión.",
+    "tipo": null,
+    "diametro": "10\"",
+    "caudal_m3h": null,
+    "potencia_w": 180,
+    "rpm": 2500,
+    "ruido_db": 53,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220 V",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/extractor-10-220v-60hz/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1100 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 570 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
+  },
+  {
+    "id": "growtech-extractor-lineal-12",
+    "categoria": "ventilacion",
+    "marca": "Growtech",
+    "linea": null,
+    "producto": "Extractor de aire lineal 12\"",
+    "modelo": "12\"",
+    "descripcion_corta": "Extractor de aire lineal de acero galvanizado de Growtech, con soportes de montaje, cable con ficha y caja de interconexión.",
+    "tipo": null,
+    "diametro": "12\"",
+    "caudal_m3h": null,
+    "potencia_w": 250,
+    "rpm": 2500,
+    "ruido_db": 60,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220 V",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/extractor-12-220v-60hz/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1890 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 830 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
+  },
+  {
+    "id": "growtech-extractor-lineal-6",
+    "categoria": "ventilacion",
+    "marca": "Growtech",
+    "linea": null,
+    "producto": "Extractor de aire lineal 6\"",
+    "modelo": "6\"",
+    "descripcion_corta": "Extractor de aire lineal de acero galvanizado de Growtech, con soportes de montaje, cable con ficha y caja de interconexión.",
+    "tipo": null,
+    "diametro": "6\"",
+    "caudal_m3h": null,
+    "potencia_w": 120,
+    "rpm": 2500,
+    "ruido_db": 52,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220 V",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/extractor-6-220v-60hz/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 700 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 400 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
+  },
+  {
+    "id": "growtech-extractor-lineal-8",
+    "categoria": "ventilacion",
+    "marca": "Growtech",
+    "linea": null,
+    "producto": "Extractor de aire lineal 8\"",
+    "modelo": "8\"",
+    "descripcion_corta": "Extractor de aire lineal de acero galvanizado de Growtech, con soportes de montaje, cable con ficha y caja de interconexión.",
+    "tipo": null,
+    "diametro": "8\"",
+    "caudal_m3h": null,
+    "potencia_w": 170,
+    "rpm": 2500,
+    "ruido_db": 53,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220 V",
+    "fuentes": [
+      {
+        "url": "https://growtech.com.ar/productos/extractor-8-220v-60hz/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1000 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 550 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
+  },
+  {
+    "id": "santa-planta-turbina-doble-6",
+    "categoria": "ventilacion",
+    "marca": "Santa Planta",
+    "linea": null,
+    "producto": "TURBINA DOBLE 6",
+    "modelo": null,
+    "descripcion_corta": "Extractor doble de 6 pulgadas con turbina de PVC y motor a rulemanes; también usado como intractor.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/turbina-doble-6-2020/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "La ficha dice «extractor doble» sin aclarar si es doble rodamiento o doble motor, por eso el tipo es una interpretación del nombre. Boca de 15 cm; 29 cm de ancho y 18 cm de alto. Recomendado para espacios de 1 a 1,60 m.",
+    "tipo": "Turbina doble",
+    "diametro": "6\"",
+    "caudal_m3h": 1200,
+    "potencia_w": 110,
+    "rpm": 2800,
+    "ruido_db": null,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220 V, 50 Hz"
+  },
+  {
+    "id": "vt-fans-cooler-4-220v",
+    "categoria": "ventilacion",
+    "marca": "VT Fans",
+    "linea": null,
+    "producto": "Cooler 4P para ventilación 220V",
+    "modelo": "TU-18",
+    "descripcion_corta": "Cooler/turbina de 120x120 mm con rodamiento, carcasa de aluminio con paletas plásticas, para ventilar, extraer o inyectar aire.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/ventilacion/vt-fans-cooler-4p-para-ventilacion-220v",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "La fuente da 48 CFM; el caudal en m³/h es conversión directa (48 x 1,699). Dimensiones según la fuente: 120x120x25 mm (el texto también menciona 120x120x38 mm). Consumo 100 mA, 220 Vac 50 Hz, seguridad eléctrica IRAM. Puede ser el mismo producto que vt-fans-turbina-cooler-extractor-4-ruleman (Ganga): el orquestador decide si se fusionan.",
+    "tipo": "Cooler 220 V",
+    "diametro": "4\"",
+    "caudal_m3h": 81.55,
+    "potencia_w": 22,
+    "rpm": 2900,
+    "ruido_db": 45,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220 Vac 50 Hz"
+  },
+  {
+    "id": "vt-fans-turbina-cooler-extractor-3-ruleman",
+    "categoria": "ventilacion",
+    "marca": "VT Fans",
+    "linea": null,
+    "producto": "Turbina Cooler Extractor con Ruleman",
+    "modelo": "3\"",
+    "descripcion_corta": "Turbina cooler de 3 pulgadas con rulemán, carcasa y aspas de PVC, para intracción o extracción en carpas chicas y medianas.",
+    "fuentes": [
+      {
+        "url": "https://gangagrow.com.ar/productos/vt-fans-turbina-cooler-extractor-3-con-ruleman-rt3n3/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Ficha del vendedor (Ganga GrowShop); no informa caudal, potencia, rpm ni ruido. Corriente 0,06 A. Medidas 8 cm de alto x 2,5 cm de ancho.",
+    "tipo": "Cooler 220 V",
+    "diametro": "3\"",
+    "caudal_m3h": null,
+    "potencia_w": null,
+    "rpm": null,
+    "ruido_db": null,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": "220-240 V, 50/60 Hz"
+  },
+  {
+    "id": "vt-fans-turbina-cooler-extractor-4-ruleman",
+    "categoria": "ventilacion",
+    "marca": "VT Fans",
+    "linea": null,
+    "producto": "Turbina Cooler Extractor con Ruleman",
+    "modelo": "4\"",
+    "descripcion_corta": "Turbina cooler de 4 pulgadas con rulemán, para intracción o extracción en carpas chicas y medianas.",
+    "fuentes": [
+      {
+        "url": "https://gangagrow.com.ar/productos/vt-fans-turbina-cooler-extractor-4-con-ruleman-slqgq/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Ficha del vendedor (Ganga GrowShop); no informa tensión, caudal, potencia, rpm ni ruido, por eso el tipo queda sin definir. Medidas 11 cm de alto x 3 cm de ancho. Otros vendedores (San Isidro 422) listan un modelo de 4 pulgadas a rulemán con datos técnicos, pero su página no se pudo leer.",
+    "tipo": null,
+    "diametro": "4\"",
+    "caudal_m3h": null,
+    "potencia_w": null,
+    "rpm": null,
+    "ruido_db": null,
+    "oscilante": null,
+    "dimmer": null,
+    "tension": null
+  }
+]

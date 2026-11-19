@@ -1,0 +1,830 @@
+[
+  {
+    "id": "cultivarg-classic-100x100x200",
+    "categoria": "carpa",
+    "marca": "cultivARG",
+    "linea": "Classic",
+    "producto": "Carpa Classic 100x100x200",
+    "modelo": "100x100x200",
+    "descripcion_corta": "Carpa de cultivo indoor con lona Oxford, Mylar Diamantado 600D, caños metálicos de 19 mm y esquineros metálicos.",
+    "fuentes": [
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/carpa-cultivarg-eco-100x100x200-rb148/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "El título de la página dice Classic aunque la URL dice «eco». Caños Ø 19 mm, esquineros 100% metálicos, soporta más de 100 kg de carga según la fuente. Sin cantidad ni diámetro de bocas.",
+    "largo_cm": 100,
+    "ancho_cm": 100,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": "Ventanas de intracción pasiva con rejilla mosquitera (cantidad no indicada)",
+    "material_reflectivo": "Mylar Diamantado 600D, Reflex 98%"
+  },
+  {
+    "id": "cultivarg-classic-120x120x200",
+    "categoria": "carpa",
+    "marca": "cultivARG",
+    "linea": "Classic",
+    "producto": "Carpa Classic 120x120x200",
+    "modelo": "120x120x200",
+    "descripcion_corta": "Carpa de cultivo indoor con lona Oxford, Mylar Diamantado 600D, caños metálicos de 19 mm y esquineros metálicos.",
+    "fuentes": [
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/carpa-cultivarg-eco-120x120x200-f8n1d/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "El título dice Classic aunque la URL dice «eco». Caños Ø 19 mm y esquineros metálicos. Sin cantidad ni diámetro de bocas.",
+    "largo_cm": 120,
+    "ancho_cm": 120,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": "Ventanas de intracción pasiva con rejilla mosquitera (cantidad no indicada)",
+    "material_reflectivo": "Mylar Diamantado 600D, Reflex 98%"
+  },
+  {
+    "id": "cultivarg-classic-doble-120x60x160",
+    "categoria": "carpa",
+    "marca": "cultivARG",
+    "linea": "Classic doble",
+    "producto": "Carpa Classic doble 120x60x160",
+    "modelo": "120x60x160",
+    "descripcion_corta": "Carpa doble con división desmontable convertible en doble ciclo, caños de 19 mm y esquineros metálicos.",
+    "fuentes": [
+      {
+        "url": "https://www.astrogrow.com.ar/productos/carpa-doble-cultivarg-classic-120x60x160/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Bocas superiores: 2 de extracción en techo y 2 de ventilación en zona alta; inferiores: 2 de intracción en zona baja. Además 4 orificios de 4\" en pared trasera (ubicación no aclarada). Puertas principales 2/3 - 1/3 D-Style; bolso incluido.",
+    "largo_cm": 120,
+    "ancho_cm": 60,
+    "alto_cm": 160,
+    "bocas_superiores": [
+      {
+        "cantidad": 2,
+        "diametro": "6\""
+      },
+      {
+        "cantidad": 2,
+        "diametro": "6\""
+      }
+    ],
+    "bocas_inferiores": [
+      {
+        "cantidad": 2,
+        "diametro": "6\""
+      }
+    ],
+    "ventanas": "2 de acceso en paredes laterales; 2 de intracción pasiva en zona baja",
+    "material_reflectivo": "Mylar Diamantado 600D, Reflex 98%"
+  },
+  {
+    "id": "cultivarg-classic-doble-160x80x180",
+    "categoria": "carpa",
+    "marca": "cultivARG",
+    "linea": "Classic doble",
+    "producto": "Carpa Classic doble 160x80x180",
+    "modelo": "160x80x180",
+    "descripcion_corta": "Carpa doble con división desmontable convertible en doble ciclo, caños de 19 mm y esquineros metálicos.",
+    "fuentes": [
+      {
+        "url": "https://www.astrogrow.com.ar/productos/carpa-doble-cultivarg-classic-160x80x180/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Bocas superiores: 2 de extracción en techo y 2 de ventilación en zona alta; inferiores: 2 de intracción en zona baja. Además 4 orificios de 4\" en pared trasera (ubicación no aclarada). 12 esquineros metálicos; bolso incluido.",
+    "largo_cm": 160,
+    "ancho_cm": 80,
+    "alto_cm": 180,
+    "bocas_superiores": [
+      {
+        "cantidad": 2,
+        "diametro": "6\""
+      },
+      {
+        "cantidad": 2,
+        "diametro": "6\""
+      }
+    ],
+    "bocas_inferiores": [
+      {
+        "cantidad": 2,
+        "diametro": "6\""
+      }
+    ],
+    "ventanas": "2 de acceso en paredes laterales; 2 de intracción pasiva en zona baja",
+    "material_reflectivo": "Mylar Diamantado 600D, Reflex 98%"
+  },
+  {
+    "id": "cultivarg-classic-doble-240x120x200",
+    "categoria": "carpa",
+    "marca": "cultivARG",
+    "linea": "Classic doble",
+    "producto": "Carpa Classic doble 240x120x200",
+    "modelo": "240x120x200",
+    "descripcion_corta": "Carpa doble con división desmontable convertible en doble ciclo, caños de 19 mm y esquineros metálicos.",
+    "fuentes": [
+      {
+        "url": "https://www.astrogrow.com.ar/productos/carpa-doble-cultivarg-classic-240x120x2/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/carpa-cultivarg-clasic-240x120x200-8tu16/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Bocas superiores: 2 de extracción en techo y 2 de ventilación en zona alta (8\"); inferiores: 2 de intracción en zona baja (8\"). Además 4 orificios de 4\" en pared trasera (ubicación no aclarada). Astrogrow la titula «240x120x2» y su ficha dice 2,00 m de alto; Goodsmoke la llama Classic 240x120x200.",
+    "largo_cm": 240,
+    "ancho_cm": 120,
+    "alto_cm": 200,
+    "bocas_superiores": [
+      {
+        "cantidad": 2,
+        "diametro": "8\""
+      },
+      {
+        "cantidad": 2,
+        "diametro": "8\""
+      }
+    ],
+    "bocas_inferiores": [
+      {
+        "cantidad": 2,
+        "diametro": "8\""
+      }
+    ],
+    "ventanas": "2 de intracción pasiva en zona baja; 2 de acceso en paredes laterales",
+    "material_reflectivo": "Mylar Diamantado 600D, Reflex 98%"
+  },
+  {
+    "id": "cultivarg-eco-100x100x200",
+    "categoria": "carpa",
+    "marca": "cultivARG",
+    "linea": "Eco",
+    "producto": "Carpa Eco 100x100x200",
+    "modelo": "100x100x200",
+    "descripcion_corta": "Carpa de cultivo indoor Eco 100x100x200.",
+    "fuentes": [
+      {
+        "url": "https://kaizengrowshop.com/productos/carpa-cultivarg-100x100x200-eco/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Solo se verificó el nombre y las medidas en el título de Kaizen; sin ficha técnica en la fuente consultada.",
+    "largo_cm": 100,
+    "ancho_cm": 100,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": null
+  },
+  {
+    "id": "cultivarg-eco-120x120x200",
+    "categoria": "carpa",
+    "marca": "cultivARG",
+    "linea": "Eco",
+    "producto": "Carpa Eco 120x120x200",
+    "modelo": "120x120x200",
+    "descripcion_corta": "Carpa de cultivo indoor Eco con puerta D-Style, tubos de 16 mm, bandeja de seguridad y ventana de intracción pasiva.",
+    "fuentes": [
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/carpa-cultivarg-eco-120x120x200-vc2i2/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://kaizengrowshop.com/productos/carpa-cultivarg-120x120x200-eco/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Tubos de metal de 16 mm. Intración pasiva: 1 ventana inferior regulable con malla mosquitera. La fuente no da cantidad ni diámetro de las bocas. Kaizen la vende (solo se verificó el nombre).",
+    "largo_cm": 120,
+    "ancho_cm": 120,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": "Mylar 480D, 98% de reflexión"
+  },
+  {
+    "id": "cultivarg-eco-60x60x160",
+    "categoria": "carpa",
+    "marca": "cultivARG",
+    "linea": "Eco",
+    "producto": "Carpa Eco 60x60x160",
+    "modelo": "60x60x160",
+    "descripcion_corta": "Carpa de cultivo indoor con puerta D-Style, caños de 16 mm y esquineros plásticos reforzados.",
+    "fuentes": [
+      {
+        "url": "https://www.astrogrow.com.ar/productos/carpa-cultivarg-eco-60x60x160/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/carpa-cultivarg-eco-60x60x160-1eii7/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://kaizengrowshop.com/productos/carpa-cultivarg-60x60x160/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/cultivarg-carpa-indoor-eco-60x60x160/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Bocas superiores: 1 de extracción en techo y 2 de ventilación en zona alta. Bocas inferiores: 1 manga inferior para hidroponia/cableado (sin diámetro). Además 2 orificios de 4\" en la pared trasera (la fuente no dice si son superiores o inferiores). Caños de 16 mm (0,8 mm de espesor); peso 7 kg; bolso de guardado no incluido. Datos de Astrogrow y Goodsmoke; el Mylar 480D figura solo en Goodsmoke. Kaizen y Gangagrow la venden (solo se verificó el nombre).",
+    "largo_cm": 60,
+    "ancho_cm": 60,
+    "alto_cm": 160,
+    "bocas_superiores": [
+      {
+        "cantidad": 1,
+        "diametro": "6\""
+      },
+      {
+        "cantidad": 2,
+        "diametro": "6\""
+      }
+    ],
+    "bocas_inferiores": [
+      {
+        "cantidad": 1,
+        "diametro": null
+      }
+    ],
+    "ventanas": "1 de intracción pasiva en zona baja",
+    "material_reflectivo": "Mylar 480D, 98% de reflexión"
+  },
+  {
+    "id": "cultivarg-eco-80x80x180",
+    "categoria": "carpa",
+    "marca": "cultivARG",
+    "linea": "Eco",
+    "producto": "Carpa Eco 80x80x180",
+    "modelo": "80x80x180",
+    "descripcion_corta": "Carpa de cultivo indoor con puerta D-Style, caños de 16 mm, ventanas de acceso laterales y esquineros plásticos reforzados.",
+    "fuentes": [
+      {
+        "url": "https://www.astrogrow.com.ar/productos/carpa-cultivarg-eco-80x80x180/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goodsmokegrow.com.ar/productos/carpa-cultivarg-eco-80x80x180-1f4zs/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://kaizengrowshop.com/productos/carpa-cultivarg-80x80x180-eco/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/cultivarg-carpa-indoor-eco-80x80x180cm/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "notas": "Astrogrow lista los diámetros de 6\" con signo de pregunta («1 de 6?», «2 de 6?»): conviene confirmarlos. Bocas superiores: 1 de extracción en techo y 2 de ventilación en zona alta; inferiores: 2 de intracción en zona baja. Además 2 orificios de 4\" en pared trasera (ubicación no aclarada). Caños de 16 mm. Mylar 480D solo según Goodsmoke.",
+    "largo_cm": 80,
+    "ancho_cm": 80,
+    "alto_cm": 180,
+    "bocas_superiores": [
+      {
+        "cantidad": 1,
+        "diametro": "6\""
+      },
+      {
+        "cantidad": 2,
+        "diametro": "6\""
+      }
+    ],
+    "bocas_inferiores": [
+      {
+        "cantidad": 2,
+        "diametro": "6\""
+      }
+    ],
+    "ventanas": "2 de acceso en paredes laterales; 2 de intracción pasiva en zona baja",
+    "material_reflectivo": "Mylar 480D, 98% de reflexión"
+  },
+  {
+    "id": "garden-highpro-probox-40x40x160",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox",
+    "producto": "Carpa Garden HighPro Probox 40x40x160 cm",
+    "modelo": "40x40x160",
+    "descripcion_corta": "Carpa de cultivo indoor de 40 x 40 x 160 cm con interior de mylar.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/carpa-de-cultivo-indoor-garden-high-pro-probox-40-up-negro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 40,
+    "ancho_cm": 40,
+    "alto_cm": 160,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": "Mylar",
+    "notas": "UP! Growshop: Probox suiza, mylar 420D 100% a prueba de luz, doble cierre reforzado, tubos de refrigeración incorporados. La ficha escribe «40 x 40 x 1,60 cm»; se interpreta 1,60 como 160 cm de alto."
+  },
+  {
+    "id": "garden-highpro-probox-80x80x160",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox",
+    "producto": "Carpa Garden Probox 80X80X160 cm",
+    "modelo": "80x80x160",
+    "descripcion_corta": "Carpa de cultivo indoor de 80x80x160 cm, interior de mylar y exterior de lona negra impermeable.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/carpa-garden-probox-80x80x160-cm/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 80,
+    "ancho_cm": 80,
+    "alto_cm": 160,
+    "bocas_superiores": [
+      {
+        "cantidad": 1,
+        "diametro": "13,5 cm"
+      }
+    ],
+    "bocas_inferiores": [
+      {
+        "cantidad": 1,
+        "diametro": "13,5 cm"
+      }
+    ],
+    "ventanas": "1",
+    "material_reflectivo": "Mylar",
+    "notas": "Según Santa Planta: 2 salidas de aire de 13,5 cm (una lateral inferior y otra en el techo) y una ventana rejilla trasera inferior de 25 x 12,5 cm. La ficha dice «Garden Probox» sin nombrar la sublínea (Basic/Master) ni la marca HighPro. Santa Planta no aclara si es Probox Basic o Probox Eco Pro: puede ser el mismo producto que garden-highpro-probox-ecopro-80x80x160; no se fusionó sin prueba."
+  },
+  {
+    "id": "garden-highpro-probox-basic-100x100x200",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Basic",
+    "producto": "Carpa Garden HighPro Probox Basic 100x100x200 cm",
+    "modelo": "100x100x200",
+    "descripcion_corta": "Carpa de cultivo indoor de 100x100x200 cm de la serie Basic, con interior de Mylar.",
+    "fuentes": [
+      {
+        "url": "https://www.growshopping.com.ar/productos/carpa-probox-basic-100-x-100-x-200-indoor-garden-highpro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/carpas-de-cultivo/carpa-garden-highpro-probox-classic-100-100x100x200",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://altovuelogrow.com.ar/indoor/carpas/carpa-garden-highpro-basic-100x100x200",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://lacasadelcultivo.com.ar/productos/carpas-garden-highpro-cultivo-indoor-profesional-100x100x200/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [
+      {
+        "campo": "ventanas",
+        "valores": [
+          {
+            "valor": 3,
+            "url": "https://www.growshopping.com.ar/productos/carpa-probox-basic-100-x-100-x-200-indoor-garden-highpro/"
+          },
+          {
+            "valor": 2,
+            "url": "https://lacasadelcultivo.com.ar/productos/carpas-garden-highpro-cultivo-indoor-profesional-100x100x200/"
+          }
+        ]
+      }
+    ],
+    "verificado": false,
+    "largo_cm": 100,
+    "ancho_cm": 100,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": "Mylar",
+    "notas": "Puerta delantera de 55 x 140 cm y 5 mangas de extracción de 13,5 cm. Las fuentes no coinciden en la cantidad de ventanas (Growshopping 3 de 20 x 12 cm; La Casa del Cultivo 2) ni en cuántas mangas de cables trae. Las fuentes dan las mangas de extracción en total y no separan superiores de inferiores, por eso las bocas quedan sin cargar. Mylar 680D según La Casa del Cultivo y Growshopping; UP! Growshop describe 420D para sus Probox: no se carga el espesor."
+  },
+  {
+    "id": "garden-highpro-probox-basic-120x120x200",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Basic",
+    "producto": "Carpa Garden HighPro Probox Basic 120x120x200 cm",
+    "modelo": "120x120x200",
+    "descripcion_corta": "Carpa de cultivo indoor de 120x120x200 cm de la serie Basic, con interior de Mylar.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/carpas-de-cultivo/carpa-garden-highpro-probox-classic-120-120x120x200",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://altovuelogrow.com.ar/indoor/carpas/carpa-garden-highpro-basic-120x120x200",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://lacasadelcultivo.com.ar/productos/carpas-garden-highpro-cultivo-indoor-profesional-120x120x200/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.upgrowshop.com/productos/carpa-de-cultivo-indoor-120x120x200-reflectiva-probox-negro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 120,
+    "ancho_cm": 120,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": "2",
+    "material_reflectivo": "Mylar",
+    "notas": "La Casa del Cultivo: 5 mangas de extracción de 13,5 cm, 2 mangas de cables de 8 cm y 2 ventanas de flujo de aire. Las fuentes dan las mangas de extracción en total y no separan superiores de inferiores, por eso las bocas quedan sin cargar. Mylar 680D según La Casa del Cultivo y Growshopping; UP! Growshop describe 420D para sus Probox: no se carga el espesor."
+  },
+  {
+    "id": "garden-highpro-probox-basic-150x150x200",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Basic",
+    "producto": "Carpa Garden HighPro Probox Basic 150x150x200 cm",
+    "modelo": "150x150x200",
+    "descripcion_corta": "Carpa de cultivo indoor de 150x150x200 cm de la serie Basic, con interior de Mylar.",
+    "fuentes": [
+      {
+        "url": "https://lacasadelcultivo.com.ar/productos/carpas-garden-highpro-cultivo-indoor-profesional-150x150x200/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.upgrowshop.com/productos/carpa-cultivo-indoor-garden-highpro-probox-150-negro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 150,
+    "ancho_cm": 150,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": "1",
+    "material_reflectivo": "Mylar",
+    "notas": "La Casa del Cultivo: 5 mangas de extracción de 13,5 cm, 1 manga de cables de 8 cm y 1 ventana de flujo de aire. Las fuentes dan las mangas de extracción en total y no separan superiores de inferiores, por eso las bocas quedan sin cargar. Mylar 680D según La Casa del Cultivo y Growshopping; UP! Growshop describe 420D para sus Probox: no se carga el espesor."
+  },
+  {
+    "id": "garden-highpro-probox-basic-240x120x200",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Basic",
+    "producto": "Carpa Garden HighPro Probox Basic 240x120x200 cm",
+    "modelo": "240x120x200",
+    "descripcion_corta": "Carpa de cultivo indoor de 240x120x200 cm de la serie Basic, con interior de Mylar.",
+    "fuentes": [
+      {
+        "url": "https://altovuelogrow.com.ar/indoor/carpas/carpa-garden-highpro-basic-240x120x200",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://lacasadelcultivo.com.ar/productos/carpas-garden-highpro-cultivo-indoor-profesional-240x120x200/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.upgrowshop.com/productos/carpa-cultivo-indoor-garden-high-pro-probox-240l-up-negro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 240,
+    "ancho_cm": 120,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": "2 ventanas frontales de 35 x 35 cm y 2 de ventilación pasiva de 45 x 20 cm",
+    "material_reflectivo": "Mylar",
+    "notas": "La Casa del Cultivo: 2 puertas delanteras de 115 x 130 cm, 6 mangas de extracción de 21 cm y 2 mangas de cables de 8 cm. Las fuentes dan las mangas de extracción en total y no separan superiores de inferiores, por eso las bocas quedan sin cargar. Mylar 680D según La Casa del Cultivo y Growshopping; UP! Growshop describe 420D para sus Probox: no se carga el espesor."
+  },
+  {
+    "id": "garden-highpro-probox-basic-240x240x200",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Basic",
+    "producto": "Carpa Garden HighPro Probox Basic 240x240x200 cm",
+    "modelo": "240x240x200",
+    "descripcion_corta": "Carpa de cultivo indoor de 240x240x200 cm de la serie Basic, con interior de Mylar.",
+    "fuentes": [
+      {
+        "url": "https://altovuelogrow.com.ar/indoor/carpas/carpa-garden-highpro-basic-240x240x200",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.upgrowshop.com/productos/carpa-para-cultivo-indoor-garden-highpro-probox-basic-240/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 240,
+    "ancho_cm": 240,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": "Mylar",
+    "notas": "UP! Growshop: mylar 420D, doble cierre reforzado, tubos de refrigeración incorporados. Alto Vuelo solo muestra el nombre y la medida en el catálogo. Las fuentes dan las mangas de extracción en total y no separan superiores de inferiores, por eso las bocas quedan sin cargar. Mylar 680D según La Casa del Cultivo y Growshopping; UP! Growshop describe 420D para sus Probox: no se carga el espesor."
+  },
+  {
+    "id": "garden-highpro-probox-basic-60x60x160",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Basic",
+    "producto": "Carpa Garden HighPro Probox Basic 60x60x160 cm",
+    "modelo": "60x60x160",
+    "descripcion_corta": "Carpa de cultivo indoor de 60x60x160 cm de la serie Basic, con interior de Mylar.",
+    "fuentes": [
+      {
+        "url": "https://www.growshopping.com.ar/productos/carpa-probox-basic-60-x-60-x-160-indoor-garden-highpro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/carpas-de-cultivo/carpa-garden-highpro-probox-classic-60-60x60x160",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://altovuelogrow.com.ar/indoor/carpas/carpa-garden-highpro-basic-60x60x160",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://lacasadelcultivo.com.ar/productos/carpas-garden-highpro-cultivo-indoor-profesional-60x60x160/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 60,
+    "ancho_cm": 60,
+    "alto_cm": 160,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": "3",
+    "material_reflectivo": "Mylar",
+    "notas": "Growshopping: 3 ventanas de 20 x 12 cm para flujo de aire pasivo, 5 mangas de extracción de 13,5 cm, 2 mangas para cables de 8 cm, puerta delantera de 55 x 140 cm. La Casa del Cultivo: 5 mangas de 13,5 cm y 1 manga de cables de 8 cm (no detalla ventanas). Soporte de peso: 28 kg (Growshopping) o 36 kg (La Casa del Cultivo). Las fuentes dan las mangas de extracción en total y no separan superiores de inferiores, por eso las bocas quedan sin cargar. Mylar 680D según La Casa del Cultivo y Growshopping; UP! Growshop describe 420D para sus Probox: no se carga el espesor."
+  },
+  {
+    "id": "garden-highpro-probox-ecopro-100x100x200",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Ecopro",
+    "producto": "Carpa Garden HighPro Probox Eco Pro 100x100x200 cm",
+    "modelo": "100x100x200",
+    "descripcion_corta": "Carpa de cultivo indoor de 100x100x200 cm de la línea Probox Eco Pro.",
+    "fuentes": [
+      {
+        "url": "https://gangagrow.com.ar/productos/garden-highpro-carpa-indoor-probox-eco-pro-100x100x200/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 100,
+    "ancho_cm": 100,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": null,
+    "notas": "La ficha de Gangagrow solo trae título y medidas, sin descripción técnica; el resto queda sin cargar."
+  },
+  {
+    "id": "garden-highpro-probox-ecopro-120x120x200",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Ecopro",
+    "producto": "Carpa Garden HighPro Probox Eco Pro 120x120x200 cm",
+    "modelo": "120x120x200",
+    "descripcion_corta": "Carpa de cultivo indoor de 120x120x200 cm de la línea Probox Eco Pro.",
+    "fuentes": [
+      {
+        "url": "https://gangagrow.com.ar/productos/garden-highpro-carpa-indoor-probox-eco-pro-120x120x200/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 120,
+    "ancho_cm": 120,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": null,
+    "notas": "La ficha de Gangagrow solo trae título y medidas, sin descripción técnica; el resto queda sin cargar."
+  },
+  {
+    "id": "garden-highpro-probox-ecopro-150x150x200",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Ecopro",
+    "producto": "Carpa Garden HighPro Probox Eco Pro 150x150x200 cm",
+    "modelo": "150x150x200",
+    "descripcion_corta": "Carpa de cultivo indoor de 150x150x200 cm de la línea Probox Eco Pro.",
+    "fuentes": [
+      {
+        "url": "https://gangagrow.com.ar/productos/garden-high-pro-carpa-indoor-probox-eco-pro-150x150x200/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 150,
+    "ancho_cm": 150,
+    "alto_cm": 200,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": null,
+    "notas": "La ficha de Gangagrow solo trae título y medidas, sin descripción técnica; el resto queda sin cargar."
+  },
+  {
+    "id": "garden-highpro-probox-ecopro-80x80x160",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Ecopro",
+    "producto": "Carpa Garden HighPro Probox Eco Pro 80x80x160 cm",
+    "modelo": "80x80x160",
+    "descripcion_corta": "Carpa de cultivo indoor de 80x80x160 cm de la línea Probox Eco Pro.",
+    "fuentes": [
+      {
+        "url": "https://gangagrow.com.ar/productos/garden-highpro-carpa-indoor-probox-eco-pro-80x80x160/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 80,
+    "ancho_cm": 80,
+    "alto_cm": 160,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": null,
+    "notas": "La ficha de Gangagrow solo trae título y medidas, sin descripción técnica; el resto queda sin cargar."
+  },
+  {
+    "id": "garden-highpro-probox-multiuso-100x60x160",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Multiuso",
+    "producto": "Carpa Garden HighPro Probox Multiuso 100x60x160 cm",
+    "modelo": "Mod. 100",
+    "descripcion_corta": "Carpa de cultivo indoor multiuso de 100 x 60 x 160 cm con interior de mylar.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/carpa-cultivo-indoor-garden-highpro-probox-multiuso-mod-100/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 100,
+    "ancho_cm": 60,
+    "alto_cm": 160,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": "Mylar",
+    "notas": "UP! Growshop: Probox suiza, mylar 420D 100% a prueba de luz, doble cierre reforzado, tubos de refrigeración incorporados, caja cerrada."
+  },
+  {
+    "id": "garden-highpro-probox-outdoor-80x80x180",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Outdoor",
+    "producto": "Carpa Garden HighPro Probox Outdoor 80x80x180 cm",
+    "modelo": "80x80x180",
+    "descripcion_corta": "Carpa de exterior de 80 x 80 x 180 cm, exterior negro con interior plateado reflectante.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/carpa-outdoor-garden-high-pro-cultivo-exterior-probox-80/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 80,
+    "ancho_cm": 80,
+    "alto_cm": 180,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": null,
+    "material_reflectivo": "Mylar",
+    "notas": "UP! Growshop: mylar premium certificado con 97 % de reflectividad, estructura de tubos de acero galvanizado, puerta frontal con cremallera, capacidad de colgado de hasta 12 kg."
+  },
+  {
+    "id": "garden-highpro-probox-propagator-s-60x40x40",
+    "categoria": "carpa",
+    "marca": "Garden HighPro",
+    "linea": "Probox Propagator",
+    "producto": "Carpa Garden HighPro Probox Propagator S 60x40x40 cm",
+    "modelo": "Propagator S",
+    "descripcion_corta": "Armario de germinación y enraizado de esquejes de 60 x 40 x 40 cm con interior de mylar.",
+    "fuentes": [
+      {
+        "url": "https://www.growshopping.com.ar/productos/carpa-probox-propagator-60-x-40-x-40-indoor-garden-highpro/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.upgrowshop.com/productos/carpa-propagator-s-garden-high-pro-esquejes/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "largo_cm": 60,
+    "ancho_cm": 40,
+    "alto_cm": 40,
+    "bocas_superiores": null,
+    "bocas_inferiores": null,
+    "ventanas": "1",
+    "material_reflectivo": "Mylar",
+    "notas": "Growshopping: 2 mangas de extracción con funda doble, 1 ventana para entrada y salida de aire, 1 manga pequeña para cables y una ventana transparente de observación; reflexión premium de 97 %. UP! Growshop indica nylon 420D."
+  }
+]

@@ -1,0 +1,5 @@
+.cache/
+tmp/
+*.log
+screenshots/
+__pycache__/
