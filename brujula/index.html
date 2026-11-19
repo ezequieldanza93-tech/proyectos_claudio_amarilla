@@ -197,6 +197,13 @@ textarea{min-height:70px;resize:vertical}
 .wk-head{display:flex;gap:8px;align-items:center;text-transform:capitalize}
 .wk-ev{display:flex;flex-direction:column;gap:6px;font-size:.88rem;padding:6px 0 6px 10px;border-left:3px solid var(--pc)}
 .wk-ev .t-actions{justify-content:flex-start}
+.wk-sum{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:transparent;border:0;padding:2px 0;color:var(--ink)}
+.wk-sum .ev-title{flex:1;min-width:0;font-weight:500}
+.wk-sum .chev{color:var(--muted);font-size:.8rem}
+.wk-det{display:flex;flex-direction:column;gap:6px;padding-bottom:4px}
+.st-dot{width:9px;height:9px;border-radius:50%;flex:none;background:var(--pc)}
+.st-dot.st-planificado{background:transparent;border:2px dashed var(--pc)}
+.st-dot.st-no-se-hizo{background:var(--line)}
 .wk-ev.missed .ev-title{text-decoration:line-through;color:var(--muted)}
 .wk-day-ev{display:flex;flex-direction:column;gap:2px;padding-top:6px}
 .sp-chip{font-size:.72rem;font-weight:600;color:var(--pc)}
@@ -785,11 +792,19 @@ function weekEvRow(p,e){
   const st=evStatus(e);const f=S.form;
   if(f&&f.type==='event'&&f.id===e.id)return eventForm(p,e);
   const sp=S.spaces.find(x=>x.id===e.spaceId);
-  return `<div class="wk-ev ${st==='no se hizo'?'missed':''}" style="--pc:${sp?spaceColor(sp):'var(--muted)'}">
-    <span style="min-width:0"><span class="sp-chip">${esc(sp?sp.name:'General')}</span> <span class="ev-title">${esc(e.title)}</span>
-      <span class="tag">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span>
-      ${prodSummary(e)}${e.note?`<span class="muted" style="font-size:.78rem;display:block">${esc(e.note)}</span>`:''}</span>
+  const open=S.openEv&&S.openEv.has(e.id);
+  const moved=e.plannedDate&&e.plannedDate!==e.date;
+  return `<div class="wk-ev ${st==='no se hizo'?'missed':''} ${open?'open':''}" style="--pc:${sp?spaceColor(sp):'var(--muted)'}">
+    <button class="wk-sum" data-act="toggleEv" data-id="${esc(e.id)}" aria-expanded="${open}">
+      <span class="st-dot st-${st.replace(/ /g,'-')}" title="${ST_LABEL[st]}"></span>
+      <span class="ev-title">${esc(e.title)}</span><span class="sp-chip">${esc(sp?sp.name:'General')}</span><span class="chev" aria-hidden="true">${open?'▴':'▾'}</span></button>
+    ${open?`<div class="wk-det">
+      <div><span class="tag" style="margin:0">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span></div>
+      ${prodSummary(e)}
+      ${moved?`<span class="muted" style="font-size:.78rem">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
+      ${e.note?`<span class="muted" style="font-size:.78rem">${esc(e.note)}</span>`:''}
     <span class="t-actions">${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`:`<button class="small ghost" data-act="evEdit" data-id="${esc(e.id)}">Editar</button>`}</span>
+    </div>`:''}
   </div>`;
 }
 function spaceColor(sp){const i=spacesOf(sp.projectId).findIndex(x=>x.id===sp.id);return 'var('+PCOL[(i+1)%PCOL.length]+')'}
@@ -1053,6 +1068,7 @@ app.addEventListener('click',e=>{
     evDone(){safe(()=>db.doc('events/'+id).update({status:'cumplido',confirmedAt:Date.now()}))},
     evMiss(){safe(()=>db.doc('events/'+id).update({status:'no se hizo',confirmedAt:Date.now()}))},
     evEdit(){S.form={type:'event',id};rerender();document.getElementById('e-date')?.focus()},
+    toggleEv(){S.openEv=S.openEv||new Set();S.openEv.has(id)?S.openEv.delete(id):S.openEv.add(id);rerender()},
     wkPrev(){S.calWeek=addDays(S.calWeek||mondayOf(today()),-7);rerender()},
     wkNext(){S.calWeek=addDays(S.calWeek||mondayOf(today()),7);rerender()},
     wkToday(){S.calWeek=null;rerender()},
@@ -1112,7 +1128,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
