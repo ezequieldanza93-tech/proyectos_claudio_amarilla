@@ -1,8 +1,28 @@
 {
-  "luces": [],
-  "carpas": [],
-  "ventilacion": [],
-  "clima": [],
+  "luces": [
+    "Amnesia",
+    "Bioled",
+    "Cosmel",
+    "Growtech",
+    "GS Iluminación",
+    "Lux",
+    "Mars Hydro"
+  ],
+  "carpas": [
+    "cultivARG",
+    "Garden HighPro"
+  ],
+  "ventilacion": [
+    "Agroled",
+    "Garden HighPro",
+    "Growtech",
+    "Santa Planta",
+    "VT Fans"
+  ],
+  "clima": [
+    "Garden HighPro",
+    "Wentux"
+  ],
   "fertilizantes": [
     "Cannabiogen",
     "Mamboretá",

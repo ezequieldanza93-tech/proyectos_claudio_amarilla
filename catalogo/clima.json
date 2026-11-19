@@ -1,0 +1,351 @@
+[
+  {
+    "id": "garden-highpro-humipro-4l",
+    "categoria": "clima",
+    "marca": "Garden HighPro",
+    "linea": null,
+    "producto": "Humidificador Garden HighPro HumiPro 4L",
+    "modelo": "4 L",
+    "descripcion_corta": "Humidificador de 4 L para carpas de cultivo, armarios e invernaderos pequeños y medianos.",
+    "fuentes": [
+      {
+        "url": "https://goblin.com.ar/cultivo-indoor/garden-highpro-humificador-humipro-4l",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Humidificador",
+    "rango_temperatura": null,
+    "rango_humedad": null,
+    "precision": null,
+    "capacidad": "4 L",
+    "wifi": null,
+    "notas": "Goblin: intensidad de humidificación regulable, funcionamiento silencioso y bajo consumo; no da potencia ni caudal."
+  },
+  {
+    "id": "garden-highpro-termohigrometro-basic",
+    "categoria": "clima",
+    "marca": "Garden HighPro",
+    "linea": null,
+    "producto": "Termohigrómetro Garden High Pro Basic",
+    "modelo": "Basic",
+    "descripcion_corta": "Termohigrómetro digital con máximos y mínimos, modelo base de la línea.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/termo-higrometro-garden-high-pro-basic-up/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Termohigrómetro",
+    "rango_temperatura": "0 a 50 °C",
+    "rango_humedad": "25 a 90 % HR",
+    "precision": "±1 °C; ±5 % HR",
+    "capacidad": null,
+    "wifi": null,
+    "notas": "UP! Growshop: dimensiones 6 x 11,5 cm."
+  },
+  {
+    "id": "garden-highpro-termohigrometro-medium",
+    "categoria": "clima",
+    "marca": "Garden HighPro",
+    "linea": null,
+    "producto": "Termohigrómetro Garden High Pro Medium",
+    "modelo": "Medium",
+    "descripcion_corta": "Termohigrómetro digital con componentes japoneses, resistente al calor.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/termo-higrometro-linea-garden-high-pro-modelo-medium/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Termohigrómetro",
+    "rango_temperatura": "0 a 50 °C",
+    "rango_humedad": "25 a 90 % HR",
+    "precision": "±1 °C; ±5 % HR",
+    "capacidad": null,
+    "wifi": null,
+    "notas": "UP! Growshop: la ficha dice que es resistente al calor y sirve para controlar la distancia entre la luminaria y las plantas. No da dimensiones."
+  },
+  {
+    "id": "garden-highpro-termohigrometro-profesional",
+    "categoria": "clima",
+    "marca": "Garden HighPro",
+    "linea": null,
+    "producto": "Termohigrómetro Garden High Pro Profesional",
+    "modelo": "Profesional",
+    "descripcion_corta": "Termohigrómetro digital con componentes japoneses para mayor precisión.",
+    "fuentes": [
+      {
+        "url": "https://www.upgrowshop.com/productos/termo-higrometro-garden-high-pro-profesional-up/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Termohigrómetro",
+    "rango_temperatura": "0 a 50 °C",
+    "rango_humedad": "25 a 90 % HR",
+    "precision": "±1 °C; ±5 % HR",
+    "capacidad": null,
+    "wifi": null,
+    "notas": "UP! Growshop: dimensiones 9 x 18 cm."
+  },
+  {
+    "id": "wentux-controlador-clima-pro-26",
+    "categoria": "clima",
+    "marca": "Wentux",
+    "linea": null,
+    "producto": "Controlador Clima Wentux Pro-26",
+    "modelo": "Pro-26",
+    "descripcion_corta": "Controlador de clima con servidor web local (funciona sin internet), 2 zonas de riego y cálculo de VPD.",
+    "fuentes": [
+      {
+        "url": "https://wentux.com.ar/producto/controlador-clima-wentux-pro-26/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Controlador de clima",
+    "rango_temperatura": null,
+    "rango_humedad": null,
+    "precision": null,
+    "capacidad": "2 zonas de riego; hasta 10 sensores WiFi (1 incluido)",
+    "wifi": true,
+    "notas": "Las cifras de riegos por día difieren dentro de la propia ficha (25 y 30): no se cargan."
+  },
+  {
+    "id": "wentux-controlador-clima-pro-26-6s",
+    "categoria": "clima",
+    "marca": "Wentux",
+    "linea": null,
+    "producto": "Controlador Clima Wentux Pro-26 - 6s",
+    "modelo": "Pro-26 6s",
+    "descripcion_corta": "Variante «6s» del Pro-26 con servidor web local, 2 zonas de riego y cálculo de VPD.",
+    "fuentes": [
+      {
+        "url": "https://wentux.com.ar/producto/controlador-clima-wentux-pro-26-6s/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Controlador de clima",
+    "rango_temperatura": null,
+    "rango_humedad": null,
+    "precision": null,
+    "capacidad": "2 zonas de riego; hasta 10 sensores WiFi (1 incluido)",
+    "wifi": true,
+    "notas": "La ficha es idéntica a la del Pro-26 y no aclara qué significa «6s»."
+  },
+  {
+    "id": "wentux-controlador-co2-kit",
+    "categoria": "clima",
+    "marca": "Wentux",
+    "linea": null,
+    "producto": "Controlador CO2 + kit - Wentux CO2",
+    "modelo": "CO2 2 salidas + kit",
+    "descripcion_corta": "Controlador de CO2 de 2 salidas con kit de electroválvula armado.",
+    "fuentes": [
+      {
+        "url": "https://wentux.com.ar/producto/controlador-co2-wentux-co2-kit/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "rango_temperatura": null,
+    "rango_humedad": null,
+    "precision": "CO2: ±5% ±80 ppm (400-1000 ppm), ±10% ±100 ppm (1000-2000 y 2000-4500 ppm)",
+    "capacidad": "Sonda CO2 400 a 4500 ppm; 2 salidas a relé; incluye electroválvula",
+    "wifi": null,
+    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema."
+  },
+  {
+    "id": "wentux-controlador-co2-1-salida",
+    "categoria": "clima",
+    "marca": "Wentux",
+    "linea": null,
+    "producto": "Controlador CO2 - 1 salida - Wentux CO2",
+    "modelo": "CO2 1 salida",
+    "descripcion_corta": "Controlador de CO2 con sonda NDIR y 1 salida a relé (electroválvula o extractor).",
+    "fuentes": [
+      {
+        "url": "https://wentux.com.ar/producto/controlador-co2-1-salida-wentux-co2/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "rango_temperatura": null,
+    "rango_humedad": null,
+    "precision": "CO2: ±5% ±80 ppm (400-1000 ppm), ±10% ±100 ppm (1000-2000 y 2000-4500 ppm)",
+    "capacidad": "Sonda CO2 400 a 4500 ppm; 1 salida a relé",
+    "wifi": null,
+    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema."
+  },
+  {
+    "id": "wentux-controlador-co2-2-salidas",
+    "categoria": "clima",
+    "marca": "Wentux",
+    "linea": null,
+    "producto": "Controlador CO2 - 2 salidas - Wentux CO2",
+    "modelo": "CO2 2 salidas",
+    "descripcion_corta": "Controlador de CO2 con 2 salidas coordinadas (electroválvula y extractor), sin WiFi.",
+    "fuentes": [
+      {
+        "url": "https://wentux.com.ar/producto/controlador-co2-2-salidas-wentux-co2/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "rango_temperatura": null,
+    "rango_humedad": null,
+    "precision": "CO2: ±5% ±80 ppm (400-1000 ppm), ±10% ±100 ppm (1000-2000 y 2000-4500 ppm)",
+    "capacidad": "Sonda CO2 400 a 4500 ppm; 2 salidas a relé",
+    "wifi": false,
+    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema."
+  },
+  {
+    "id": "wentux-controlador-co2-dual",
+    "categoria": "clima",
+    "marca": "Wentux",
+    "linea": null,
+    "producto": "Controlador CO2 Dual-4 salidas - Control de 2 salas",
+    "modelo": "CO2 Dual",
+    "descripcion_corta": "Controlador de CO2 para 2 salas independientes, 2 sondas y 4 salidas a relé.",
+    "fuentes": [
+      {
+        "url": "https://wentux.com.ar/producto/controlador-co2-wentux-co2-doble-2-sensores-control-de-2-salas/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "rango_temperatura": null,
+    "rango_humedad": null,
+    "precision": "CO2: ±5% ±80 ppm (400-1000 ppm), ±10% ±100 ppm (1000-2000 y 2000-4500 ppm)",
+    "capacidad": "2 sondas CO2 400 a 4500 ppm; 4 salidas a relé",
+    "wifi": null,
+    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema."
+  },
+  {
+    "id": "wentux-controlador-hidroponia-hidro",
+    "categoria": "clima",
+    "marca": "Wentux",
+    "linea": null,
+    "producto": "Controlador Hidroponia - Wentux Hidro",
+    "modelo": "Hidro",
+    "descripcion_corta": "Controlador de pH y EC para hidroponía con dosificación automática de pH y hasta 6 bombas.",
+    "fuentes": [
+      {
+        "url": "https://wentux.com.ar/producto/controlador-hidroponia-wentux-hidro/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "rango_temperatura": "0 °C a 50 °C (sonda de EC/temperatura del agua)",
+    "rango_humedad": null,
+    "precision": null,
+    "capacidad": "Sondas de pH y EC; hasta 6 bombas dosificadoras",
+    "wifi": true,
+    "notas": "Tipo null: controlador de pH/EC; la ficha no lo presenta como controlador de clima. WiFi con plataforma en la nube opcional. Precisión de pH/EC no cargada."
+  },
+  {
+    "id": "wentux-controlador-indoor-pro",
+    "categoria": "clima",
+    "marca": "Wentux",
+    "linea": null,
+    "producto": "Controlador Indoor Wentux PRO",
+    "modelo": "PRO",
+    "descripcion_corta": "Controlador de clima indoor con WiFi: temperatura, humedad, extractores, luz, riego y CO2.",
+    "fuentes": [
+      {
+        "url": "https://wentux.com.ar/producto/controlador-indoor-wentux-pro/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Controlador de clima",
+    "rango_temperatura": null,
+    "rango_humedad": null,
+    "precision": null,
+    "capacidad": "6 salidas a relé (4 configurables); hasta 9 sensores inalámbricos adicionales",
+    "wifi": true,
+    "notas": "Rangos y precisión de medición de temperatura/humedad no figuran en la ficha."
+  },
+  {
+    "id": "wentux-sensor-co2-wifi",
+    "categoria": "clima",
+    "marca": "Wentux",
+    "linea": null,
+    "producto": "Sensor Co2 WiFi",
+    "modelo": "CO2 WiFi",
+    "descripcion_corta": "Sensor WiFi de CO2, temperatura y humedad con cálculo de DPV.",
+    "fuentes": [
+      {
+        "url": "https://wentux.com.ar/producto/sensor-co2-wifi/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": null,
+    "rango_temperatura": null,
+    "rango_humedad": null,
+    "precision": "CO2: ±5% ±50 ppm (400-1000 ppm), ±5% ±100 ppm (1000-2000 ppm), ±10% ±100 ppm (2000-4500 ppm)",
+    "capacidad": "Rango de CO2: 400 a 5000 ppm",
+    "wifi": true,
+    "notas": "Tipo null: es un sensor de CO2 que no encaja en los tipos del esquema."
+  },
+  {
+    "id": "wentux-sensor-humedad-temperatura-wifi",
+    "categoria": "clima",
+    "marca": "Wentux",
+    "linea": null,
+    "producto": "Sensor Humedad Temperatura WiFi",
+    "modelo": "WiFi",
+    "descripcion_corta": "Sensor WiFi de temperatura y humedad con cálculo de DPV; compatible con Wentux Pro y Hidro.",
+    "fuentes": [
+      {
+        "url": "https://wentux.com.ar/producto/sensor-humedad-temperatura-wifi/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "tipo": "Termohigrómetro",
+    "rango_temperatura": null,
+    "rango_humedad": null,
+    "precision": null,
+    "capacidad": "Hasta 6 sensores WiFi por controlador Wentux Pro",
+    "wifi": true
+  }
+]
