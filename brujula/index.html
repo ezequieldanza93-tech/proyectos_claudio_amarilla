@@ -256,6 +256,10 @@ textarea{min-height:70px;resize:vertical}
 .pick-item .muted{font-size:.75rem}
 .pick-item:hover{background:var(--bg)}
 .dose-row .pick-wrap{grid-column:auto}
+.hh-list{display:flex;flex-direction:column}
+.hh-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;text-align:left;border:0;border-top:1px solid var(--line);border-radius:0;background:transparent;padding:9px 2px;color:var(--ink);font-size:.9rem}
+.hh-row:first-child{border-top:0}
+.hh-row:hover{background:var(--bg)}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -291,8 +295,8 @@ const curId=()=>S.nav!==null?S.nav:hashId();
 function go(id){S.nav=id||'';S.space=null;S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
 const current=()=>S.projects.find(p=>p.id===curId());
 const isLedger=p=>p&&p.kind==='ledger';
-const ARS=new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
-const money=v=>ARS.format(Math.round(v));
+const ARS=new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',minimumFractionDigits:0,maximumFractionDigits:2});
+const money=v=>ARS.format(Math.round(v*100)/100);
 const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const monthName=m=>{const [y,mm]=m.split('-');return MESES[+mm-1]+' '+y};
 const shiftMonth=(m,d)=>{let [y,mm]=m.split('-').map(Number);mm+=d;while(mm<1){mm+=12;y--}while(mm>12){mm-=12;y++}return y+'-'+String(mm).padStart(2,'0')};
@@ -340,7 +344,7 @@ function render(){
   html+=brandDatalists();
   if(S.lightbox)html+=`<div class="lightbox" data-act="closeLb"><img src="${esc(S.lightbox)}" alt="Foto ampliada"><button data-act="closeLb">Cerrar</button></div>`;
   const cp=current();S.pid=cp?cp.id:null;
-  html+= cp?(isLedger(cp)?ledgerView(cp):detailView()):homeView();
+  html+= cp?(cp.household?householdView(cp):isLedger(cp)?ledgerView(cp):detailView()):homeView();
   PICK=null;app.innerHTML=html;
   app.querySelectorAll('form[data-form=event]').forEach(f=>{updateDoseTotals(f);updateBuyTotals(f)});
   app.querySelectorAll('form[data-form=item]').forEach(applyKindVisibility);
@@ -390,7 +394,9 @@ function homeView(){
 }
 function linkItem(p,i){
   let sub;
-  if(isLedger(p)){const m=today().slice(0,7);const s=ledgerSums(p,m);
+  if(p.household){const m=today().slice(0,7);const c=hhComunSums(p,m);const me=(p.members||['Eze'])[0];
+    sub=`Casa ${MESES[+m.slice(5)-1]}: ${money(c.total)} · ${esc(me)} ${c.owe[me]>=0?'debe':'a favor'} <span class="num">${money(Math.abs(c.owe[me]))}</span>`;}
+  else if(isLedger(p)){const m=today().slice(0,7);const s=ledgerSums(p,m);
     sub=`Saldo de ${MESES[+m.slice(5)-1]}: <span class="num ${s.bal<0?'exp':''}">${money(s.bal)}</span>`;}
   else{const st=projStats(p);
     sub=st.ts.length?`${st.done.length}/${st.ts.length} tareas · ${h1(st.week)} h esta semana${st.next?' · Próxima: '+esc(st.next.title):''}`:'Sin tareas: entrá y armá el plan';}
@@ -450,6 +456,72 @@ function logForm(pid,tid){
   </form>`;
 }
 
+/* ---------- finanzas personales: común / fijos / no fijos ---------- */
+const HH_TABS=[['comun','Gastos en común de la casa'],['fijo','Personales fijos'],['variable','Personales no fijos']];
+const hhItems=(p,scope,month)=>S.money.filter(m=>m.ledgerId===p.id&&m.scope===scope&&(m.month||(m.date||'').slice(0,7))===month);
+const hasAmt=m=>m.amount!==''&&m.amount!=null;
+function hhComunSums(p,month){
+  const its=hhItems(p,'comun',month);const mem=p.members||['Eze','Agus'];
+  const total=its.filter(hasAmt).reduce((a,m)=>a+num(m.amount),0);const half=total/mem.length;
+  const paid={};mem.forEach(n=>paid[n]=its.filter(m=>m.paidBy===n&&hasAmt(m)).reduce((a,m)=>a+num(m.amount),0));
+  const owe={};mem.forEach(n=>owe[n]=half-paid[n]);
+  return {its,mem,total,half,paid,owe};
+}
+function hhForm(p,scope,m){
+  m=m||{};const mem=p.members||['Eze','Agus'];
+  return `<form class="inline-form" data-form="hh" data-pid="${esc(p.id)}" data-scope="${scope}" data-id="${esc(m.id||'')}">
+    <div class="grid2">
+      <label class="field"><span class="label">Concepto</span><input id="hh-name" name="concept" required value="${esc(m.concept)}" placeholder="${scope==='comun'?'Ej.: Alquiler':scope==='fijo'?'Ej.: Celular':'Ej.: Supermercado'}"></label>
+      <label class="field"><span class="label">Monto ($)</span><input id="hh-amt" name="amount" inputmode="decimal" value="${esc(dec(m.amount))}" placeholder="${scope==='variable'?'':'Vacío = importe pendiente'}"></label>
+      ${scope==='comun'?`<label class="field"><span class="label">Pagado por</span><select id="hh-paid" name="paidBy"><option value="">Todavía no se pagó</option>${mem.map(n=>`<option ${n===m.paidBy?'selected':''}>${esc(n)}</option>`).join('')}</select></label>`
+        :scope==='fijo'?`<label class="field"><span class="label">Estado</span><select id="hh-st" name="status"><option value="pendiente" ${m.status!=='pagado'?'selected':''}>Pendiente</option><option value="pagado" ${m.status==='pagado'?'selected':''}>Pagado</option></select></label>`
+        :`<label class="field"><span class="label">Fecha</span><input id="hh-date" name="date" type="date" value="${esc(m.date||today())}"></label>
+          <label class="field"><span class="label">Categoría</span><input id="hh-cat" name="category" list="dl-hhcat" value="${esc(m.category)}" placeholder="Ej.: comida, salidas, transporte"><datalist id="dl-hhcat">${[...new Set(S.money.filter(x=>x.ledgerId===p.id&&x.scope==='variable'&&x.category).map(x=>x.category))].map(c=>`<option value="${esc(c)}">`).join('')}</datalist></label>`}
+    </div>
+    <label class="field"><span class="label">Nota (opcional)</span><input id="hh-note" name="note" value="${esc(m.note)}"></label>
+    <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button>
+      ${m.id?(S.confirm==='hh'+m.id?`<span class="spacer"></span><button type="button" class="small danger" data-act="delHH" data-id="${esc(m.id)}">Confirmar borrado</button>`:`<span class="spacer"></span><button type="button" class="small ghost danger" data-act="askDel" data-key="hh${esc(m.id)}">Borrar</button>`):''}</div>
+  </form>`;
+}
+function hhRow(p,scope,m){
+  const f=S.form;if(f&&f.type==='hh'&&f.id===m.id)return hhForm(p,scope,m);
+  const st=scope==='comun'?(m.paidBy?`<span class="tag st-tag-cumplido">Pagó ${esc(m.paidBy)}</span>`:'<span class="tag st-tag-planificado">Sin pagar</span>')
+    :scope==='fijo'?(m.status==='pagado'?'<span class="tag st-tag-cumplido">Pagado</span>':'<span class="tag st-tag-planificado">Pendiente</span>')
+    :(m.category?`<span class="tag">${esc(m.category)}</span>`:'');
+  return `<button class="hh-row" data-act="editHH" data-id="${esc(m.id)}">
+    <span style="min-width:0">${scope==='variable'?`<span class="num muted" style="font-size:.8rem">${fmtDate(m.date)}</span> `:''}<b style="font-weight:500">${esc(m.concept)}</b> ${st}${m.note?`<span class="muted" style="display:block;font-size:.78rem">${esc(m.note)}</span>`:''}</span>
+    <span class="num ${hasAmt(m)?'':'muted'}">${hasAmt(m)?money(num(m.amount)):'Pendiente'}</span></button>`;
+}
+function householdView(p){
+  const pc=pcolor(p);const tab=S.hhTab||'comun';const month=S.month||today().slice(0,7);const f=S.form;
+  let h=`<div class="row"><button class="ghost" data-act="home">← Inicio</button></div>
+  <section class="detail-head" style="--pc:${pc}"><span class="chip" style="align-self:flex-start">Finanzas</span><h1>${esc(p.name)}</h1></section>
+  <div class="tabs" role="tablist" style="--pc:${pc}">${HH_TABS.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="hhTab" data-tab="${k}">${l}</button>`).join('')}</div>
+  <section class="panel" style="--pc:${pc}"><div class="row">
+    <button class="small" data-act="prevMonth" aria-label="Mes anterior">‹</button><h2 style="min-width:0">${monthName(month)}</h2><button class="small" data-act="nextMonth" aria-label="Mes siguiente">›</button>
+    <span class="spacer"></span>${f&&f.type==='hh'&&!f.id?'':`<button class="small primary" data-act="newHH">+ Gasto</button>`}</div>`;
+  if(f&&f.type==='hh'&&!f.id)h+=hhForm(p,tab,{});
+  const its=hhItems(p,tab,month).sort((a,c)=>tab==='variable'?(c.date||'').localeCompare(a.date||''):num(a.order??a.createdAt)-num(c.order??c.createdAt));
+  if(tab==='comun'){const s=hhComunSums(p,month);
+    h+=`<div class="money-sum">
+      <div class="ms"><span class="label">Total de gastos</span><b>${money(s.total)}</b>${its.some(m=>!hasAmt(m))?'<span class="muted" style="font-size:.75rem">sin los que tienen importe pendiente</span>':''}</div>
+      <div class="ms"><span class="label">A cada uno (${s.mem.length===2?'50/50':'partes iguales'})</span><b>${money(s.half)}</b></div>
+      ${s.mem.map(n=>`<div class="ms"><span class="label">${esc(n)}</span><span class="num muted" style="font-size:.82rem">pagó ${money(s.paid[n])}</span><b class="${s.owe[n]>0?'':'inc'}">${s.owe[n]>=0?'Debe '+money(s.owe[n]):'A favor '+money(-s.owe[n])}</b></div>`).join('')}
+    </div>`;}
+  else{const tot=its.filter(hasAmt).reduce((a,m)=>a+num(m.amount),0);
+    const paid=tab==='fijo'?its.filter(m=>m.status==='pagado'&&hasAmt(m)).reduce((a,m)=>a+num(m.amount),0):0;
+    h+=`<div class="money-sum"><div class="ms"><span class="label">Total</span><b>${money(tot)}</b></div>${tab==='fijo'?`<div class="ms"><span class="label">Pagado</span><b class="inc">${money(paid)}</b></div><div class="ms"><span class="label">Falta pagar</span><b>${money(tot-paid)}</b></div>`:''}</div>`;}
+  h+=its.length?`<div class="hh-list">${its.map(m=>hhRow(p,tab,m)).join('')}</div>`:`<div class="empty">Sin gastos en ${monthName(month)}.${tab!=='variable'?' Tocá «Copiar del mes anterior» o «+ Gasto».':' Tocá «+ Gasto».'}</div>`;
+  if(tab!=='variable'){const prev=hhItems(p,tab,shiftMonth(month,-1));
+    if(prev.length&&!its.length)h+=`<button class="small" data-act="copyHH" style="align-self:flex-start">Copiar del mes anterior (${prev.length} gastos, sin estado de pago)</button>`;}
+  if(tab==='variable'&&its.length){const cats={};its.forEach(m=>{const c=m.category||'Sin categoría';cats[c]=(cats[c]||0)+num(m.amount)});const cl=Object.entries(cats).sort((a,b)=>b[1]-a[1]);const mx=cl[0][1]||1;
+    h+=`<h3>Por categoría</h3>${cl.map(([c,v])=>`<div class="cat"><span>${esc(c)}</span><div class="track"><div class="fill" style="width:${v/mx*100}%;background:var(--pc)"></div></div><span class="num" style="text-align:right">${money(v)}</span></div>`).join('')}`;}
+  h+=`</section>`;
+  const fixedT=hhItems(p,'fijo',month).filter(hasAmt).reduce((a,m)=>a+num(m.amount),0),varT=hhItems(p,'variable',month).filter(hasAmt).reduce((a,m)=>a+num(m.amount),0),myC=hhComunSums(p,month).half;
+  h+=`<section class="panel" style="--pc:${pc}"><h3>Mi mes en total</h3><div class="money-sum">
+    <div class="ms"><span class="label">Mi parte de la casa</span><b>${money(myC)}</b></div><div class="ms"><span class="label">Fijos</span><b>${money(fixedT)}</b></div><div class="ms"><span class="label">No fijos</span><b>${money(varT)}</b></div><div class="ms"><span class="label">Total</span><b>${money(myC+fixedT+varT)}</b></div></div></section>`;
+  return h;
+}
 function ledgerView(p){
   const pc=pcolor(p);const month=S.month||today().slice(0,7);const f=S.form;
   const scopes=p.scopes||[];const s=ledgerSums(p,month);
@@ -1566,6 +1638,12 @@ app.addEventListener('click',e=>{
     openPick(){openPicker(b)},
     closePick(){closePicker()},
     pickItem(){pickItem(+b.dataset.i)},
+    hhTab(){S.hhTab=b.dataset.tab;S.form=null;rerender()},
+    newHH(){S.form={type:'hh'};rerender();document.getElementById('hh-name')?.focus()},
+    editHH(){S.form={type:'hh',id};rerender()},
+    delHH(){safe(async()=>{await db.doc('money/'+id).delete();S.confirm=null;S.form=null})},
+    copyHH(){const p=current();const tab=S.hhTab||'comun';const month=S.month||today().slice(0,7);const prev=hhItems(p,tab,shiftMonth(month,-1));
+      safe(async()=>{let i=0;for(const m of prev){await db.collection('money').add({ledgerId:p.id,scope:tab,type:'gasto',concept:m.concept,amount:m.amount,note:'',paidBy:'',status:'pendiente',month,date:month+'-01',order:i++,createdAt:Date.now()})}})},
     catPick(){const c=CAT_TREE.find(x=>x.k===b.dataset.cat);S.catSel={cat:c.k,sub:c.subs[0][0],brand:''};S.catItem=null;rerender()},
     subPick(){S.catSel={...(S.catSel||{cat:'equipo'}),sub:b.dataset.sub,brand:''};S.catItem=null;rerender()},
     catItem(){S.catItem=S.catItem===b.dataset.key?null:b.dataset.key;rerender()},
@@ -1625,7 +1703,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
@@ -1718,6 +1796,14 @@ app.addEventListener('submit',e=>{
       }else
       await db.collection('products').add({projectId:'cultivo',use:d.use==='foliar'?'foliar':'radicular',line:(d.line||'').trim(),name,unit:d.unit||'ml',createdAt:Date.now()});
       S.form=null;rerender();setTimeout(()=>document.getElementById('c-name')?.focus(),0);return;
+    }else if(kind==='hh'){
+      const scope=f.dataset.scope;const month=S.month||today().slice(0,7);const t=String(d.amount||'').trim();
+      const data={concept:(d.concept||'').trim(),amount:t===''?'':num(t),note:(d.note||'').trim()};
+      if(scope==='comun')data.paidBy=d.paidBy||'';
+      if(scope==='fijo')data.status=d.status||'pendiente';
+      if(scope==='variable'){data.date=d.date||today();data.category=(d.category||'').trim();data.month=data.date.slice(0,7);}
+      if(f.dataset.id)await db.doc('money/'+f.dataset.id).update(data);
+      else await db.collection('money').add({...data,ledgerId:f.dataset.pid,scope,type:'gasto',month:data.month||month,date:data.date||month+'-01',createdAt:Date.now()});
     }else if(kind==='move'){
       const amt=num(d.amount);if(amt<=0){S.err='Cargá un monto mayor a cero.';rerender();return}
       await db.collection('money').add({ledgerId:f.dataset.pid,type:d.type==='ingreso'?'ingreso':'gasto',amount:amt,category:(d.category||'').trim(),scope:d.scope||'',date:d.date||today(),note:(d.note||'').trim(),createdAt:Date.now()});
