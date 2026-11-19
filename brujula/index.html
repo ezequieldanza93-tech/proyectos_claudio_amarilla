@@ -190,6 +190,16 @@ textarea{min-height:70px;resize:vertical}
 .batch{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-left:4px solid var(--pc);border-radius:10px;padding:12px}
 .batch .bt{font-family:var(--f-display);font-size:1.05rem}
 @media (max-width:560px){.frow{grid-template-columns:1fr;gap:0}}
+/* semana */
+.week{display:flex;flex-direction:column;gap:8px}
+.wk-day{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;background:var(--bg)}
+.wk-day.today{border-color:var(--pc);border-width:2px;background:var(--surface)}
+.wk-head{display:flex;gap:8px;align-items:center;text-transform:capitalize}
+.wk-ev{display:flex;flex-direction:column;gap:6px;font-size:.88rem;padding:6px 0 6px 10px;border-left:3px solid var(--pc)}
+.wk-ev .t-actions{justify-content:flex-start}
+.wk-ev.missed .ev-title{text-decoration:line-through;color:var(--muted)}
+.wk-day-ev{display:flex;flex-direction:column;gap:2px;padding-top:6px}
+.sp-chip{font-size:.72rem;font-weight:600;color:var(--pc)}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -767,16 +777,50 @@ const ORIGINS=['Semilla','Esqueje','Otro espacio'];
 const SUBSTRATES=['Terrafertil Growmix Indoor','Terrafertil Growmix Multipro','Cultivate','Vamp','Biobizz','Growers','Lizard','Silver','Landiner'];
 const spaceName=id=>(S.spaces.find(x=>x.id===id)||{}).name||'otro espacio';
 const activeBatches=sid=>S.batches.filter(b=>b.spaceId===sid&&b.status!=='finalizado').sort((a,b)=>(a.startDate||'').localeCompare(b.startDate||''));
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const addDays=(s,n)=>{const d=new Date(s+'T00:00:00');d.setDate(d.getDate()+n);return ymd(d)};
+const mondayOf=s=>{const d=new Date(s+'T00:00:00');return addDays(s,-((d.getDay()+6)%7))};
+const DIAS=['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
+function weekEvRow(p,e){
+  const st=evStatus(e);const f=S.form;
+  if(f&&f.type==='event'&&f.id===e.id)return eventForm(p,e);
+  const sp=S.spaces.find(x=>x.id===e.spaceId);
+  return `<div class="wk-ev ${st==='no se hizo'?'missed':''}" style="--pc:${sp?spaceColor(sp):'var(--muted)'}">
+    <span style="min-width:0"><span class="sp-chip">${esc(sp?sp.name:'General')}</span> <span class="ev-title">${esc(e.title)}</span>
+      <span class="tag">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span>
+      ${prodSummary(e)}${e.note?`<span class="muted" style="font-size:.78rem;display:block">${esc(e.note)}</span>`:''}</span>
+    <span class="t-actions">${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`:`<button class="small ghost" data-act="evEdit" data-id="${esc(e.id)}">Editar</button>`}</span>
+  </div>`;
+}
+function spaceColor(sp){const i=spacesOf(sp.projectId).findIndex(x=>x.id===sp.id);return 'var('+PCOL[(i+1)%PCOL.length]+')'}
+function weekPanel(p,pc){
+  const t=today();const ws=S.calWeek||mondayOf(t);const we=addDays(ws,6);
+  const evs=S.events.filter(e=>e.projectId===p.id);
+  const overdue=evs.filter(e=>evStatus(e)==='planificado'&&e.date<ws).sort((a,b)=>a.date.localeCompare(b.date));
+  let h=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Semana de cultivo</h2><span class="spacer"></span>
+    <button class="small" data-act="wkPrev" aria-label="Semana anterior">‹</button>
+    <span class="num" style="font-size:.85rem">${fmtDate(ws)} – ${fmtDate(we)}</span>
+    <button class="small" data-act="wkNext" aria-label="Semana siguiente">›</button>
+    ${ws!==mondayOf(t)?'<button class="small" data-act="wkToday">Hoy</button>':''}</div>`;
+  if(overdue.length)h+=`<div class="confirm-box"><div class="label" style="color:var(--warn)">Sin confirmar de semanas anteriores (${overdue.length})</div>
+    ${overdue.map(e=>`<div class="wk-day-ev"><span class="num muted" style="font-size:.8rem">${fmtDate(e.date)}</span>${weekEvRow(p,e)}</div>`).join('')}</div>`;
+  h+=`<div class="week">`;
+  for(let i=0;i<7;i++){const ds=addDays(ws,i);const de=evs.filter(e=>e.date===ds);
+    h+=`<div class="wk-day ${ds===t?'today':''}"><div class="wk-head"><b>${DIAS[i]}</b> <span class="num muted">${fmtDate(ds)}</span>${ds===t?'<span class="chip">hoy</span>':''}</div>
+      ${de.length?de.map(e=>weekEvRow(p,e)).join(''):'<div class="muted" style="font-size:.82rem">Nada planificado.</div>'}</div>`;}
+  h+=`</div><div class="muted" style="font-size:.78rem">Para planificar entrá a cada espacio, pestaña Planificador.</div></section>`;
+  return h;
+}
 function spaceView(p,s,pc){
   const area=num(s.width)*num(s.length);const tab=S.spaceTab||'ficha';
-  const tabs=[['ficha','Ficha técnica'],['plan','Planificador'],['seg','Seguimiento']];
+  const tabs=[['ficha','Ficha técnica'],['plan','Planificador'],['seg','Registro de fotos']];
   let h=`<div class="row"><button class="ghost" data-act="closeSpace">← ${esc(p.name)}</button></div>
   <section class="detail-head" style="--pc:${pc}"><span class="chip" style="align-self:flex-start">Espacio de cultivo</span><h1>${esc(s.name)}</h1>
     <div class="muted">${esc(spaceSummary(s))}${area?` · ${dec(Math.round(area*100)/100)} m²`:''}</div></section>
   <div class="tabs" role="tablist" style="--pc:${pc}">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="spaceTab" data-tab="${k}">${l}</button>`).join('')}</div>`;
   if(tab==='ficha')h+=S.fichaEdit?spaceEditForm(s,pc)+equipPanels(s,pc)+`<div class="row"><button class="primary" data-act="fichaDone">Listo, ver ficha</button></div>`:fichaView(s,pc);
-  else if(tab==='plan')h+=plannerView(p,s,pc);
-  else h+=(p.calendar?calendarPanel(p,pc)+mediaPanel(p,pc):'');
+  else if(tab==='plan')h+=plannerView(p,s,pc)+(p.calendar?calendarPanel(p,pc):'');
+  else h+=(p.calendar?mediaPanel(p,pc):'');
   return h;
 }
 function spaceEditForm(s,pc){
@@ -932,6 +976,7 @@ function detailView(){
   const sp=S.space&&S.spaces.find(x=>x.id===S.space&&x.projectId===p.id);
   if(sp)return spaceView(p,sp,pc);
   let h=`<div class="row"><button class="ghost" data-act="home">← Inicio</button></div>`;
+  if(p.calendar&&spacesOf(p.id).length)h+=weekPanel(p,pc);
   h+=spacesPanel(p,pc);
   if(spacesOf(p.id).length)h+=catalogPanel(p,pc);
   if(f&&f.type==='project'&&f.id===p.id){h+=`<div class="panel" style="--pc:${pc}">${projectForm(p)}</div>`}
@@ -1008,6 +1053,9 @@ app.addEventListener('click',e=>{
     evDone(){safe(()=>db.doc('events/'+id).update({status:'cumplido',confirmedAt:Date.now()}))},
     evMiss(){safe(()=>db.doc('events/'+id).update({status:'no se hizo',confirmedAt:Date.now()}))},
     evEdit(){S.form={type:'event',id};rerender();document.getElementById('e-date')?.focus()},
+    wkPrev(){S.calWeek=addDays(S.calWeek||mondayOf(today()),-7);rerender()},
+    wkNext(){S.calWeek=addDays(S.calWeek||mondayOf(today()),7);rerender()},
+    wkToday(){S.calWeek=null;rerender()},
     spaceTab(){S.spaceTab=b.dataset.tab;S.form=null;S.fichaEdit=false;rerender()},
     fichaEdit(){S.fichaEdit=true;S.spaceMsg='';rerender()},
     fichaDone(){S.fichaEdit=false;S.form=null;window.scrollTo(0,0);rerender()},
