@@ -54,18 +54,19 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Panel LED RG110I (Bushi lo llama RG110i). Bushi: consumo en línea 50 W a 220 V y 98 W de «potencia lumínica»; 0,23 A, 50 Hz, 22.250 lm, CRI 70, lente 98°, distancia de trabajo 30 cm, 50.000 h de vida útil, armazón metálico, peso 2 kg en la ficha (5 kg en datos estructurados). potencia_real_w = consumo en línea de 50 W. Sin espectro en nm ni dimensiones. La marca no se contrastó con la empresa fabricante (posible Bioledarg SRL).",
     "tipo": "Full spectrum",
     "potencia_real_w": 50,
-    "panel_largo_cm": null,
-    "panel_ancho_cm": null,
-    "panel_alto_cm": null,
+    "panel_largo_cm": 22,
+    "panel_ancho_cm": 20,
+    "panel_alto_cm": 8,
     "ppf_umol_s": null,
     "eficacia_umol_j": null,
     "espectro": "Más azules y rojos (sin rango en nm)",
     "dimmer": null,
-    "cobertura_recomendada_cm": "80x80"
+    "cobertura_recomendada_cm": "80x80",
+    "potencia_anunciada_w": 98
   },
   {
     "id": "bioled-220i",
@@ -93,10 +94,10 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Panel LED RG220I. Puntoverde lo titula «196w» (no aclara si es consumo o potencia lumínica), por eso la potencia queda sin cargar. La marca no se contrastó con la empresa fabricante (posible Bioledarg SRL).",
     "tipo": "Full spectrum",
-    "potencia_real_w": null,
+    "potencia_real_w": 110,
     "panel_largo_cm": null,
     "panel_ancho_cm": null,
     "panel_alto_cm": null,
@@ -104,7 +105,8 @@
     "eficacia_umol_j": null,
     "espectro": null,
     "dimmer": null,
-    "cobertura_recomendada_cm": null
+    "cobertura_recomendada_cm": null,
+    "potencia_anunciada_w": 195
   },
   {
     "id": "bioled-330i",
@@ -122,7 +124,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Solo figura nombre y modelo en Grow Shopping; sin ficha técnica. Tipo sin cargar.",
     "tipo": null,
     "potencia_real_w": null,
@@ -151,7 +153,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Solo figura nombre y modelo en Grow Shopping; sin ficha técnica. Tipo sin cargar.",
     "tipo": null,
     "potencia_real_w": null,
@@ -190,13 +192,13 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Panel LED RG55I. Puntoverde lo titula «50w» (no aclara si es consumo o potencia lumínica), por eso la potencia queda sin cargar. Tipo «Full spectrum» según el título de Olivos Grow Shop. La marca no se contrastó con la empresa fabricante (posible Bioledarg SRL).",
     "tipo": "Full spectrum",
-    "potencia_real_w": null,
-    "panel_largo_cm": null,
-    "panel_ancho_cm": null,
-    "panel_alto_cm": null,
+    "potencia_real_w": 25,
+    "panel_largo_cm": 22,
+    "panel_ancho_cm": 20,
+    "panel_alto_cm": 8,
     "ppf_umol_s": null,
     "eficacia_umol_j": null,
     "espectro": null,
@@ -219,7 +221,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Solo figura nombre y modelo en Grow Shopping; sin ficha técnica. Tipo sin cargar.",
     "tipo": null,
     "potencia_real_w": null,
@@ -248,7 +250,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": 150,
     "panel_largo_cm": null,
@@ -277,7 +279,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": 200,
     "panel_largo_cm": 35,
@@ -306,7 +308,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": 300,
     "panel_largo_cm": null,
@@ -335,7 +337,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": 300,
     "panel_largo_cm": null,
@@ -364,8 +366,8 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
-    "tipo": "Full spectrum",
+    "verificado": true,
+    "tipo": null,
     "potencia_real_w": 600,
     "panel_largo_cm": null,
     "panel_ancho_cm": null,
@@ -375,7 +377,7 @@
     "espectro": "Espectro Sunshine: luz blanca amplia con rojo profundo, rojo lejano y refuerzo de azul",
     "dimmer": null,
     "cobertura_recomendada_cm": null,
-    "notas": "Disipación pasiva, sin ventiladores. La fuente dice «Potencia: 600 W» sin aclarar si es real."
+    "notas": "Disipación pasiva, sin ventiladores. La fuente dice «Potencia: 600 W» sin aclarar si es real. Tipo de luz en null: la fuente no lo declara (espectro blanco amplio con rojo y azul)."
   },
   {
     "id": "growtech-cob-100w",
@@ -403,7 +405,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "potencia_anunciada_w": 100,
     "notas": "Linea COB. Los datos son los de la ficha: «Consumo Eléctrico» = potencia real; el PPFD informado (484 µmol/m²/s, medido a 25 cm) no es PPF, por eso ppf_umol_s queda null. Medidas de la ficha en mm (145x90x95 mm), orden tal cual figura; no indica cuál es largo y ancho. Garantía 1 año, vida útil 20.000 h, alimentación 220 V."
   },
@@ -433,7 +435,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "potencia_anunciada_w": 200,
     "notas": "Linea COB. Los datos son los de la ficha: «Consumo Eléctrico» = potencia real; el PPFD informado (1110 µmol/m²/s, medido a 25 cm) no es PPF, por eso ppf_umol_s queda null. Medidas de la ficha en mm (193x142x115 mm), orden tal cual figura; no indica cuál es largo y ancho. Garantía 1 año, vida útil 20.000 h, alimentación 220 V."
   },
@@ -463,7 +465,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "potencia_anunciada_w": 300,
     "notas": "Linea COB. Los datos son los de la ficha: «Consumo Eléctrico» = potencia real; el PPFD informado (1667 µmol/m²/s, medido a 25 cm) no es PPF, por eso ppf_umol_s queda null. Medidas de la ficha en mm (297x142x115 mm), orden tal cual figura; no indica cuál es largo y ancho. Garantía 1 año, vida útil 20.000 h, alimentación 220 V."
   },
@@ -493,7 +495,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "potencia_anunciada_w": 400,
     "notas": "Linea COB. Los datos son los de la ficha: «Consumo Eléctrico» = potencia real; el PPFD informado (2217 µmol/m²/s, medido a 25 cm) no es PPF, por eso ppf_umol_s queda null. Medidas de la ficha en mm (401x142x115 mm), orden tal cual figura; no indica cuál es largo y ancho. Garantía 1 año, vida útil 20.000 h, alimentación 220 V."
   },
@@ -523,7 +525,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "potencia_anunciada_w": 600,
     "notas": "Linea COB. Los datos son los de la ficha: «Consumo Eléctrico» = potencia real; el PPFD informado (3289 µmol/m²/s, medido a 25 cm) no es PPF, por eso ppf_umol_s queda null. Medidas de la ficha en mm (430x193x115 mm), orden tal cual figura; no indica cuál es largo y ancho. Garantía 1 año, vida útil 20.000 h, alimentación 220 V."
   },
@@ -553,7 +555,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Datos de la ficha. La ficha da «Potencia: 120W», sin aclarar si es consumo medido; se carga como potencia_real_w. El valor «PPFD» de la ficha está en µmol/s (es PPF) y viene con «+» en algunos modelos. Vida útil +50.000 h, IP20, espectro mixto con rojo lejano (efecto Emerson)."
   },
   {
@@ -582,7 +584,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Datos de la ficha. La ficha da «Potencia: 240W», sin aclarar si es consumo medido; se carga como potencia_real_w. El valor «PPFD» de la ficha está en µmol/s (es PPF) y viene con «+» en algunos modelos. Vida útil +50.000 h, IP20, espectro mixto con rojo lejano (efecto Emerson)."
   },
   {
@@ -611,7 +613,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Datos de la ficha. La ficha da «Potencia: 400W», sin aclarar si es consumo medido; se carga como potencia_real_w. El valor «PPFD» de la ficha está en µmol/s (es PPF) y viene con «+» en algunos modelos. Vida útil +50.000 h, IP20, espectro mixto con rojo lejano (efecto Emerson). El texto de la ficha del 400 menciona también «HELION 720» (copia de otra ficha); se tomaron solo los datos de la lista «Características clave»."
   },
   {
@@ -640,7 +642,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Datos de la ficha. La ficha da «Potencia: 720W», sin aclarar si es consumo medido; se carga como potencia_real_w. El valor «PPFD» de la ficha está en µmol/s (es PPF) y viene con «+» en algunos modelos. Vida útil +50.000 h, IP20, espectro mixto con rojo lejano (efecto Emerson). Estructura de aluminio plegable; conexión en cadena."
   },
   {
@@ -669,7 +671,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "potencia_anunciada_w": 150,
     "notas": "Línea Quantum de Growtech. La ficha da «Potencia: 150w», sin aclarar si es consumo real, por eso potencia_real_w queda null y se carga la anunciada. Sin datos de medidas, PPF ni eficacia en la ficha. Cobertura según la ficha: 80x80cm a 45 cm de altura. Vida útil 50.000 h, 220 V AC."
   },
@@ -683,13 +685,13 @@
     "descripcion_corta": "Panel LED Quantum Q300 de formato cuadrado de Growtech para crecimiento y floración.",
     "tipo": null,
     "potencia_real_w": 300,
-    "panel_largo_cm": null,
-    "panel_ancho_cm": null,
-    "panel_alto_cm": null,
+    "panel_largo_cm": 50,
+    "panel_ancho_cm": 60,
+    "panel_alto_cm": 5,
     "ppf_umol_s": null,
     "eficacia_umol_j": 2.9,
     "espectro": "SMD 4000 K y 5000 K + 660 nm + 730 nm",
-    "dimmer": null,
+    "dimmer": true,
     "cobertura_recomendada_cm": "100x100 cm",
     "fuentes": [
       {
@@ -699,7 +701,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Ficha en tabla: consumo 300 W, factor de potencia 0,9, eficiencia 2,9 µmol/J, IP20, vida útil 50.000 h, 220 V AC. La tabla de la página aparece cortada: puede tener más datos (medidas) no capturados."
   },
   {
@@ -728,7 +730,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "potencia_anunciada_w": 300,
     "notas": "Línea Quantum de Growtech. La ficha da «Potencia: 300w», sin aclarar si es consumo real, por eso potencia_real_w queda null y se carga la anunciada. Sin datos de medidas, PPF ni eficacia en la ficha. Cobertura según la ficha: hasta 100x100cm a 45 cm de altura. Vida útil 50.000 h, 220 V AC."
   },
@@ -763,7 +765,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "potencia_anunciada_w": 150,
     "notas": "Growshopping no publica datos técnicos en la ficha. La potencia anunciada sale del nombre en Punto Verde («Panel Master Led …w»)."
   },
@@ -843,7 +845,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "potencia_anunciada_w": 200,
     "notas": "Growshopping no publica datos técnicos en la ficha. La potencia anunciada sale del nombre en Punto Verde («Panel Master Led …w»)."
   },
@@ -873,7 +875,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "Growshopping no publica datos técnicos en la ficha. La potencia anunciada sale del nombre en Punto Verde («Panel Master Led …w»)."
   },
   {
@@ -902,7 +904,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "CRI 87, 1,95 A, 220-240 V AC, 4,4 kg, vida útil 50.000 h, temperatura de trabajo 35 a 45 °C, chips CREE."
   },
   {
@@ -931,7 +933,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "notas": "CRI 87, 2,86 A, 220-240 V AC, 6,5 kg, vida útil 50.000 h, temperatura de trabajo 35 a 45 °C, chips CREE."
   },
   {
@@ -950,7 +952,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": 100,
     "panel_largo_cm": null,
@@ -979,7 +981,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": null,
     "potencia_anunciada_w": 200,
@@ -1009,7 +1011,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": null,
     "potencia_anunciada_w": 300,
@@ -1039,7 +1041,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": null,
     "potencia_anunciada_w": 400,
@@ -1069,7 +1071,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": null,
     "potencia_anunciada_w": 600,
@@ -1099,7 +1101,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": 200,
     "panel_largo_cm": null,
@@ -1128,7 +1130,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": 300,
     "panel_largo_cm": null,
@@ -1157,7 +1159,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": 400,
     "panel_largo_cm": null,
@@ -1186,7 +1188,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": null,
     "potencia_anunciada_w": 600,
@@ -1221,7 +1223,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "potencia_real_w": 320,
     "panel_largo_cm": null,
@@ -1274,7 +1276,7 @@
         ]
       }
     ],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "potencia_real_w": 220,
     "panel_largo_cm": null,
@@ -1283,7 +1285,7 @@
     "ppf_umol_s": null,
     "eficacia_umol_j": 2.8,
     "espectro": "CRI 95, R9 97",
-    "dimmer": null,
+    "dimmer": true,
     "cobertura_recomendada_cm": "120x60"
   },
   {
@@ -1326,7 +1328,7 @@
         ]
       }
     ],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "potencia_real_w": null,
     "panel_largo_cm": null,
@@ -1335,7 +1337,7 @@
     "ppf_umol_s": null,
     "eficacia_umol_j": 3.0,
     "espectro": "4 tipos de LEDs, 95% similar a la luz solar",
-    "dimmer": null,
+    "dimmer": true,
     "cobertura_recomendada_cm": "100x100",
     "notas": "PPFD máximo 1225 µmol/m²/s según la fuente."
   },
@@ -1365,7 +1367,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "potencia_real_w": 420,
     "panel_largo_cm": null,
@@ -1404,7 +1406,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "potencia_real_w": 690,
     "panel_largo_cm": null,
@@ -1438,7 +1440,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "potencia_real_w": 710,
     "panel_largo_cm": null,
@@ -1447,7 +1449,7 @@
     "ppf_umol_s": null,
     "eficacia_umol_j": 3.1,
     "espectro": "95% de reproducción de la luz solar",
-    "dimmer": null,
+    "dimmer": true,
     "cobertura_recomendada_cm": "180x180",
     "notas": "PPFD promedio 905 µmol/m²/s, picos 1716."
   },
@@ -1477,7 +1479,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": null,
     "potencia_real_w": 120,
     "panel_largo_cm": null,
@@ -1487,7 +1489,7 @@
     "eficacia_umol_j": null,
     "espectro": "CRI > 95%",
     "dimmer": null,
-    "cobertura_recomendada_cm": null
+    "cobertura_recomendada_cm": "80x80"
   },
   {
     "id": "mars-hydro-sunflash-153e",
@@ -1514,13 +1516,27 @@
         "fecha_captura": "2026-11-19"
       }
     ],
-    "conflictos": [],
-    "verificado": false,
+    "conflictos": [
+      {
+        "campo": "ppf_umol_s",
+        "valores": [
+          {
+            "valor": "~379 a 390 µmol/s (PPF total)",
+            "url": "https://goodsmokegrow.com.ar/productos/led-mars-sunflash-153e-pabec/"
+          },
+          {
+            "valor": "379 µmol/s/m² (PPFD a 30 cm, no PPF)",
+            "url": "https://goblin.com.ar/cultivo-indoor/iluminacion/paneles-led/mars-leds-sunflash-153-e"
+          }
+        ]
+      }
+    ],
+    "verificado": true,
     "tipo": "Full spectrum",
     "potencia_real_w": 150,
-    "panel_largo_cm": null,
-    "panel_ancho_cm": null,
-    "panel_alto_cm": null,
+    "panel_largo_cm": 65,
+    "panel_ancho_cm": 36,
+    "panel_alto_cm": 8,
     "ppf_umol_s": null,
     "eficacia_umol_j": 3.0,
     "espectro": "Full Spectrum, CRI 95, R9 97, 2800K, 670 nm",

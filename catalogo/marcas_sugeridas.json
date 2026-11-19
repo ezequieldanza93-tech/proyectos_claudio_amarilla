@@ -1,21 +1,21 @@
 [
   {
-    "categoria": "clima",
-    "marca": "(sin marca visible)",
-    "url": "https://growtech.com.ar/clima/deshumidificadores/",
-    "motivo": "Deshumidificadores industriales y de techo y humidificador ultrasónico 3 L/h que vende Growtech sin nombrar marca."
+    "categoria": "fertilizante",
+    "marca": "Advanced Nutrients",
+    "url": "https://santaplanta.com.ar/producto/fertilizante-cultivator-series-base-advanced-nutrients-1-kg/",
+    "motivo": "Posible «Advance» del pedido: en grow shops argentinos se abrevia «Advance» (ej. «Advance Big Bud»). Lo vende Santa Planta (Cultivator Series). Confirmar antes de cargarlo."
   },
   {
     "categoria": "fertilizante",
-    "marca": "Green Leaf",
-    "url": "https://santaplanta.com.ar/producto/green-leaf-preventivo-4-en-1-5-lt/",
-    "motivo": "Marca de preventivos/plaguicidas orgánicos (4 en 1 y 6 en 1); ya cargados esos dos productos, tiene más en Santa Planta."
+    "marca": "Go Green Argentina",
+    "url": "https://gogreenargentina.com",
+    "motivo": "Pedida como marca de ventilación, pero vende aditivos y fertilizantes (Go Bloom, Go Nitro, Bio Roots, Bull Power, Go Neem Plus), sustratos (HeavyMix, LightMix) y paneles LED COB. No se encontró ventilación de la marca."
   },
   {
-    "categoria": "foliar",
-    "marca": "Green Leaf",
-    "url": "https://santaplanta.com.ar/producto/green-leaf-jabon-potasico-100-cm3/",
-    "motivo": "En Santa Planta figura como «Jabón Potásico» pero la descripción es de un fertilizante biológico; verificar qué es."
+    "categoria": "fertilizante",
+    "marca": "Kawsay Nutrientes",
+    "url": "https://listado.mercadolibre.com.ar/kawsay-nutrientes",
+    "motivo": "Marca argentina de nutrientes vista en Mercado Libre (no relevada: ML prohíbe a Claude en robots.txt)."
   },
   {
     "categoria": "genetica",
@@ -43,9 +43,27 @@
   },
   {
     "categoria": "luz",
+    "marca": "Gadnic",
+    "url": "https://www.megatone.net/producto/luz-led-cultivo-indoor-gadnic-grow3-espectro-completo-rojo-y-blanco_MKT7300BID/",
+    "motivo": "Luz LED de cultivo vendida en Megatone (no relevada)."
+  },
+  {
+    "categoria": "luz",
+    "marca": "Insativa",
+    "url": "https://www.mercadolibre.com.ar/tienda/insativa",
+    "motivo": "Paneles LED Samsung 440/520 W vistos en Mercado Libre (no relevada)."
+  },
+  {
+    "categoria": "luz",
     "marca": "Lucius",
     "url": "https://growtech.com.ar/iluminacion/lucius/",
     "motivo": "Parrillas LED «importadas» que Growtech vende (120/240/400/720 W, Green Label, Triple Black, Under Canopy): la marca es Lucius, no se dice que sea de Growtech; hay datos técnicos para el 400, 720 y Green Label."
+  },
+  {
+    "categoria": "luz",
+    "marca": "Paneles Norte",
+    "url": "https://www.mercadolibre.com.ar/tienda/paneles-norte",
+    "motivo": "Paneles COB 200-400 W vistos en Mercado Libre (no relevada)."
   },
   {
     "categoria": "luz",
@@ -67,15 +85,15 @@
   },
   {
     "categoria": "ventilacion",
-    "marca": "Garden Profan",
-    "url": "https://santaplanta.com.ar/?s=garden+profan",
-    "motivo": "Turbinas Extractor 100/150 e indoor fan 115 en Santa Planta"
-  },
-  {
-    "categoria": "ventilacion",
     "marca": "Gralf",
     "url": "https://santaplanta.com.ar/?s=gralf",
     "motivo": "Coolers a rulemán 4 y 6 pulgadas 220 V"
+  },
+  {
+    "categoria": "ventilacion",
+    "marca": "MV",
+    "url": "https://latinafy.com/products/mv-4-inch-linear-indoor-turbo-extractor-up/",
+    "motivo": "Turbo extractor 4\" (450 m³/h según el listado), origen argentino según una reventa; no verificado."
   },
   {
     "categoria": "ventilacion",
