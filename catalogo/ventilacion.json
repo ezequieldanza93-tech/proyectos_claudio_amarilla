@@ -76,7 +76,8 @@
     "ruido_db": 40,
     "oscilante": null,
     "dimmer": null,
-    "tension": "220 V"
+    "tension": "220 V",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/764/290/products/d_843288-mla89086039874_082025-b-9608ee072c72bc57cc17591595318377-640-0.webp"
   },
   {
     "id": "agroled-cooler-turbina-6-ruleman-220v",
@@ -109,7 +110,8 @@
     "ruido_db": 55,
     "oscilante": null,
     "dimmer": null,
-    "tension": "220 V"
+    "tension": "220 V",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/764/290/products/d_667067-mla51457513504_092022-b-bb449f73c74ac1b46317594104208199-640-0.webp"
   },
   {
     "id": "garden-highpro-profan-extractor-lineal-5",
@@ -137,7 +139,8 @@
     "oscilante": null,
     "dimmer": null,
     "tension": "210-220 V",
-    "notas": "Gangagrow: pensado para hasta 40.000 horas de operación continua, protección térmica contra recalentamiento, 2 velocidades. No indica potencia ni si es turbina simple; la ficha no nombra la línea Profan."
+    "notas": "Gangagrow: pensado para hasta 40.000 horas de operación continua, protección térmica contra recalentamiento, 2 velocidades. No indica potencia ni si es turbina simple; la ficha no nombra la línea Profan.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/001/131/968/products/extractor-2-velocidad-ebf457669d149e13d317297071924836-640-0.webp"
   },
   {
     "id": "garden-highpro-profan-extractor-4-15w",
@@ -184,7 +187,8 @@
     "oscilante": null,
     "dimmer": null,
     "tension": "220 V",
-    "notas": "UP! Growshop publica dos fichas de esta turbina: una dice 2300 rpm y la otra 2200 rpm (la segunda no da caudal). Es distinta de la Profan Extractor 100 ya cargada (21-33 W)."
+    "notas": "UP! Growshop publica dos fichas de esta turbina: una dice 2300 rpm y la otra 2200 rpm (la segunda no da caudal). Es distinta de la Profan Extractor 100 ya cargada (21-33 W).",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/764/290/products/d_892711-mla52925995330_122022-b-62050b04709684164a17594291992506-640-0.webp"
   },
   {
     "id": "garden-highpro-profan-extractor-6-30w",
@@ -212,7 +216,8 @@
     "oscilante": null,
     "dimmer": null,
     "tension": "220 V",
-    "notas": "UP! Growshop: 220 V, 50 Hz, cable con enchufe incluido. UP! tiene otra ficha de 6\" con 60 W y 520 m³/h que coincide con la Profan Extractor 150 ya cargada."
+    "notas": "UP! Growshop: 220 V, 50 Hz, cable con enchufe incluido. UP! tiene otra ficha de 6\" con 60 W y 520 m³/h que coincide con la Profan Extractor 150 ya cargada.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/764/290/products/d_693494-mla31721192024_082019-b-58eccd46a93686153f17593254709569-640-0.webp"
   },
   {
     "id": "garden-highpro-profan-extractor-100",
@@ -240,7 +245,8 @@
     "oscilante": null,
     "dimmer": null,
     "tension": "210-220 V",
-    "notas": "Caudal 145 a 187 m³/h, potencia 21 a 33 W y 2.180 a 2.385 rpm según la ficha (rangos, no se cargan como valor único). Tipo de equipo no indicado por la fuente."
+    "notas": "Caudal 145 a 187 m³/h, potencia 21 a 33 W y 2.180 a 2.385 rpm según la ficha (rangos, no se cargan como valor único). Tipo de equipo no indicado por la fuente.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2026/04/Garden-Extractor-Profan-1003.jpg"
   },
   {
     "id": "garden-highpro-profan-extractor-150",
@@ -268,7 +274,8 @@
     "oscilante": null,
     "dimmer": null,
     "tension": "220-240 V",
-    "notas": "Doble velocidad: caudal 405 a 520 m³/h (se carga el máximo), potencia 30 a 60 W y ruido 33-44 dB según la ficha (rangos, no cargados). Tipo de equipo no indicado por la fuente."
+    "notas": "Doble velocidad: caudal 405 a 520 m³/h (se carga el máximo), potencia 30 a 60 W y ruido 33-44 dB según la ficha (rangos, no cargados). Tipo de equipo no indicado por la fuente.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2026/04/Garden-Extractor-Profan-1503.jpg"
   },
   {
     "id": "garden-highpro-profan-clip-fan-12w",
@@ -306,7 +313,8 @@
     "oscilante": null,
     "dimmer": null,
     "tension": "110-220 V",
-    "notas": "UP! Growshop: se adapta a tubos de hasta 3 cm. Gangagrow: motor magnético de accionamiento directo, muy silencioso, clip adaptable a tubo de 3 cm. Cordoba Grow Shop lo lista como «Profan Clip 12w» sin ficha."
+    "notas": "UP! Growshop: se adapta a tubos de hasta 3 cm. Gangagrow: motor magnético de accionamiento directo, muy silencioso, clip adaptable a tubo de 3 cm. Cordoba Grow Shop lo lista como «Profan Clip 12w» sin ficha.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/764/290/products/d_653254-mla90164112774_082025-b-94c3d402b3c361888017595367450665-640-0.webp"
   },
   {
     "id": "garden-highpro-profan-clip-fan-5w",
@@ -344,7 +352,8 @@
     "oscilante": null,
     "dimmer": null,
     "tension": "110-220 V",
-    "notas": "UP! Growshop: se adapta a tubos de hasta 3 cm de diámetro. El título de UP! dice «20cm» pero su especificación y la de Goblin dicen 15 cm. Caudal y rpm solo en UP! Growshop."
+    "notas": "UP! Growshop: se adapta a tubos de hasta 3 cm de diámetro. El título de UP! dice «20cm» pero su especificación y la de Goblin dicen 15 cm. Caudal y rpm solo en UP! Growshop.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/764/290/products/d_656471-mla73949339529_012024-b-4346d4c1b3e8dfada517595367302272-640-0.webp"
   },
   {
     "id": "garden-highpro-profan-clip-fan-20w-oscilante",
@@ -396,7 +405,8 @@
     "oscilante": true,
     "dimmer": null,
     "tension": "110-220 V",
-    "notas": "Cultivo Urbano: motor de cobre, cabezal giratorio de 180 grados, dos velocidades, 2100 rpm. El diámetro no coincide entre fuentes (UP! 15 cm, Cultivo Urbano 20 cm). Caudal y tensión solo en UP! Growshop."
+    "notas": "Cultivo Urbano: motor de cobre, cabezal giratorio de 180 grados, dos velocidades, 2100 rpm. El diámetro no coincide entre fuentes (UP! 15 cm, Cultivo Urbano 20 cm). Caudal y tensión solo en UP! Growshop.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/764/290/products/d_725390-mla74382310217_022024-b-149081ebf0a44f873117595388653387-640-0.webp"
   },
   {
     "id": "growtech-extractor-lineal-10",
@@ -424,7 +434,8 @@
     ],
     "conflictos": [],
     "verificado": true,
-    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1100 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 570 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
+    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1100 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 570 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/674/617/products/extractor-441ecc1dd258912fc217598539644912-640-0.webp"
   },
   {
     "id": "growtech-extractor-lineal-12",
@@ -452,7 +463,8 @@
     ],
     "conflictos": [],
     "verificado": true,
-    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1890 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 830 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
+    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1890 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 830 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/674/617/products/extractor-68917b178b6a95d65a17598539419689-640-0.webp"
   },
   {
     "id": "growtech-extractor-lineal-6",
@@ -480,7 +492,8 @@
     ],
     "conflictos": [],
     "verificado": true,
-    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 700 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 400 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
+    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 700 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 400 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/674/617/products/extractor-28fc87d021781cb41617598539187834-640-0.webp"
   },
   {
     "id": "growtech-extractor-lineal-8",
@@ -508,7 +521,8 @@
     ],
     "conflictos": [],
     "verificado": true,
-    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1000 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 550 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple."
+    "notas": "Tabla de la ficha (línea completa de extractores): flujo de aire 1000 (la ficha no indica la unidad, por eso caudal_m3h queda null), presión estática 550 Pa, 60 Hz. Se pone tipo null: la ficha lo llama «extractor lineal», sin decir turbina simple.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/674/617/products/extractor-0bfa8163fe3ca83a1a17598538947722-640-0.webp"
   },
   {
     "id": "santa-planta-turbina-doble-6",
@@ -536,7 +550,8 @@
     "ruido_db": null,
     "oscilante": null,
     "dimmer": null,
-    "tension": "220 V, 50 Hz"
+    "tension": "220 V, 50 Hz",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2024/08/TURBINA-DOBLE-6.jpg"
   },
   {
     "id": "vt-fans-cooler-4-220v",
@@ -564,7 +579,8 @@
     "ruido_db": 45,
     "oscilante": null,
     "dimmer": null,
-    "tension": "220 Vac 50 Hz"
+    "tension": "220 Vac 50 Hz",
+    "imagen_url": "https://d22fxaf9t8d39k.cloudfront.net/d0b3ae8ec9ee1b286aa7da05a127857dbba0d2476ec7b0089fcc82348a1e4fa214045.jpeg"
   },
   {
     "id": "vt-fans-turbina-cooler-extractor-3-ruleman",
@@ -592,7 +608,8 @@
     "ruido_db": null,
     "oscilante": null,
     "dimmer": null,
-    "tension": "220-240 V, 50/60 Hz"
+    "tension": "220-240 V, 50/60 Hz",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/001/131/968/products/photoroom_20260111_165029-cb73985c5ac46d873317681610557907-640-0.webp"
   },
   {
     "id": "vt-fans-turbina-cooler-extractor-4-ruleman",
@@ -620,6 +637,7 @@
     "ruido_db": null,
     "oscilante": null,
     "dimmer": null,
-    "tension": null
+    "tension": null,
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/001/131/968/products/photoroom_20260111_174221-3b59e3ef2622a6fa9217681641691606-640-0.webp"
   }
 ]

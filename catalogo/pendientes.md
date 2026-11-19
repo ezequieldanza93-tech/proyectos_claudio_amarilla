@@ -10,7 +10,7 @@ Relevamiento del 19/11/2026. Acá está lo que no se pudo verificar, los product
 4. **Go Green**: no vende ventilación. «Go Green Argentina» vende fertilizantes, sustratos y paneles LED (en sugeridas). ¿Era otra marca, como «Grow Green»?
 5. **SL Growled**: no hay prueba de que sea `growled.com.ar` (tienda «Grow Led», sin «SL» ni razón social). En los buscadores aparece solo en Mercado Libre, como importador de kits. No se cargó nada. ¿Tenés un link?
 6. **Cogoshop**: su dominio redirige a su tienda oficial de Mercado Libre, y no aparece en ningún grow shop con sitio propio. Sin datos.
-7. **Growmix Indoor**: no existe con ese nombre en el sitio de Terrafertil. Lo más parecido es **MultiPro Indoor** (20 L, línea de jardín), cargado como `terrafertil-multipro-indoor`. ¿Es ese?
+7. ✅ **Growmix Indoor: resuelto (19/11).** Es `terrafertil-multipro-indoor`. La foto del fabricante (`growmix_indoor_grande.jpg`) muestra la bolsa «GROW MIX · Sustrato profesional · Indoor Growing · MultiPro». Se corrigió su línea a «Growmix» y el id no cambió.
 8. **Mars Hydro**: en los grow shops argentinos figura como «Mars» (Mars Optoelectrónica). Se cargó como «Mars Hydro».
 9. **Agroled**: no tiene sitio propio y no queda claro si es marca o tienda. Se cargaron 2 coolers porque así figura en los títulos.
 10. **Bioled**: no se pudo confirmar que sea Bioledarg SRL.
@@ -19,12 +19,18 @@ Relevamiento del 19/11/2026. Acá está lo que no se pudo verificar, los product
 13. **Mamboretá**: los cebos y granulados (BOLITA, B+R, GRILLO, MIREX-S), la pintura-trampa A-TRAPA y el hormiguicida KAPUT no se diluyen en agua. Están en `foliares.json` con la dosis en `notas`. ¿Los querés en la app?
 14. **Garden HighPro Probox 80x80x160** de Santa Planta: no aclara si es Basic o Eco Pro. Puede ser el mismo producto que `garden-highpro-probox-ecopro-80x80x160`, y no se fusionó.
 15. **VT Fans**: `vt-fans-cooler-4-220v` (Goblin) puede ser el mismo producto que `vt-fans-turbina-cooler-extractor-4-ruleman` (Ganga). No se fusionó.
-16. **Amnesia**: es fabricante argentino («Diseñamos y fabricamos iluminación LED para cultivo indoor»). Sin embargo, solo el **Eco 180w** dice «AMNESIA» en la ficha, y es el único cargado. Los demás quedaron afuera por la regla de marca explícita:
-    - **Cob YXO** (15 paneles de 100 a 500 W, en versiones Cálido, Full Spectrum y Mixto): el sitio los agrupa en la categoría **«Amnesia Cob YXO»**, pero la ficha solo nombra los chips YXO. ¿Los cargamos como Amnesia, línea Cob YXO?
-    - **Samsung Bloom 150W**: la ficha no nombra ninguna marca. Tiene datos (150 W, sin dimmer, PPFD 650 a 40 cm).
-    - **Cob Pro, Cob Samsung y Panel Cob Samsung**: tampoco nombran marca.
+16. **Amnesia**: es fabricante argentino («Diseñamos y fabricamos iluminación LED para cultivo indoor»).
+    - ✅ **Cob YXO: resuelto (19/11).** Se cargaron los 15 paneles como Amnesia, línea Cob YXO, por decisión tuya: el sitio los agrupa en la categoría «Amnesia Cob YXO». La 500w Mixto no trae características técnicas en la ficha. En las 100w la ficha dice «150m» de largo (error de tipeo), y ese campo quedó en null.
+    - **Samsung Bloom 150W**: la ficha no nombra ninguna marca. Tiene datos (150 W, sin dimmer, PPFD 650 a 40 cm). ¿También va como Amnesia?
+    - **Cob Pro y Cob Samsung**: tampoco nombran marca. ¿Van como Amnesia?
     - Sin datos técnicos en la ficha: Bloom 300, Araña Pro 240, Cob Samsung 500/600, Led Yxo 50w y Cooler Ruleman 4".
-    - Las 32 fichas están guardadas localmente: si decidís que son de Amnesia, se cargan sin volver a pedirle nada al sitio.
+    - Las fichas están guardadas localmente: si decidís que son de Amnesia, se cargan sin volver a pedirle nada al sitio.
+
+17. **Fotos que faltan (3 de 246):**
+    - **Master E y Citrus II:** Terrafertil muestra en su página la bolsa de Master E/P y la de Citrus, respectivamente.
+    - **Purple Karma:** Clon Factory no tiene una foto con ese nombre (la candidata dice «BSOD74»).
+
+    Si conseguís otra fuente con la foto correcta, se agrega.
 
 ## 2. Límites que afectaron la cobertura
 
@@ -57,13 +63,14 @@ En cada uno el campo quedó en null y los valores están en `conflictos`, sin el
 
 Productos cargados (sirven para sugerir marca y modelo) cuyas fuentes no dan ninguno de los datos técnicos principales de su categoría. Por ejemplo: luz sin potencia real ni PPF, sustrato sin litros, pH ni CE, fertilizante sin dosis ni presentaciones.
 
+- **Amnesia** (1): `amnesia-cob-yxo-500w-mixto`
 - **Bioled** (3): `bioled-330i`, `bioled-440i`, `bioled-pf-100`
 - **Garden HighPro** (2): `garden-highpro-profan-extractor-100`, `garden-highpro-humipro-4l`
 - **Growtech** (2): `growtech-quantum-q150`, `growtech-quantum-q300`
 - **GS Iluminación** (3): `gs-iluminacion-panel-led-mx150`, `gs-iluminacion-panel-led-mx200`, `gs-iluminacion-panel-led-mx300`
 - **Lux** (5): `lux-eco-full-spectrum-200w`, `lux-eco-full-spectrum-300w`, `lux-eco-full-spectrum-400w`, `lux-eco-full-spectrum-600w`, `lux-samsung-yxo-eco-full-spectrum-600w`
 - **Mamboretá** (1): `mamboreta-brillo-foliar`
-- **Mars Hydro** (1): `mars-hydro-marsmachine-225cx`
+- **Mars Hydro** (2): `mars-hydro-infinitta-225`, `mars-hydro-marsmachine-225cx`
 - **Namaste** (1): `namaste-clonaste`
 - **Vamp** (1): `vamp-sustrato-magico`
 - **VT Fans** (2): `vt-fans-turbina-cooler-extractor-3-ruleman`, `vt-fans-turbina-cooler-extractor-4-ruleman`

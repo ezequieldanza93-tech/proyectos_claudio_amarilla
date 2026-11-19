@@ -13,12 +13,12 @@ Datos técnicos y de identificación de productos de cultivo que se venden en Ar
 | `fertilizantes.json` | 22 | 22 | 2 | Cannabiogen (Delta 9), Mamboretá, Namaste, Top Crop |
 | `foliares.json` | 40 | 40 | 0 | BioProyect, Green Leaf (4 en 1 / 6 en 1), La Pota, Mamboretá, Namaste, NoStress, Pangea, Power, Revienta, Top Crop, Vamp |
 | `sustratos.json` | 40 | 40 | 3 | Biobizz, Cultivate, Growers, Landiner, Lizard, Silver, Terrafertil (Growmix), Vamp |
-| `luces.json` | 47 | 46 | 3 | Amnesia, Bioled, Cosmel, Growtech, GS Iluminación, Lux, Mars Hydro |
+| `luces.json` | 62 | 61 | 3 | Amnesia (Eco y Cob YXO), Bioled, Cosmel, Growtech, GS Iluminación, Lux, Mars Hydro |
 | `carpas.json` | 24 | 21 | 1 | cultivARG, Garden HighPro |
 | `ventilacion.json` | 18 | 18 | 3 | Agroled, Garden HighPro, Growtech, Santa Planta, VT Fans |
 | `clima.json` | 14 | 14 | 0 | Garden HighPro, Wentux |
 | `geneticas.json` | 26 | 26 | 0 | BSF Seeds (autoflorecientes), Clon Factory (clones) |
-| **Total** | **231** | **227** | **12** | |
+| **Total** | **246** | **242** | **12** | |
 
 Además:
 
@@ -59,6 +59,7 @@ Cada producto se volvió a abrir en su fuente, en dos pasos:
 - **Las dudas se resolvieron con la regla de conflictos:** cuando dos fuentes no coinciden, el campo queda en `null` y los dos valores van a `conflictos`.
 - **`verificado: true`** quiere decir que el producto pasó este doble chequeo sin dudas abiertas. Los 4 que quedan en `false` están detallados en `pendientes.md`.
 - **Amnesia** se verificó aparte, respetando su `Crawl-delay: 60`: en el Eco 180w, `dimmer: true` no figuraba en la ficha y pasó a `null`.
+- **Cob YXO de Amnesia** (15, agregados después por decisión de Ezequiel): se extrajeron de las fichas guardadas y se controló que cada número cargado figure en su ficha.
 
 **Correcciones que hizo el orquestador, aparte de la verificación:**
 
@@ -71,7 +72,7 @@ Cada producto se volvió a abrir en su fuente, en dos pasos:
 
 ## Revisión de muestra (10 productos al azar)
 
-- **Cómo se eligieron:** al azar entre los 231 productos, con semilla fija `2026-11-19`, así que se puede reproducir. Script: `python -P herramientas/revisar_muestra.py 10 2026-11-19`.
+- **Cómo se eligieron:** al azar entre los 231 productos que había antes de sumar los Cob YXO, con semilla fija `2026-11-19`, así que se puede reproducir. Script: `python -P herramientas/revisar_muestra.py 10 2026-11-19`.
 - **Cómo se revisaron:** se volvió a abrir cada fuente, se buscó cada dato no nulo en su texto y se revisó a mano lo que no apareció.
 
 | Producto | Categoría | Campos | Resultado |
@@ -89,9 +90,29 @@ Cada producto se volvió a abrir en su fuente, en dos pasos:
 
 **Resultado: 10 de 10 productos y 73 de 73 campos coinciden con la fuente.** 72 se confirmaron por búsqueda automática y 1 a mano. No apareció ningún dato inventado ni ningún valor distinto al de la fuente.
 
+## Fotos (`imagen_url`)
+
+**243 de 246** productos tienen el link a su foto. En la app aparece el botón **«Foto»**, que abre ese link en otra pestaña. Solo se guarda el link: las imágenes no se copian al repo.
+
+- **De dónde sale:** de una página que ya es fuente del producto, en orden fabricante → distribuidor → vendedor. Es la imagen principal que declara la página (`og:image`). En Santa Planta sale de su API, y en Amnesia de la imagen principal de la ficha.
+  - **Terrafertil:** la imagen del bloque `p-thumbnail` (la bolsa), no la del banner.
+  - **Namaste:** la imagen que declara el código del sitio oficial.
+  - **Clon Factory:** la foto del esqueje, cuyo archivo lleva el nombre del clon.
+- **Cómo se controló:**
+  - se descartan logos y banners (una tienda declaraba su logo como foto);
+  - se revisaron a ojo todas las fotos de Terrafertil y una muestra al azar de 20 del resto, y todas coinciden con el producto;
+  - se comprobó que cada link responda con una imagen.
+- **Sin foto (3):**
+  - `terrafertil-growmix-master-e` y `terrafertil-growmix-citrus-ii`: la página del fabricante muestra la bolsa de **otro** producto (Master E/P y Citrus).
+  - `clon-factory-billy-seeds-purple-karma`: la única imagen candidata tiene la etiqueta «BSOD74», que es otro clon.
+- **Fotos compartidas:** algunos productos hermanos comparten foto porque así la publica la fuente. Por ejemplo, Wentux Pro-26 y Pro-26 6s, o la bolsa genérica «Específico» de Growmix.
+- Script: `python -P herramientas/agregar_fotos.py buscar | completar | aplicar`. Respeta el `robots.txt`, hace pausas por dominio y guarda caché en `.cache/`.
+
 ## Convenciones de los campos
 
-- **Comunes:** `id`, `categoria`, `marca`, `linea`, `producto`, `modelo`, `descripcion_corta`, `fuentes`, `conflictos` y `verificado`. Opcional: `notas`, en español, para aclarar de dónde sale un dato o por qué falta.
+- **Comunes:** `id`, `categoria`, `marca`, `linea`, `producto`, `modelo`, `descripcion_corta`, `fuentes`, `conflictos` y `verificado`.
+  - Opcional `notas`, en español, para aclarar de dónde sale un dato o por qué falta.
+  - Opcional `imagen_url`, el link a la foto (ver arriba).
 - **`conflictos`:** `[{"campo": "...", "valores": [{"valor": ..., "url": "..."}, ...]}]`. El campo en sí queda en `null`.
 - **`dosis_fabricante`:** `[{etapa, min, max, unidad_por_litro, detalle}]`. `detalle` lleva el contexto tal cual la fuente: semana, frecuencia, o qué significa «otra».
 - **`presentaciones_ml`** (fertilizantes) y **`presentaciones`** (foliares) están en la unidad de `unidad` (ml o g): 1 L = 1000.
@@ -107,7 +128,7 @@ Cada producto se volvió a abrir en su fuente, en dos pasos:
 Desde `catalogo/`:
 
 ```
-python -P herramientas/armar.py validar                 # esquema + 0 productos sin fuente + 0 ids duplicados
+python -P herramientas/armar.py validar                 # esquema + 0 sin fuente + 0 ids duplicados + campos en conflicto en null
 python -P herramientas/armar.py indices                 # regenera marcas.json, fuentes.csv y marcas_sugeridas.json
 python -P herramientas/revisar_muestra.py 10 2026-11-19 # revisión de muestra contra las fuentes
 ```

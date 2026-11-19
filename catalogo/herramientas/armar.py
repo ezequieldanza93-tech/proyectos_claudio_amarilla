@@ -72,6 +72,9 @@ def validar(rutas):
                 errores.append(f"{nombre}: {p.get('id')} tiene categoria {p.get('categoria')!r}, se esperaba {esperada!r}")
             if not p.get("fuentes"):
                 errores.append(f"{nombre}: {p.get('id')} no tiene fuente")
+            for c in p.get("conflictos") or []:
+                if p.get(c.get("campo")) not in (None, [], ""):
+                    errores.append(f"{nombre}: {p.get('id')} tiene conflicto en {c.get('campo')} pero el campo no está en null (no se elige entre fuentes)")
     for i, n in ids.items():
         if n > 1:
             errores.append(f"id duplicado entre archivos: {i} (x{n})")

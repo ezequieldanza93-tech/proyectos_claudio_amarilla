@@ -45,7 +45,8 @@
     "presentaciones": [
       60
     ],
-    "notas": "Frecuencia de aplicación: 1 vez por semana."
+    "notas": "Frecuencia de aplicación: 1 vez por semana.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/1311.jpg"
   },
   {
     "id": "green-leaf-preventivo-4-en-1",
@@ -99,7 +100,8 @@
       2000,
       5000
     ],
-    "notas": "No es un fertilizante foliar nutricional: es un plaguicida/acaricida preventivo orgánico. Presentaciones 100 y 250 ml según Doña Huana; 2 L y 5 L según Santa Planta."
+    "notas": "No es un fertilizante foliar nutricional: es un plaguicida/acaricida preventivo orgánico. Presentaciones 100 y 250 ml según Doña Huana; 2 L y 5 L según Santa Planta.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/5636.jpg"
   },
   {
     "id": "green-leaf-preventivo-6-en-1",
@@ -151,7 +153,8 @@
       2000,
       5000
     ],
-    "notas": "No es un fertilizante foliar nutricional: es un preventivo orgánico de plagas y hongos. Presentaciones 100 y 250 ml según grow shops; 2 L y 5 L según Santa Planta. La dosis queda sin ml/L porque la ficha la da en tapas; la equivalencia 1 tapa = 5 ml es de la ficha del 4 en 1 y no se aplica a otro producto."
+    "notas": "No es un fertilizante foliar nutricional: es un preventivo orgánico de plagas y hongos. Presentaciones 100 y 250 ml según grow shops; 2 L y 5 L según Santa Planta. La dosis queda sin ml/L porque la ficha la da en tapas; la equivalencia 1 tapa = 5 ml es de la ficha del 4 en 1 y no se aplica a otro producto.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/5635.jpg"
   },
   {
     "id": "la-pota-aceite-de-neem-puro",
@@ -178,7 +181,8 @@
       50
     ],
     "modo_aplicacion": "pulverización directa y riego en sustrato",
-    "notas": "La ficha no da dosis."
+    "notas": "La ficha no da dosis.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/09/LA-POTA-NEEM-PURO-PACK-X-12-U-10-DESC-50-ML.jpg"
   },
   {
     "id": "la-pota-jabon-potasico",
@@ -204,7 +208,8 @@
     "presentaciones": [
       250
     ],
-    "notas": "La ficha no da dosis."
+    "notas": "La ficha no da dosis.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/09/LA-POTA-JABON-POTASICO-PACK-X-12U-10-DESC-250-ML.jpg"
   },
   {
     "id": "la-pota-tierra-de-diatomeas",
@@ -230,7 +235,8 @@
     "presentaciones": [
       500
     ],
-    "notas": "La ficha no da dosis ni modo de uso."
+    "notas": "La ficha no da dosis ni modo de uso.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/09/LA-POTA-DIATOMEAS-PACK-X-6-U-10-DESC-500-GR.jpg"
   },
   {
     "id": "mamboreta-a-trapa",
@@ -257,7 +263,8 @@
       30
     ],
     "modo_aplicacion": "pintado sobre superficie no porosa (trampa)",
-    "notas": "Se aplica pintando una superficie no porosa, no se diluye en agua; la ficha indica renovar cada 6 meses en interior y cada 3 en exterior."
+    "notas": "Se aplica pintando una superficie no porosa, no se diluye en agua; la ficha indica renovar cada 6 meses en interior y cada 3 en exterior.",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2023/07/Bio-Mamboreta-A-TRAPA.jpg"
   },
   {
     "id": "mamboreta-amino-znb",
@@ -290,7 +297,8 @@
     ],
     "presentaciones": [
       100
-    ]
+    ],
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2021/11/AMINO_mamboreta_aminoacidos.jpg"
   },
   {
     "id": "mamboreta-lecithin",
@@ -323,7 +331,8 @@
     ],
     "presentaciones": [
       60
-    ]
+    ],
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2021/10/Bio_Mamboreta_LECITHIN_nuevo.jpg"
   },
   {
     "id": "mamboreta-m-jumkan",
@@ -357,7 +366,8 @@
     "presentaciones": [
       100,
       250
-    ]
+    ],
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2022/11/biomamboreta_m_frente.jpg"
   },
   {
     "id": "mamboreta-oil-85-e",
@@ -391,7 +401,8 @@
     "presentaciones": [
       100,
       200
-    ]
+    ],
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2021/08/oil_biomamboreta_mamboreta_web.jpg"
   },
   {
     "id": "mamboreta-ph",
@@ -423,7 +434,8 @@
       }
     ],
     "presentaciones": [],
-    "notas": "No se encontró presentación en la ficha."
+    "notas": "No se encontró presentación en la ficha.",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2022/03/pH_Mamboreta_agua_cloro_sales_nuevo.jpg"
   },
   {
     "id": "mamboreta-vital",
@@ -450,7 +462,8 @@
       30
     ],
     "modo_aplicacion": "pulverización o riego",
-    "notas": "La ficha da la dosis en gotas por litro (45 gotas en pulverización, 10 gotas en riego), sin equivalencia en ml: no se convierte."
+    "notas": "La ficha da la dosis en gotas por litro (45 gotas en pulverización, 10 gotas en riego), sin equivalencia en ml: no se convierte.",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2021/08/web_biomamboreta_vital.jpg"
   },
   {
     "id": "mamboreta-aba",
@@ -483,7 +496,8 @@
     ],
     "presentaciones": [
       30
-    ]
+    ],
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2026/03/Mamboreta-ABA-Envase.webp"
   },
   {
     "id": "mamboreta-br-mata-babosas",
@@ -512,7 +526,8 @@
       500
     ],
     "modo_aplicacion": "aplicación directa del envase al suelo",
-    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 25 g por m²."
+    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 25 g por m².",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboretá_BR_caja.jpg"
   },
   {
     "id": "mamboreta-bolita",
@@ -539,7 +554,8 @@
       100
     ],
     "modo_aplicacion": "aplicación directa del envase al suelo",
-    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 0,35 g por m²."
+    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 0,35 g por m².",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboretá_Bolita_caja.jpg"
   },
   {
     "id": "mamboreta-brillo-foliar",
@@ -564,7 +580,8 @@
     "dosis_fabricante": [],
     "presentaciones": [],
     "modo_aplicacion": "aerosol a 60 cm de la planta",
-    "notas": "Aerosol listo para usar, sin dosis por litro; la ficha no indica presentación."
+    "notas": "Aerosol listo para usar, sin dosis por litro; la ficha no indica presentación.",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/BRILLO-FOLIAR-mamboreta.jpg"
   },
   {
     "id": "mamboreta-confi",
@@ -598,7 +615,8 @@
     "presentaciones": [
       30
     ],
-    "modo_aplicacion": "foliar o al suelo"
+    "modo_aplicacion": "foliar o al suelo",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboretá_confi_caja.jpg"
   },
   {
     "id": "mamboreta-d",
@@ -632,7 +650,8 @@
     "presentaciones": [
       30,
       60
-    ]
+    ],
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboretá_D_caja.jpg"
   },
   {
     "id": "mamboreta-foli",
@@ -666,7 +685,8 @@
     "presentaciones": [
       30
     ],
-    "modo_aplicacion": "foliar o al suelo"
+    "modo_aplicacion": "foliar o al suelo",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboreta_FOLI_caja-1-scaled-scaled.jpg"
   },
   {
     "id": "mamboreta-g",
@@ -700,7 +720,8 @@
     "presentaciones": [
       100,
       250
-    ]
+    ],
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboreta_G_caja.jpg"
   },
   {
     "id": "mamboreta-grillo",
@@ -728,7 +749,8 @@
       500
     ],
     "modo_aplicacion": "aplicación directa del envase al suelo",
-    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 3 g por m²."
+    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 3 g por m².",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboretá_Grillo_caja.jpg"
   },
   {
     "id": "mamboreta-h",
@@ -762,7 +784,8 @@
     "presentaciones": [
       30
     ],
-    "modo_aplicacion": "foliar y radicular (sistémico por hoja y raíz)"
+    "modo_aplicacion": "foliar y radicular (sistémico por hoja y raíz)",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboreta_h_caja.jpg"
   },
   {
     "id": "mamboreta-k",
@@ -795,7 +818,8 @@
     ],
     "presentaciones": [
       30
-    ]
+    ],
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2022/08/Mamboreta_K_producto.jpg"
   },
   {
     "id": "mamboreta-kaput",
@@ -831,7 +855,8 @@
       100
     ],
     "modo_aplicacion": "aplicación al hormiguero",
-    "notas": "Hormiguicida: se aplica sobre el hormiguero, no sobre la planta."
+    "notas": "Hormiguicida: se aplica sobre el hormiguero, no sobre la planta.",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboretá_KAPUT_caja100.jpg"
   },
   {
     "id": "mamboreta-mirex-s",
@@ -860,7 +885,8 @@
       500
     ],
     "modo_aplicacion": "aplicación directa del envase al suelo",
-    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 20 a 30 g por hormiguero."
+    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 20 a 30 g por hormiguero.",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboreta_mirexs_caja-1.jpg"
   },
   {
     "id": "mamboreta-selectivo",
@@ -894,7 +920,8 @@
     "presentaciones": [
       100,
       250
-    ]
+    ],
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboreta_selectivo_caja-1.jpg"
   },
   {
     "id": "mamboreta-z",
@@ -927,7 +954,8 @@
     ],
     "presentaciones": [
       30
-    ]
+    ],
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/Mamboreta_Z_caja.jpg"
   },
   {
     "id": "namaste-bio-neem",
@@ -973,7 +1001,8 @@
       30,
       100
     ],
-    "notas": "Sólido por debajo de unos 18 °C: calentar el envase bajo agua tibia. Evitar usarlo después de la 5ª semana de floración. Mejor disolución mezclado con Bio Protect. El sitio del fabricante no publica dosis; la dosis preventiva no está indicada."
+    "notas": "Sólido por debajo de unos 18 °C: calentar el envase bajo agua tibia. Evitar usarlo después de la 5ª semana de floración. Mejor disolución mezclado con Bio Protect. El sitio del fabricante no publica dosis; la dosis preventiva no está indicada.",
+    "imagen_url": "https://namastenutrientes.com/images/Bioneem/BIONEEM%20100ML.webp"
   },
   {
     "id": "namaste-bio-protect",
@@ -1020,7 +1049,8 @@
     "presentaciones": [
       100
     ],
-    "notas": "Dosis tomada de Santa Planta (la fuente dice también «1 tapa por litro»); el sitio del fabricante no publica dosis. Combina con Bio Neem."
+    "notas": "Dosis tomada de Santa Planta (la fuente dice también «1 tapa por litro»); el sitio del fabricante no publica dosis. Combina con Bio Neem.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/1004.jpg"
   },
   {
     "id": "nostress-aceite-de-neem",
@@ -1053,7 +1083,8 @@
       100
     ],
     "modo_aplicacion": "pulverización sobre planta, sustrato y maceta",
-    "notas": "La ficha recomienda aplicar cada 15 o 20 días como preventivo y una vez por semana contra plagas, sin dosis por litro. La presentación de 100 ml sale del listado de Santa Planta (su ficha no tiene descripción)."
+    "notas": "La ficha recomienda aplicar cada 15 o 20 días como preventivo y una vez por semana contra plagas, sin dosis por litro. La presentación de 100 ml sale del listado de Santa Planta (su ficha no tiene descripción).",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3155.jpg"
   },
   {
     "id": "pangea-d-killer-diatomeas",
@@ -1079,7 +1110,8 @@
     "presentaciones": [
       100
     ],
-    "notas": "Ficha sin datos más allá del nombre y la presentación."
+    "notas": "Ficha sin datos más allá del nombre y la presentación.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/1352.jpg"
   },
   {
     "id": "power-neem-puro",
@@ -1105,7 +1137,8 @@
     "presentaciones": [
       50
     ],
-    "notas": "Ficha sin datos más allá del nombre y la presentación."
+    "notas": "Ficha sin datos más allá del nombre y la presentación.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/5863.jpg"
   },
   {
     "id": "power-potasico",
@@ -1137,7 +1170,8 @@
       100,
       250
     ],
-    "notas": "Ficha sin datos más allá del nombre y las presentaciones (100 y 250 ml, en dos fichas)."
+    "notas": "Ficha sin datos más allá del nombre y las presentaciones (100 y 250 ml, en dos fichas).",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/5860.jpg"
   },
   {
     "id": "revienta-jabon-potasico",
@@ -1163,7 +1197,8 @@
     "presentaciones": [
       200
     ],
-    "notas": "La ficha no da dosis."
+    "notas": "La ficha no da dosis.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/09/Jabon-Potasico-Revienta-Potasico-200ml.jpg"
   },
   {
     "id": "top-crop-barrier",
@@ -1221,7 +1256,8 @@
       100,
       250
     ],
-    "notas": "Dosis de growshopping.com.ar. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "Dosis de growshopping.com.ar. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/2863.jpg"
   },
   {
     "id": "top-crop-big-one",
@@ -1272,7 +1308,8 @@
       100,
       250
     ],
-    "notas": "En autoflorecientes se puede empezar la primera semana de crecimiento. La página de Santa Planta de 250 ml es un pack x 24. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "En autoflorecientes se puede empezar la primera semana de crecimiento. La página de Santa Planta de 250 ml es un pack x 24. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/2860.jpg"
   },
   {
     "id": "vamp-pocion-impkble",
@@ -1304,7 +1341,8 @@
       }
     ],
     "presentaciones": [],
-    "notas": "La ficha no informa presentaciones."
+    "notas": "La ficha no informa presentaciones.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/008/127/720/products/pocion-impkable-d927b794b08d48c05517892250592995-640-0.webp"
   },
   {
     "id": "vamp-pocion-infernal",
@@ -1336,7 +1374,8 @@
       }
     ],
     "presentaciones": [],
-    "notas": "No aplicar en cucurbitáceas ni en flores; no recomendado en cannabis salvo prevención antes del cultivo o al renovar el ciclo. La ficha no informa presentaciones."
+    "notas": "No aplicar en cucurbitáceas ni en flores; no recomendado en cannabis salvo prevención antes del cultivo o al renovar el ciclo. La ficha no informa presentaciones.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/008/127/720/products/chatgpt-image-4-sept-2026-18_24_58-3-b18d76a7ad4a227d0b17888023701828-640-0.webp"
   },
   {
     "id": "vamp-vampimelaza",
@@ -1369,6 +1408,7 @@
     ],
     "presentaciones": [],
     "modo_aplicacion": "Riego o foliar (25 ml por litro); también complemento de abonos Bokashi.",
-    "notas": "La ficha no informa presentaciones."
+    "notas": "La ficha no informa presentaciones.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/008/127/720/products/vampimelaza-2-19ed675457435303e317893289197656-640-0.webp"
   }
 ]
