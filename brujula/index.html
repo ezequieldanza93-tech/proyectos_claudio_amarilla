@@ -216,6 +216,16 @@ textarea{min-height:70px;resize:vertical}
 .ptbl{border-collapse:collapse;font-size:.84rem;width:100%;min-width:420px}
 .ptbl th,.ptbl td{border-top:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:top}
 .ptbl th{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.wkgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.wkc{min-height:110px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:4px;display:flex;flex-direction:column;gap:3px;align-items:stretch;text-align:left;cursor:pointer;min-width:0;overflow:hidden;color:var(--ink)}
+.wkc.today{border-color:var(--pc);border-width:2px}
+.wkc.sel{background:color-mix(in srgb,var(--pc) 14%,var(--surface))}
+.wkc-h{display:flex;flex-direction:column;align-items:center;font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;line-height:1.1}
+.wkc-h b{font-size:.9rem;color:var(--ink)}
+.wkc-ev{font-size:.64rem;line-height:1.2;background:var(--pc);color:var(--surface);border-radius:4px;padding:2px 3px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:break-word;hyphens:auto}
+.wkc-ev.st-planificado{background:transparent;color:var(--pc);border:1px dashed var(--pc)}
+.wkc-ev.st-no-se-hizo{background:var(--line);color:var(--muted);text-decoration:line-through}
+.wkc-more{font-size:.66rem;color:var(--muted)}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -540,10 +550,10 @@ function prodRow(use,it){
     <button type="button" class="ghost small danger" data-act="rmDoseRow" aria-label="Quitar producto">✕</button></div>`;
 }
 function riegoFields(e){
-  const bs=S.batches.filter(b=>b.status!=='finalizado'&&b.spaceId===(e.spaceId||S.space));
+  const sc=e.spaceId||S.space;const bs=S.batches.filter(b=>b.status!=='finalizado'&&(!sc||b.spaceId===sc));
   return `<div class="field riegobox" data-bwhen="type:Riego radicular" style="gap:8px">
     <div class="grid3">
-      <label class="field"><span class="label">Lote</span><select name="batchId"><option value="">Sin lote</option>${bs.map(b=>`<option value="${esc(b.id)}" ${b.id===e.batchId?'selected':''}>${num(b.qty)} × ${esc(b.genetics)}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Lote</span><select name="batchId"><option value="">Sin lote</option>${bs.map(b=>`<option value="${esc(b.id)}" ${b.id===e.batchId?'selected':''}>${num(b.qty)} × ${esc(b.genetics)}${sc?'':' ('+esc(spaceName(b.spaceId))+')'}</option>`).join('')}</select></label>
       <label class="field"><span class="label">Litros por planta</span><input name="perPlant" inputmode="decimal" value="${esc(dec(e.perPlant))}"></label>
       <label class="field"><span class="label">¿Drenó?</span><select name="drained"><option value="">—</option><option value="si" ${e.drained==='si'?'selected':''}>Sí</option><option value="no" ${e.drained==='no'?'selected':''}>No</option></select></label>
     </div>
@@ -624,7 +634,8 @@ function eventForm(p,e){
   return `<form class="inline-form" data-form="event" data-pid="${esc(p.id)}" data-id="${esc(e.id||'')}">
     <h3>${isNew?'Planificar / registrar':'Ajustar evento'}</h3>
     <div class="grid2">
-      <label class="field"><span class="label">Fecha</span><input id="e-date" name="date" type="date" value="${esc(e.date||today())}" required></label>
+      ${e.fixedDate?`<input type="hidden" name="date" value="${esc(e.date)}"><div class="field"><span class="label">Día</span><b class="num" style="padding:7px 0">${fmtDate(e.date)}</b></div>`:`<label class="field"><span class="label">Fecha</span><input id="e-date" name="date" type="date" value="${esc(e.date||today())}" required></label>`}
+      ${isNew&&!S.space?`<label class="field"><span class="label">Espacio</span><select id="e-space" name="spaceId" required>${S.spaces.filter(x=>x.projectId===p.id&&x.enabled!==false).sort((a,c)=>num(a.order)-num(c.order)).map(x=>`<option value="${esc(x.id)}" ${x.id===e.spaceId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>`:''}
       <label class="field"><span class="label">Tipo</span><select id="e-type" name="type" data-evtype data-bvis>${EV_TYPES.map(x=>`<option ${x===e.type?'selected':''}>${x}</option>`).join('')}</select></label>
       <label class="field"><span class="label">Estado</span><select id="e-status" name="status">${Object.entries(ST_LABEL).map(([k,v])=>`<option value="${k}" ${k===st?'selected':''}>${v}</option>`).join('')}</select></label>
     </div>
@@ -862,23 +873,35 @@ function weekEvRow(p,e){
   </div>`;
 }
 function spaceColor(sp){const i=spacesOf(sp.projectId).findIndex(x=>x.id===sp.id);return 'var('+PCOL[(i+1)%PCOL.length]+')'}
+const sundayOf=s=>{const d=new Date(s+'T00:00:00');return addDays(s,-d.getDay())};
+const DIAS_D=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 function weekPanel(p,pc){
-  const t=today();const ws=S.calWeek||mondayOf(t);const we=addDays(ws,6);
+  const t=today();const ws=S.calWeek||sundayOf(t);const we=addDays(ws,6);const f=S.form;
+  const sel=S.wkSel&&S.wkSel>=ws&&S.wkSel<=we?S.wkSel:null;
   const evs=S.events.filter(e=>e.projectId===p.id);
   const overdue=evs.filter(e=>evStatus(e)==='planificado'&&e.date<ws).sort((a,b)=>a.date.localeCompare(b.date));
+  const wkForm=f&&f.type==='event'&&!f.id&&f.where==='week';
   let h=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Semana de cultivo</h2><span class="spacer"></span>
     <button class="small" data-act="wkPrev" aria-label="Semana anterior">‹</button>
     <span class="num" style="font-size:.85rem">${fmtDate(ws)} – ${fmtDate(we)}</span>
     <button class="small" data-act="wkNext" aria-label="Semana siguiente">›</button>
-    ${ws!==mondayOf(t)?'<button class="small" data-act="wkToday">Hoy</button>':''}</div>`;
+    ${ws!==sundayOf(t)?'<button class="small" data-act="wkToday">Hoy</button>':''}</div>
+    ${wkForm&&!f.prefill.fixedDate?eventForm(p,f.prefill):`<div class="row"><button class="small primary" data-act="wkPlan">+ Planificar</button></div>`}`;
   if(overdue.length)h+=`<div class="confirm-box"><div class="label" style="color:var(--warn)">Sin confirmar de semanas anteriores (${overdue.length})</div>
     ${overdue.map(e=>`<div class="wk-day-ev"><span class="num muted" style="font-size:.8rem">${fmtDate(e.date)}</span>${weekEvRow(p,e)}</div>`).join('')}</div>`;
-  h+=`<div class="week">`;
+  h+=`<div class="wkgrid">`;
   for(let i=0;i<7;i++){const ds=addDays(ws,i);const de=evs.filter(e=>e.date===ds);
-    h+=`<div class="wk-day ${ds===t?'today':''}"><div class="wk-head"><b>${DIAS[i]}</b> <span class="num muted">${fmtDate(ds)}</span>${ds===t?'<span class="chip">hoy</span>':''}</div>
-      ${de.length?de.map(e=>weekEvRow(p,e)).join(''):'<div class="muted" style="font-size:.82rem">Nada planificado.</div>'}</div>`;}
-  h+=`</div><div class="muted" style="font-size:.78rem">Para planificar entrá a cada espacio, pestaña Planificador.</div></section>`;
-  return h;
+    h+=`<button class="wkc ${ds===t?'today':''} ${ds===sel?'sel':''}" data-act="wkDay" data-date="${ds}" aria-label="${DIAS_D[i]} ${fmtDate(ds)}: ${de.length} tarea(s)">
+      <span class="wkc-h"><span>${DIAS_D[i].slice(0,3)}</span><b class="num">${+ds.slice(8)}</b></span>
+      ${de.slice(0,3).map(e=>{const sp=S.spaces.find(x=>x.id===e.spaceId);return `<span class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}" style="--pc:${sp?spaceColor(sp):'var(--muted)'}">${esc(e.title)}</span>`}).join('')}
+      ${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</button>`;}
+  h+=`</div>`;
+  if(sel){const i=(new Date(sel+'T00:00:00')).getDay();const de=evs.filter(e=>e.date===sel);
+    h+=`<div class="wk-day today"><div class="wk-head"><b>${DIAS_D[i]}</b> <span class="num muted">${fmtDate(sel)}</span><span class="spacer"></span><button class="small ghost" data-act="wkClose" aria-label="Cerrar día">✕</button></div>
+      ${de.length?de.map(e=>weekEvRow(p,e)).join(''):'<div class="muted" style="font-size:.82rem">Nada planificado.</div>'}
+      ${wkForm&&f.prefill.fixedDate&&f.prefill.date===sel?eventForm(p,f.prefill):`<button class="small primary" data-act="wkAdd" data-date="${sel}" style="align-self:flex-start">+ Agregar tarea</button>`}</div>`;}
+  else h+=`<div class="muted" style="font-size:.78rem">Tocá un día para ver sus tareas y agregar otras.</div>`;
+  return h+`</section>`;
 }
 function spaceView(p,s,pc){
   const area=num(s.width)*num(s.length);const tab=S.spaceTab||'ficha';
@@ -1226,9 +1249,13 @@ app.addEventListener('click',e=>{
     evMiss(){safe(()=>db.doc('events/'+id).update({status:'no se hizo',confirmedAt:Date.now()}))},
     evEdit(){S.form={type:'event',id};rerender();document.getElementById('e-date')?.focus()},
     toggleEv(){S.openEv=S.openEv||new Set();S.openEv.has(id)?S.openEv.delete(id):S.openEv.add(id);rerender()},
-    wkPrev(){S.calWeek=addDays(S.calWeek||mondayOf(today()),-7);rerender()},
-    wkNext(){S.calWeek=addDays(S.calWeek||mondayOf(today()),7);rerender()},
-    wkToday(){S.calWeek=null;rerender()},
+    wkPrev(){S.calWeek=addDays(S.calWeek||sundayOf(today()),-7);S.wkSel=null;rerender()},
+    wkNext(){S.calWeek=addDays(S.calWeek||sundayOf(today()),7);S.wkSel=null;rerender()},
+    wkToday(){S.calWeek=null;S.wkSel=null;rerender()},
+    wkDay(){const d=b.dataset.date;S.wkSel=S.wkSel===d?null:d;if(S.form&&S.form.where==='week')S.form=null;rerender()},
+    wkClose(){S.wkSel=null;if(S.form&&S.form.where==='week')S.form=null;rerender()},
+    wkAdd(){S.form={type:'event',where:'week',prefill:{date:b.dataset.date,fixedDate:true,status:'planificado'}};rerender();setTimeout(()=>document.getElementById('e-title')?.focus(),0)},
+    wkPlan(){S.form={type:'event',where:'week',prefill:{date:today(),status:'planificado'}};rerender();setTimeout(()=>document.getElementById('e-date')?.focus(),0)},
     spaceTab(){S.spaceTab=b.dataset.tab;S.form=null;S.fichaEdit=false;rerender()},
     fichaEdit(){S.fichaEdit=true;S.spaceMsg='';rerender()},
     fichaDone(){S.fichaEdit=false;S.form=null;window.scrollTo(0,0);rerender()},
@@ -1297,7 +1324,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','wkDay','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
@@ -1359,7 +1386,7 @@ app.addEventListener('submit',e=>{
         if(!old.plannedDate&&old.date&&old.date!==ev.date)ev.plannedDate=old.date;
         ev.adjustNote=(d.adjustNote||'').trim();
         await db.doc('events/'+f.dataset.id).update(ev);}
-      else await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,spaceId:S.space||'',createdAt:Date.now()});
+      else await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,spaceId:d.spaceId||S.space||'',createdAt:Date.now()});
     }else if(kind==='product'){
       const name=(d.name||'').trim();if(!name)return;
       if(d.use==='sustrato'){
