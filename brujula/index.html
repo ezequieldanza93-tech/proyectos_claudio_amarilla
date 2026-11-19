@@ -490,7 +490,7 @@ function calendarPanel(p,pc){
   const month=S.calMonth||today().slice(0,7);const f=S.form;
   const evs=S.events.filter(e=>e.projectId===p.id&&(e.spaceId||'')===(S.space||''));
   const [y,m]=month.split('-').map(Number);
-  const first=new Date(y,m-1,1);const lead=(first.getDay()+6)%7;const days=new Date(y,m,0).getDate();
+  const first=new Date(y,m-1,1);const lead=first.getDay();const days=new Date(y,m,0).getDate();
   const t=today();
   let cells='';
   for(let i=0;i<lead;i++)cells+='<div class="cd out"></div>';
@@ -513,7 +513,7 @@ function calendarPanel(p,pc){
     ${toConfirm.length?`<div class="confirm-box"><div class="label" style="color:var(--warn)">Para confirmar (${toConfirm.length})</div>
       ${toConfirm.map(e=>editing===e.id?eventForm(p,e):evRow(e,true)).join('')}</div>`:''}
     ${f&&f.type==='event'&&!f.id?eventForm(p,f.prefill||{date:f.date}):''}
-    <div class="cal-wrap"><div class="cal">${['lun','mar','mié','jue','vie','sáb','dom'].map(d=>`<div class="cw">${d}</div>`).join('')}${cells}</div></div>
+    <div class="cal-wrap"><div class="cal">${['dom','lun','mar','mié','jue','vie','sáb'].map(d=>`<div class="cw">${d}</div>`).join('')}${cells}</div></div>
     <div class="row muted" style="font-size:.75rem;gap:14px"><span><span class="ev-key st-planificado"></span> planificado</span><span><span class="ev-key st-cumplido"></span> cumplido</span><span><span class="ev-key st-no-se-hizo"></span> no se hizo</span></div>
     ${list.length?`<div class="logs">${list.map(e=>editing===e.id&&!toConfirm.includes(e)?eventForm(p,e):evRow(e,false)).join('')}</div>`
       :'<div class="empty">Sin eventos este mes. Tocá un día para planificar algo o registrar lo que pasó.</div>'}
