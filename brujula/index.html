@@ -216,7 +216,15 @@ textarea{min-height:70px;resize:vertical}
 .ptbl{border-collapse:collapse;font-size:.84rem;width:100%;min-width:420px}
 .ptbl th,.ptbl td{border-top:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:top}
 .ptbl th{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.wkgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.wkm{display:grid;grid-template-columns:64px repeat(7,minmax(0,1fr));gap:3px}
+.wkm-corner{min-height:1px}
+.wkm-day{display:flex;flex-direction:column;align-items:center;gap:0;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:3px 0;font-size:.6rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);cursor:pointer;line-height:1.15}
+.wkm-day b{font-size:.9rem;color:var(--ink)}
+.wkm-day.today{border-color:var(--pc);border-width:2px}
+.wkm-day.sel,.wkm-cell.sel{background:color-mix(in srgb,var(--pc) 14%,var(--surface))}
+.wkm-sp{font-size:.74rem;font-weight:600;color:var(--pc);display:flex;align-items:center;border-left:3px solid var(--pc);padding-left:5px;word-break:break-word;min-width:0}
+.wkm-cell{min-height:64px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:3px;display:flex;flex-direction:column;gap:3px;align-items:stretch;text-align:left;cursor:pointer;min-width:0;overflow:hidden;color:var(--ink)}
+.wkm-cell.today{border-color:var(--pc)}
 .wkc{min-height:110px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:4px;display:flex;flex-direction:column;gap:3px;align-items:stretch;text-align:left;cursor:pointer;min-width:0;overflow:hidden;color:var(--ink)}
 .wkc.today{border-color:var(--pc);border-width:2px}
 .wkc.sel{background:color-mix(in srgb,var(--pc) 14%,var(--surface))}
@@ -889,18 +897,26 @@ function weekPanel(p,pc){
     ${wkForm&&!f.prefill.fixedDate?eventForm(p,f.prefill):`<div class="row"><button class="small primary" data-act="wkPlan">+ Planificar</button></div>`}`;
   if(overdue.length)h+=`<div class="confirm-box"><div class="label" style="color:var(--warn)">Sin confirmar de semanas anteriores (${overdue.length})</div>
     ${overdue.map(e=>`<div class="wk-day-ev"><span class="num muted" style="font-size:.8rem">${fmtDate(e.date)}</span>${weekEvRow(p,e)}</div>`).join('')}</div>`;
-  h+=`<div class="wkgrid">`;
-  for(let i=0;i<7;i++){const ds=addDays(ws,i);const de=evs.filter(e=>e.date===ds);
-    h+=`<button class="wkc ${ds===t?'today':''} ${ds===sel?'sel':''}" data-act="wkDay" data-date="${ds}" aria-label="${DIAS_D[i]} ${fmtDate(ds)}: ${de.length} tarea(s)">
-      <span class="wkc-h"><span>${DIAS_D[i].slice(0,3)}</span><b class="num">${+ds.slice(8)}</b></span>
-      ${de.slice(0,3).map(e=>{const sp=S.spaces.find(x=>x.id===e.spaceId);return `<span class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}" style="--pc:${sp?spaceColor(sp):'var(--muted)'}">${esc(e.title)}</span>`}).join('')}
-      ${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</button>`;}
+  const rows=S.spaces.filter(x=>x.projectId===p.id&&x.enabled!==false).sort((a,c)=>num(a.order)-num(c.order));
+  const wkEvs=evs.filter(e=>e.date>=ws&&e.date<=we);
+  const rowDefs=rows.map(sp=>({id:sp.id,name:sp.name,color:spaceColor(sp)}));
+  if(wkEvs.some(e=>!rows.find(r=>r.id===e.spaceId)))rowDefs.push({id:'',name:'General',color:'var(--muted)'});
+  h+=`<div class="wkm"><div class="wkm-corner"></div>`;
+  for(let i=0;i<7;i++){const ds=addDays(ws,i);
+    h+=`<button class="wkm-day ${ds===t?'today':''} ${ds===sel?'sel':''}" data-act="wkDay" data-date="${ds}" aria-label="${DIAS_D[i]} ${fmtDate(ds)}"><span>${DIAS_D[i].slice(0,3)}</span><b class="num">${+ds.slice(8)}</b></button>`;}
+  for(const r of rowDefs){
+    h+=`<div class="wkm-sp" style="--pc:${r.color}">${esc(r.name)}</div>`;
+    for(let i=0;i<7;i++){const ds=addDays(ws,i);
+      const de=wkEvs.filter(e=>e.date===ds&&(r.id?e.spaceId===r.id:!rows.find(x=>x.id===e.spaceId)));
+      h+=`<button class="wkm-cell ${ds===t?'today':''} ${ds===sel?'sel':''}" style="--pc:${r.color}" data-act="wkCell" data-date="${ds}" data-sp="${esc(r.id)}" aria-label="${esc(r.name)}, ${DIAS_D[i]} ${fmtDate(ds)}: ${de.length} tarea(s)">
+        ${de.slice(0,3).map(e=>`<span class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}">${esc(e.title)}</span>`).join('')}${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</button>`;}
+  }
   h+=`</div>`;
   if(sel){const i=(new Date(sel+'T00:00:00')).getDay();const de=evs.filter(e=>e.date===sel);
     h+=`<div class="wk-day today"><div class="wk-head"><b>${DIAS_D[i]}</b> <span class="num muted">${fmtDate(sel)}</span><span class="spacer"></span><button class="small ghost" data-act="wkClose" aria-label="Cerrar día">✕</button></div>
-      ${de.length?de.map(e=>weekEvRow(p,e)).join(''):'<div class="muted" style="font-size:.82rem">Nada planificado.</div>'}
-      ${wkForm&&f.prefill.fixedDate&&f.prefill.date===sel?eventForm(p,f.prefill):`<button class="small primary" data-act="wkAdd" data-date="${sel}" style="align-self:flex-start">+ Agregar tarea</button>`}</div>`;}
-  else h+=`<div class="muted" style="font-size:.78rem">Tocá un día para ver sus tareas y agregar otras.</div>`;
+      ${de.length?de.slice().sort((a,c)=>(S.wkSpace&&a.spaceId===S.wkSpace?-1:0)-(S.wkSpace&&c.spaceId===S.wkSpace?-1:0)).map(e=>weekEvRow(p,e)).join(''):'<div class="muted" style="font-size:.82rem">Nada planificado.</div>'}
+      ${wkForm&&f.prefill.fixedDate&&f.prefill.date===sel?eventForm(p,f.prefill):`<button class="small primary" data-act="wkAdd" data-date="${sel}" data-sp="${esc(S.wkSpace||'')}" style="align-self:flex-start">+ Agregar tarea${S.wkSpace?' en '+esc(spaceName(S.wkSpace)):''}</button>`}</div>`;}
+  else h+=`<div class="muted" style="font-size:.78rem">Tocá un día o una celda para ver las tareas y agregar otras.</div>`;
   return h+`</section>`;
 }
 function spaceView(p,s,pc){
@@ -1252,9 +1268,10 @@ app.addEventListener('click',e=>{
     wkPrev(){S.calWeek=addDays(S.calWeek||sundayOf(today()),-7);S.wkSel=null;rerender()},
     wkNext(){S.calWeek=addDays(S.calWeek||sundayOf(today()),7);S.wkSel=null;rerender()},
     wkToday(){S.calWeek=null;S.wkSel=null;rerender()},
-    wkDay(){const d=b.dataset.date;S.wkSel=S.wkSel===d?null:d;if(S.form&&S.form.where==='week')S.form=null;rerender()},
+    wkCell(){const d=b.dataset.date;S.wkSel=d;S.wkSpace=b.dataset.sp||null;if(S.form&&S.form.where==='week')S.form=null;rerender()},
+    wkDay(){const d=b.dataset.date;S.wkSel=S.wkSel===d&&!S.wkSpace?null:d;S.wkSpace=null;if(S.form&&S.form.where==='week')S.form=null;rerender()},
     wkClose(){S.wkSel=null;if(S.form&&S.form.where==='week')S.form=null;rerender()},
-    wkAdd(){S.form={type:'event',where:'week',prefill:{date:b.dataset.date,fixedDate:true,status:'planificado'}};rerender();setTimeout(()=>document.getElementById('e-title')?.focus(),0)},
+    wkAdd(){S.form={type:'event',where:'week',prefill:{date:b.dataset.date,fixedDate:true,status:'planificado',spaceId:b.dataset.sp||''}};rerender();setTimeout(()=>document.getElementById('e-title')?.focus(),0)},
     wkPlan(){S.form={type:'event',where:'week',prefill:{date:today(),status:'planificado'}};rerender();setTimeout(()=>document.getElementById('e-date')?.focus(),0)},
     spaceTab(){S.spaceTab=b.dataset.tab;S.form=null;S.fichaEdit=false;rerender()},
     fichaEdit(){S.fichaEdit=true;S.spaceMsg='';rerender()},
@@ -1324,7 +1341,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','wkDay','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
