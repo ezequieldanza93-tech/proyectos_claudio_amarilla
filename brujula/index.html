@@ -149,6 +149,16 @@ textarea{min-height:70px;resize:vertical}
 .lightbox{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.85);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .lightbox img{max-width:100%;max-height:90vh;border-radius:8px}
 .lightbox button{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px))}
+/* espacios */
+.spaces{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.space{display:flex;flex-direction:column;gap:4px;padding:16px;border-radius:12px;border:1px solid var(--line);border-top:4px solid var(--pc);background:var(--bg);text-align:left;cursor:pointer;color:var(--ink);min-width:0}
+.space:hover{border-color:var(--pc)}
+.space .lt{font-family:var(--f-display);font-size:1.1rem;font-weight:600}
+.space .ls{font-size:.8rem;color:var(--muted)}
+.space.off{opacity:.5;cursor:not-allowed;border-top-color:var(--line)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.prows{display:flex;flex-direction:column;gap:6px}
+.prow{display:grid;grid-template-columns:1fr 80px auto;gap:6px;align-items:center}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -178,10 +188,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <script>
 (function(){
 const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
-const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
 function hashId(){try{return decodeURIComponent(location.hash.slice(1))}catch(e){return ''}}
 const curId=()=>S.nav!==null?S.nav:hashId();
-function go(id){S.nav=id||'';S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
+function go(id){S.nav=id||'';S.space=null;S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
 const current=()=>S.projects.find(p=>p.id===curId());
 const isLedger=p=>p&&p.kind==='ledger';
 const ARS=new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
@@ -508,10 +518,62 @@ async function uploadMedia(f){
   S.upload={busy:false,date,msg:(ok?`Se subieron ${ok}.`:'')+(fails.length?' No se pudo: '+fails.join('; ')+'.':'')};
   rerender();
 }
+const spacesOf=pid=>S.spaces.filter(s=>s.projectId===pid).sort((a,b)=>num(a.order)-num(b.order));
+const plantTotal=s=>(s.plants||[]).reduce((a,x)=>a+num(x.qty),0);
+const dec=v=>v===''||v==null?'':String(v).replace('.',',');
+function spaceSummary(s){
+  const parts=[];
+  if(s.cropType)parts.push(s.cropType==='indoor'?'Indoor':'Exterior');
+  const w=num(s.width),l=num(s.length),hh=num(s.height);
+  if(w&&l)parts.push(`${dec(w)}×${dec(l)}${hh?'×'+dec(hh):''} m`);
+  if(s.lighting)parts.push('Luz '+s.lighting);
+  const pt=plantTotal(s);if(pt)parts.push(pt+' planta'+(pt===1?'':'s'));
+  return parts.join(' · ')||'Sin configurar: tocá para cargar los datos';
+}
+function spacesPanel(p,pc){
+  const ss=spacesOf(p.id);if(!ss.length)return '';
+  return `<section class="panel" style="--pc:${pc}"><h2>Espacios de cultivo</h2>
+    <div class="spaces">${ss.map(s=>s.enabled===false
+      ?`<div class="space off" aria-disabled="true"><span class="lt">${esc(s.name)}</span><span class="ls">Apagado por ahora</span></div>`
+      :`<button class="space" data-act="openSpace" data-id="${esc(s.id)}"><span class="lt">${esc(s.name)}</span><span class="ls">${esc(spaceSummary(s))}</span></button>`).join('')}</div></section>`;
+}
+function plantRow(g,q){return `<div class="prow"><input name="genetics" aria-label="Genética" placeholder="Genética (ej.: Gorilla Piña, BSF)" value="${esc(g)}"><input name="qty" aria-label="Cantidad" inputmode="numeric" placeholder="Cant." value="${esc(q)}"><button type="button" class="ghost small danger" data-act="rmPlantRow" aria-label="Quitar genética">✕</button></div>`}
+function spaceView(p,s,pc){
+  const sel=(name,opts,val)=>`<select id="s-${name}" name="${name}"><option value="">Elegir…</option>${opts.map(([v,l])=>`<option value="${v}" ${val===v?'selected':''}>${l}</option>`).join('')}</select>`;
+  const area=num(s.width)*num(s.length);
+  const plants=(s.plants&&s.plants.length)?s.plants:[{genetics:'',qty:''}];
+  return `<div class="row"><button class="ghost" data-act="closeSpace">← ${esc(p.name)}</button></div>
+  <section class="detail-head" style="--pc:${pc}"><span class="chip" style="align-self:flex-start">Espacio de cultivo</span><h1>${esc(s.name)}</h1>
+    <div class="muted">${esc(spaceSummary(s))}${area?` · ${dec(Math.round(area*100)/100)} m²`:''}</div></section>
+  <form class="panel" data-form="space" data-id="${esc(s.id)}" style="--pc:${pc}">
+    <div class="grid2">
+      <label class="field"><span class="label">Tipo de cultivo</span>${sel('cropType',[['indoor','Indoor'],['exterior','Exterior']],s.cropType)}</label>
+      <label class="field"><span class="label">Iluminación</span>${sel('lighting',[['natural','Natural'],['artificial','Artificial'],['mixta','Mixta']],s.lighting)}</label>
+    </div>
+    <div><div class="label" style="margin-bottom:4px">Dimensiones (metros)</div>
+    <div class="grid3">
+      <label class="field"><span class="muted" style="font-size:.78rem">Ancho</span><input id="s-width" name="width" inputmode="decimal" value="${esc(dec(s.width))}"></label>
+      <label class="field"><span class="muted" style="font-size:.78rem">Largo</span><input id="s-length" name="length" inputmode="decimal" value="${esc(dec(s.length))}"></label>
+      <label class="field"><span class="muted" style="font-size:.78rem">Alto</span><input id="s-height" name="height" inputmode="decimal" value="${esc(dec(s.height))}"></label>
+    </div></div>
+    <label class="field"><span class="label">Ventilación</span><input id="s-vent" name="ventilation" value="${esc(s.ventilation)}" placeholder="Ej.: extractor, intractor, ventilador"></label>
+    <div class="grid2">
+      <label class="field"><span class="label">Temperatura promedio (°C)</span><input id="s-temp" name="temp" inputmode="decimal" value="${esc(dec(s.temp))}"></label>
+      <label class="field"><span class="label">Humedad promedio (%)</span><input id="s-hum" name="humidity" inputmode="decimal" value="${esc(dec(s.humidity))}"></label>
+    </div>
+    <div class="field"><div class="row"><span class="label">Plantas por genética</span><span class="spacer"></span><span class="num muted" style="font-size:.85rem">Total: ${plantTotal(s)}</span></div>
+      <div class="prows" id="prows">${plants.map(x=>plantRow(x.genetics,x.qty||'')).join('')}</div>
+      <button type="button" class="small" data-act="addPlantRow" style="align-self:flex-start">+ Agregar genética</button></div>
+    <div class="row"><button class="primary" type="submit">Guardar espacio</button>${S.spaceMsg?`<span class="muted" style="font-size:.85rem">${esc(S.spaceMsg)}</span>`:''}</div>
+  </form>`;
+}
 function detailView(){
   const p=S.projects.find(x=>x.id===S.pid);const st=projStats(p);const pc=pcolor(p);const dl=daysLeft(p.deadline);
   const f=S.form;
+  const sp=S.space&&S.spaces.find(x=>x.id===S.space&&x.projectId===p.id);
+  if(sp)return spaceView(p,sp,pc);
   let h=`<div class="row"><button class="ghost" data-act="home">← Inicio</button></div>`;
+  h+=spacesPanel(p,pc);
   if(f&&f.type==='project'&&f.id===p.id){h+=`<div class="panel" style="--pc:${pc}">${projectForm(p)}</div>`}
   else{
   h+=`<section class="detail-head" style="--pc:${pc}">
@@ -586,6 +648,10 @@ app.addEventListener('click',e=>{
     evDone(){safe(()=>db.doc('events/'+id).update({status:'cumplido',confirmedAt:Date.now()}))},
     evMiss(){safe(()=>db.doc('events/'+id).update({status:'no se hizo',confirmedAt:Date.now()}))},
     evEdit(){S.form={type:'event',id};rerender();document.getElementById('e-date')?.focus()},
+    openSpace(){S.space=id;S.spaceMsg='';S.form=null;window.scrollTo(0,0);rerender()},
+    closeSpace(){S.space=null;window.scrollTo(0,0);rerender()},
+    addPlantRow(){const c=document.getElementById('prows');c.insertAdjacentHTML('beforeend',plantRow('',''));c.lastElementChild.querySelector('input').focus()},
+    rmPlantRow(){const r=b.closest('.prow');const c=r.parentElement;if(c.children.length>1)r.remove();else r.querySelectorAll('input').forEach(i=>i.value='')},
     viewImg(){S.lightbox=b.dataset.src;rerender()},
     closeLb(){S.lightbox=null;rerender()},
     delMedia(){const m=S.media.find(x=>x.id===id);safe(async()=>{if(m&&assets){try{await assets.delete(m.assetId)}catch(e){}}await db.doc('media/'+id).delete();S.confirm=null})},
@@ -621,7 +687,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||act==='home'||act==='open'))A[act]();
+  if(A[act]&&(db||['home','open','addPlantRow','rmPlantRow','closeSpace'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
@@ -636,6 +702,11 @@ app.addEventListener('submit',e=>{
   e.preventDefault();const f=e.target;const d=Object.fromEntries(new FormData(f).entries());
   const kind=f.dataset.form;
   if(kind==='media'){uploadMedia(f).catch(()=>{});return}
+  if(kind==='space'){const fd=new FormData(f);const gs=fd.getAll('genetics'),qs=fd.getAll('qty');
+    const plants=gs.map((g,i)=>({genetics:String(g).trim(),qty:Math.round(num(qs[i]))})).filter(x=>x.genetics||x.qty);
+    const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
+    const data={cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),ventilation:(d.ventilation||'').trim(),temp:n(d.temp),humidity:n(d.humidity),plants};
+    safe(async()=>{await db.doc('spaces/'+f.dataset.id).update(data);S.spaceMsg='Guardado.';document.activeElement?.blur?.();rerender()});return}
   safe(async()=>{
     if(kind==='project'){
       const data={name:d.name.trim(),priority:num(d.priority)||null,goal:(d.goal||'').trim(),why:(d.why||'').trim(),deadline:d.deadline||'',weeklyHours:num(d.weeklyHours),resources:(d.resources||'').trim(),
@@ -677,6 +748,7 @@ async function boot(){
   db.collection('projects').onSnapshot(s=>{clearTimeout(loadTimer);S.projects=toList(s);S.loaded.projects=true;if(S.err&&S.err.startsWith('Los datos'))S.err=null;render()},onErr);
   db.collection('tasks').onSnapshot(s=>{S.tasks=toList(s);S.loaded.tasks=true;render()},onErr);
   db.collection('logs').onSnapshot(s=>{S.logs=toList(s);S.loaded.logs=true;render()},onErr);
+  db.collection('spaces').onSnapshot(s=>{S.spaces=toList(s);render()},onErr);
   db.collection('media').onSnapshot(s=>{S.media=toList(s);render()},onErr);
   claude.use('assets').then(a=>{assets=a;rerender()}).catch(()=>{});
   db.collection('events').onSnapshot(s=>{S.events=toList(s);render()},onErr);
