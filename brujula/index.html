@@ -234,9 +234,16 @@ textarea{min-height:70px;resize:vertical}
 .wkc-ev.st-planificado{background:transparent;color:var(--pc);border:1px dashed var(--pc)}
 .wkc-ev.st-no-se-hizo{background:var(--line);color:var(--muted);text-decoration:line-through}
 .wkc-more{font-size:.66rem;color:var(--muted)}
-.buy-rows{display:flex;flex-direction:column;gap:6px}
+.buy-rows{display:flex;flex-direction:column;gap:10px}
+.buy-item{display:flex;flex-direction:column;gap:4px;border-left:2px solid var(--line);padding-left:8px}
+.buy-sel{display:grid;grid-template-columns:1fr 1.4fr;gap:6px}
+@media (max-width:560px){.buy-sel{grid-template-columns:1fr}}
 .buy-row{display:grid;grid-template-columns:1fr 60px 90px 90px auto;gap:6px;align-items:center}
 @media (max-width:560px){.buy-row{grid-template-columns:1fr 56px 80px auto}.buy-row [name=biName]{grid-column:1/-1}.bi-sub{grid-column:1/3}}
+.catnav{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto}
+.catlist{display:flex;flex-direction:column}
+.catrow{border-top:1px solid var(--line);padding:8px 0;display:flex;flex-direction:column;gap:6px}
+.catrow:first-child{border-top:0}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -605,14 +612,66 @@ function substrateCard(x){
     ${(x.sources||[]).length?`<details><summary class="muted" style="font-size:.8rem">Fuentes (${x.sources.length})</summary><ul class="flist">${x.sources.map(u=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/,'').split('/')[0])}</a></li>`).join('')}</ul></details>`:''}
   </div>`;
 }
+/* ---------- catálogo por categorías ---------- */
+const CAT_TREE=[
+  {k:'equipo',l:'Equipamiento indoor',subs:[['carpas','Carpas'],['luces','Luces'],['ventilacion','Extracción y ventilación'],['olores','Control de olores'],['clima','Control del clima'],['accesorios','Accesorios']]},
+  {k:'sustrato',l:'Sustrato',subs:[['tierras','Tierras y sustratos'],['coco','Fibra de coco'],['enmiendas','Compost y enmiendas']]},
+  {k:'fert',l:'Fertilizante',subs:[['radicular','Riego radicular'],['foliar','Foliares y preventivos']]},
+  {k:'plantas',l:'Plantas',subs:[['esqueje','Esqueje'],['auto','Semilla auto'],['fem','Semilla FEM']]},
+];
+const subLabel=sk=>{for(const c of CAT_TREE)for(const [k,l] of c.subs)if(k===sk)return l;return sk};
+const j=a=>a.filter(v=>v!==''&&v!=null).join(' · ');
+function subOfSustrato(name){const n=(name||'').toLowerCase();return /coco/.test(n)?'coco':/compost/.test(n)?'enmiendas':'tierras'}
+function catalogIndex(){
+  const out=[];const C=S.cat||{};
+  const push=(cat,sub,x,label,facts,extra)=>out.push({key:(extra&&extra.key)||'cat:'+x.id,cat,sub,brand:x.marca||'',label,facts,verified:!!x.verificado,src:catSrc(x),notes:x.notas||'',desc:x.descripcion_corta||'',conf:catConf(x),isCat:true,...(extra||{})});
+  (C.luces||[]).forEach(x=>push('equipo','luces',x,x.producto,j([x.tipo,x.potencia_real_w?x.potencia_real_w+' W':'',x.panel_largo_cm&&x.panel_ancho_cm?`${dec(x.panel_largo_cm)}×${dec(x.panel_ancho_cm)} cm`:'',x.ppf_umol_s?x.ppf_umol_s+' µmol/s':'',x.eficacia_umol_j?dec(x.eficacia_umol_j)+' µmol/J':'',x.espectro,x.dimmer?'dimmer':''])));
+  (C.carpas||[]).forEach(x=>{const b=(a)=>a&&a.length?a.map(y=>`${y.cantidad}×${y.diametro||'?'}`).join(', '):'';
+    push('equipo','carpas',x,x.producto,j([x.largo_cm?`${x.largo_cm}×${x.ancho_cm}×${x.alto_cm} cm`:'',b(x.bocas_superiores)?'bocas sup. '+b(x.bocas_superiores):'',b(x.bocas_inferiores)?'bocas inf. '+b(x.bocas_inferiores):'',x.material_reflectivo]))});
+  (C.ventilacion||[]).forEach(x=>push('equipo',/filtro|carb[oó]n/i.test(x.producto)?'olores':'ventilacion',x,x.producto,j([x.tipo,x.diametro,x.caudal_m3h?x.caudal_m3h+' m³/h':'',x.potencia_w?x.potencia_w+' W':'',x.oscilante?'oscilante':'',x.dimmer?'regulable':''])));
+  (C.clima||[]).forEach(x=>push('equipo',/filtro|carb[oó]n|olor/i.test(x.producto)?'olores':'clima',x,x.producto,j([x.tipo,x.capacidad,x.rango_temperatura,x.rango_humedad,x.precision,x.wifi?'WiFi':''])));
+  (C.sustratos||[]).forEach(x=>push('sustrato',subOfSustrato(x.producto),x,`${x.marca} · ${x.producto}`,j([(x.litros_presentacion||[]).map(l=>l+' L').join(', '),x.ph_declarado?'pH '+x.ph_declarado:'',x.ce_declarada?'CE '+x.ce_declarada:''])));
+  (C.fertilizantes||[]).forEach(x=>push('fert','radicular',x,`${catLine(x)} · ${x.producto}`,j([x.npk_declarado?'NPK '+x.npk_declarado:'',doseText(x.dosis_fabricante)])));
+  (C.foliares||[]).forEach(x=>push('fert','foliar',x,`${catLine(x)} · ${x.producto}`,j([x.composicion_declarada,doseText(x.dosis_fabricante)])));
+  (C.geneticas||[]).forEach(x=>{const t=(x.tipo||'').toLowerCase();const sub=/clon|esqueje/.test(t)?'esqueje':/auto/.test(t)?'auto':'fem';
+    push('plantas',sub,x,genLabel(x),j([x.proporcion,x.ciclo_total_dias?'ciclo '+x.ciclo_total_dias:'',x.floracion?'floración '+x.floracion:'',x.rendimiento_interior?'int. '+x.rendimiento_interior:'',x.rendimiento_exterior?'ext. '+x.rendimiento_exterior:'']))});
+  // productos propios (cargados a mano)
+  S.products.filter(x=>!x.cat&&x.name).forEach(x=>{
+    const sub=x.use==='sustrato'?subOfSustrato(x.name):x.use==='foliar'?'foliar':x.use==='radicular'?'radicular':x.sub||'accesorios';
+    const cat=x.use==='sustrato'?'sustrato':(x.use==='foliar'||x.use==='radicular')?'fert':(x.cat2||'equipo');
+    out.push({key:x.id,cat,sub,brand:x.line||'',label:prodLabel(x),facts:j([x.unit?x.unit:'',x.ph?'pH '+x.ph:'',x.ce?'CE '+x.ce:'']),verified:!!x.verified,src:x.sources||[],notes:x.notes||'',desc:'',isCat:false,dbId:x.id});
+  });
+  return out;
+}
+function catalogBrowser(){
+  const idx=catalogIndex();const sel=S.catSel||{cat:'equipo',sub:'carpas',brand:''};
+  const tree=CAT_TREE.find(c=>c.k===sel.cat)||CAT_TREE[0];
+  const inSub=idx.filter(x=>x.cat===tree.k&&x.sub===sel.sub);
+  const brands=[...new Set(inSub.map(x=>x.brand).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  const list=inSub.filter(x=>!sel.brand||x.brand===sel.brand).sort((a,b)=>a.label.localeCompare(b.label));
+  let h=`<div class="catnav">${CAT_TREE.map(c=>`<button class="tab ${c.k===tree.k?'on':''}" data-act="catPick" data-cat="${c.k}">${c.l} <span class="muted num">${idx.filter(x=>x.cat===c.k).length}</span></button>`).join('')}</div>
+    <div class="row" style="gap:6px">${tree.subs.map(([k,l])=>{const n=idx.filter(x=>x.cat===tree.k&&x.sub===k).length;return `<button class="small ${k===sel.sub?'primary':''}" data-act="subPick" data-sub="${k}">${l} <span class="num" style="opacity:.7">${n}</span></button>`}).join('')}</div>`;
+  if(brands.length>1)h+=`<label class="row" style="gap:6px"><span class="label">Marca</span><select id="cat-brand" data-brandpick style="width:auto"><option value="">Todas (${inSub.length})</option>${brands.map(b=>`<option ${b===sel.brand?'selected':''}>${esc(b)}</option>`).join('')}</select></label>`;
+  if(!list.length)return h+`<div class="empty">Todavía no hay productos en ${esc(subLabel(sel.sub))}. Podés cargar uno propio con «+ Producto propio».</div>`;
+  h+=`<div class="catlist">${list.map(x=>{const open=S.catItem===x.key;
+    const sub=x.cat==='sustrato'?S.products.find(p=>(p.id===x.key)||(p.cat&&p.id===x.key)):null;
+    return `<div class="catrow ${open?'open':''}"><button class="wk-sum" data-act="catItem" data-key="${esc(x.key)}" aria-expanded="${open}">
+      <span style="flex:1;min-width:0"><b style="font-weight:600">${esc(x.label)}</b>${x.isCat?'':'<span class="tag">propio</span>'}${x.verified?'':' <span class="aitag">sin verificar</span>'}
+      <span class="muted" style="display:block;font-size:.8rem">${esc(x.facts)}</span></span><span class="chev">${open?'▴':'▾'}</span></button>
+      ${open?(sub?substrateCard(sub):`<div class="wk-det">${x.desc?`<div style="font-size:.86rem">${esc(x.desc)}</div>`:''}${x.notes?`<div class="muted" style="font-size:.8rem">${esc(x.notes)}</div>`:''}${x.conf?`<div class="muted" style="font-size:.8rem">Diferencias entre fuentes: ${esc(x.conf)}</div>`:''}
+        ${x.src.length?`<div style="font-size:.8rem">${x.src.slice(0,4).map(u=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(u.replace(/^https?:\/\/(www\.)?/,'').split('/')[0])}</a>`).join(' · ')}</div>`:''}
+        ${x.isCat?'':S.confirm==='pr'+x.dbId?`<button class="small danger" data-act="delProduct" data-id="${esc(x.dbId)}">Confirmar borrado</button>`:`<button class="small ghost danger" data-act="askDel" data-key="pr${esc(x.dbId)}">Borrar</button>`}</div>`):''}</div>`}).join('')}</div>`;
+  return h;
+}
 function catalogPanel(p,pc){
   const f=S.form;const open=S.catalogOpen;
   let h=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Catálogo de productos</h2><span class="spacer"></span>
-    <button class="small" data-act="toggleCatalog">${open?'Ocultar':'Ver y editar'}</button></div>`;
-  if(!open)return h+`<div class="muted" style="font-size:.85rem">${prodsFor('radicular').length} productos para riego radicular · ${prodsFor('foliar').length} para riego foliar · ${prodsFor('sustrato').length} sustratos</div></section>`;
-  h+=`<form class="inline-form" data-form="product">
+    ${open?`<button class="small" data-act="toggleAddOwn">${S.addOwn?'Cerrar':'+ Producto propio'}</button>`:''}
+    <button class="small" data-act="toggleCatalog">${open?'Ocultar':'Ver'}</button></div>`;
+  if(!open){const idx=catalogIndex();return h+`<div class="muted" style="font-size:.85rem">${CAT_TREE.map(c=>`${c.l}: ${idx.filter(x=>x.cat===c.k).length}`).join(' · ')}</div></section>`}
+  if(S.addOwn)h+=`<form class="inline-form" data-form="product">
     <div class="grid2">
-      <label class="field"><span class="label">Uso</span><select id="c-use" name="use" data-bvis><option value="radicular">Riego radicular</option><option value="foliar">Riego foliar</option><option value="sustrato">Sustrato</option></select></label>
+      <label class="field"><span class="label">Uso</span><select id="c-use" name="use" data-bvis><option value="radicular">Fertilizante · Riego radicular</option><option value="foliar">Fertilizante · Foliares y preventivos</option><option value="sustrato">Sustrato</option>${CAT_TREE.filter(c=>c.k==='equipo'||c.k==='plantas').map(c=>`<optgroup label="${c.l}">${c.subs.map(([k,l])=>`<option value="${c.k}:${k}">${l}</option>`).join('')}</optgroup>`).join('')}</select></label>
       <label class="field"><span class="label">Línea / marca (opcional)</span><input id="c-line" name="line" list="c-lines" placeholder="Ej.: Namaste"><datalist id="c-lines">${[...new Set(S.products.map(x=>x.line).filter(Boolean))].sort().map(l=>`<option value="${esc(l)}">`).join('')}</datalist></label>
       <label class="field"><span class="label">Producto</span><input id="c-name" name="name" required placeholder="Nombre del producto"></label>
       <label class="field" data-bwhen="use:radicular|foliar"><span class="label">Unidad habitual</span><select id="c-unit" name="unit"><option value="ml">ml</option><option value="g">g</option></select></label>
@@ -629,15 +688,8 @@ function catalogPanel(p,pc){
       <label class="field"><span class="label">Notas / diferencias entre fuentes</span><textarea id="c-notes" name="notes"></textarea></label>
     </div>
     <div class="row"><button class="primary" type="submit">Agregar al catálogo</button></div></form>`;
+  h+=catalogBrowser();
   h+=plansPanel();
-  const subs=S.products.filter(x=>x.use==='sustrato');
-  h+=`<div><h3 style="margin-bottom:6px">Sustratos</h3>${subs.length?subs.map(substrateCard).join(''):'<span class="muted" style="font-size:.85rem">Sin sustratos cargados</span>'}</div>`;
-  for(const use of ['radicular','foliar']){
-    const items=S.products.filter(x=>x.use===use);
-    const groups={};items.forEach(x=>{const g=x.line||'Sin línea';(groups[g]=groups[g]||[]).push(x)});
-    h+=`<div><h3 style="margin-bottom:6px">${USE_LABEL[use]}</h3>${Object.keys(groups).sort().map(g=>{const its=groups[g].filter(x=>x.name);
-      return `<div class="cat-line"><b>${esc(g)}</b>${its.length?its.map(x=>`<span class="cat-item" title="${esc([x.desc,x.doses&&x.doses.length?'Dosis del fabricante: '+doseText(x.doses):''].filter(Boolean).join(' — '))}">${esc(x.name)}${x.unit?` <span class="muted">(${esc(x.unit)})</span>`:''}${x.cat?'<span class="muted" style="font-size:.7rem;padding-right:8px"> ·cat</span>':S.confirm==='pr'+x.id?`<button class="small danger" data-act="delProduct" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="pr${esc(x.id)}" aria-label="Borrar producto">✕</button>`}</span>`).join(''):'<span class="muted" style="font-size:.85rem">Sin productos cargados</span>'}</div>`}).join('')}</div>`;
-  }
   return h+`</section>`;
 }
 function eventForm(p,e){
@@ -796,19 +848,27 @@ function genSheet(b){const x=genOf(b);if(!x)return '';
   const parts=[x.tipo,x.proporcion,x.ciclo_total_dias?'ciclo '+x.ciclo_total_dias:'',x.floracion?'floración '+x.floracion:'',x.altura_interior?'altura int. '+x.altura_interior:'',x.altura_exterior?'altura ext. '+x.altura_exterior:'',x.rendimiento_interior?'int. '+x.rendimiento_interior:'',x.rendimiento_exterior?'ext. '+x.rendimiento_exterior:''].filter(Boolean);
   return `<div class="muted" style="font-size:.82rem">Ficha ${esc(genLabel(x))}: ${esc(parts.join(' · '))}${catSrc(x).length?` · <a href="${esc(catSrc(x)[0])}" target="_blank" rel="noopener">fuente</a>`:''}${x.verificado?'':' · sin verificar'}</div>`;}
 /* ---------- compras ---------- */
+function buyPickOptions(sub,sel){
+  if(!sub)return '<option value="">Primero elegí la categoría</option>';
+  const its=catalogIndex().filter(x=>x.sub===sub).sort((a,c)=>a.label.localeCompare(c.label));
+  const byB={};its.forEach(x=>{(byB[x.brand||'Otras']=byB[x.brand||'Otras']||[]).push(x)});
+  return '<option value="">Elegí el producto…</option>'+Object.keys(byB).sort().map(bn=>`<optgroup label="${esc(bn)}">${byB[bn].map(x=>`<option value="${esc(x.label)}" ${x.label===sel?'selected':''}>${esc(x.label)}</option>`).join('')}</optgroup>`).join('')+`<option value="__otro" ${sel==='__otro'?'selected':''}>Otro (escribir)</option>`;
+}
 function buyItemRow(it){it=it||{};
-  return `<div class="buy-row"><input name="biName" list="dl-buy" aria-label="Ítem" placeholder="Qué comprar" value="${esc(it.name)}">
+  const inCat=it.sub&&catalogIndex().some(x=>x.sub===it.sub&&x.label===it.name);
+  return `<div class="buy-item"><div class="buy-sel">
+    <select name="biSub" data-buysub aria-label="Categoría"><option value="">Categoría…</option>${CAT_TREE.map(c=>`<optgroup label="${esc(c.l)}">${c.subs.map(([k,l])=>`<option value="${k}" ${k===it.sub?'selected':''}>${esc(l)}</option>`).join('')}</optgroup>`).join('')}</select>
+    <select name="biPick" data-buypick aria-label="Producto">${buyPickOptions(it.sub,inCat?it.name:(it.name?'__otro':''))}</select></div>
+    <div class="buy-row"><input name="biName" aria-label="Ítem" placeholder="Producto (o escribilo)" value="${esc(it.name)}">
     <input name="biQty" inputmode="decimal" aria-label="Cantidad" placeholder="Cant." value="${esc(dec(it.qty??1))}">
     <input name="biPrice" inputmode="decimal" aria-label="Precio unitario estimado" placeholder="$ unit." value="${esc(dec(it.price))}">
     <span class="num muted bi-sub"></span>
-    <button type="button" class="ghost small danger" data-act="rmBuyRow" aria-label="Quitar ítem">✕</button></div>`;}
+    <button type="button" class="ghost small danger" data-act="rmBuyRow" aria-label="Quitar ítem">✕</button></div></div>`;}
 function buyBox(e){
   const items=(e.items&&e.items.length)?e.items:[{}];
-  const sugg=[...new Set([...S.products.filter(x=>x.name).map(prodLabel),...['luces','carpas','ventilacion','clima'].flatMap(k=>(S.cat&&S.cat[k]||[]).map(catItemLabel)),...S.events.flatMap(x=>(x.items||[]).map(i=>i.name)).filter(Boolean)])];
   return `<div class="field buybox" data-bwhen="type:Compra" style="gap:8px">
     <span class="label">Ítems a comprar</span>
     <div class="buy-rows">${items.map(buyItemRow).join('')}</div>
-    <datalist id="dl-buy">${sugg.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
     <div class="row"><button type="button" class="small" data-act="addBuyRow">+ Ítem</button><span class="spacer"></span><b class="num buy-total"></b></div>
     <label class="field"><span class="label">Monto real pagado (cuando la hagas)</span><input name="actual" inputmode="decimal" value="${esc(dec(e.actual))}" placeholder="$"></label>
   </div>`;}
@@ -1452,6 +1512,10 @@ app.addEventListener('click',e=>{
     delItem(){const sp=S.spaces.find(x=>x.id===S.space);const arr=[...(sp[b.dataset.key]||[])];arr.splice(+b.dataset.i,1);
       safe(async()=>{await db.doc('spaces/'+sp.id).update({[b.dataset.key]:arr});S.confirm=null})},
     aiFill(){aiFill(b.closest('form'))},
+    catPick(){const c=CAT_TREE.find(x=>x.k===b.dataset.cat);S.catSel={cat:c.k,sub:c.subs[0][0],brand:''};S.catItem=null;rerender()},
+    subPick(){S.catSel={...(S.catSel||{cat:'equipo'}),sub:b.dataset.sub,brand:''};S.catItem=null;rerender()},
+    catItem(){S.catItem=S.catItem===b.dataset.key?null:b.dataset.key;rerender()},
+    toggleAddOwn(){S.addOwn=!S.addOwn;rerender()},
     toggleCatalog(){S.catalogOpen=!S.catalogOpen;rerender()},
     delActivity(){safe(async()=>{await db.doc('activities/'+id).delete();S.confirm=null})},
     delSlip(){safe(async()=>{await db.doc('slips/'+id).delete();S.confirm=null})},
@@ -1469,7 +1533,7 @@ app.addEventListener('click',e=>{
     toggleVerified(){const x=S.products.find(y=>y.id===id);safe(()=>db.doc('products/'+id).update({verified:!x.verified}))},
     delProduct(){safe(async()=>{await db.doc('products/'+id).delete();S.confirm=null})},
     addBuyRow(){b.closest('form').querySelector('.buy-rows').insertAdjacentHTML('beforeend',buyItemRow({}))},
-    rmBuyRow(){const r=b.closest('.buy-row');const fm=r.closest('form');if(r.parentElement.children.length>1)r.remove();else r.querySelectorAll('input').forEach(i=>i.value='');updateBuyTotals(fm)},
+    rmBuyRow(){const r=b.closest('.buy-item');const fm=r.closest('form');if(r.parentElement.children.length>1)r.remove();else r.querySelectorAll('input').forEach(i=>i.value='');updateBuyTotals(fm)},
     addDoseRow(){const fm=b.closest('form');const use=RIEGO_USE[fm.querySelector('[name=type]').value];if(!use)return;fm.querySelector('.dose-rows').insertAdjacentHTML('beforeend',prodRow(use,{}))},
     rmDoseRow(){const r=b.closest('.dose-row');const fm=r.closest('form');const c=r.parentElement;if(c.children.length>1)r.remove();else{r.querySelector('[name=prodId]').value='';r.querySelector('[name=dose]').value=''}updateDoseTotals(fm)},
     viewImg(){S.lightbox=b.dataset.src;rerender()},
@@ -1507,7 +1571,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
@@ -1518,6 +1582,9 @@ app.addEventListener('change',e=>{
   if(e.target.matches('[data-kind-toggle]')){const fm=e.target.closest('form');const led=e.target.value==='ledger';
     fm.querySelector('.only-ledger').hidden=!led;fm.querySelector('.only-project').hidden=led;}
   if(e.target.matches('[data-bvis]'))applyBatchVis(e.target.closest('form'));
+  if(e.target.matches('[data-buysub]')){const it=e.target.closest('.buy-item');it.querySelector('[data-buypick]').innerHTML=buyPickOptions(e.target.value,'');}
+  if(e.target.matches('[data-buypick]')){const it=e.target.closest('.buy-item');const v=e.target.value;const nm=it.querySelector('[name=biName]');if(v==='__otro'){nm.value='';nm.focus()}else if(v)nm.value=v;}
+  if(e.target.matches('[data-brandpick]')){S.catSel={...(S.catSel||{cat:'equipo',sub:'carpas'}),brand:e.target.value};S.catItem=null;rerender()}
   if(e.target.matches('[data-catfill]'))catFill(e.target.closest('form'),e.target.dataset.catfill);
   if(e.target.matches('[data-tentfill]'))tentFill(e.target.closest('form'));
   if(e.target.matches('[data-kindsel]'))applyKindVisibility(e.target.closest('form'));
@@ -1574,7 +1641,7 @@ app.addEventListener('submit',e=>{
         ev.products=ids.map((pid,i)=>{const pr=S.products.find(x=>x.id===pid);return pr?{productId:pid,label:prodLabel(pr),dose:num(ds[i]),unit:us[i]||'ml'}:null}).filter(Boolean);}
       else{ev.products=[];ev.liters='';}
       if(ev.type==='Compra'){const fd=new FormData(f);const ns=fd.getAll('biName'),qs=fd.getAll('biQty'),ps=fd.getAll('biPrice');
-        ev.items=ns.map((nm,i)=>({name:String(nm).trim(),qty:num(qs[i])||1,price:n2(ps[i])})).filter(x=>x.name);ev.actual=n2(d.actual);}
+        const subs=fd.getAll('biSub');ev.items=ns.map((nm,i)=>({name:String(nm).trim(),qty:num(qs[i])||1,price:n2(ps[i]),sub:subs[i]||''})).filter(x=>x.name);ev.actual=n2(d.actual);}
       if(ev.type==='Riego radicular'){ev.batchId=d.batchId||'';ev.perPlant=n2(d.perPlant);ev.drained=d.drained||'';ev.ecIn=n2(d.ecIn);ev.phIn=n2(d.phIn);ev.ecOut=n2(d.ecOut);ev.phOut=n2(d.phOut);}
       if(f.dataset.id){const old=S.events.find(x=>x.id===f.dataset.id)||{};
         if(f.dataset.mode==='edit'){if(d.spaceId!==undefined)ev.spaceId=d.spaceId;if(ev.status==='planificado'&&(!old.plannedDate||old.plannedDate===old.date))ev.plannedDate=ev.date;}
@@ -1583,6 +1650,9 @@ app.addEventListener('submit',e=>{
       else await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,spaceId:d.spaceId||S.space||'',createdAt:Date.now()});
     }else if(kind==='product'){
       const name=(d.name||'').trim();if(!name)return;
+      if(/^(equipo|plantas):/.test(d.use||'')){const [c2,sb]=d.use.split(':');
+        await db.collection('products').add({projectId:'cultivo',use:'otro',cat2:c2,sub:sb,line:(d.line||'').trim(),name,createdAt:Date.now()});
+      }else
       if(d.use==='sustrato'){
         await db.collection('products').add({projectId:'cultivo',use:'sustrato',line:(d.line||'').trim(),name,presentations:(d.presentations||'').trim(),ph:(d.ph||'').trim(),ce:(d.ce||'').trim(),
           usage:(d.usage||'').trim(),composition:(d.composition||'').trim(),weight:(d.weight||'').trim(),feedWeeks:n2(d.feedWeeks),notes:(d.notes||'').trim(),
