@@ -113,6 +113,18 @@ textarea{min-height:70px;resize:vertical}
 .mov .amt{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 .tag{font-size:.72rem;border:1px solid var(--line);border-radius:999px;padding:1px 7px;color:var(--muted);margin-left:6px}
 @media (max-width:560px){.mov{grid-template-columns:60px 1fr auto}.mov .ma{grid-column:1/-1;justify-self:end}.cat{grid-template-columns:1fr 100px}.cat .track{grid-column:1/-1;grid-row:2}}
+/* calendario */
+.cal-wrap{overflow-x:auto}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(40px,1fr));gap:4px;min-width:300px}
+.cw{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:center;padding:2px 0}
+.cd{min-height:64px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:4px;display:flex;flex-direction:column;gap:2px;align-items:stretch;text-align:left;cursor:pointer;min-width:0;overflow:hidden}
+.cd.out{border:0;background:transparent;cursor:default}
+.cd.today{border-color:var(--pc);border-width:2px}
+.cd.has{background:color-mix(in srgb,var(--pc) 10%,var(--surface))}
+.cd .dn{font-size:.75rem;color:var(--muted)}
+.cd .ev{font-size:.66rem;line-height:1.2;background:var(--pc);color:var(--surface);border-radius:4px;padding:1px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd .ev.more{background:transparent;color:var(--pc)}
+@media (max-width:560px){.cd{min-height:48px}.cd .ev{font-size:0;height:6px;padding:0}.cd .ev.more{display:none}}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -142,8 +154,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <script>
 (function(){
 const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
-const S={projects:[],tasks:[],logs:[],money:[],timer:null,month:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
-const curId=()=>decodeURIComponent(location.hash.slice(1));
+const S={projects:[],tasks:[],logs:[],money:[],events:[],timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+function hashId(){try{return decodeURIComponent(location.hash.slice(1))}catch(e){return ''}}
+const curId=()=>S.nav!==null?S.nav:hashId();
+function go(id){S.nav=id||'';S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
 const current=()=>S.projects.find(p=>p.id===curId());
 const isLedger=p=>p&&p.kind==='ledger';
 const ARS=new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
@@ -157,7 +171,7 @@ function ledgerSums(p,month){
   const exp=ms.filter(m=>m.type!=='ingreso').reduce((s,m)=>s+num(m.amount),0);
   return {ms,inc,exp,bal:inc-exp};
 }
-window.addEventListener('hashchange',()=>{S.form=null;S.confirm=null;window.scrollTo(0,0);rerender()});
+window.addEventListener('hashchange',()=>{const h=hashId();if(h===S.nav)return;S.nav=h;S.form=null;S.confirm=null;window.scrollTo(0,0);rerender()});
 let db=null, pending=false;
 const app=document.getElementById('app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -355,6 +369,48 @@ function moveForm(p){
     <div class="row"><button class="primary" type="submit">Guardar movimiento</button><button type="button" data-act="cancelForm">Cancelar</button></div>
   </form>`;
 }
+const EV_TYPES=['Germinación','Trasplante','Riego','Fertilización','Poda / entrenamiento','Inicio de floración','Cosecha','Secado / curado','Otro'];
+function calendarPanel(p,pc){
+  const month=S.calMonth||today().slice(0,7);const f=S.form;
+  const evs=S.events.filter(e=>e.projectId===p.id);
+  const [y,m]=month.split('-').map(Number);
+  const first=new Date(y,m-1,1);const lead=(first.getDay()+6)%7;const days=new Date(y,m,0).getDate();
+  const t=today();
+  let cells='';
+  for(let i=0;i<lead;i++)cells+='<div class="cd out"></div>';
+  for(let d=1;d<=days;d++){
+    const ds=month+'-'+String(d).padStart(2,'0');const de=evs.filter(e=>e.date===ds);
+    cells+=`<button class="cd ${ds===t?'today':''} ${de.length?'has':''}" data-act="calDay" data-date="${ds}" aria-label="${d} de ${MESES[m-1]}${de.length?': '+esc(de.map(e=>e.title).join(', ')):''}">
+      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<span class="ev">${esc(e.title)}</span>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}</button>`;
+  }
+  const list=evs.filter(e=>(e.date||'').startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date));
+  const germ=evs.filter(e=>e.type==='Germinación'&&e.date<=t).sort((a,b)=>b.date.localeCompare(a.date));
+  return `<section class="panel" style="--pc:${pc}">
+    <div class="row"><h2>Calendario</h2><span class="spacer"></span>
+      <button class="small" data-act="calPrev" aria-label="Mes anterior">‹</button>
+      <span class="num" style="min-width:120px;text-align:center">${monthName(month)}</span>
+      <button class="small" data-act="calNext" aria-label="Mes siguiente">›</button>
+      <button class="small primary" data-act="calDay" data-date="${t}">+ Evento</button></div>
+    ${germ.map(g=>`<div class="notice"><b>${esc(g.title)}</b> · día <span class="num">${-daysLeft(g.date)}</span> desde la germinación (${fmtDate(g.date)})</div>`).join('')}
+    ${f&&f.type==='event'?eventForm(p,f.date):''}
+    <div class="cal-wrap"><div class="cal">${['lun','mar','mié','jue','vie','sáb','dom'].map(d=>`<div class="cw">${d}</div>`).join('')}${cells}</div></div>
+    ${list.length?`<div class="logs">${list.map(e=>`<div class="log" style="grid-template-columns:76px 1fr auto"><span class="num">${fmtDate(e.date)}</span>
+      <span style="min-width:0">${esc(e.title)}<span class="tag">${esc(e.type||'Otro')}</span>${e.note?' <span class="muted">· '+esc(e.note)+'</span>':''}</span>
+      <span style="grid-column:auto">${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="e${esc(e.id)}" aria-label="Borrar evento">✕</button>`}</span></div>`).join('')}</div>`
+      :'<div class="empty">Sin eventos este mes. Tocá un día para cargar uno.</div>'}
+  </section>`;
+}
+function eventForm(p,date){
+  return `<form class="inline-form" data-form="event" data-pid="${esc(p.id)}">
+    <div class="grid2">
+      <label class="field"><span class="label">Fecha</span><input id="e-date" name="date" type="date" value="${esc(date||today())}" required></label>
+      <label class="field"><span class="label">Tipo</span><select id="e-type" name="type">${EV_TYPES.map(x=>`<option>${x}</option>`).join('')}</select></label>
+    </div>
+    <label class="field"><span class="label">Qué pasó / qué hay que hacer</span><input id="e-title" name="title" required></label>
+    <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note"></label>
+    <div class="row"><button class="primary" type="submit">Guardar evento</button><button type="button" data-act="cancelForm">Cancelar</button></div>
+  </form>`;
+}
 function detailView(){
   const p=S.projects.find(x=>x.id===S.pid);const st=projStats(p);const pc=pcolor(p);const dl=daysLeft(p.deadline);
   const f=S.form;
@@ -378,6 +434,7 @@ function detailView(){
     <div class="stat"><b>${h1(st.week)}${num(p.weeklyHours)?' / '+h1(num(p.weeklyHours)):''} h</b><span>esta semana${num(p.weeklyHours)?' / meta':''}</span></div>
     <div class="stat"><b>${Math.round(st.pct*100)}%</b><span>avance (por horas estimadas)</span></div>
   </div><div class="prog"><i style="width:${Math.round(st.pct*100)}%"></i></div></section>`;
+  if(p.calendar)h+=calendarPanel(p,pc);
   // tareas
   h+=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Plan de tareas</h2><span class="spacer"></span>
     <button class="small" data-act="logProject">+ Registrar tiempo general</button>
@@ -424,8 +481,12 @@ app.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b)return;
   const act=b.dataset.act,id=b.dataset.id;
   const A={
-    open(){location.hash=id},
-    home(){location.hash=''},
+    open(){go(id)},
+    home(){go('')},
+    calPrev(){S.calMonth=shiftMonth(S.calMonth||today().slice(0,7),-1);rerender()},
+    calNext(){S.calMonth=shiftMonth(S.calMonth||today().slice(0,7),1);rerender()},
+    calDay(){S.form={type:'event',date:b.dataset.date};rerender();document.getElementById('e-title')?.focus()},
+    delEvent(){safe(async()=>{await db.doc('events/'+id).delete();S.confirm=null})},
     prevMonth(){S.month=shiftMonth(S.month||today().slice(0,7),-1);rerender()},
     nextMonth(){S.month=shiftMonth(S.month||today().slice(0,7),1);rerender()},
     newMove(){S.form={type:'move'};rerender();document.getElementById('m-amount')?.focus()},
@@ -453,7 +514,8 @@ app.addEventListener('click',e=>{
       for(const t of S.tasks.filter(t=>t.projectId===pid))await db.doc('tasks/'+t.id).delete();
       for(const l of S.logs.filter(l=>l.projectId===pid))await db.doc('logs/'+l.id).delete();
       for(const m of S.money.filter(m=>m.ledgerId===pid))await db.doc('money/'+m.id).delete();
-      await db.doc('projects/'+pid).delete();S.confirm=null;location.hash='';rerender()})},
+      for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
+      await db.doc('projects/'+pid).delete();go('')})},
   };
   if(A[act]&&(db||act==='home'||act==='open'))A[act]();
 });
@@ -474,7 +536,9 @@ app.addEventListener('submit',e=>{
       const data={name:d.name.trim(),priority:num(d.priority)||null,goal:(d.goal||'').trim(),why:(d.why||'').trim(),deadline:d.deadline||'',weeklyHours:num(d.weeklyHours),resources:(d.resources||'').trim(),
         scopes:String(d.scopes||'').split(',').map(x=>x.trim()).filter(Boolean)};
       if(f.dataset.id)await db.doc('projects/'+f.dataset.id).update(data);
-      else{const r=await db.collection('projects').add({...data,kind:d.kind||'project',createdAt:Date.now()});S.form=null;location.hash=r.id}
+      else{const r=await db.collection('projects').add({...data,kind:d.kind||'project',createdAt:Date.now()});go(r.id)}
+    }else if(kind==='event'){
+      await db.collection('events').add({projectId:f.dataset.pid,date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),createdAt:Date.now()});
     }else if(kind==='move'){
       const amt=num(d.amount);if(amt<=0){S.err='Cargá un monto mayor a cero.';rerender();return}
       await db.collection('money').add({ledgerId:f.dataset.pid,type:d.type==='ingreso'?'ingreso':'gasto',amount:amt,category:(d.category||'').trim(),scope:d.scope||'',date:d.date||today(),note:(d.note||'').trim(),createdAt:Date.now()});
@@ -503,6 +567,7 @@ async function boot(){
   db.collection('projects').onSnapshot(s=>{clearTimeout(loadTimer);S.projects=toList(s);S.loaded.projects=true;if(S.err&&S.err.startsWith('Los datos'))S.err=null;render()},onErr);
   db.collection('tasks').onSnapshot(s=>{S.tasks=toList(s);S.loaded.tasks=true;render()},onErr);
   db.collection('logs').onSnapshot(s=>{S.logs=toList(s);S.loaded.logs=true;render()},onErr);
+  db.collection('events').onSnapshot(s=>{S.events=toList(s);render()},onErr);
   db.collection('money').onSnapshot(s=>{S.money=toList(s);render()},onErr);
   db.doc('timer/current').onSnapshot(s=>{S.timer=s.exists?s.data():null;render()},onErr);
 }
