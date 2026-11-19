@@ -263,7 +263,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <script>
 (function(){
 const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
-const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],batches:[],plans:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],batches:[],plans:[],slips:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
 function hashId(){try{return decodeURIComponent(location.hash.slice(1))}catch(e){return ''}}
 const curId=()=>S.nav!==null?S.nav:hashId();
 function go(id){S.nav=id||'';S.space=null;S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
@@ -1183,6 +1183,28 @@ async function transferBatch(b,qty,dest,date){
   const {id,...rest}=b;
   await db.collection('batches').add({...rest,qty,spaceId:dest,parentId:b.id,history:[...h,{date,text:`Llegaron ${qty} plantas desde ${src}`}],createdAt:Date.now()});
 }
+function slipsPanel(p,pc){
+  const items=S.slips.filter(x=>x.projectId===p.id).sort((a,c)=>(c.date||'').localeCompare(a.date||'')||num(c.createdAt)-num(a.createdAt));
+  const ws=sundayOf(today());const prev=addDays(ws,-7);
+  const thisW=items.filter(x=>x.date>=ws).length,lastW=items.filter(x=>x.date>=prev&&x.date<ws).length;
+  return `<section class="panel" style="--pc:${pc}"><h2>Registro de desvíos</h2>
+    <div class="muted" style="font-size:.85rem">Anotá cuando comiste o tomaste algo que no debías.</div>
+    <div class="money-sum"><div class="ms"><span class="label">Esta semana</span><b>${thisW}</b></div><div class="ms"><span class="label">Semana pasada</span><b>${lastW}</b></div></div>
+    <form class="inline-form" data-form="slip" data-pid="${esc(p.id)}">
+      <div class="grid3">
+        <label class="field"><span class="label">Fecha</span><input id="sl-date" name="date" type="date" value="${today()}"></label>
+        <label class="field"><span class="label">Qué</span><select id="sl-kind" name="kind"><option>Comida</option><option>Bebida</option></select></label>
+        <label class="field"><span class="label">Ocasión (opcional)</span><input id="sl-occ" name="occasion" list="dl-occ" placeholder="Ej.: salida a comer"><datalist id="dl-occ">${[...new Set(['Salida a comer','En casa','Trabajo',...items.map(x=>x.occasion).filter(Boolean)])].map(o=>`<option value="${esc(o)}">`).join('')}</datalist></label>
+      </div>
+      <label class="field"><span class="label">Qué comiste o tomaste</span><input id="sl-what" name="what" required placeholder="Ej.: pizza y 2 cervezas"></label>
+      <div class="row"><button class="primary" type="submit">Registrar</button></div>
+    </form>
+    ${items.length?`<div class="logs">${items.slice(0,40).map(x=>`<div class="log" style="grid-template-columns:76px 1fr auto"><span class="num">${fmtDate(x.date)}</span>
+      <span style="min-width:0">${esc(x.what)}<span class="tag">${esc(x.kind)}</span>${x.occasion?`<span class="tag">${esc(x.occasion)}</span>`:''}</span>
+      <span>${S.confirm==='sl'+x.id?`<button class="small danger" data-act="delSlip" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="sl${esc(x.id)}" aria-label="Borrar registro">✕</button>`}</span></div>`).join('')}</div>`
+      :'<div class="empty">Sin desvíos registrados.</div>'}
+  </section>`;
+}
 function detailView(){
   const p=S.projects.find(x=>x.id===S.pid);const st=projStats(p);const pc=pcolor(p);const dl=daysLeft(p.deadline);
   const f=S.form;
@@ -1211,6 +1233,7 @@ function detailView(){
     <div class="stat"><b>${h1(st.week)}${num(p.weeklyHours)?' / '+h1(num(p.weeklyHours)):''} h</b><span>esta semana${num(p.weeklyHours)?' / meta':''}</span></div>
     <div class="stat"><b>${Math.round(st.pct*100)}%</b><span>avance (por horas estimadas)</span></div>
   </div><div class="prog"><i style="width:${Math.round(st.pct*100)}%"></i></div></section>`;
+  if(p.slips)h+=slipsPanel(p,pc);
   if(p.calendar&&!spacesOf(p.id).length)h+=calendarPanel(p,pc)+mediaPanel(p,pc);
   // tareas
   h+=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Plan de tareas</h2><span class="spacer"></span>
@@ -1294,6 +1317,7 @@ app.addEventListener('click',e=>{
       safe(async()=>{await db.doc('spaces/'+sp.id).update({[b.dataset.key]:arr});S.confirm=null})},
     aiFill(){aiFill(b.closest('form'))},
     toggleCatalog(){S.catalogOpen=!S.catalogOpen;rerender()},
+    delSlip(){safe(async()=>{await db.doc('slips/'+id).delete();S.confirm=null})},
     newPlan(){S.form={type:'plan'};rerender()},
     editPlan(){S.form={type:'plan',id};rerender()},
     delPlan(){safe(async()=>{await db.doc('plans/'+id).delete();S.confirm=null})},
@@ -1378,6 +1402,8 @@ app.addEventListener('submit',e=>{
     if(key==='lights')it.aiFields=d.verified?[]:String(d.aiFields||'').split(',').filter(Boolean);
     const arr=[...(sp[key]||[])];if(idx>=0)arr[idx]=it;else arr.push(it);
     safe(async()=>{await db.doc('spaces/'+sp.id).update({[key]:arr});S.form=null;document.activeElement?.blur?.();rerender()});return}
+  if(kind==='slip'){const what=(d.what||'').trim();if(!what)return;
+    safe(async()=>{await db.collection('slips').add({projectId:f.dataset.pid,date:d.date||today(),kind:d.kind||'Comida',what,occasion:(d.occasion||'').trim(),createdAt:Date.now()});document.activeElement?.blur?.();rerender()});return}
   if(kind==='plan'){const rows=readPlanForm(f);const data={name:(d.name||'').trim(),rows,sources:String(d.sources||'').split(/\s+/).filter(u=>/^https?:\/\//.test(u))};
     safe(async()=>{if(f.dataset.id)await db.doc('plans/'+f.dataset.id).update(data);else await db.collection('plans').add({...data,projectId:'cultivo',verified:false,createdAt:Date.now()});S.form=null;rerender()});return}
   if(kind==='feedweeks'){safe(async()=>{await db.doc('products/'+f.dataset.id).update({feedWeeks:n2(d.feedWeeks)});document.activeElement?.blur?.();rerender()});return}
@@ -1445,6 +1471,7 @@ async function boot(){
   db.collection('tasks').onSnapshot(s=>{S.tasks=toList(s);S.loaded.tasks=true;render()},onErr);
   db.collection('logs').onSnapshot(s=>{S.logs=toList(s);S.loaded.logs=true;render()},onErr);
   db.collection('products').onSnapshot(s=>{S.products=toList(s);render()},onErr);
+  db.collection('slips').onSnapshot(s=>{S.slips=toList(s);render()},onErr);
   db.collection('plans').onSnapshot(s=>{S.plans=toList(s);render()},onErr);
   db.collection('batches').onSnapshot(s=>{S.batches=toList(s);render()},onErr);
   db.collection('spaces').onSnapshot(s=>{S.spaces=toList(s);render()},onErr);
