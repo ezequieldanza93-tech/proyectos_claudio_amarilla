@@ -19,12 +19,12 @@ Relevamiento del 19/11/2026. Acá está lo que no se pudo verificar, los product
 13. **Mamboretá**: los cebos y granulados (BOLITA, B+R, GRILLO, MIREX-S), la pintura-trampa A-TRAPA y el hormiguicida KAPUT no se diluyen en agua. Están en `foliares.json` con la dosis en `notas`. ¿Los querés en la app?
 14. **Garden HighPro Probox 80x80x160** de Santa Planta: no aclara si es Basic o Eco Pro. Puede ser el mismo producto que `garden-highpro-probox-ecopro-80x80x160`, y no se fusionó.
 15. **VT Fans**: `vt-fans-cooler-4-220v` (Goblin) puede ser el mismo producto que `vt-fans-turbina-cooler-extractor-4-ruleman` (Ganga). No se fusionó.
-16. **Amnesia**: es fabricante argentino («Diseñamos y fabricamos iluminación LED para cultivo indoor»). Sin embargo, solo el **Eco 180w** dice «AMNESIA» en la ficha, y es el único cargado. Los demás quedaron afuera por la regla de marca explícita:
-    - **Cob YXO** (15 paneles de 100 a 500 W, en versiones Cálido, Full Spectrum y Mixto): el sitio los agrupa en la categoría **«Amnesia Cob YXO»**, pero la ficha solo nombra los chips YXO. ¿Los cargamos como Amnesia, línea Cob YXO?
-    - **Samsung Bloom 150W**: la ficha no nombra ninguna marca. Tiene datos (150 W, sin dimmer, PPFD 650 a 40 cm).
-    - **Cob Pro, Cob Samsung y Panel Cob Samsung**: tampoco nombran marca.
+16. **Amnesia**: es fabricante argentino («Diseñamos y fabricamos iluminación LED para cultivo indoor»).
+    - ✅ **Cob YXO: resuelto (19/11).** Se cargaron los 15 paneles como Amnesia, línea Cob YXO, por decisión tuya: el sitio los agrupa en la categoría «Amnesia Cob YXO». La 500w Mixto no trae características técnicas en la ficha. En las 100w la ficha dice «150m» de largo (error de tipeo), y ese campo quedó en null.
+    - **Samsung Bloom 150W**: la ficha no nombra ninguna marca. Tiene datos (150 W, sin dimmer, PPFD 650 a 40 cm). ¿También va como Amnesia?
+    - **Cob Pro y Cob Samsung**: tampoco nombran marca. ¿Van como Amnesia?
     - Sin datos técnicos en la ficha: Bloom 300, Araña Pro 240, Cob Samsung 500/600, Led Yxo 50w y Cooler Ruleman 4".
-    - Las 32 fichas están guardadas localmente: si decidís que son de Amnesia, se cargan sin volver a pedirle nada al sitio.
+    - Las fichas están guardadas localmente: si decidís que son de Amnesia, se cargan sin volver a pedirle nada al sitio.
 
 ## 2. Límites que afectaron la cobertura
 
@@ -57,6 +57,7 @@ En cada uno el campo quedó en null y los valores están en `conflictos`, sin el
 
 Productos cargados (sirven para sugerir marca y modelo) cuyas fuentes no dan ninguno de los datos técnicos principales de su categoría. Por ejemplo: luz sin potencia real ni PPF, sustrato sin litros, pH ni CE, fertilizante sin dosis ni presentaciones.
 
+- **Amnesia** (1): `amnesia-cob-yxo-500w-mixto`
 - **Bioled** (3): `bioled-330i`, `bioled-440i`, `bioled-pf-100`
 - **Garden HighPro** (2): `garden-highpro-profan-extractor-100`, `garden-highpro-humipro-4l`
 - **Growtech** (2): `growtech-quantum-q150`, `growtech-quantum-q300`

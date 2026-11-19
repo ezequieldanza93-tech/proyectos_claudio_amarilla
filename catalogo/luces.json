@@ -1,5 +1,442 @@
 [
   {
+    "id": "amnesia-cob-yxo-100w-calido",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 100w Cálido",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 100 W con chips YXO, versión Cálido.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-100w-blanco-calido/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": null,
+    "potencia_real_w": 100.0,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Cálido",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "40x40",
+    "notas": "La ficha dice «100W REALES». PPFD 550 µmol/m²/s según la ficha (no es PPF). Consumo eléctrico 0.6 A. La ficha dice «Dimensiones: 150m x 8cm x 13,5cm»: el largo queda en null por el error de tipeo. Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 1.5 kg, alimentación 220v. Incluye: Dos Cooler 220v con rodamientos, disipador de aluminio extruido, protección contra picos de tensión (varistor), termistor, cable y ficha eléctrica. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-100w-full-spectrum",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 100w Full Spectrum",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 100 W con chips YXO, versión Full Spectrum.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-100w-full-spectrum/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 100.0,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "40x40",
+    "notas": "La ficha dice «100W REALES». PPFD 550 µmol/m²/s según la ficha (no es PPF). Consumo eléctrico 0.6 A. La ficha dice «Dimensiones: 150m x 8cm x 13,5cm»: el largo queda en null por el error de tipeo. Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 1.5 kg, alimentación 220v. Incluye: Dos Cooler 220v con rodamientos, disipador de aluminio extruido, protección contra picos de tensión (varistor), termistor, cable y ficha eléctrica. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-100w-mixto",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 100w Mixto",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 100 W con chips YXO, versión Mixto.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-100w-mixto/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": null,
+    "potencia_real_w": 100.0,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Mixto",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "40x40",
+    "notas": "La ficha dice «100W REALES». PPFD 550 µmol/m²/s según la ficha (no es PPF). Consumo eléctrico 0.6 A. La ficha dice «Dimensiones: 150m x 8cm x 13,5cm»: el largo queda en null por el error de tipeo. Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 1.5 kg, alimentación 220v. Incluye: Dos Cooler 220v con rodamientos, disipador de aluminio extruido, protección contra picos de tensión (varistor), termistor, cable y ficha eléctrica. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-200w-calido",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 200w Cálido",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 200 W con chips YXO, versión Cálido.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-200w-blanco-calido/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": null,
+    "potencia_real_w": 200.0,
+    "panel_largo_cm": 20.0,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Cálido",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "hasta 60x60",
+    "notas": "La ficha dice «200W REALES». PPFD 550 µmol/m²/s a 35cm según la ficha (no es PPF). Consumo eléctrico 0.9 A. Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 2.5 kg, alimentación 220v. Incluye: Cooler 220v con rodamientos, disipador de aluminio extruido, protección contra picos de tensión (varistor), termistor, cable y ficha eléctricA. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-200w-full-spectrum",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 200w Full Spectrum",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 200 W con chips YXO, versión Full Spectrum.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-200w-full-spectrum/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 200.0,
+    "panel_largo_cm": 20.0,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "hasta 60x60",
+    "notas": "La ficha dice «200W REALES». PPFD 550 µmol/m²/s a 35cm según la ficha (no es PPF). Consumo eléctrico 0.9 A. Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 2.5 kg, alimentación 220v. Incluye: Cooler 220v con rodamientos, disipador de aluminio extruido, protección contra picos de tensión (varistor), termistor, cable y ficha eléctricA. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-200w-mixto",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 200w Mixto",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 200 W con chips YXO, versión Mixto.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-200w-mixto/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": null,
+    "potencia_real_w": 200.0,
+    "panel_largo_cm": 20.0,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Mixto",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "hasta 60x60",
+    "notas": "La ficha dice «200W REALES». PPFD 550 µmol/m²/s a 35cm según la ficha (no es PPF). Consumo eléctrico 0.9 A. Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 2.5 kg, alimentación 220v. Incluye: Cooler 220v con rodamientos, disipador de aluminio extruido, protección contra picos de tensión (varistor), termistor, cable y ficha eléctricA. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-300w-calido",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 300w Cálido",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 300 W con chips YXO, versión Cálido.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-300w-calido/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": null,
+    "potencia_real_w": 300.0,
+    "panel_largo_cm": 30.0,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Cálido",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "hasta 80x80",
+    "notas": "La ficha dice «300W REALES». PPFD 550 µmol/m²/s según la ficha (no es PPF). Consumo eléctrico 1.3 A. Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 3.5 kg, alimentación 220v. Incluye: Cooler 220v con rodamientos, disipador de aluminio extruido, protección contra picos de tensión (varistor), termistor, cable y ficha eléctrica. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-300w-full-spectrum",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 300w Full Spectrum",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 300 W con chips YXO, versión Full Spectrum.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-300w-full-spectrum/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 315.0,
+    "panel_largo_cm": 35.0,
+    "panel_ancho_cm": 15.0,
+    "panel_alto_cm": 8.0,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "80x80",
+    "potencia_anunciada_w": 300.0,
+    "notas": "La ficha dice «Potencia 300w» y «Consumo eléctrico 315w»; se cargó el consumo como potencia real. PPFD 450 según la ficha, sin unidad ni distancia (no es PPF). Apertura 180°, distancia óptima a las plantas 30/40 cm, peso 2,5 kg, alimentación 220v. Incluye: Panel listo para enchufar. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-300w-mixto",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 300w Mixto",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 300 W con chips YXO, versión Mixto.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-300w-mixto/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": null,
+    "potencia_real_w": 300.0,
+    "panel_largo_cm": 30.0,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Mixto",
+    "dimmer": null,
+    "cobertura_recomendada_cm": "hasta 80x80",
+    "notas": "La ficha dice «300W REALES». PPFD 550 µmol/m²/s según la ficha (no es PPF). Consumo eléctrico 1.3 A. Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 3.5 kg, alimentación 220v. Incluye: Cooler 220v con rodamientos, disipador de aluminio extruido, protección contra picos de tensión (varistor), termistor, cable y ficha eléctrica. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-400w-calido",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 400w Cálido",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 400 W con chips YXO, versión Cálido.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-400w-calido/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": null,
+    "potencia_real_w": 400.0,
+    "panel_largo_cm": 40.0,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Cálido",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La ficha dice «400W REALES». PPFD 550 µmol/m²/s según la ficha (no es PPF). Consumo eléctrico 1.8 A. Cobertura según la ficha: «hasta 1m2» (en m², no en medidas). Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 3 kg, alimentación 220v. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-400w-full-spectrum",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 400w Full Spectrum",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 400 W con chips YXO, versión Full Spectrum.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-400w-fullspectrum/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 400.0,
+    "panel_largo_cm": 40.0,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La ficha dice «400W REALES». PPFD 550 µmol/m²/s según la ficha (no es PPF). Consumo eléctrico 1.8 A. Cobertura según la ficha: «hasta 1m2» (en m², no en medidas). Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 3 kg, alimentación 220v. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-400w-mixto",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 400w Mixto",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 400 W con chips YXO, versión Mixto.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-400w-mixto/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": null,
+    "potencia_real_w": 400.0,
+    "panel_largo_cm": 40.0,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Mixto",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La ficha dice «400W REALES». PPFD 550 µmol/m²/s según la ficha (no es PPF). Consumo eléctrico 1.8 A. Cobertura según la ficha: «hasta 1m2» (en m², no en medidas). Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 3 kg, alimentación 220v. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-500w-calido",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 500w Cálido",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 500 W con chips YXO, versión Cálido.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-500w-calido/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": null,
+    "potencia_real_w": 500.0,
+    "panel_largo_cm": 50.0,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Cálido",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La ficha dice «500W REALES». PPFD 550 µmol/m²/s según la ficha (no es PPF). Consumo eléctrico 2.2 A. Cobertura según la ficha: «hasta 1.20m2» (en m², no en medidas). Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 4 kg, alimentación 220v. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-500w-full-spectrum",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 500w Full Spectrum",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 500 W con chips YXO, versión Full Spectrum.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-500w-full-spectrum/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": "Full spectrum",
+    "potencia_real_w": 500.0,
+    "panel_largo_cm": 50.0,
+    "panel_ancho_cm": 8.0,
+    "panel_alto_cm": 13.5,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": "Full Spectrum",
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La ficha dice «500W REALES». PPFD 550 µmol/m²/s según la ficha (no es PPF). Consumo eléctrico 2.2 A. Cobertura según la ficha: «hasta 1.20m2» (en m², no en medidas). Apertura 120°, distancia óptima a las plantas 30-40 cm, peso 4 kg, alimentación 220v. La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026)."
+  },
+  {
+    "id": "amnesia-cob-yxo-500w-mixto",
+    "categoria": "luz",
+    "marca": "Amnesia",
+    "linea": "Cob YXO",
+    "producto": "Cob Yxo 500w Mixto",
+    "modelo": null,
+    "descripcion_corta": "Panel COB de 500 W con chips YXO, versión Mixto.",
+    "fuentes": [
+      {
+        "url": "https://www.amnesiagrow.com.ar/producto/panel-aml-500w-mixto/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": true,
+    "tipo": null,
+    "potencia_real_w": null,
+    "panel_largo_cm": null,
+    "panel_ancho_cm": null,
+    "panel_alto_cm": null,
+    "ppf_umol_s": null,
+    "eficacia_umol_j": null,
+    "espectro": null,
+    "dimmer": null,
+    "cobertura_recomendada_cm": null,
+    "notas": "La ficha dice «Todavía no se cargaron características técnicas para este producto»: solo nombre y potencia del título (anunciada). La ficha nombra los chips YXO; la marca Amnesia sale de la categoría «Amnesia Cob YXO» del sitio del fabricante (decisión de Ezequiel, 19/11/2026).",
+    "potencia_anunciada_w": 500.0
+  },
+  {
     "id": "amnesia-linea-eco-180w",
     "categoria": "luz",
     "marca": "Amnesia",

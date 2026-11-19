@@ -13,12 +13,12 @@ Datos técnicos y de identificación de productos de cultivo que se venden en Ar
 | `fertilizantes.json` | 22 | 22 | 2 | Cannabiogen (Delta 9), Mamboretá, Namaste, Top Crop |
 | `foliares.json` | 40 | 40 | 0 | BioProyect, Green Leaf (4 en 1 / 6 en 1), La Pota, Mamboretá, Namaste, NoStress, Pangea, Power, Revienta, Top Crop, Vamp |
 | `sustratos.json` | 40 | 40 | 3 | Biobizz, Cultivate, Growers, Landiner, Lizard, Silver, Terrafertil (Growmix), Vamp |
-| `luces.json` | 47 | 46 | 3 | Amnesia, Bioled, Cosmel, Growtech, GS Iluminación, Lux, Mars Hydro |
+| `luces.json` | 62 | 61 | 3 | Amnesia (Eco y Cob YXO), Bioled, Cosmel, Growtech, GS Iluminación, Lux, Mars Hydro |
 | `carpas.json` | 24 | 21 | 1 | cultivARG, Garden HighPro |
 | `ventilacion.json` | 18 | 18 | 3 | Agroled, Garden HighPro, Growtech, Santa Planta, VT Fans |
 | `clima.json` | 14 | 14 | 0 | Garden HighPro, Wentux |
 | `geneticas.json` | 26 | 26 | 0 | BSF Seeds (autoflorecientes), Clon Factory (clones) |
-| **Total** | **231** | **227** | **12** | |
+| **Total** | **246** | **242** | **12** | |
 
 Además:
 
@@ -59,6 +59,7 @@ Cada producto se volvió a abrir en su fuente, en dos pasos:
 - **Las dudas se resolvieron con la regla de conflictos:** cuando dos fuentes no coinciden, el campo queda en `null` y los dos valores van a `conflictos`.
 - **`verificado: true`** quiere decir que el producto pasó este doble chequeo sin dudas abiertas. Los 4 que quedan en `false` están detallados en `pendientes.md`.
 - **Amnesia** se verificó aparte, respetando su `Crawl-delay: 60`: en el Eco 180w, `dimmer: true` no figuraba en la ficha y pasó a `null`.
+- **Cob YXO de Amnesia** (15, agregados después por decisión de Ezequiel): se extrajeron de las fichas guardadas y se controló que cada número cargado figure en su ficha.
 
 **Correcciones que hizo el orquestador, aparte de la verificación:**
 
@@ -71,7 +72,7 @@ Cada producto se volvió a abrir en su fuente, en dos pasos:
 
 ## Revisión de muestra (10 productos al azar)
 
-- **Cómo se eligieron:** al azar entre los 231 productos, con semilla fija `2026-11-19`, así que se puede reproducir. Script: `python -P herramientas/revisar_muestra.py 10 2026-11-19`.
+- **Cómo se eligieron:** al azar entre los 231 productos que había antes de sumar los Cob YXO, con semilla fija `2026-11-19`, así que se puede reproducir. Script: `python -P herramientas/revisar_muestra.py 10 2026-11-19`.
 - **Cómo se revisaron:** se volvió a abrir cada fuente, se buscó cada dato no nulo en su texto y se revisó a mano lo que no apareció.
 
 | Producto | Categoría | Campos | Resultado |
