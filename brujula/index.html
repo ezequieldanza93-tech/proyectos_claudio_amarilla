@@ -125,6 +125,30 @@ textarea{min-height:70px;resize:vertical}
 .cd .ev{font-size:.66rem;line-height:1.2;background:var(--pc);color:var(--surface);border-radius:4px;padding:1px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cd .ev.more{background:transparent;color:var(--pc)}
 @media (max-width:560px){.cd{min-height:48px}.cd .ev{font-size:0;height:6px;padding:0}.cd .ev.more{display:none}}
+.cd .ev.st-planificado{background:transparent;color:var(--pc);border:1px dashed var(--pc)}
+.cd .ev.st-no-se-hizo{background:var(--line);color:var(--muted);text-decoration:line-through}
+.ev-key{display:inline-block;width:12px;height:8px;border-radius:3px;background:var(--pc);vertical-align:middle;margin-right:4px}
+.ev-key.st-planificado{background:transparent;border:1px dashed var(--pc)}
+.ev-key.st-no-se-hizo{background:var(--line)}
+.evrow{display:grid;grid-template-columns:76px 1fr auto;gap:10px;align-items:start;padding:9px 0;border-top:1px solid var(--line);font-size:.88rem}
+.evrow:first-child,.confirm-box .label+.evrow{border-top:0}
+.evrow.missed .ev-title{text-decoration:line-through;color:var(--muted)}
+.st-tag-planificado{border-style:dashed;color:var(--pc)}
+.st-tag-cumplido{color:var(--ok);border-color:var(--ok)}
+.st-tag-no-se-hizo{color:var(--warn);border-color:var(--warn)}
+.confirm-box{border:1px solid var(--warn);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column}
+@media (max-width:560px){.evrow{grid-template-columns:64px 1fr}.evrow .t-actions{grid-column:1/-1;justify-content:flex-start}}
+/* registro diario */
+.day{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.thumb{position:relative;border-radius:10px;overflow:hidden;background:var(--bg);aspect-ratio:1;max-width:100%}
+.thumb>button.ghost{width:100%;height:100%;display:block;border:0}
+.thumb img,.thumb video{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .xdel,.thumb .danger{position:absolute;top:4px;right:4px;background:var(--surface);border-color:var(--line)}
+.cd .ph{width:6px;height:6px;border-radius:50%;background:var(--ink);align-self:flex-end;margin-top:auto}
+.lightbox{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.85);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lightbox img{max-width:100%;max-height:90vh;border-radius:8px}
+.lightbox button{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px))}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -154,7 +178,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <script>
 (function(){
 const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
-const S={projects:[],tasks:[],logs:[],money:[],events:[],timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
 function hashId(){try{return decodeURIComponent(location.hash.slice(1))}catch(e){return ''}}
 const curId=()=>S.nav!==null?S.nav:hashId();
 function go(id){S.nav=id||'';S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
@@ -172,7 +196,7 @@ function ledgerSums(p,month){
   return {ms,inc,exp,bal:inc-exp};
 }
 window.addEventListener('hashchange',()=>{const h=hashId();if(h===S.nav)return;S.nav=h;S.form=null;S.confirm=null;window.scrollTo(0,0);rerender()});
-let db=null, pending=false;
+let db=null, assets=null, pending=false;
 const app=document.getElementById('app');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const num=v=>{const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:0};
@@ -206,6 +230,7 @@ function render(){
   let html='';
   if(S.timer)html+=timerBar();
   if(S.err)html+=`<div class="notice">${esc(S.err)}</div>`;
+  if(S.lightbox)html+=`<div class="lightbox" data-act="closeLb"><img src="${esc(S.lightbox)}" alt="Foto ampliada"><button data-act="closeLb">Cerrar</button></div>`;
   const cp=current();S.pid=cp?cp.id:null;
   html+= cp?(isLedger(cp)?ledgerView(cp):detailView()):homeView();
   app.innerHTML=html;
@@ -370,6 +395,8 @@ function moveForm(p){
   </form>`;
 }
 const EV_TYPES=['Germinación','Trasplante','Riego','Fertilización','Poda / entrenamiento','Inicio de floración','Cosecha','Secado / curado','Otro'];
+const evStatus=e=>e.status||'cumplido';
+const ST_LABEL={planificado:'Planificado',cumplido:'Cumplido','no se hizo':'No se hizo'};
 function calendarPanel(p,pc){
   const month=S.calMonth||today().slice(0,7);const f=S.form;
   const evs=S.events.filter(e=>e.projectId===p.id);
@@ -380,36 +407,106 @@ function calendarPanel(p,pc){
   for(let i=0;i<lead;i++)cells+='<div class="cd out"></div>';
   for(let d=1;d<=days;d++){
     const ds=month+'-'+String(d).padStart(2,'0');const de=evs.filter(e=>e.date===ds);
-    cells+=`<button class="cd ${ds===t?'today':''} ${de.length?'has':''}" data-act="calDay" data-date="${ds}" aria-label="${d} de ${MESES[m-1]}${de.length?': '+esc(de.map(e=>e.title).join(', ')):''}">
-      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<span class="ev">${esc(e.title)}</span>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}</button>`;
+    cells+=`<button class="cd ${ds===t?'today':''} ${de.length?'has':''}" data-act="calDay" data-date="${ds}" aria-label="${d} de ${MESES[m-1]}${de.length?': '+esc(de.map(e=>e.title+' ('+ST_LABEL[evStatus(e)]+')').join(', ')):''}">
+      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<span class="ev st-${evStatus(e).replace(/ /g,'-')}">${esc(e.title)}</span>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}</button>`;
   }
   const list=evs.filter(e=>(e.date||'').startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date));
-  const germ=evs.filter(e=>e.type==='Germinación'&&e.date<=t).sort((a,b)=>b.date.localeCompare(a.date));
+  const germ=evs.filter(e=>e.type==='Germinación'&&evStatus(e)==='cumplido'&&e.date<=t).sort((a,b)=>b.date.localeCompare(a.date));
+  const toConfirm=evs.filter(e=>evStatus(e)==='planificado'&&e.date<=t).sort((a,b)=>a.date.localeCompare(b.date));
+  const editing=f&&f.type==='event'&&f.id;
   return `<section class="panel" style="--pc:${pc}">
     <div class="row"><h2>Calendario</h2><span class="spacer"></span>
       <button class="small" data-act="calPrev" aria-label="Mes anterior">‹</button>
       <span class="num" style="min-width:120px;text-align:center">${monthName(month)}</span>
       <button class="small" data-act="calNext" aria-label="Mes siguiente">›</button>
-      <button class="small primary" data-act="calDay" data-date="${t}">+ Evento</button></div>
+      <button class="small primary" data-act="calDay" data-date="${t}">+ Planificar</button></div>
     ${germ.map(g=>`<div class="notice"><b>${esc(g.title)}</b> · día <span class="num">${-daysLeft(g.date)}</span> desde la germinación (${fmtDate(g.date)})</div>`).join('')}
-    ${f&&f.type==='event'?eventForm(p,f.date):''}
+    ${toConfirm.length?`<div class="confirm-box"><div class="label" style="color:var(--warn)">Para confirmar (${toConfirm.length})</div>
+      ${toConfirm.map(e=>editing===e.id?eventForm(p,e):evRow(e,true)).join('')}</div>`:''}
+    ${f&&f.type==='event'&&!f.id?eventForm(p,{date:f.date}):''}
     <div class="cal-wrap"><div class="cal">${['lun','mar','mié','jue','vie','sáb','dom'].map(d=>`<div class="cw">${d}</div>`).join('')}${cells}</div></div>
-    ${list.length?`<div class="logs">${list.map(e=>`<div class="log" style="grid-template-columns:76px 1fr auto"><span class="num">${fmtDate(e.date)}</span>
-      <span style="min-width:0">${esc(e.title)}<span class="tag">${esc(e.type||'Otro')}</span>${e.note?' <span class="muted">· '+esc(e.note)+'</span>':''}</span>
-      <span style="grid-column:auto">${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="e${esc(e.id)}" aria-label="Borrar evento">✕</button>`}</span></div>`).join('')}</div>`
-      :'<div class="empty">Sin eventos este mes. Tocá un día para cargar uno.</div>'}
+    <div class="row muted" style="font-size:.75rem;gap:14px"><span><span class="ev-key st-planificado"></span> planificado</span><span><span class="ev-key st-cumplido"></span> cumplido</span><span><span class="ev-key st-no-se-hizo"></span> no se hizo</span></div>
+    ${list.length?`<div class="logs">${list.map(e=>editing===e.id&&!toConfirm.includes(e)?eventForm(p,e):evRow(e,false)).join('')}</div>`
+      :'<div class="empty">Sin eventos este mes. Tocá un día para planificar algo o registrar lo que pasó.</div>'}
   </section>`;
 }
-function eventForm(p,date){
-  return `<form class="inline-form" data-form="event" data-pid="${esc(p.id)}">
+function evRow(e,confirming){
+  const st=evStatus(e);
+  const moved=e.plannedDate&&e.plannedDate!==e.date;
+  return `<div class="evrow ${st==='no se hizo'?'missed':''}">
+    <span class="num">${fmtDate(e.date)}</span>
+    <span style="min-width:0"><span class="ev-title">${esc(e.title)}</span><span class="tag">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span>
+      ${moved?`<span class="muted" style="font-size:.78rem;display:block">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem;display:block">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
+      ${e.note?`<span class="muted" style="font-size:.78rem;display:block">${esc(e.note)}</span>`:''}</span>
+    <span class="t-actions">
+      ${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button>${confirming?`<button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`:''}`
+        :`<button class="small ghost" data-act="evEdit" data-id="${esc(e.id)}">Editar</button>`}
+      ${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="e${esc(e.id)}" aria-label="Borrar evento">✕</button>`}
+    </span></div>`;
+}
+function eventForm(p,e){
+  const isNew=!e.id;const st=isNew?((e.date||today())>today()?'planificado':'planificado'):evStatus(e);
+  return `<form class="inline-form" data-form="event" data-pid="${esc(p.id)}" data-id="${esc(e.id||'')}">
+    <h3>${isNew?'Planificar / registrar':'Ajustar evento'}</h3>
     <div class="grid2">
-      <label class="field"><span class="label">Fecha</span><input id="e-date" name="date" type="date" value="${esc(date||today())}" required></label>
-      <label class="field"><span class="label">Tipo</span><select id="e-type" name="type">${EV_TYPES.map(x=>`<option>${x}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Fecha</span><input id="e-date" name="date" type="date" value="${esc(e.date||today())}" required></label>
+      <label class="field"><span class="label">Tipo</span><select id="e-type" name="type">${EV_TYPES.map(x=>`<option ${x===e.type?'selected':''}>${x}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Estado</span><select id="e-status" name="status">${Object.entries(ST_LABEL).map(([k,v])=>`<option value="${k}" ${k===st?'selected':''}>${v}</option>`).join('')}</select></label>
     </div>
-    <label class="field"><span class="label">Qué pasó / qué hay que hacer</span><input id="e-title" name="title" required></label>
-    <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note"></label>
-    <div class="row"><button class="primary" type="submit">Guardar evento</button><button type="button" data-act="cancelForm">Cancelar</button></div>
+    <label class="field"><span class="label">Qué hay que hacer / qué pasó</span><input id="e-title" name="title" required value="${esc(e.title)}"></label>
+    <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note" value="${esc(e.note)}"></label>
+    ${isNew?'':`<label class="field"><span class="label">Motivo del ajuste (opcional)</span><input id="e-adj" name="adjustNote" value="${esc(e.adjustNote)}" placeholder="Ej.: se atrasó por lluvia, se cambió la dosis"></label>`}
+    <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button></div>
   </form>`;
+}
+const MAXB=20*1024*1024;
+function dayIndex(p,date){
+  const g=S.events.filter(e=>e.projectId===p.id&&e.type==='Germinación'&&evStatus(e)==='cumplido'&&e.date<=date).sort((a,b)=>b.date.localeCompare(a.date))[0];
+  if(!g)return null;return Math.round((new Date(date+'T00:00:00')-new Date(g.date+'T00:00:00'))/86400000);
+}
+function mediaPanel(p,pc){
+  const items=S.media.filter(m=>m.projectId===p.id);
+  const byDay={};items.forEach(m=>{(byDay[m.date]=byDay[m.date]||[]).push(m)});
+  const daysL=Object.keys(byDay).sort().reverse();
+  const up=S.upload||{};
+  let h=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Registro diario</h2><span class="spacer"></span><span class="muted" style="font-size:.8rem">${items.length} archivo${items.length===1?'':'s'}</span></div>`;
+  if(assets){
+    h+=`<form class="inline-form" data-form="media" data-pid="${esc(p.id)}">
+      <div class="grid2">
+        <label class="field"><span class="label">Día</span><input id="md-date" name="date" type="date" value="${esc(up.date||today())}" required></label>
+        <label class="field"><span class="label">Fotos o videos (hasta 20 MB cada uno)</span><input id="md-files" name="files" type="file" accept="image/*,video/*" multiple required></label>
+      </div>
+      <label class="field"><span class="label">Comentario del día (opcional)</span><input id="md-cap" name="caption" placeholder="Ej.: primeras hojas verdaderas, riego 200 ml"></label>
+      <div class="row"><button class="primary" type="submit" ${up.busy?'disabled':''}>${up.busy?'Subiendo…':'Subir'}</button>${up.msg?`<span class="muted" style="font-size:.85rem">${esc(up.msg)}</span>`:''}</div>
+    </form>`;
+  }else{
+    h+=`<div class="notice">Para subir fotos y videos abrí esta página desde tu cuenta de claude.ai (solo quien edita la página puede subir archivos).</div>`;
+  }
+  if(!daysL.length)h+=`<div class="empty">Todavía no hay fotos ni videos. Elegí el día, adjuntá los archivos y tocá «Subir».</div>`;
+  h+=daysL.map(d=>{const di=dayIndex(p,d);const caps=[...new Set(byDay[d].map(m=>m.caption).filter(Boolean))];
+    return `<div class="day"><div class="row"><b class="num">${fmtDate(d)}</b>${di!==null?`<span class="chip">día ${di}</span>`:''}</div>
+      ${caps.length?`<div class="muted" style="font-size:.85rem">${caps.map(esc).join(' · ')}</div>`:''}
+      <div class="thumbs">${byDay[d].sort((a,b)=>num(a.createdAt)-num(b.createdAt)).map(m=>{const src='/_blob/'+encodeURIComponent(m.assetId);
+        const vid=String(m.contentType||'').startsWith('video');
+        return `<div class="thumb">${vid?`<video src="${src}" controls preload="metadata" playsinline></video>`:`<button class="ghost" data-act="viewImg" data-src="${esc(src)}" style="padding:0" aria-label="Ver foto"><img src="${src}" alt="Foto del ${fmtDate(d)}" loading="lazy"></button>`}
+          ${S.confirm==='md'+m.id?`<button class="small danger" data-act="delMedia" data-id="${esc(m.id)}">Borrar</button>`:`<button class="ghost small xdel" data-act="askDel" data-key="md${esc(m.id)}" aria-label="Borrar archivo">✕</button>`}</div>`}).join('')}</div></div>`}).join('');
+  h+=`</section>`;
+  return h;
+}
+async function uploadMedia(f){
+  const files=[...(f.querySelector('input[type=file]').files||[])];const date=f.querySelector('[name=date]').value||today();const caption=f.querySelector('[name=caption]').value.trim();
+  if(!files.length)return;
+  const big=files.filter(x=>x.size>MAXB);
+  S.upload={busy:true,date,msg:`Subiendo 0 de ${files.length - big.length}…`};rerender();
+  let ok=0;const fails=big.map(x=>`${x.name} pesa ${(x.size/1048576).toFixed(0)} MB (máximo 20 MB)`);
+  for(const file of files){ if(file.size>MAXB)continue;
+    try{const r=await assets.upload(file);
+      await db.collection('media').add({projectId:f.dataset.pid,date,assetId:r.id,contentType:r.contentType||file.type,caption,createdAt:Date.now()});
+      ok++;S.upload.msg=`Subiendo ${ok} de ${files.length-big.length}…`;rerender();
+    }catch(e){fails.push(`${file.name}: ${e&&e.code==='unsupported_type'?'formato no admitido':e&&e.code==='too_large'?'demasiado grande':e&&e.code==='quota_or_state'?'sin espacio disponible':(e&&e.message||'error')}`)}
+  }
+  S.upload={busy:false,date,msg:(ok?`Se subieron ${ok}.`:'')+(fails.length?' No se pudo: '+fails.join('; ')+'.':'')};
+  rerender();
 }
 function detailView(){
   const p=S.projects.find(x=>x.id===S.pid);const st=projStats(p);const pc=pcolor(p);const dl=daysLeft(p.deadline);
@@ -434,7 +531,7 @@ function detailView(){
     <div class="stat"><b>${h1(st.week)}${num(p.weeklyHours)?' / '+h1(num(p.weeklyHours)):''} h</b><span>esta semana${num(p.weeklyHours)?' / meta':''}</span></div>
     <div class="stat"><b>${Math.round(st.pct*100)}%</b><span>avance (por horas estimadas)</span></div>
   </div><div class="prog"><i style="width:${Math.round(st.pct*100)}%"></i></div></section>`;
-  if(p.calendar)h+=calendarPanel(p,pc);
+  if(p.calendar)h+=calendarPanel(p,pc)+mediaPanel(p,pc);
   // tareas
   h+=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Plan de tareas</h2><span class="spacer"></span>
     <button class="small" data-act="logProject">+ Registrar tiempo general</button>
@@ -486,6 +583,12 @@ app.addEventListener('click',e=>{
     calPrev(){S.calMonth=shiftMonth(S.calMonth||today().slice(0,7),-1);rerender()},
     calNext(){S.calMonth=shiftMonth(S.calMonth||today().slice(0,7),1);rerender()},
     calDay(){S.form={type:'event',date:b.dataset.date};rerender();document.getElementById('e-title')?.focus()},
+    evDone(){safe(()=>db.doc('events/'+id).update({status:'cumplido',confirmedAt:Date.now()}))},
+    evMiss(){safe(()=>db.doc('events/'+id).update({status:'no se hizo',confirmedAt:Date.now()}))},
+    evEdit(){S.form={type:'event',id};rerender();document.getElementById('e-date')?.focus()},
+    viewImg(){S.lightbox=b.dataset.src;rerender()},
+    closeLb(){S.lightbox=null;rerender()},
+    delMedia(){const m=S.media.find(x=>x.id===id);safe(async()=>{if(m&&assets){try{await assets.delete(m.assetId)}catch(e){}}await db.doc('media/'+id).delete();S.confirm=null})},
     delEvent(){safe(async()=>{await db.doc('events/'+id).delete();S.confirm=null})},
     prevMonth(){S.month=shiftMonth(S.month||today().slice(0,7),-1);rerender()},
     nextMonth(){S.month=shiftMonth(S.month||today().slice(0,7),1);rerender()},
@@ -514,6 +617,7 @@ app.addEventListener('click',e=>{
       for(const t of S.tasks.filter(t=>t.projectId===pid))await db.doc('tasks/'+t.id).delete();
       for(const l of S.logs.filter(l=>l.projectId===pid))await db.doc('logs/'+l.id).delete();
       for(const m of S.money.filter(m=>m.ledgerId===pid))await db.doc('money/'+m.id).delete();
+      for(const md of S.media.filter(x=>x.projectId===pid)){if(assets){try{await assets.delete(md.assetId)}catch(e){}}await db.doc('media/'+md.id).delete()}
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
@@ -531,6 +635,7 @@ app.addEventListener('change',e=>{
 app.addEventListener('submit',e=>{
   e.preventDefault();const f=e.target;const d=Object.fromEntries(new FormData(f).entries());
   const kind=f.dataset.form;
+  if(kind==='media'){uploadMedia(f).catch(()=>{});return}
   safe(async()=>{
     if(kind==='project'){
       const data={name:d.name.trim(),priority:num(d.priority)||null,goal:(d.goal||'').trim(),why:(d.why||'').trim(),deadline:d.deadline||'',weeklyHours:num(d.weeklyHours),resources:(d.resources||'').trim(),
@@ -538,7 +643,12 @@ app.addEventListener('submit',e=>{
       if(f.dataset.id)await db.doc('projects/'+f.dataset.id).update(data);
       else{const r=await db.collection('projects').add({...data,kind:d.kind||'project',createdAt:Date.now()});go(r.id)}
     }else if(kind==='event'){
-      await db.collection('events').add({projectId:f.dataset.pid,date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),createdAt:Date.now()});
+      const ev={date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),status:d.status||'planificado'};
+      if(f.dataset.id){const old=S.events.find(x=>x.id===f.dataset.id)||{};
+        if(!old.plannedDate&&old.date&&old.date!==ev.date)ev.plannedDate=old.date;
+        ev.adjustNote=(d.adjustNote||'').trim();
+        await db.doc('events/'+f.dataset.id).update(ev);}
+      else await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,createdAt:Date.now()});
     }else if(kind==='move'){
       const amt=num(d.amount);if(amt<=0){S.err='Cargá un monto mayor a cero.';rerender();return}
       await db.collection('money').add({ledgerId:f.dataset.pid,type:d.type==='ingreso'?'ingreso':'gasto',amount:amt,category:(d.category||'').trim(),scope:d.scope||'',date:d.date||today(),note:(d.note||'').trim(),createdAt:Date.now()});
@@ -567,6 +677,8 @@ async function boot(){
   db.collection('projects').onSnapshot(s=>{clearTimeout(loadTimer);S.projects=toList(s);S.loaded.projects=true;if(S.err&&S.err.startsWith('Los datos'))S.err=null;render()},onErr);
   db.collection('tasks').onSnapshot(s=>{S.tasks=toList(s);S.loaded.tasks=true;render()},onErr);
   db.collection('logs').onSnapshot(s=>{S.logs=toList(s);S.loaded.logs=true;render()},onErr);
+  db.collection('media').onSnapshot(s=>{S.media=toList(s);render()},onErr);
+  claude.use('assets').then(a=>{assets=a;rerender()}).catch(()=>{});
   db.collection('events').onSnapshot(s=>{S.events=toList(s);render()},onErr);
   db.collection('money').onSnapshot(s=>{S.money=toList(s);render()},onErr);
   db.doc('timer/current').onSnapshot(s=>{S.timer=s.exists?s.data():null;render()},onErr);
