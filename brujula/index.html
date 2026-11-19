@@ -364,7 +364,7 @@ function render(){
   ['.wkm-wrap','.cal-wrap'].forEach(k=>{const el=app.querySelector(k);if(!el)return;
     if(keep[k]!=null){el.scrollLeft=keep[k];return}
     const td=el.querySelector('.wkm-day.today,.cd.today');if(td)el.scrollLeft=Math.max(0,td.offsetLeft-(k==='.wkm-wrap'?80:8));});
-  app.querySelectorAll('form[data-form=event]').forEach(f=>{updateDoseTotals(f);updateBuyTotals(f)});
+  app.querySelectorAll('form[data-form=event]').forEach(f=>{updateDoseTotals(f);updateBuyTotals(f);updateTransCalc(f)});
   app.querySelectorAll('form[data-form=item]').forEach(applyKindVisibility);
   app.querySelectorAll('form[data-form=batch],form[data-form=product],form[data-form=event],form[data-form=hh]').forEach(applyBatchVis);
   tick();
@@ -694,6 +694,38 @@ function prodRow(use,it){
     <span class="num muted dose-tot"></span>
     <button type="button" class="ghost small danger" data-act="rmDoseRow" aria-label="Quitar producto">✕</button></div></div>`;
 }
+function transBox(e){
+  const sc=e.spaceId||S.space;const bs=S.batches.filter(b=>b.status!=='finalizado'&&(!sc||b.spaceId===sc));
+  const b=S.batches.find(x=>x.id===e.batchId);
+  const q=e.tpQty??(b?b.qty:''),fr=e.tpFrom??(b?b.potLiters:'');
+  return `<div class="field transbox" data-bwhen="type:Trasplante" style="gap:8px">
+    <div class="grid2">
+      <label class="field"><span class="label">Lote</span><select name="tpBatch" data-tpbatch><option value="">Sin lote</option>${bs.map(x=>`<option value="${esc(x.id)}" data-q="${num(x.qty)}" data-p="${esc(x.potLiters??'')}" ${x.id===e.batchId?'selected':''}>${num(x.qty)} × ${esc(x.genetics)}${sc?'':' ('+esc(spaceName(x.spaceId))+')'}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Cantidad de plantas</span><input name="tpQty" inputmode="numeric" value="${esc(q)}"></label>
+      <label class="field"><span class="label">Maceta actual (L)</span><input name="tpFrom" inputmode="decimal" value="${esc(dec(fr))}" placeholder="Ej.: 1"></label>
+      <label class="field"><span class="label">Maceta nueva (L)</span><input name="tpTo" inputmode="decimal" value="${esc(dec(e.tpTo))}" placeholder="Ej.: 3"></label>
+    </div>
+    <label class="checkf"><input type="checkbox" name="tpBuy" ${e.tpBuy===false?'':'checked'}> Planificar la compra de sustrato 7 días antes</label>
+    <div class="tp-calc notice" hidden></div>
+  </div>`;
+}
+const tpNeed=(q,fr,to)=>Math.max(0,(num(to)-num(fr))*num(q));
+function updateTransCalc(form){
+  const box=form.querySelector('.tp-calc');if(!box)return;
+  const g=n=>form.querySelector(`[name=${n}]`)?.value;const need=tpNeed(g('tpQty'),g('tpFrom'),g('tpTo'));
+  const d=form.querySelector('[name=date]')?.value;
+  box.innerHTML=need?`Sustrato necesario: <b>${r2(need)} L</b> = (${dec(num(g('tpTo')))} − ${dec(num(g('tpFrom')))}) L × ${num(g('tpQty'))} plantas${d&&form.querySelector('[name=tpBuy]')?.checked?` · compra el ${fmtDate(addDays(d,-7))}`:''}`:'';box.hidden=!need;
+}
+async function syncSubstrateBuy(evId,ev,spaceId){
+  const docId='compra-sustrato-'+evId;const exists=S.events.find(x=>x.id===docId);
+  const need=ev.type==='Trasplante'&&ev.tpBuy!==false?tpNeed(ev.tpQty,ev.tpFrom,ev.tpTo):0;
+  if(!need){if(exists)await db.doc('events/'+docId).delete();return}
+  const b=S.batches.find(x=>x.id===ev.batchId);const subName=(b&&b.substrate)||'Sustrato';
+  const data={projectId:'cultivo',spaceId:spaceId||'',date:addDays(ev.date,-7),plannedDate:addDays(ev.date,-7),type:'Compra',title:`Comprar sustrato: ${r2(need)} L`,
+    status:exists?exists.status:'planificado',items:[{name:subName,qty:Math.round(need*100)/100,price:exists&&exists.items&&exists.items[0]?exists.items[0].price:'',sub:'tierras'}],
+    actual:exists?exists.actual??'':'',products:[],liters:'',autoFor:evId,note:`Para el trasplante del ${fmtDate(ev.date)}: (${dec(num(ev.tpTo))} − ${dec(num(ev.tpFrom))}) L × ${num(ev.tpQty)} plantas. Cantidad en litros; el precio va por litro.`,createdAt:exists?exists.createdAt:Date.now()};
+  await db.doc('events/'+docId).set(data);
+}
 function riegoFields(e){
   const sc=e.spaceId||S.space;const bs=S.batches.filter(b=>b.status!=='finalizado'&&(!sc||b.spaceId===sc));
   return `<div class="field riegobox" data-bwhen="type:Riego radicular" style="gap:8px">
@@ -852,6 +884,7 @@ function eventForm(p,e){
     </div>
     <label class="field"><span class="label">Qué hay que hacer / qué pasó</span><input id="e-title" name="title" required value="${esc(e.title)}"></label>
     ${prodBox(e)}
+    ${transBox(e)}
     ${buyBox(e)}
     <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note" value="${esc(e.note)}"></label>
     ${isNew||mode==='edit'?'':`<label class="field"><span class="label">Motivo del ajuste (opcional)</span><input id="e-adj" name="adjustNote" value="${esc(e.adjustNote)}" placeholder="Ej.: se atrasó por lluvia, se cambió la dosis"></label>`}
@@ -1063,7 +1096,7 @@ function updateBuyTotals(form){
   let t=0;form.querySelectorAll('.buy-row').forEach(r=>{const s=num(r.querySelector('[name=biQty]').value||1)*num(r.querySelector('[name=biPrice]').value);t+=s;r.querySelector('.bi-sub').textContent=s?money(s):''});
   const el=form.querySelector('.buy-total');if(el)el.textContent=t?'Estimado: '+money(t):'';}
 const buyEstimate=e=>(e.items||[]).reduce((a,i)=>a+num(i.qty||1)*num(i.price),0);
-function purchaseSummary(e){if(e.type!=='Compra')return '';const est=buyEstimate(e);
+function purchaseSummary(e){if(e.type==='Trasplante'&&num(e.tpTo)){const nd=tpNeed(e.tpQty,e.tpFrom,e.tpTo);return `<span class="muted" style="font-size:.78rem;display:block">${num(e.tpQty)} plantas · ${dec(num(e.tpFrom))} L → ${dec(num(e.tpTo))} L · sustrato ${r2(nd)} L</span>`}if(e.type!=='Compra')return '';const est=buyEstimate(e);
   return `<span class="muted" style="font-size:.78rem;display:block">${(e.items||[]).map(i=>`${dec(i.qty||1)} × ${esc(i.name)}${num(i.price)?' ('+money(num(i.qty||1)*num(i.price))+')':''}`).join(' · ')}${est?' · <b>estimado '+money(est)+'</b>':''}${e.actual!==''&&e.actual!=null?' · pagado '+money(num(e.actual)):''}</span>`;}
 function budgetPanel(p,pc){
   const buys=S.events.filter(e=>e.projectId===p.id&&e.type==='Compra'&&evStatus(e)!=='no se hizo');
@@ -1799,7 +1832,7 @@ app.addEventListener('click',e=>{
     viewImg(){S.lightbox=b.dataset.src;rerender()},
     closeLb(){S.lightbox=null;rerender()},
     delMedia(){const m=S.media.find(x=>x.id===id);safe(async()=>{if(m&&assets){try{await assets.delete(m.assetId)}catch(e){}}await db.doc('media/'+id).delete();S.confirm=null})},
-    delEvent(){safe(async()=>{await db.doc('events/'+id).delete();S.confirm=null;if(S.form&&S.form.id===id)S.form=null;S.openEv&&S.openEv.delete(id)})},
+    delEvent(){safe(async()=>{await db.doc('events/'+id).delete();if(S.events.find(x=>x.id==='compra-sustrato-'+id))await db.doc('events/compra-sustrato-'+id).delete();S.confirm=null;if(S.form&&S.form.id===id)S.form=null;S.openEv&&S.openEv.delete(id)})},
     prevMonth(){S.month=shiftMonth(S.month||today().slice(0,7),-1);rerender()},
     nextMonth(){S.month=shiftMonth(S.month||today().slice(0,7),1);rerender()},
     newMove(){S.form={type:'move'};rerender();document.getElementById('m-amount')?.focus()},
@@ -1841,6 +1874,8 @@ async function saveTimerLog(){
 app.addEventListener('change',e=>{
   if(e.target.matches('[data-kind-toggle]')){const fm=e.target.closest('form');const led=e.target.value==='ledger';
     fm.querySelector('.only-ledger').hidden=!led;fm.querySelector('.only-project').hidden=led;}
+  if(e.target.matches('[data-tpbatch]')){const o=e.target.selectedOptions[0];const fm=e.target.closest('form');if(o&&o.dataset.q){fm.querySelector('[name=tpQty]').value=o.dataset.q;if(o.dataset.p)fm.querySelector('[name=tpFrom]').value=dec(o.dataset.p)}updateTransCalc(fm)}
+  if(e.target.closest&&e.target.closest('.transbox'))updateTransCalc(e.target.closest('form'));
   if(e.target.matches('[data-bvis]'))applyBatchVis(e.target.closest('form'));
   if(e.target.matches('[data-buysub]')){const it=e.target.closest('.buy-item');it.querySelector('[data-buypick]').innerHTML=buyPickOptions(e.target.value,'');}
   if(e.target.matches('[data-buypick]')){const it=e.target.closest('.buy-item');const v=e.target.value;const nm=it.querySelector('[name=biName]');if(v==='__otro'){nm.value='';nm.focus()}else if(v)nm.value=v;}
@@ -1861,6 +1896,7 @@ app.addEventListener('pointerover',e=>{const c=e.target.closest&&e.target.closes
 app.addEventListener('pointerout',e=>{const c=e.target.closest&&e.target.closest('.whit');if(c){const t=c.closest('.wchart').querySelector('.wtip');if(t)t.hidden=true}});
 document.addEventListener('toggle',e=>{const t=e.target;if(t.matches&&t.matches('[data-libtoggle]'))S.libOpen=t.open?t.dataset.libtoggle:null},true);
 app.addEventListener('input',e=>{
+  if(e.target.closest('.transbox')||e.target.matches('[name=date]'))updateTransCalc(e.target.closest('form')||document.body);
   if(PICK&&e.target.matches('[data-pq]')){PICK.q=e.target.value;renderPicker(false);return}
   if(e.target.closest('.buybox'))updateBuyTotals(e.target.closest('form'));
   if(e.target.matches('[data-ports]')){const pos=e.target.dataset.ports;const box=document.getElementById('ports-'+pos);
@@ -1914,12 +1950,15 @@ app.addEventListener('submit',e=>{
       else{ev.products=[];ev.liters='';}
       if(ev.type==='Compra'){const fd=new FormData(f);const ns=fd.getAll('biName'),qs=fd.getAll('biQty'),ps=fd.getAll('biPrice');
         const subs=fd.getAll('biSub');ev.items=ns.map((nm,i)=>({name:String(nm).trim(),qty:num(qs[i])||1,price:n2(ps[i]),sub:subs[i]||''})).filter(x=>x.name);ev.actual=n2(d.actual);}
+      if(ev.type==='Trasplante'){ev.batchId=d.tpBatch||'';ev.tpQty=n2(d.tpQty);ev.tpFrom=n2(d.tpFrom);ev.tpTo=n2(d.tpTo);ev.tpBuy=!!d.tpBuy;}
       if(ev.type==='Riego radicular'){ev.batchId=d.batchId||'';ev.perPlant=n2(d.perPlant);ev.drained=d.drained||'';ev.ecIn=n2(d.ecIn);ev.phIn=n2(d.phIn);ev.ecOut=n2(d.ecOut);ev.phOut=n2(d.phOut);}
       if(f.dataset.id){const old=S.events.find(x=>x.id===f.dataset.id)||{};
         if(f.dataset.mode==='edit'){if(d.spaceId!==undefined)ev.spaceId=d.spaceId;if(ev.status==='planificado'&&(!old.plannedDate||old.plannedDate===old.date))ev.plannedDate=ev.date;}
         else{if(!old.plannedDate&&old.date&&old.date!==ev.date)ev.plannedDate=old.date;ev.adjustNote=(d.adjustNote||'').trim();}
-        await db.doc('events/'+f.dataset.id).update(ev);}
-      else await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,spaceId:d.spaceId||S.space||'',createdAt:Date.now()});
+        await db.doc('events/'+f.dataset.id).update(ev);
+        await syncSubstrateBuy(f.dataset.id,{...old,...ev},ev.spaceId||old.spaceId);}
+      else{const sp=d.spaceId||S.space||'';const r=await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,spaceId:sp,createdAt:Date.now()});
+        await syncSubstrateBuy(r.id,ev,sp);}
     }else if(kind==='product'){
       const name=(d.name||'').trim();if(!name)return;
       if(/^(equipo|plantas):/.test(d.use||'')){const [c2,sb]=d.use.split(':');
