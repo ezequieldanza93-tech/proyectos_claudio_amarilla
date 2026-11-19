@@ -7,7 +7,7 @@ Lee tmp/verificacion/<lote>-v1.json (verificador) y <lote>-v2.json (escéptico q
 verificado = true solo si el producto se pudo abrir y no quedó ninguna observación dudosa.
 Escribe tmp/verificacion/cambios.md y tmp/verificacion/pendientes_verificacion.md.
 
-Uso (desde catalogo/): python -P herramientas/aplicar_verificacion.py
+Uso (desde catalogo/): python -P herramientas/aplicar_verificacion.py [carpeta_de_la_corrida]
 """
 import glob
 import json
@@ -18,7 +18,8 @@ from collections import defaultdict
 from jsonschema import Draft202012Validator
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = os.path.join(RAIZ, "tmp", "verificacion")
+# Carpeta con los <lote>-v1/-v2.json de UNA corrida (los lotes ya aplicados se archivan aparte para no re-aplicarlos)
+VER = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else os.path.join(RAIZ, "tmp", "verificacion")
 ARCHIVOS = ["fertilizantes.json", "foliares.json", "sustratos.json", "luces.json", "carpas.json",
             "ventilacion.json", "clima.json", "geneticas.json"]
 
