@@ -1,0 +1,56 @@
+[
+  {
+    "categoria": "fertilizante",
+    "marca": "Green Leaf",
+    "url": "https://santaplanta.com.ar/producto/green-leaf-preventivo-4-en-1-5-lt/",
+    "motivo": "Marca de preventivos/plaguicidas orgánicos (4 en 1 y 6 en 1); ya cargados esos dos productos, tiene más en Santa Planta."
+  },
+  {
+    "categoria": "foliar",
+    "marca": "Green Leaf",
+    "url": "https://santaplanta.com.ar/producto/green-leaf-jabon-potasico-100-cm3/",
+    "motivo": "En Santa Planta figura como «Jabón Potásico» pero la descripción es de un fertilizante biológico; verificar qué es."
+  },
+  {
+    "categoria": "genetica",
+    "marca": "CosechaLibre (esquejes)",
+    "url": "https://www.cosechalibre.com/tienda/categoria/esquejes",
+    "motivo": "Tienda argentina con sección de esquejes de distintos viveros/bancos; fuente para relevar otros viveros."
+  },
+  {
+    "categoria": "genetica",
+    "marca": "Grow Sweet Grow (esquejes de varios viveros)",
+    "url": "https://www.gsg.com.ar/shop/catalog/L-100-0-0-esquejes",
+    "motivo": "Grow shop con catálogo de esquejes; lista clones de Clon Factory que no están en su web (Fancy Gummy, Tropicana WFC) y posibles otros viveros."
+  },
+  {
+    "categoria": "genetica",
+    "marca": "Marimba (esquejes)",
+    "url": "https://marimba.com.ar/producto/esqueje-craig-feminizado/",
+    "motivo": "Grow shop que vende esquejes de varios viveros (declara clones bajo INASE/REPROCANN); sirve para relevar otros viveros argentinos."
+  },
+  {
+    "categoria": "ventilacion",
+    "marca": "Fluxo",
+    "url": "https://santaplanta.com.ar/?s=fluxo",
+    "motivo": "Ventilador Vertical Fluxo"
+  },
+  {
+    "categoria": "ventilacion",
+    "marca": "Garden Profan",
+    "url": "https://santaplanta.com.ar/?s=garden+profan",
+    "motivo": "Turbinas Extractor 100/150 e indoor fan 115 en Santa Planta"
+  },
+  {
+    "categoria": "ventilacion",
+    "marca": "Gralf",
+    "url": "https://santaplanta.com.ar/?s=gralf",
+    "motivo": "Coolers a rulemán 4 y 6 pulgadas 220 V"
+  },
+  {
+    "categoria": "ventilacion",
+    "marca": "Sinowell",
+    "url": "https://santaplanta.com.ar/producto/turbina-4-p-id-306101-100-sinowell/",
+    "motivo": "Turbina 4 P ID 306101-100 vendida por Santa Planta (URL aproximada, verificar)"
+  }
+]

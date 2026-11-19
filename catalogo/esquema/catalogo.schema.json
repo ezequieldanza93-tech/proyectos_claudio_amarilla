@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "catalogo.schema.json",
+  "title": "Catálogo de productos de cultivo del mercado argentino",
+  "description": "Valida cada archivo del catálogo (un array de productos). Los campos sin dato en la fuente van en null: nunca se completan por suposición.",
+  "type": "array",
+  "items": { "$ref": "#/$defs/producto" },
+  "$defs": {
+    "texto": { "type": ["string", "null"] },
+    "numero": { "type": ["number", "null"], "minimum": 0 },
+    "booleano": { "type": ["boolean", "null"] },
+    "fecha": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "url": { "type": "string", "pattern": "^https?://\\S+$" },
+    "fuente": {
+      "type": "object",
+      "required": ["url", "fuente_tipo", "fecha_captura"],
+      "properties": {
+        "url": { "$ref": "#/$defs/url" },
+        "fuente_tipo": { "enum": ["fabricante", "distribuidor", "vendedor"] },
+        "fecha_captura": { "$ref": "#/$defs/fecha" }
+      },
+      "additionalProperties": false
+    },
+    "conflicto": {
+      "type": "object",
+      "description": "Dos o más fuentes con valores distintos para el mismo dato técnico. No se elige ninguno.",
+      "required": ["campo", "valores"],
+      "properties": {
+        "campo": { "type": "string", "minLength": 1 },
+        "valores": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["valor", "url"],
+            "properties": { "valor": {}, "url": { "$ref": "#/$defs/url" } },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "dosis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["etapa", "min", "max", "unidad_por_litro"],
+        "properties": {
+          "etapa": { "enum": ["vegetativo", "floracion", "enraizamiento", "otra"] },
+          "min": { "$ref": "#/$defs/numero" },
+          "max": { "$ref": "#/$defs/numero" },
+          "unidad_por_litro": { "enum": ["ml/L", "g/L"] },
+          "detalle": { "$ref": "#/$defs/texto", "description": "Contexto tal cual lo dice la fuente: semana, frecuencia o a qué se refiere «otra»." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "bocas": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "required": ["cantidad", "diametro"],
+        "properties": {
+          "cantidad": { "type": ["integer", "null"], "minimum": 0 },
+          "diametro": { "$ref": "#/$defs/texto" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "producto": {
+      "type": "object",
+      "required": ["id", "categoria", "marca", "linea", "producto", "modelo", "descripcion_corta", "fuentes", "conflictos", "verificado"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+        "categoria": { "enum": ["fertilizante", "foliar", "sustrato", "luz", "carpa", "ventilacion", "clima", "genetica"] },
+        "marca": { "type": "string", "minLength": 1 },
+        "linea": { "$ref": "#/$defs/texto" },
+        "producto": { "type": "string", "minLength": 1 },
+        "modelo": { "$ref": "#/$defs/texto" },
+        "descripcion_corta": { "$ref": "#/$defs/texto" },
+        "fuentes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fuente" } },
+        "conflictos": { "type": "array", "items": { "$ref": "#/$defs/conflicto" } },
+        "verificado": { "type": "boolean" },
+        "notas": { "$ref": "#/$defs/texto" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "categoria": { "const": "fertilizante" } } },
+          "then": {
+            "required": ["uso", "presentaciones_ml", "unidad", "npk_declarado", "dosis_fabricante", "tabla_cultivo_url"],
+            "properties": {
+              "uso": { "const": "radicular" },
+              "modo_aplicacion": { "$ref": "#/$defs/texto", "description": "Si la fuente indica otro modo además del riego (ej. foliar)." },
+              "presentaciones_ml": { "type": "array", "items": { "type": "number", "exclusiveMinimum": 0 }, "description": "Cantidades por envase, en la unidad de «unidad» (ml o g)." },
+              "unidad": { "enum": ["ml", "g", null] },
+              "npk_declarado": { "$ref": "#/$defs/texto" },
+              "dosis_fabricante": { "$ref": "#/$defs/dosis" },
+              "tabla_cultivo_url": { "anyOf": [{ "$ref": "#/$defs/url" }, { "type": "null" }] }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "categoria": { "const": "foliar" } } },
+          "then": {
+            "required": ["uso", "unidad", "composicion_declarada", "dosis_fabricante", "presentaciones"],
+            "properties": {
+              "uso": { "const": "foliar" },
+              "modo_aplicacion": { "$ref": "#/$defs/texto", "description": "Si la fuente indica otro modo además del foliar (riego, espolvoreo)." },
+              "unidad": { "enum": ["ml", "g", null] },
+              "composicion_declarada": { "$ref": "#/$defs/texto" },
+              "dosis_fabricante": { "$ref": "#/$defs/dosis" },
+              "presentaciones": { "type": "array", "items": { "type": "number", "exclusiveMinimum": 0 }, "description": "Cantidades por envase, en la unidad de «unidad» (ml o g)." }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "categoria": { "const": "sustrato" } } },
+          "then": {
+            "required": ["litros_presentacion", "composicion_declarada", "ph_declarado", "ce_declarada", "uso_indicado"],
+            "properties": {
+              "litros_presentacion": { "type": "array", "items": { "type": "number", "exclusiveMinimum": 0 } },
+              "composicion_declarada": { "$ref": "#/$defs/texto" },
+              "ph_declarado": { "$ref": "#/$defs/texto" },
+              "ce_declarada": { "$ref": "#/$defs/texto" },
+              "uso_indicado": { "enum": ["indoor", "exterior", "ambos", null] }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "categoria": { "const": "luz" } } },
+          "then": {
+            "required": ["tipo", "potencia_real_w", "panel_largo_cm", "panel_ancho_cm", "panel_alto_cm", "ppf_umol_s", "eficacia_umol_j", "espectro", "dimmer", "cobertura_recomendada_cm"],
+            "properties": {
+              "tipo": { "enum": ["Sodio", "Full spectrum", "LED galponera", "LED proyector", "LED alto rendimiento", null] },
+              "potencia_real_w": { "$ref": "#/$defs/numero" },
+              "potencia_anunciada_w": { "$ref": "#/$defs/numero", "description": "Potencia que figura en el nombre comercial cuando difiere de la real." },
+              "panel_largo_cm": { "$ref": "#/$defs/numero" },
+              "panel_ancho_cm": { "$ref": "#/$defs/numero" },
+              "panel_alto_cm": { "$ref": "#/$defs/numero" },
+              "ppf_umol_s": { "$ref": "#/$defs/numero" },
+              "eficacia_umol_j": { "$ref": "#/$defs/numero" },
+              "espectro": { "$ref": "#/$defs/texto" },
+              "dimmer": { "$ref": "#/$defs/booleano" },
+              "cobertura_recomendada_cm": { "$ref": "#/$defs/texto" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "categoria": { "const": "carpa" } } },
+          "then": {
+            "required": ["largo_cm", "ancho_cm", "alto_cm", "bocas_superiores", "bocas_inferiores", "ventanas", "material_reflectivo"],
+            "properties": {
+              "largo_cm": { "$ref": "#/$defs/numero" },
+              "ancho_cm": { "$ref": "#/$defs/numero" },
+              "alto_cm": { "$ref": "#/$defs/numero" },
+              "bocas_superiores": { "$ref": "#/$defs/bocas" },
+              "bocas_inferiores": { "$ref": "#/$defs/bocas" },
+              "ventanas": { "type": ["integer", "string", "null"] },
+              "material_reflectivo": { "$ref": "#/$defs/texto" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "categoria": { "const": "ventilacion" } } },
+          "then": {
+            "required": ["tipo", "diametro", "caudal_m3h", "potencia_w", "rpm", "ruido_db", "oscilante", "dimmer", "tension"],
+            "properties": {
+              "tipo": { "enum": ["Cooler 220 V", "Turbina simple", "Turbina doble", "Ventilador", null] },
+              "diametro": { "$ref": "#/$defs/texto" },
+              "caudal_m3h": { "$ref": "#/$defs/numero" },
+              "potencia_w": { "$ref": "#/$defs/numero" },
+              "rpm": { "$ref": "#/$defs/numero" },
+              "ruido_db": { "$ref": "#/$defs/numero" },
+              "oscilante": { "$ref": "#/$defs/booleano" },
+              "dimmer": { "$ref": "#/$defs/booleano" },
+              "tension": { "$ref": "#/$defs/texto" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "categoria": { "const": "clima" } } },
+          "then": {
+            "required": ["tipo", "rango_temperatura", "rango_humedad", "precision", "capacidad", "wifi"],
+            "properties": {
+              "tipo": { "enum": ["Termómetro", "Higrómetro", "Termohigrómetro", "Termostato", "Higrostato", "Controlador de clima", "Humidificador", "Deshumidificador", null] },
+              "rango_temperatura": { "$ref": "#/$defs/texto" },
+              "rango_humedad": { "$ref": "#/$defs/texto" },
+              "precision": { "$ref": "#/$defs/texto" },
+              "capacidad": { "$ref": "#/$defs/texto" },
+              "wifi": { "$ref": "#/$defs/booleano" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "categoria": { "const": "genetica" } } },
+          "then": {
+            "required": ["tipo", "sexo", "cruza", "ciclo_total_dias", "floracion", "thc_declarado", "cbd_declarado", "proporcion", "rendimiento_interior", "rendimiento_exterior", "altura_interior", "altura_exterior", "perfil_aroma", "efecto"],
+            "properties": {
+              "tipo": { "enum": ["autofloreciente", "fotoperiodica", "clon"] },
+              "sexo": { "enum": ["feminizada", "regular", null] },
+              "cruza": { "$ref": "#/$defs/texto" },
+              "ciclo_total_dias": { "$ref": "#/$defs/texto" },
+              "floracion": { "$ref": "#/$defs/texto", "description": "Tal cual la fuente, con su unidad (días o semanas)." },
+              "thc_declarado": { "$ref": "#/$defs/texto" },
+              "cbd_declarado": { "$ref": "#/$defs/texto" },
+              "proporcion": { "$ref": "#/$defs/texto" },
+              "rendimiento_interior": { "$ref": "#/$defs/texto" },
+              "rendimiento_exterior": { "$ref": "#/$defs/texto" },
+              "altura_interior": { "$ref": "#/$defs/texto" },
+              "altura_exterior": { "$ref": "#/$defs/texto" },
+              "perfil_aroma": { "$ref": "#/$defs/texto" },
+              "efecto": { "$ref": "#/$defs/texto" }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}
