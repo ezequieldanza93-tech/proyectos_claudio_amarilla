@@ -721,7 +721,7 @@ function prodBox(e){
     <div class="tank-calc notice" hidden></div>
   </div>`;
 }
-function lastTank(){const e=[...S.events].filter(x=>num(x.tank)>0).sort((a,b)=>num(b.createdAt)-num(a.createdAt))[0];return e?e.tank:''}
+function lastTank(){const e=[...S.events].filter(x=>num(x.tank)>0).sort((a,b)=>num(b.createdAt)-num(a.createdAt))[0];return e?e.tank:6}
 const r2=v=>dec(Math.round(v*100)/100);
 function tankPlan(L,T,prods){
   // prods: [{label,dose,unit}] ; devuelve texto con tandas
