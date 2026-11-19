@@ -815,7 +815,8 @@ function eventForm(p,e){
     ${buyBox(e)}
     <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note" value="${esc(e.note)}"></label>
     ${isNew||mode==='edit'?'':`<label class="field"><span class="label">Motivo del ajuste (opcional)</span><input id="e-adj" name="adjustNote" value="${esc(e.adjustNote)}" placeholder="Ej.: se atrasó por lluvia, se cambió la dosis"></label>`}
-    <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button></div>
+    <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button>
+      ${isNew?'':`<span class="spacer"></span>${S.confirm==='e'+e.id?`<button type="button" class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Confirmar eliminar</button><button type="button" class="small" data-act="noConfirm">No</button>`:`<button type="button" class="small ghost danger" data-act="askDel" data-key="e${esc(e.id)}">Eliminar tarea</button>`}`}</div>
   </form>`;
 }
 const MAXB=20*1024*1024;
@@ -1189,7 +1190,7 @@ function weekEvRow(p,e){
       ${prodSummary(e)}${purchaseSummary(e)}
       ${moved?`<span class="muted" style="font-size:.78rem">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
       ${e.note?`<span class="muted" style="font-size:.78rem">${esc(e.note)}</span>`:''}
-    <span class="t-actions">${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`:`<button class="small ghost" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button>`}</span>
+    <span class="t-actions">${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`:`<button class="small ghost" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button>`}${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Confirmar eliminar</button><button class="small" data-act="noConfirm">No</button>`:`<button class="small ghost danger" data-act="askDel" data-key="e${esc(e.id)}">Eliminar</button>`}</span>
     </div>`:''}
   </div>`;
 }
@@ -1695,7 +1696,7 @@ app.addEventListener('click',e=>{
     viewImg(){S.lightbox=b.dataset.src;rerender()},
     closeLb(){S.lightbox=null;rerender()},
     delMedia(){const m=S.media.find(x=>x.id===id);safe(async()=>{if(m&&assets){try{await assets.delete(m.assetId)}catch(e){}}await db.doc('media/'+id).delete();S.confirm=null})},
-    delEvent(){safe(async()=>{await db.doc('events/'+id).delete();S.confirm=null})},
+    delEvent(){safe(async()=>{await db.doc('events/'+id).delete();S.confirm=null;if(S.form&&S.form.id===id)S.form=null;S.openEv&&S.openEv.delete(id)})},
     prevMonth(){S.month=shiftMonth(S.month||today().slice(0,7),-1);rerender()},
     nextMonth(){S.month=shiftMonth(S.month||today().slice(0,7),1);rerender()},
     newMove(){S.form={type:'move'};rerender();document.getElementById('m-amount')?.focus()},
