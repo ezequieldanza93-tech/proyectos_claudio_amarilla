@@ -2,9 +2,11 @@
 
 Uso:
   python -P herramientas/armar.py validar [archivo.json ...]   valida contra el esquema (sin args: los finales)
-  python -P herramientas/armar.py unir [archivo.json ...]      une tmp/<agente>/<archivo>.json en los finales (sin args: todos),
+  python -P herramientas/armar.py unir archivo.json [...]      une tmp/<agente>/<archivo>.json en ESOS finales (los pisa),
                                                                regenera marcas.json, fuentes.csv y marcas_sugeridas.json
                                                                y valida todo
+  python -P herramientas/armar.py indices                      solo regenera marcas.json, fuentes.csv y marcas_sugeridas.json
+                                                               desde los finales (no toca productos) y valida
 
 Se corre desde la carpeta catalogo/. Solo usa la biblioteca estándar + jsonschema.
 """
@@ -101,6 +103,19 @@ def unir(solo=None):
     for nombre, productos in por_archivo.items():
         productos.sort(key=lambda p: (p["marca"].lower(), (p.get("linea") or "").lower(), p["producto"].lower(), (p.get("modelo") or "").lower()))
         escribir_json(os.path.join(RAIZ, nombre), productos)
+    return indices(sugeridas)
+
+
+def indices(sugeridas=None):
+    """Regenera marcas.json y fuentes.csv desde los archivos finales (no toca los productos)."""
+    if sugeridas is None:
+        sugeridas, vistos = [], set()
+        for ruta in sorted(glob.glob(os.path.join(RAIZ, "tmp", "*", "sugeridas.json"))):
+            for s in leer(ruta):
+                clave = (s.get("categoria"), (s.get("marca") or "").lower())
+                if clave not in vistos:
+                    vistos.add(clave)
+                    sugeridas.append(s)
     # marcas.json y fuentes.csv salen de los archivos finales que existan
     marcas = {k: [] for k in ["luces", "carpas", "ventilacion", "clima", "fertilizantes", "foliares", "sustratos", "geneticas"]}
     filas = []
@@ -129,7 +144,11 @@ def unir(solo=None):
 if __name__ == "__main__":
     accion = sys.argv[1] if len(sys.argv) > 1 else "validar"
     if accion == "unir":
-        ok = unir(sys.argv[2:] or None)
+        if len(sys.argv) < 3:
+            sys.exit("unir pisa los archivos finales con lo de tmp/: nombrá los archivos (ej. unir luces.json). Para solo regenerar índices: indices")
+        ok = unir(sys.argv[2:])
+    elif accion == "indices":
+        ok = indices()
     else:
         rutas = sys.argv[2:] or [os.path.join(RAIZ, n) for n in ARCHIVOS if os.path.exists(os.path.join(RAIZ, n))]
         ok = validar(rutas)

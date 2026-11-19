@@ -15,7 +15,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "modo_aplicacion": "Foliar y riego (suelo e hidropónico)",
     "presentaciones_ml": [
@@ -41,7 +41,7 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Fabricante Cannabiogen (España). Se vende en Argentina en grow shops; la ficha usada es de un vendedor AR. C.E. 1240 µS/cm a 25 °C a 5 ml/L; compatible con pH 5-8. Composición declarada: Estimulador a base de algas (bioestimulante de floración). Dosis foliar según la fuente: 4-6 ml/L; dos aplicaciones, la 1ra en prefloración (una semana antes de inducir) y la 2da 10 días después de inducida la floración. El pedido lo nombra «Delta 9»: es un producto de Cannabiogen."
+    "notas": "Se vende en Argentina en grow shops; la ficha usada es de un vendedor AR. C.E. 1240 µS/cm a 25 °C a 5 ml/L; compatible con pH 5-8. Composición declarada: Estimulador a base de algas (bioestimulante de floración). Dosis foliar según la fuente: 4-6 ml/L; dos aplicaciones, la 1ra en prefloración (una semana antes de inducir) y la 2da 10 días después de inducida la floración. El pedido lo nombra «Delta 9»: es un producto de Cannabiogen."
   },
   {
     "id": "mamboreta-smarter",
@@ -59,7 +59,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       250
@@ -93,7 +93,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       30
@@ -143,7 +143,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       150,
@@ -172,7 +172,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       100,
@@ -221,7 +221,7 @@
         ]
       }
     ],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [],
     "unidad": "ml",
@@ -256,7 +256,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       500,
@@ -307,7 +307,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       100,
@@ -352,7 +352,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       100,
@@ -397,7 +397,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       100,
@@ -437,14 +437,14 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       100,
       500
     ],
     "unidad": "ml",
-    "npk_declarado": "N 0,5% · P 0,1% · K 3,5% · Ca 0,4% · materia orgánica 15% · microelementos en trazas",
+    "npk_declarado": null,
     "dosis_fabricante": [
       {
         "etapa": "otra",
@@ -488,7 +488,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       100,
@@ -522,7 +522,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       250,
@@ -568,7 +568,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       100,
@@ -614,7 +614,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       1000
@@ -664,7 +664,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       250,
@@ -710,10 +710,11 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
-      100
+      100,
+      250
     ],
     "unidad": "ml",
     "npk_declarado": null,
@@ -760,7 +761,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       250,
@@ -806,13 +807,15 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
-      1000
+      250,
+      1000,
+      5000
     ],
     "unidad": "ml",
-    "npk_declarado": null,
+    "npk_declarado": "N total 5,0% · K2O 4,0% · CaO 4,4% · MgO 1,3% · Fe 0,04% (quelado EDDHSA) · pH 6,7",
     "dosis_fabricante": [
       {
         "etapa": "enraizamiento",
@@ -865,13 +868,15 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
-      1000
+      250,
+      1000,
+      5000
     ],
     "unidad": "ml",
-    "npk_declarado": null,
+    "npk_declarado": "N total 1,4% · P2O5 6,0% · MgO 0,7% · B 0,02% · Cu 0,003% (quelado EDTA) · Mn 0,04% (quelado EDTA) · Zn 0,031% · pH 6,7",
     "dosis_fabricante": [
       {
         "etapa": "enraizamiento",
@@ -924,7 +929,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       250,
@@ -965,7 +970,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "radicular",
     "presentaciones_ml": [
       1000

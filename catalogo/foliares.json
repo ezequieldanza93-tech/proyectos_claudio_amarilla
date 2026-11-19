@@ -15,7 +15,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Extracto del árbol de neem (Azadirachta indica)",
@@ -73,7 +73,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Neem, potásico, diatomeas y canela.",
@@ -132,7 +132,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Aceite de neem, jabón potásico, tierra de diatomeas, canela, cola de caballo y ortigas.",
@@ -169,7 +169,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Aceite de neem puro orgánico importado de India",
@@ -196,7 +196,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Jabón potásico, agua, aceite vegetal",
@@ -222,7 +222,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "g",
     "composicion_declarada": "Tierra de diatomeas (fósiles de algas microscópicas)",
@@ -248,7 +248,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Pintura con pegamento a base de agua",
@@ -275,7 +275,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Extractos de algas del Pacífico; aporta nitrógeno, zinc, boro y azufre; aminoácidos de origen vegetal",
@@ -308,7 +308,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Lecitina de soja",
@@ -341,7 +341,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Sucroglicéridos; ésteres de ácidos grasos de aceites vegetales",
@@ -375,7 +375,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Aceite mineral de alta refinación",
@@ -409,7 +409,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": null,
     "composicion_declarada": null,
@@ -441,7 +441,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -468,7 +468,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -501,10 +501,10 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "g",
-    "composicion_declarada": null,
+    "composicion_declarada": "metaldehído 5%",
     "dosis_fabricante": [],
     "presentaciones": [
       100,
@@ -530,10 +530,10 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "g",
-    "composicion_declarada": null,
+    "composicion_declarada": "Carbaril",
     "dosis_fabricante": [],
     "presentaciones": [
       100
@@ -557,7 +557,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": null,
     "composicion_declarada": "Siliconas micronizadas",
@@ -582,7 +582,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -616,10 +616,10 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
-    "composicion_declarada": null,
+    "composicion_declarada": "Dimetoato 7,5% p/v (75 g/L)",
     "dosis_fabricante": [
       {
         "etapa": "otra",
@@ -650,7 +650,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -684,7 +684,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -718,7 +718,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "g",
     "composicion_declarada": null,
@@ -746,7 +746,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -780,7 +780,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "g",
     "composicion_declarada": null,
@@ -813,7 +813,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -849,7 +849,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "g",
     "composicion_declarada": null,
@@ -878,7 +878,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -912,7 +912,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -955,11 +955,11 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
-    "modo_aplicacion": "Foliar",
+    "modo_aplicacion": null,
     "unidad": "ml",
-    "composicion_declarada": "Extracto puro de semilla de neem (aceite de neem)",
+    "composicion_declarada": "Puro extracto de neem (aceite de neem), 100% ecológico",
     "dosis_fabricante": [
       {
         "etapa": "otra",
@@ -996,7 +996,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "modo_aplicacion": "Foliar o en riego",
     "unidad": "ml",
@@ -1043,7 +1043,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Aceite de neem (Azadirachta indica)",
@@ -1071,7 +1071,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "g",
     "composicion_declarada": null,
@@ -1097,7 +1097,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -1114,7 +1114,7 @@
     "linea": null,
     "producto": "Potásico",
     "modelo": null,
-    "descripcion_corta": "Jabón potásico (ficha de Santa Planta sin descripción).",
+    "descripcion_corta": null,
     "fuentes": [
       {
         "url": "https://santaplanta.com.ar/producto/power-potasico-100-ml/",
@@ -1128,7 +1128,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": null,
@@ -1155,7 +1155,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": "ml",
     "composicion_declarada": "Jabón potásico de origen vegetal",
@@ -1196,7 +1196,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "modo_aplicacion": "Riego y foliar",
     "unidad": "ml",
@@ -1254,9 +1254,9 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
-    "modo_aplicacion": "Foliar",
+    "modo_aplicacion": "Riego (irrigacion)",
     "unidad": "ml",
     "composicion_declarada": "Extracto de algas Ascophyllum nodosum",
     "dosis_fabricante": [
@@ -1290,7 +1290,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": null,
     "composicion_declarada": "Sílice que se adhiere a los insectos; aporta silicio, potasio y fósforo.",
@@ -1322,7 +1322,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": null,
     "composicion_declarada": "Contiene azufre, calcio y zinc.",
@@ -1354,7 +1354,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "uso": "foliar",
     "unidad": null,
     "composicion_declarada": "Fermento de frutas a base de remolacha (FFJ): carbohidratos, microbiología de fermentación, enzimas, coenzimas, aminoácidos y betacarotenos.",

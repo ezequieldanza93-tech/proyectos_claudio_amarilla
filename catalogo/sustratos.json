@@ -20,7 +20,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       50
     ],
@@ -51,7 +51,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       20,
       50,
@@ -79,7 +79,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       25
     ],
@@ -109,7 +109,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       25,
       80
@@ -135,7 +135,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       25
     ],
@@ -160,7 +160,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       25
     ],
@@ -186,7 +186,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       20
     ],
@@ -217,7 +217,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       20,
       50
@@ -249,7 +249,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       20,
       50
@@ -276,7 +276,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       50
     ],
@@ -302,7 +302,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       2,
       4,
@@ -312,7 +312,7 @@
     "ph_declarado": null,
     "ce_declarada": null,
     "uso_indicado": null,
-    "notas": "La ficha dice «recomendado para todo tipo de cultivos» sin precisar indoor/exterior."
+    "notas": null
   },
   {
     "id": "silver-base",
@@ -330,8 +330,11 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
-    "litros_presentacion": [],
+    "verificado": true,
+    "litros_presentacion": [
+      20,
+      80
+    ],
     "composicion_declarada": "Turba rubia y negra seleccionada, perlita de granulometría media, enmiendas orgánicas y minerales.",
     "ph_declarado": "5,5 - 6,5",
     "ce_declarada": "Baja a media (sin valor numérico)",
@@ -354,7 +357,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       20,
       80
@@ -386,7 +389,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       60
     ],
@@ -417,7 +420,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       60
     ],
@@ -448,7 +451,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       80
     ],
@@ -493,7 +496,7 @@
         ]
       }
     ],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       25
     ],
@@ -524,7 +527,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       80,
       60
@@ -555,15 +558,29 @@
         "fecha_captura": "2026-11-19"
       }
     ],
-    "conflictos": [],
-    "verificado": false,
+    "conflictos": [
+      {
+        "campo": "ce_declarada",
+        "valores": [
+          {
+            "valor": "0,20 – 0,50 mS/cm",
+            "url": "https://terrafertil.com/productos/master-e-p/"
+          },
+          {
+            "valor": "0,40 - 0,70 mS/cm",
+            "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_MasterEP.pdf"
+          }
+        ]
+      }
+    ],
+    "verificado": true,
     "litros_presentacion": [
       50,
       60
     ],
     "composicion_declarada": "Compost de corteza fina. Turba de musgo Sphagnum de fibras finas. Perlita. Vermiculita. Corrector de pH. Fertilizantes. Humectante.",
     "ph_declarado": "5,00 - 5,90",
-    "ce_declarada": "0,40 - 0,70 mS/cm",
+    "ce_declarada": null,
     "uso_indicado": null,
     "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha."
   },
@@ -588,7 +605,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       80,
       60
@@ -615,7 +632,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       80
     ],
@@ -646,9 +663,10 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
-      80
+      80,
+      60
     ],
     "composicion_declarada": "Corteza de pino compostada. Turba de musgo Sphagnum de fibras medias y gruesas. Perlita. Corrector de pH. Fertilizantes. Humectante.",
     "ph_declarado": "5,1 - 6,0",
@@ -677,7 +695,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       80
     ],
@@ -708,7 +726,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       80,
       60
@@ -740,7 +758,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       80
     ],
@@ -771,7 +789,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       80
     ],
@@ -801,14 +819,41 @@
         "fecha_captura": "2026-11-19"
       }
     ],
-    "conflictos": [],
-    "verificado": false,
+    "conflictos": [
+      {
+        "campo": "ph_declarado",
+        "valores": [
+          {
+            "valor": "5,00 - 6,00",
+            "url": "https://terrafertil.com/productos/z-floricultura/"
+          },
+          {
+            "valor": "5,00 - 5,80",
+            "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_ZFloricultura.pdf"
+          }
+        ]
+      },
+      {
+        "campo": "ce_declarada",
+        "valores": [
+          {
+            "valor": "0,20 - 0,60 mS/cm",
+            "url": "https://terrafertil.com/productos/z-floricultura/"
+          },
+          {
+            "valor": "0,20 - 0,80 mS/cm",
+            "url": "https://terrafertil.com/wp-content/uploads/FT-Growmix_ZFloricultura.pdf"
+          }
+        ]
+      }
+    ],
+    "verificado": true,
     "litros_presentacion": [
       80
     ],
     "composicion_declarada": "Compost. Turba de musgo Sphagnum. Perlita. Corrector de pH. Fertilizantes. Humectante.",
-    "ph_declarado": "5,00 - 5,80",
-    "ce_declarada": "0,20 - 0,80 mS/cm",
+    "ph_declarado": null,
+    "ce_declarada": null,
     "uso_indicado": null,
     "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
   },
@@ -828,7 +873,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       5
     ],
@@ -853,7 +898,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       5
     ],
@@ -878,7 +923,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       5,
       10,
@@ -906,7 +951,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       20
     ],
@@ -931,7 +976,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       50
     ],
@@ -956,7 +1001,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       10
     ],
@@ -981,7 +1026,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       20
     ],
@@ -1006,7 +1051,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       5
     ],
@@ -1031,7 +1076,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       20,
       50
@@ -1057,7 +1102,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       5,
       10,
@@ -1084,7 +1129,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       20,
       50
@@ -1110,7 +1155,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [
       20,
       50
@@ -1136,7 +1181,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "litros_presentacion": [],
     "composicion_declarada": "Fermentación de cascarilla de arroz y carbonilla, compost de producción propia, Bokashi y Polvos de Roca. Sin turba ni perlita.",
     "ph_declarado": null,

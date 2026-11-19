@@ -15,7 +15,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Blueberry auto",
@@ -48,7 +48,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Critical +2",
@@ -81,7 +81,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Do-Si-Dos x Girl Scout Cookies Auto",
@@ -114,7 +114,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Gorilla Glue #4 x Clon Elite auto 3ª generación",
@@ -135,7 +135,7 @@
     "id": "bsf-seeds-gorilla-pina-auto",
     "categoria": "genetica",
     "marca": "BSF Seeds",
-    "linea": null,
+    "linea": "Gorilla Kingdom",
     "producto": "Gorilla Piña Auto",
     "modelo": null,
     "descripcion_corta": "Versión autofloreciente de predominancia sativa de la Gorilla Piña Feminized; sabor a piña dulce y afrutado, THC alto.",
@@ -147,7 +147,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Gorilla Piña Auto 4ª generación",
@@ -168,7 +168,7 @@
     "id": "bsf-seeds-lafanta-light-auto",
     "categoria": "genetica",
     "marca": "BSF Seeds",
-    "linea": null,
+    "linea": "Light Buds",
     "producto": "Lafanta Light Auto",
     "modelo": null,
     "descripcion_corta": "Variedad autofloreciente alta en CBD y bajo THC (línea Light Buds), con sabor a naranja.",
@@ -180,7 +180,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Lafanta x macho auto 4ª generación (el texto de la ficha dice: cruce de Cali Orange x Skunk x clon Elite de CBD)",
@@ -213,7 +213,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Lebron Haze x Jack Herer Auto",
@@ -246,7 +246,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Moby-D auto 3ª generación x Haze auto 3ª generación de BSF (según el texto de la ficha)",
@@ -279,7 +279,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Orange Blossom x Clon Elite auto 3ª generación",
@@ -312,7 +312,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Pineapple Larry OG x Pineapple Auto 4ª generación",
@@ -345,7 +345,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Zkittlez x Zkittlez Auto 4ª generación",
@@ -378,7 +378,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Critical Auto fenotipo rojo",
@@ -411,7 +411,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "autofloreciente",
     "sexo": null,
     "cruza": "Orange Blossom x Clon Elite auto 3ª generación",
@@ -444,7 +444,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Sour Tsunami x ERB",
@@ -477,7 +477,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Big Bud x Skunk #1",
@@ -510,7 +510,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "BS0D74",
@@ -543,7 +543,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Haze x Sour Diesel",
@@ -557,7 +557,7 @@
     "altura_interior": null,
     "altura_exterior": null,
     "perfil_aroma": "Madera, resina, incienso, floral",
-    "efecto": "Hilarante, locuacidad, elocuencia",
+    "efecto": "Hilárico, locuacidad, elocuencia",
     "notas": "Esqueje (clon). La web publica la floración en días, cargada tal cual. Rendimiento interior/exterior = Indoor/Outdoor de la ficha. Línea = banco o criador de la genética según la web."
   },
   {
@@ -576,7 +576,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Gran Daddy Purple x Parental X",
@@ -609,7 +609,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Camboyana x G13",
@@ -642,7 +642,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Lemon Skunk x Super Lemon Haze",
@@ -675,7 +675,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Critical x Loco Yorsh",
@@ -708,7 +708,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Gorila x Loco Yorsh",
@@ -741,7 +741,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Tropi 8 x Face 7",
@@ -759,10 +759,10 @@
     "notas": "Esqueje (clon). La web publica la floración en días, cargada tal cual. Rendimiento interior/exterior = Indoor/Outdoor de la ficha. Línea = banco o criador de la genética según la web."
   },
   {
-    "id": "clon-factory-yacari-guarani",
+    "id": "clon-factory-yacare-guarani",
     "categoria": "genetica",
     "marca": "Clon Factory",
-    "linea": "Yacarí",
+    "linea": "Yacaré",
     "producto": "Guaraní",
     "modelo": null,
     "descripcion_corta": "Planta de gran porte, híbrido de predominancia sativa, de gran producción y veloz desarrollo.",
@@ -774,7 +774,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Moby Dick x Haze",
@@ -792,10 +792,10 @@
     "notas": "Esqueje (clon). La web publica la floración en días, cargada tal cual. Rendimiento interior/exterior = Indoor/Outdoor de la ficha. Línea = banco o criador de la genética según la web."
   },
   {
-    "id": "clon-factory-yacari-pasionaria",
+    "id": "clon-factory-yacare-pasionaria",
     "categoria": "genetica",
     "marca": "Clon Factory",
-    "linea": "Yacarí",
+    "linea": "Yacaré",
     "producto": "Pasionaria",
     "modelo": null,
     "descripcion_corta": "Floración rápida, dulce y cubierta de resina; alto CBD.",
@@ -807,7 +807,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Bubblegam CBD x DC Haze",
@@ -840,7 +840,7 @@
       }
     ],
     "conflictos": [],
-    "verificado": false,
+    "verificado": true,
     "tipo": "clon",
     "sexo": null,
     "cruza": "Destroyer x Skunk #1",
