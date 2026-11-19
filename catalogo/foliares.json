@@ -1,0 +1,1277 @@
+[
+  {
+    "id": "bioproyect-neem",
+    "categoria": "foliar",
+    "marca": "BioProyect",
+    "linea": null,
+    "producto": "Neem",
+    "modelo": null,
+    "descripcion_corta": "Neem natural; controla pulgones, mosca blanca, araña roja, minador, trips y chinches.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/bioproyect-neem-60-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Extracto del árbol de neem (Azadirachta indica)",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 1,
+        "max": 1,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Prevención"
+      },
+      {
+        "etapa": "otra",
+        "min": 3,
+        "max": 3,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Plagas leves"
+      },
+      {
+        "etapa": "otra",
+        "min": 5,
+        "max": 5,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Plagas graves"
+      }
+    ],
+    "presentaciones": [
+      60
+    ],
+    "notas": "Frecuencia de aplicación: 1 vez por semana."
+  },
+  {
+    "id": "green-leaf-preventivo-4-en-1",
+    "categoria": "foliar",
+    "marca": "Green Leaf",
+    "linea": null,
+    "producto": "Preventivo 4 en 1",
+    "modelo": null,
+    "descripcion_corta": "Plaguicida orgánico preventivo de aplicación foliar contra araña roja, hormigas, mosca blanca, pulgón y trips.",
+    "fuentes": [
+      {
+        "url": "https://donahuana.com.ar/product/green-leaf-preventivo-4-en-1-100-ml/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/green-leaf-preventivo-4-en-1-5-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/green-leaf-plaguicida-4-en-1-2-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Neem, potásico, diatomeas y canela.",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 15,
+        "max": 15,
+        "unidad_por_litro": "ml/L",
+        "detalle": "1ra aplicación: 3 tapas (15 ml) por litro, 2 o 3 días seguidos al bajar el sol"
+      },
+      {
+        "etapa": "otra",
+        "min": 10,
+        "max": 10,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Mantenimiento: 2 tapas por litro, 1 vez por semana (10 ml/L usando la equivalencia 1 tapa = 5 ml de la propia ficha)"
+      }
+    ],
+    "presentaciones": [
+      100,
+      250,
+      2000,
+      5000
+    ],
+    "notas": "No es un fertilizante foliar nutricional: es un plaguicida/acaricida preventivo orgánico. Presentaciones 100 y 250 ml según Doña Huana; 2 L y 5 L según Santa Planta."
+  },
+  {
+    "id": "green-leaf-preventivo-6-en-1",
+    "categoria": "foliar",
+    "marca": "Green Leaf",
+    "linea": null,
+    "producto": "Preventivo 6 en 1",
+    "modelo": null,
+    "descripcion_corta": "Preventivo de plagas y hongos de aplicación foliar, para todo tipo de plantas y etapas.",
+    "fuentes": [
+      {
+        "url": "https://www.skillgrower.com.ar/plaguicidas/green-leaf/preventivo-6-en-1-green-leaf",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://gangagrow.com.ar/productos/green-leaf-6-en-1-protector-y-preventivo-250ml/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/green-leaf-preventivo-6-en-1-5-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/green-leaf-preventivo-6-en-1-2-lt/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Aceite de neem, jabón potásico, tierra de diatomeas, canela, cola de caballo y ortigas.",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": null,
+        "max": null,
+        "unidad_por_litro": "ml/L",
+        "detalle": "1 o 2 tapas por litro, una vez por semana, de forma foliar (la ficha no dice cuántos ml tiene una tapa)"
+      }
+    ],
+    "presentaciones": [
+      100,
+      250,
+      2000,
+      5000
+    ],
+    "notas": "No es un fertilizante foliar nutricional: es un preventivo orgánico de plagas y hongos. Presentaciones 100 y 250 ml según grow shops; 2 L y 5 L según Santa Planta. La dosis queda sin ml/L porque la ficha la da en tapas; la equivalencia 1 tapa = 5 ml es de la ficha del 4 en 1 y no se aplica a otro producto."
+  },
+  {
+    "id": "la-pota-aceite-de-neem-puro",
+    "categoria": "foliar",
+    "marca": "La Pota",
+    "linea": null,
+    "producto": "Aceite de Neem Puro",
+    "modelo": null,
+    "descripcion_corta": "Aceite de neem para controlar y prevenir pulgón, minador, trips, larvas, cochinillas y araña roja.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/aceite-de-neem-puro-la-pota-50ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Aceite de neem puro orgánico importado de India",
+    "dosis_fabricante": [],
+    "presentaciones": [
+      50
+    ],
+    "modo_aplicacion": "pulverización directa y riego en sustrato",
+    "notas": "La ficha no da dosis."
+  },
+  {
+    "id": "la-pota-jabon-potasico",
+    "categoria": "foliar",
+    "marca": "La Pota",
+    "linea": null,
+    "producto": "Jabón Potásico",
+    "modelo": null,
+    "descripcion_corta": "Insecticida ecológico concentrado contra cochinillas, pulgones, araña roja, mosca blanca y trips.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/jabon-potasico-la-pota-250ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Jabón potásico, agua, aceite vegetal",
+    "dosis_fabricante": [],
+    "presentaciones": [
+      250
+    ],
+    "notas": "La ficha no da dosis."
+  },
+  {
+    "id": "la-pota-tierra-de-diatomeas",
+    "categoria": "foliar",
+    "marca": "La Pota",
+    "linea": null,
+    "producto": "Tierra de Diatomeas",
+    "modelo": null,
+    "descripcion_corta": "Insecticida orgánico preventivo que mata insectos por deshidratación.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/tierra-de-diatomeas-la-pota-500gr/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "g",
+    "composicion_declarada": "Tierra de diatomeas (fósiles de algas microscópicas)",
+    "dosis_fabricante": [],
+    "presentaciones": [
+      500
+    ],
+    "notas": "La ficha no da dosis ni modo de uso."
+  },
+  {
+    "id": "mamboreta-a-trapa",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Bio Mamboretá A-TRAPA",
+    "modelo": null,
+    "descripcion_corta": "Pintura pegajosa amarilla para crear trampas cromáticas contra insectos voladores.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-a-trapa/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Pintura con pegamento a base de agua",
+    "dosis_fabricante": [],
+    "presentaciones": [
+      30
+    ],
+    "modo_aplicacion": "pintado sobre superficie no porosa (trampa)",
+    "notas": "Se aplica pintando una superficie no porosa, no se diluye en agua; la ficha indica renovar cada 6 meses en interior y cada 3 en exterior."
+  },
+  {
+    "id": "mamboreta-amino-znb",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Bio Mamboretá AMINO ZnB",
+    "modelo": null,
+    "descripcion_corta": "Fertilizante orgánico foliar con aminoácidos y micronutrientes boro y zinc.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/amino/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Extractos de algas del Pacífico; aporta nitrógeno, zinc, boro y azufre; aminoácidos de origen vegetal",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 6.5,
+        "max": 6.5,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Dosis promedio; pulverización cada 7 a 10 días en cualquier etapa"
+      }
+    ],
+    "presentaciones": [
+      100
+    ]
+  },
+  {
+    "id": "mamboreta-lecithin",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Bio Mamboretá LECITHIN",
+    "modelo": null,
+    "descripcion_corta": "Ayudante (optimizador de pulverizaciones) que mejora la adherencia y penetración de insecticidas, acaricidas, fungicidas y herbicidas.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/lecithin/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Lecitina de soja",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 2,
+        "max": 2,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Se agrega al caldo después del producto que se va a aplicar"
+      }
+    ],
+    "presentaciones": [
+      60
+    ]
+  },
+  {
+    "id": "mamboreta-m-jumkan",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Bio Mamboretá M JUMKAN",
+    "modelo": null,
+    "descripcion_corta": "Insecticida-acaricida de contacto; controla araña, pulgones, trips, cochinilla y mosca blanca.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/m-jumkan/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Sucroglicéridos; ésteres de ácidos grasos de aceites vegetales",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 10,
+        "max": 10,
+        "unidad_por_litro": "ml/L",
+        "detalle": "1 vez cada 15 días (preventivo); 1 vez por semana hasta eliminar la plaga (curativo)"
+      }
+    ],
+    "presentaciones": [
+      100,
+      250
+    ]
+  },
+  {
+    "id": "mamboreta-oil-85-e",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Bio Mamboretá OIL 85 E",
+    "modelo": null,
+    "descripcion_corta": "Acaricida e insecticida a base de aceite mineral; controla arañuelas, cochinillas, ácaros, mosca blanca y pulgones.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-oil-85-e-insecticida-acaricida/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Aceite mineral de alta refinación",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 15,
+        "max": 15,
+        "unidad_por_litro": "ml/L",
+        "detalle": "1 medida y media o 15 cm³ por litro; no aplicar con más de 30 °C"
+      }
+    ],
+    "presentaciones": [
+      100,
+      200
+    ]
+  },
+  {
+    "id": "mamboreta-ph",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Bio Mamboretá pH",
+    "modelo": null,
+    "descripcion_corta": "Corrector de agua: reduce el pH, secuestra cloro y sales antes de preparar aplicaciones.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/ph/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": null,
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 1,
+        "max": 6,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Corrector de agua: la dosis depende de la calidad del agua; se busca el tono de la escala colorimétrica"
+      }
+    ],
+    "presentaciones": [],
+    "notas": "No se encontró presentación en la ficha."
+  },
+  {
+    "id": "mamboreta-vital",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Bio Mamboretá VITAL",
+    "modelo": null,
+    "descripcion_corta": "Bioestimulante antiestrés para enraizamiento; no es hormonal ni fertilizante.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-vital-fitorregulador-bioestimulante/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [],
+    "presentaciones": [
+      30
+    ],
+    "modo_aplicacion": "pulverización o riego",
+    "notas": "La ficha da la dosis en gotas por litro (45 gotas en pulverización, 10 gotas en riego), sin equivalencia en ml: no se convierte."
+  },
+  {
+    "id": "mamboreta-aba",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá ABA",
+    "modelo": null,
+    "descripcion_corta": "Acaricida e insecticida translaminar; controla arañuelas, ácaros y gusanos minadores.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-aba-insecticida-acaricida/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 0.66,
+        "max": 0.66,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Dosis promedio"
+      }
+    ],
+    "presentaciones": [
+      30
+    ]
+  },
+  {
+    "id": "mamboreta-br-mata-babosas",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá B+R Mata Babosas y Caracoles",
+    "modelo": null,
+    "descripcion_corta": "Cebo en microgránulos contra babosas y caracoles.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-br-matababosas-caracoles/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "g",
+    "composicion_declarada": null,
+    "dosis_fabricante": [],
+    "presentaciones": [
+      100,
+      200,
+      500
+    ],
+    "modo_aplicacion": "aplicación directa del envase al suelo",
+    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 25 g por m²."
+  },
+  {
+    "id": "mamboreta-bolita",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá BOLITA",
+    "modelo": null,
+    "descripcion_corta": "Cebo granulado contra bicho bolita.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-bolita-crustacicida/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "g",
+    "composicion_declarada": null,
+    "dosis_fabricante": [],
+    "presentaciones": [
+      100
+    ],
+    "modo_aplicacion": "aplicación directa del envase al suelo",
+    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 0,35 g por m²."
+  },
+  {
+    "id": "mamboreta-brillo-foliar",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá BRILLO FOLIAR",
+    "modelo": null,
+    "descripcion_corta": "Abrillantador en aerosol para plantas de interior.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-brillo-foliar-aerosol/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": null,
+    "composicion_declarada": "Siliconas micronizadas",
+    "dosis_fabricante": [],
+    "presentaciones": [],
+    "modo_aplicacion": "aerosol a 60 cm de la planta",
+    "notas": "Aerosol listo para usar, sin dosis por litro; la ficha no indica presentación."
+  },
+  {
+    "id": "mamboreta-confi",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá CONFI",
+    "modelo": null,
+    "descripcion_corta": "Insecticida sistémico de amplio espectro contra insectos chupadores (mosca blanca, pulgones, trips, cochinillas).",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-confi-insecticida/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 1,
+        "max": 1,
+        "unidad_por_litro": "ml/L",
+        "detalle": "20 gotas o 1 cm³ por litro de agua"
+      }
+    ],
+    "presentaciones": [
+      30
+    ],
+    "modo_aplicacion": "foliar o al suelo"
+  },
+  {
+    "id": "mamboreta-d",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá D",
+    "modelo": null,
+    "descripcion_corta": "Insecticida acaricida sistémico foliar y de contacto; controla pulgones, cochinillas, trips, mosca de la fruta.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-d-insecticida-acaricida-sistemico/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 6,
+        "max": 6,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Dosis promedio"
+      }
+    ],
+    "presentaciones": [
+      30,
+      60
+    ]
+  },
+  {
+    "id": "mamboreta-foli",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá FOLI",
+    "modelo": null,
+    "descripcion_corta": "Fungicida sistémico preventivo, curativo y erradicante; manchas foliares, roya, oídio.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-foli-fungicida-sistemico/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 1,
+        "max": 1,
+        "unidad_por_litro": "ml/L",
+        "detalle": "20 gotas o 1 cm³ por litro de agua"
+      }
+    ],
+    "presentaciones": [
+      30
+    ],
+    "modo_aplicacion": "foliar o al suelo"
+  },
+  {
+    "id": "mamboreta-g",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá G",
+    "modelo": null,
+    "descripcion_corta": "Herbicida total sistémico post-emergente contra malezas anuales y perennes.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-g-herbicida-no-selectivo/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 25,
+        "max": 25,
+        "unidad_por_litro": "ml/L",
+        "detalle": "2 medidas y media o 25 cm³ por litro de agua, cada 100 m²"
+      }
+    ],
+    "presentaciones": [
+      100,
+      250
+    ]
+  },
+  {
+    "id": "mamboreta-grillo",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá GRILLO",
+    "modelo": null,
+    "descripcion_corta": "Insecticida granulado específico contra grillo topo en césped.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-grillo-insecticida/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "g",
+    "composicion_declarada": null,
+    "dosis_fabricante": [],
+    "presentaciones": [
+      200,
+      500
+    ],
+    "modo_aplicacion": "aplicación directa del envase al suelo",
+    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 3 g por m²."
+  },
+  {
+    "id": "mamboreta-h",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá H",
+    "modelo": null,
+    "descripcion_corta": "Fungicida sistémico de amplio espectro (moho gris, oídio, sarna, antracnosis, fusariosis).",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-h-fungicida-sistemico/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 1,
+        "max": 1,
+        "unidad_por_litro": "ml/L",
+        "detalle": "1 medida o 1 cm³ por litro de agua"
+      }
+    ],
+    "presentaciones": [
+      30
+    ],
+    "modo_aplicacion": "foliar y radicular (sistémico por hoja y raíz)"
+  },
+  {
+    "id": "mamboreta-k",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá K",
+    "modelo": null,
+    "descripcion_corta": "Fungicida de contacto de amplio espectro (mancha negra, roya, viruela); también contra damping off en almácigos.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-k-fungicida/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "g",
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 1.5,
+        "max": 1.5,
+        "unidad_por_litro": "g/L",
+        "detalle": "3 medidas o 1,5 g por litro de agua"
+      }
+    ],
+    "presentaciones": [
+      30
+    ]
+  },
+  {
+    "id": "mamboreta-kaput",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá KAPUT",
+    "modelo": null,
+    "descripcion_corta": "Hormiguicida líquido para diluir contra hormigas cortadoras y otras hormigas.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-kaput-hormiguicida/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 10,
+        "max": 10,
+        "unidad_por_litro": "ml/L",
+        "detalle": "1 medida o 10 cm³ por litro de agua"
+      }
+    ],
+    "presentaciones": [
+      60,
+      100
+    ],
+    "modo_aplicacion": "aplicación al hormiguero",
+    "notas": "Hormiguicida: se aplica sobre el hormiguero, no sobre la planta."
+  },
+  {
+    "id": "mamboreta-mirex-s",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá MIREX-S",
+    "modelo": null,
+    "descripcion_corta": "Hormiguicida en cebo granulado contra hormigas cortadoras.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-mirex-s-hormiguicida-cebo-granulado/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "g",
+    "composicion_declarada": null,
+    "dosis_fabricante": [],
+    "presentaciones": [
+      100,
+      200,
+      500
+    ],
+    "modo_aplicacion": "aplicación directa del envase al suelo",
+    "notas": "Producto granulado que no se diluye en agua; dosis de la ficha: 20 a 30 g por hormiguero."
+  },
+  {
+    "id": "mamboreta-selectivo",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá SELECTIVO",
+    "modelo": null,
+    "descripcion_corta": "Herbicida selectivo hormonal para malezas de hoja ancha en césped.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-selectivo-herbicida-selectivo/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 3,
+        "max": 3,
+        "unidad_por_litro": "ml/L",
+        "detalle": "3 medidas o 30 cm³ cada 10 litros de agua, para 100 m²"
+      }
+    ],
+    "presentaciones": [
+      100,
+      250
+    ]
+  },
+  {
+    "id": "mamboreta-z",
+    "categoria": "foliar",
+    "marca": "Mamboretá",
+    "linea": null,
+    "producto": "Mamboretá Z",
+    "modelo": null,
+    "descripcion_corta": "Insecticida oruguicida piretroide no sistémico; controla orugas, isocas, chinches y otros masticadores.",
+    "fuentes": [
+      {
+        "url": "https://mamboreta.com.ar/producto/mamboreta-z-insecticida-oruguicida/",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 0.2,
+        "max": 0.2,
+        "unidad_por_litro": "ml/L",
+        "detalle": "4 gotas o 0,20 cm³ por litro de agua"
+      }
+    ],
+    "presentaciones": [
+      30
+    ]
+  },
+  {
+    "id": "namaste-bio-neem",
+    "categoria": "foliar",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Bio Neem",
+    "modelo": null,
+    "descripcion_corta": "Aceite puro de neem, preventivo y bio-insecticida orgánico.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-bio-neem-30-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-bio-neem-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "modo_aplicacion": "Foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Extracto puro de semilla de neem (aceite de neem)",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 2,
+        "max": 3,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Plagas instaladas: diluir en agua tibia y repetir cada 3 días, 5 aplicaciones en total (Santa Planta)."
+      }
+    ],
+    "presentaciones": [
+      30,
+      100
+    ],
+    "notas": "Sólido por debajo de unos 18 °C: calentar el envase bajo agua tibia. Evitar usarlo después de la 5ª semana de floración. Mejor disolución mezclado con Bio Protect. El sitio del fabricante no publica dosis; la dosis preventiva no está indicada."
+  },
+  {
+    "id": "namaste-bio-protect",
+    "categoria": "foliar",
+    "marca": "Namaste",
+    "linea": null,
+    "producto": "Bio Protect",
+    "modelo": null,
+    "descripcion_corta": "Protector orgánico preventivo de hongos y plagas a base de cola de caballo y ortiga.",
+    "fuentes": [
+      {
+        "url": "https://namastenutrientes.com",
+        "fuente_tipo": "fabricante",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/namaste-bioprotect-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "modo_aplicacion": "Foliar o en riego",
+    "unidad": "ml",
+    "composicion_declarada": "Extracto de cola de caballo y extracto de ortiga verde",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 3,
+        "max": 3,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Preventivo: foliar cada 15 días (Santa Planta)."
+      },
+      {
+        "etapa": "otra",
+        "min": 6,
+        "max": 6,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Tratamiento antifúngico o de plagas: 2 veces por semana, una en riego y otra foliar (Santa Planta)."
+      }
+    ],
+    "presentaciones": [
+      100
+    ],
+    "notas": "Dosis tomada de Santa Planta (la fuente dice también «1 tapa por litro»); el sitio del fabricante no publica dosis. Combina con Bio Neem."
+  },
+  {
+    "id": "nostress-aceite-de-neem",
+    "categoria": "foliar",
+    "marca": "NoStress",
+    "linea": null,
+    "producto": "Aceite de Neem",
+    "modelo": null,
+    "descripcion_corta": "Aceite de neem concentrado para prevenir y combatir plagas.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/nostress-aceite-de-neem-30-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/nostress-aceite-de-neem-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Aceite de neem (Azadirachta indica)",
+    "dosis_fabricante": [],
+    "presentaciones": [
+      30,
+      100
+    ],
+    "modo_aplicacion": "pulverización sobre planta, sustrato y maceta",
+    "notas": "La ficha recomienda aplicar cada 15 o 20 días como preventivo y una vez por semana contra plagas, sin dosis por litro. La presentación de 100 ml sale del listado de Santa Planta (su ficha no tiene descripción)."
+  },
+  {
+    "id": "pangea-d-killer-diatomeas",
+    "categoria": "foliar",
+    "marca": "Pangea",
+    "linea": null,
+    "producto": "D-Killer Diatomeas",
+    "modelo": null,
+    "descripcion_corta": "Tierra de diatomeas (ficha de Santa Planta sin descripción).",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/pangea-d-killer-diatomeas-100-gr/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "g",
+    "composicion_declarada": null,
+    "dosis_fabricante": [],
+    "presentaciones": [
+      100
+    ],
+    "notas": "Ficha sin datos más allá del nombre y la presentación."
+  },
+  {
+    "id": "power-neem-puro",
+    "categoria": "foliar",
+    "marca": "Power",
+    "linea": null,
+    "producto": "Neem Puro",
+    "modelo": null,
+    "descripcion_corta": "Neem puro (ficha de Santa Planta sin descripción).",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/power-neem-puro-50-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [],
+    "presentaciones": [
+      50
+    ],
+    "notas": "Ficha sin datos más allá del nombre y la presentación."
+  },
+  {
+    "id": "power-potasico",
+    "categoria": "foliar",
+    "marca": "Power",
+    "linea": null,
+    "producto": "Potásico",
+    "modelo": null,
+    "descripcion_corta": "Jabón potásico (ficha de Santa Planta sin descripción).",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/power-potasico-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/power-potasico-250-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": null,
+    "dosis_fabricante": [],
+    "presentaciones": [
+      100,
+      250
+    ],
+    "notas": "Ficha sin datos más allá del nombre y las presentaciones (100 y 250 ml, en dos fichas)."
+  },
+  {
+    "id": "revienta-jabon-potasico",
+    "categoria": "foliar",
+    "marca": "Revienta",
+    "linea": null,
+    "producto": "Jabón Potásico",
+    "modelo": null,
+    "descripcion_corta": "Insecticida y funguicida a base de jabón potásico de origen vegetal.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/jabon-potasico-revienta-potasico-200ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Jabón potásico de origen vegetal",
+    "dosis_fabricante": [],
+    "presentaciones": [
+      200
+    ],
+    "notas": "La ficha no da dosis."
+  },
+  {
+    "id": "top-crop-barrier",
+    "categoria": "foliar",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Barrier Bioprotector",
+    "modelo": null,
+    "descripcion_corta": "Bioprotector con silicio y potasio que refuerza paredes celulares y la resistencia frente a plagas y hongos.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-barrier-bioprotector-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-barrier-bioprotector-250-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/barrier-top-crop-fertilizante-bioprotector-insecticida-250-ml/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.jardinerocorrentino.com.ar/productos/topbarri/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "modo_aplicacion": "Riego y foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Aporta silicio y potasio (según la descripción del vendedor)",
+    "dosis_fabricante": [
+      {
+        "etapa": "otra",
+        "min": 0.5,
+        "max": 0.5,
+        "unidad_por_litro": "ml/L",
+        "detalle": "En riego, una vez por semana, vertido alrededor de las raíces."
+      },
+      {
+        "etapa": "otra",
+        "min": 0.25,
+        "max": 0.25,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Foliar, en agua templada al final del ciclo de luz, una vez por semana como preventivo."
+      }
+    ],
+    "presentaciones": [
+      100,
+      250
+    ],
+    "notas": "Dosis de growshopping.com.ar. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  },
+  {
+    "id": "top-crop-big-one",
+    "categoria": "foliar",
+    "marca": "Top Crop",
+    "linea": null,
+    "producto": "Big One",
+    "modelo": null,
+    "descripcion_corta": "Bioestimulante de floración a base de extracto de algas, aplicado por foliar.",
+    "fuentes": [
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-big-one-bioestimulante-estimulante-100-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://santaplanta.com.ar/producto/top-crop-big-one-bioestimulante-estimulante-pack-x-24-u-10-desc-250-ml/",
+        "fuente_tipo": "distribuidor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.growshopping.com.ar/productos/big-one-top-crop-fertilizante-de-floracion-250-ml/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      },
+      {
+        "url": "https://www.jardinerocorrentino.com.ar/productos/big-one-bioestimulante-250-ml-top-crop/",
+        "fuente_tipo": "vendedor",
+        "fecha_captura": "2026-11-19"
+      }
+    ],
+    "conflictos": [],
+    "verificado": false,
+    "uso": "foliar",
+    "modo_aplicacion": "Foliar",
+    "unidad": "ml",
+    "composicion_declarada": "Extracto de algas Ascophyllum nodosum",
+    "dosis_fabricante": [
+      {
+        "etapa": "floracion",
+        "min": 2,
+        "max": 2,
+        "unidad_por_litro": "ml/L",
+        "detalle": "Foliar con pulverizador 10 días antes del inicio de floración y cada 10 días, máximo 4 aplicaciones; dejar de pulverizar 15 días antes de la cosecha (growshopping.com.ar)."
+      }
+    ],
+    "presentaciones": [
+      100,
+      250
+    ],
+    "notas": "En autoflorecientes se puede empezar la primera semana de crecimiento. La página de Santa Planta de 250 ml es un pack x 24. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+  }
+]
