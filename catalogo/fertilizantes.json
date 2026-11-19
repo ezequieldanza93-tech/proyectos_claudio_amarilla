@@ -41,7 +41,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Se vende en Argentina en grow shops; la ficha usada es de un vendedor AR. C.E. 1240 µS/cm a 25 °C a 5 ml/L; compatible con pH 5-8. Composición declarada: Estimulador a base de algas (bioestimulante de floración). Dosis foliar según la fuente: 4-6 ml/L; dos aplicaciones, la 1ra en prefloración (una semana antes de inducir) y la 2da 10 días después de inducida la floración. El pedido lo nombra «Delta 9»: es un producto de Cannabiogen."
+    "notas": "Se vende en Argentina en grow shops; la ficha usada es de un vendedor AR. C.E. 1240 µS/cm a 25 °C a 5 ml/L; compatible con pH 5-8. Composición declarada: Estimulador a base de algas (bioestimulante de floración). Dosis foliar según la fuente: 4-6 ml/L; dos aplicaciones, la 1ra en prefloración (una semana antes de inducir) y la 2da 10 días después de inducida la floración. El pedido lo nombra «Delta 9»: es un producto de Cannabiogen.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/078/841/products/cannabiogen-delta-nueve-b37b4add0660f684d517805117026676-640-0.webp"
   },
   {
     "id": "mamboreta-smarter",
@@ -75,7 +76,8 @@
         "detalle": "1 y 1/2 medida o 15 cm³ por litro; mínimo 3 aplicaciones, con regadera"
       }
     ],
-    "tabla_cultivo_url": null
+    "tabla_cultivo_url": null,
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2020/04/smarter_biomamboreta_mamboreta_fertilizante_web.jpg"
   },
   {
     "id": "mamboreta-trico",
@@ -110,7 +112,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Principio activo: Trichoderma harzianum cepa Th-1 INTA (1x10^9 conidios/g). Presentación de 30 g."
+    "notas": "Principio activo: Trichoderma harzianum cepa Th-1 INTA (1x10^9 conidios/g). Presentación de 30 g.",
+    "imagen_url": "https://mamboreta.com.ar/wp-content/uploads/2021/10/Bio-Mamboreta-Trico-Trap-Envase.webp"
   },
   {
     "id": "namaste-amazonia",
@@ -154,7 +157,8 @@
     "npk_declarado": null,
     "dosis_fabricante": [],
     "tabla_cultivo_url": null,
-    "notas": "Presentaciones en gramos (polvo). Rendimiento según el fabricante: 150 g rinde 50 L, 300 g 167 L, 2000 g 667 L; no publica dosis por litro. Certificado SENASA N° 19097. Sin NPK declarado."
+    "notas": "Presentaciones en gramos (polvo). Rendimiento según el fabricante: 150 g rinde 50 L, 300 g 167 L, 2000 g 667 L; no publica dosis por litro. Certificado SENASA N° 19097. Sin NPK declarado.",
+    "imagen_url": "https://namastenutrientes.com/images/Amazonia/AMAZONIA%20300GR.webp"
   },
   {
     "id": "namaste-calmagste",
@@ -184,7 +188,8 @@
     "npk_declarado": null,
     "dosis_fabricante": [],
     "tabla_cultivo_url": null,
-    "notas": "Solo figura en el sitio del fabricante; no se encontró en Santa Planta. Sin dosis ni composición detallada publicadas. Certificado SENASA N° 61.277."
+    "notas": "Solo figura en el sitio del fabricante; no se encontró en Santa Planta. Sin dosis ni composición detallada publicadas. Certificado SENASA N° 61.277.",
+    "imagen_url": "https://namastenutrientes.com/images/Calmagste/CALMAGSTE%20500ML.png"
   },
   {
     "id": "namaste-clonaste",
@@ -228,7 +233,8 @@
     "npk_declarado": null,
     "dosis_fabricante": [],
     "tabla_cultivo_url": null,
-    "notas": "Se aplica sobre la base del esqueje (cubrir 1 cm de tallo, 10 segundos) o con pincel; no es dosis por litro. El envase difiere entre fuentes: sitio oficial 300 cc, Santa Planta 30 cc (nombre «30 GR», texto «envase de 30 CC»)."
+    "notas": "Se aplica sobre la base del esqueje (cubrir 1 cm de tallo, 10 segundos) o con pincel; no es dosis por litro. El envase difiere entre fuentes: sitio oficial 300 cc, Santa Planta 30 cc (nombre «30 GR», texto «envase de 30 CC»).",
+    "imagen_url": "https://namastenutrientes.com/images/Clonaste/CLONASTE%20300GR.webp"
   },
   {
     "id": "namaste-detox",
@@ -291,7 +297,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Dosis tomada de Santa Planta. Presentaciones en conflicto: el fabricante y los títulos de Santa Planta dicen 500 ml y 2 L, pero la descripción de Santa Planta dice «potes de 600 ml y 5 litros». Certificado SENASA N° 18703."
+    "notas": "Dosis tomada de Santa Planta. Presentaciones en conflicto: el fabricante y los títulos de Santa Planta dicen 500 ml y 2 L, pero la descripción de Santa Planta dice «potes de 600 ml y 5 litros». Certificado SENASA N° 18703.",
+    "imagen_url": "https://namastenutrientes.com/images/Detox/DETOX%20500ML.webp"
   },
   {
     "id": "namaste-flora-booster",
@@ -336,7 +343,8 @@
     "npk_declarado": "P2O5 9% · K2O 18% · Fe 1% · otros microelementos 1%",
     "dosis_fabricante": [],
     "tabla_cultivo_url": null,
-    "notas": "Uso en interior: 1 vez por semana (4 aplicaciones en toda la floración), la primera puede ser con rociador. El fabricante indica rendimiento: 100 ml rinde 25 L, 500 ml 125 L, 2 L 500 L, 10 L 2500 L; no publica dosis por litro. La descripción de Santa Planta del Flora Booster de 2 L parece copiada de otro producto (Green House Feeding) y no se usó. Certificado SENASA N° 18504."
+    "notas": "Uso en interior: 1 vez por semana (4 aplicaciones en toda la floración), la primera puede ser con rociador. El fabricante indica rendimiento: 100 ml rinde 25 L, 500 ml 125 L, 2 L 500 L, 10 L 2500 L; no publica dosis por litro. La descripción de Santa Planta del Flora Booster de 2 L parece copiada de otro producto (Green House Feeding) y no se usó. Certificado SENASA N° 18504.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/1020.jpg"
   },
   {
     "id": "namaste-oro-negro",
@@ -381,7 +389,8 @@
     "npk_declarado": "N 7,5% (orgánico) · P 1,6% · K 10% · Fe 0,10% · S 0,6% · Ca 0,5% · Mn 0,3% · Cu 0,2% · B 0,25% · materia orgánica 86%",
     "dosis_fabricante": [],
     "tabla_cultivo_url": null,
-    "notas": "El fabricante indica rendimiento: 100 ml rinde 25 L, 500 ml 125 L, 2 L 500 L, 10 L 2500 L; no publica dosis por litro en el sitio. Se aplica 1 vez por semana en vegetativo. Certificado SENASA N° 19039. Santa Planta vende 100 ml, 500 ml y 2 L."
+    "notas": "El fabricante indica rendimiento: 100 ml rinde 25 L, 500 ml 125 L, 2 L 500 L, 10 L 2500 L; no publica dosis por litro en el sitio. Se aplica 1 vez por semana en vegetativo. Certificado SENASA N° 19039. Santa Planta vende 100 ml, 500 ml y 2 L.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/1063.jpg"
   },
   {
     "id": "namaste-ph-menos",
@@ -426,7 +435,8 @@
     "npk_declarado": null,
     "dosis_fabricante": [],
     "tabla_cultivo_url": null,
-    "notas": "Sin dosis por litro: Santa Planta indica agregar de a 3 o 4 gotas y volver a medir (baja 0,5 puntos). El fabricante menciona la ventana de pH 5,5 a 6,5. Certificado SENASA N° 18717."
+    "notas": "Sin dosis por litro: Santa Planta indica agregar de a 3 o 4 gotas y volver a medir (baja 0,5 puntos). El fabricante menciona la ventana de pH 5,5 a 6,5. Certificado SENASA N° 18717.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/214.jpg"
   },
   {
     "id": "namaste-shanti",
@@ -472,7 +482,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Dosis tomada de la descripción de Santa Planta; el sitio del fabricante no publica dosis. Rendimiento del fabricante: 100 ml rinde 25 L, 500 ml 125 L. Certificado SENASA N° 19038."
+    "notas": "Dosis tomada de la descripción de Santa Planta; el sitio del fabricante no publica dosis. Rendimiento del fabricante: 100 ml rinde 25 L, 500 ml 125 L. Certificado SENASA N° 19038.",
+    "imagen_url": "https://namastenutrientes.com/images/Shanti/SHANTI%20500ML.webp"
   },
   {
     "id": "namaste-trico-plus",
@@ -516,7 +527,8 @@
     "npk_declarado": "P 1% · Ca 7% · vitaminas B1, B6 y B12 · carbohidratos · aminoácidos",
     "dosis_fabricante": [],
     "tabla_cultivo_url": null,
-    "notas": "Presentaciones en gramos. Rendimiento del fabricante: 100 g rinde 50 L, 250 g 150 L, 1100 g 550 L; no publica dosis por litro. Se aplica en floración; las dos primeras aplicaciones pueden ser foliares. Certificado SENASA N° 18849."
+    "notas": "Presentaciones en gramos. Rendimiento del fabricante: 100 g rinde 50 L, 250 g 150 L, 1100 g 550 L; no publica dosis por litro. Se aplica en floración; las dos primeras aplicaciones pueden ser foliares. Certificado SENASA N° 18849.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/1648.jpg"
   },
   {
     "id": "top-crop-calmag",
@@ -557,7 +569,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Santa Planta lista 250 ml; el grow shop lista también 1 L (calmag-1l-top-crop). Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "Santa Planta lista 250 ml; el grow shop lista también 1 L (calmag-1l-top-crop). Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3184.jpg"
   },
   {
     "id": "top-crop-deeper-underground",
@@ -603,7 +616,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Otras tiendas citan dosis distintas (1 ml/L; 2-4 ml/L): ver pendientes. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "Otras tiendas citan dosis distintas (1 ml/L; 2-4 ml/L): ver pendientes. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/2865.jpg"
   },
   {
     "id": "top-crop-top-auto",
@@ -648,7 +662,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "No combinar con Top Veg ni Top Bloom. Los grow shops también venden 250 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "No combinar con Top Veg ni Top Bloom. Los grow shops también venden 250 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3211.jpg"
   },
   {
     "id": "top-crop-top-bloom",
@@ -699,7 +714,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "No usar en autoflorecientes ni en coco. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "No usar en autoflorecientes ni en coco. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/2945.jpg"
   },
   {
     "id": "top-crop-top-bud",
@@ -745,7 +761,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Los grow shops también venden 250 ml; Santa Planta lista 100 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "Los grow shops también venden 250 ml; Santa Planta lista 100 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/2864.jpg"
   },
   {
     "id": "top-crop-top-candy",
@@ -796,7 +813,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Las páginas de Santa Planta son packs (24 u de 250 ml, 12 u de 1 L); se cargó el producto unitario. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "Las páginas de Santa Planta son packs (24 u de 250 ml, 12 u de 1 L); se cargó el producto unitario. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/08/2946.jpg"
   },
   {
     "id": "top-crop-top-coco-a",
@@ -857,7 +875,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Formatos de 1 y 5 L según el vendedor; los grow shops también venden 250 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "Formatos de 1 y 5 L según el vendedor; los grow shops también venden 250 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3448.jpg"
   },
   {
     "id": "top-crop-top-coco-b",
@@ -918,7 +937,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Formatos de 1 y 5 L según el vendedor; los grow shops también venden 250 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "Formatos de 1 y 5 L según el vendedor; los grow shops también venden 250 ml. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3449.jpg"
   },
   {
     "id": "top-crop-top-veg",
@@ -964,7 +984,8 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "No usar en autoflorecientes (Top Auto) ni en coco (Top Coco A y B). Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "No usar en autoflorecientes (Top Auto) ni en coco (Top Coco A y B). Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/2867.jpg"
   },
   {
     "id": "top-crop-top-wash",
@@ -1004,6 +1025,7 @@
       }
     ],
     "tabla_cultivo_url": null,
-    "notas": "Sin otra información de composición. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible."
+    "notas": "Sin otra información de composición. Dosis tomada de la descripción de un grow shop argentino; el sitio oficial de Top Crop no se pudo consultar (403) y no hay tabla de cultivo del fabricante accesible.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/2947.jpg"
   }
 ]

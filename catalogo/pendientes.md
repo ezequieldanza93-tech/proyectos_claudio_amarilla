@@ -10,7 +10,7 @@ Relevamiento del 19/11/2026. Acá está lo que no se pudo verificar, los product
 4. **Go Green**: no vende ventilación. «Go Green Argentina» vende fertilizantes, sustratos y paneles LED (en sugeridas). ¿Era otra marca, como «Grow Green»?
 5. **SL Growled**: no hay prueba de que sea `growled.com.ar` (tienda «Grow Led», sin «SL» ni razón social). En los buscadores aparece solo en Mercado Libre, como importador de kits. No se cargó nada. ¿Tenés un link?
 6. **Cogoshop**: su dominio redirige a su tienda oficial de Mercado Libre, y no aparece en ningún grow shop con sitio propio. Sin datos.
-7. **Growmix Indoor**: no existe con ese nombre en el sitio de Terrafertil. Lo más parecido es **MultiPro Indoor** (20 L, línea de jardín), cargado como `terrafertil-multipro-indoor`. ¿Es ese?
+7. ✅ **Growmix Indoor: resuelto (19/11).** Es `terrafertil-multipro-indoor`. La foto del fabricante (`growmix_indoor_grande.jpg`) muestra la bolsa «GROW MIX · Sustrato profesional · Indoor Growing · MultiPro». Se corrigió su línea a «Growmix» y el id no cambió.
 8. **Mars Hydro**: en los grow shops argentinos figura como «Mars» (Mars Optoelectrónica). Se cargó como «Mars Hydro».
 9. **Agroled**: no tiene sitio propio y no queda claro si es marca o tienda. Se cargaron 2 coolers porque así figura en los títulos.
 10. **Bioled**: no se pudo confirmar que sea Bioledarg SRL.
@@ -25,6 +25,12 @@ Relevamiento del 19/11/2026. Acá está lo que no se pudo verificar, los product
     - **Cob Pro y Cob Samsung**: tampoco nombran marca. ¿Van como Amnesia?
     - Sin datos técnicos en la ficha: Bloom 300, Araña Pro 240, Cob Samsung 500/600, Led Yxo 50w y Cooler Ruleman 4".
     - Las fichas están guardadas localmente: si decidís que son de Amnesia, se cargan sin volver a pedirle nada al sitio.
+
+17. **Fotos que faltan (3 de 246):**
+    - **Master E y Citrus II:** Terrafertil muestra en su página la bolsa de Master E/P y la de Citrus, respectivamente.
+    - **Purple Karma:** Clon Factory no tiene una foto con ese nombre (la candidata dice «BSOD74»).
+
+    Si conseguís otra fuente con la foto correcta, se agrega.
 
 ## 2. Límites que afectaron la cobertura
 
@@ -64,7 +70,7 @@ Productos cargados (sirven para sugerir marca y modelo) cuyas fuentes no dan nin
 - **GS Iluminación** (3): `gs-iluminacion-panel-led-mx150`, `gs-iluminacion-panel-led-mx200`, `gs-iluminacion-panel-led-mx300`
 - **Lux** (5): `lux-eco-full-spectrum-200w`, `lux-eco-full-spectrum-300w`, `lux-eco-full-spectrum-400w`, `lux-eco-full-spectrum-600w`, `lux-samsung-yxo-eco-full-spectrum-600w`
 - **Mamboretá** (1): `mamboreta-brillo-foliar`
-- **Mars Hydro** (1): `mars-hydro-marsmachine-225cx`
+- **Mars Hydro** (2): `mars-hydro-infinitta-225`, `mars-hydro-marsmachine-225cx`
 - **Namaste** (1): `namaste-clonaste`
 - **Vamp** (1): `vamp-sustrato-magico`
 - **VT Fans** (2): `vt-fans-turbina-cooler-extractor-3-ruleman`, `vt-fans-turbina-cooler-extractor-4-ruleman`

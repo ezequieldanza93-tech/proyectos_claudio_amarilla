@@ -22,7 +22,8 @@
     "precision": null,
     "capacidad": "4 L",
     "wifi": null,
-    "notas": "Goblin: intensidad de humidificación regulable, funcionamiento silencioso y bajo consumo; no da potencia ni caudal."
+    "notas": "Goblin: intensidad de humidificación regulable, funcionamiento silencioso y bajo consumo; no da potencia ni caudal.",
+    "imagen_url": "https://d22fxaf9t8d39k.cloudfront.net/b589d337caa25e512839c282f8edfae64e78e9e1b2885b383a6043d628c5cc2614045.png"
   },
   {
     "id": "garden-highpro-termohigrometro-basic",
@@ -47,7 +48,8 @@
     "precision": "±1 °C; ±5 % HR",
     "capacidad": null,
     "wifi": null,
-    "notas": "UP! Growshop: dimensiones 6 x 11,5 cm."
+    "notas": "UP! Growshop: dimensiones 6 x 11,5 cm.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/764/290/products/d_829967-mla31721375523_082019-b-bb05ff410e1b0e94a417593254247804-640-0.webp"
   },
   {
     "id": "garden-highpro-termohigrometro-medium",
@@ -72,7 +74,8 @@
     "precision": "±1 °C; ±5 % HR",
     "capacidad": null,
     "wifi": null,
-    "notas": "UP! Growshop: la ficha dice que es resistente al calor y sirve para controlar la distancia entre la luminaria y las plantas. No da dimensiones."
+    "notas": "UP! Growshop: la ficha dice que es resistente al calor y sirve para controlar la distancia entre la luminaria y las plantas. No da dimensiones.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/764/290/products/d_644640-mla74381261513_022024-b-1d7803510886eeef5c17595388813955-640-0.webp"
   },
   {
     "id": "garden-highpro-termohigrometro-profesional",
@@ -97,7 +100,8 @@
     "precision": "±1 °C; ±5 % HR",
     "capacidad": null,
     "wifi": null,
-    "notas": "UP! Growshop: dimensiones 9 x 18 cm."
+    "notas": "UP! Growshop: dimensiones 9 x 18 cm.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/006/764/290/products/d_607033-mla31721313511_082019-b-948f1fc60d9c37bc5817593254402057-640-0.webp"
   },
   {
     "id": "wentux-controlador-clima-pro-26",
@@ -122,7 +126,8 @@
     "precision": null,
     "capacidad": "2 zonas de riego; hasta 10 sensores WiFi (1 incluido)",
     "wifi": true,
-    "notas": "Las cifras de riegos por día difieren dentro de la propia ficha (25 y 30): no se cargan."
+    "notas": "Las cifras de riegos por día difieren dentro de la propia ficha (25 y 30): no se cargan.",
+    "imagen_url": "https://wentux.com.ar/wp-content/uploads/2025/07/DSC_3227-scaled.jpg"
   },
   {
     "id": "wentux-controlador-clima-pro-26-6s",
@@ -147,7 +152,8 @@
     "precision": null,
     "capacidad": "2 zonas de riego; hasta 10 sensores WiFi (1 incluido)",
     "wifi": true,
-    "notas": "La ficha es idéntica a la del Pro-26 y no aclara qué significa «6s»."
+    "notas": "La ficha es idéntica a la del Pro-26 y no aclara qué significa «6s».",
+    "imagen_url": "https://wentux.com.ar/wp-content/uploads/2025/07/DSC_3227-scaled.jpg"
   },
   {
     "id": "wentux-controlador-co2-kit",
@@ -172,7 +178,8 @@
     "precision": "CO2: ±5% ±80 ppm (400-1000 ppm), ±10% ±100 ppm (1000-2000 y 2000-4500 ppm)",
     "capacidad": "Sonda CO2 400 a 4500 ppm; 2 salidas a relé; incluye electroválvula",
     "wifi": null,
-    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema."
+    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema.",
+    "imagen_url": "https://wentux.com.ar/wp-content/uploads/2025/07/co2-1.jpg"
   },
   {
     "id": "wentux-controlador-co2-1-salida",
@@ -197,7 +204,8 @@
     "precision": "CO2: ±5% ±80 ppm (400-1000 ppm), ±10% ±100 ppm (1000-2000 y 2000-4500 ppm)",
     "capacidad": "Sonda CO2 400 a 4500 ppm; 1 salida a relé",
     "wifi": null,
-    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema."
+    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema.",
+    "imagen_url": "https://wentux.com.ar/wp-content/uploads/2025/07/co2-frente-csensor-1.jpg"
   },
   {
     "id": "wentux-controlador-co2-2-salidas",
@@ -222,7 +230,8 @@
     "precision": "CO2: ±5% ±80 ppm (400-1000 ppm), ±10% ±100 ppm (1000-2000 y 2000-4500 ppm)",
     "capacidad": "Sonda CO2 400 a 4500 ppm; 2 salidas a relé",
     "wifi": false,
-    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema."
+    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema.",
+    "imagen_url": "https://wentux.com.ar/wp-content/uploads/2025/07/co2-1.jpg"
   },
   {
     "id": "wentux-controlador-co2-dual",
@@ -247,7 +256,8 @@
     "precision": "CO2: ±5% ±80 ppm (400-1000 ppm), ±10% ±100 ppm (1000-2000 y 2000-4500 ppm)",
     "capacidad": "2 sondas CO2 400 a 4500 ppm; 4 salidas a relé",
     "wifi": null,
-    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema."
+    "notas": "Tipo null: controlador de CO2 sin tipo equivalente en el esquema.",
+    "imagen_url": "https://wentux.com.ar/wp-content/uploads/2025/07/DSC_3235-scaled.jpg"
   },
   {
     "id": "wentux-controlador-hidroponia-hidro",
@@ -272,7 +282,8 @@
     "precision": "pH: ±0.1 pH; EC: ±2% de lectura; temperatura: ±0.5 °C",
     "capacidad": "Sondas de pH y EC; hasta 6 bombas dosificadoras",
     "wifi": true,
-    "notas": "Tipo null: controlador de pH/EC; la ficha no lo presenta como controlador de clima. WiFi con plataforma en la nube opcional. Precisión de pH/EC no cargada."
+    "notas": "Tipo null: controlador de pH/EC; la ficha no lo presenta como controlador de clima. WiFi con plataforma en la nube opcional. Precisión de pH/EC no cargada.",
+    "imagen_url": "https://wentux.com.ar/wp-content/uploads/2025/07/hidro-1.jpg"
   },
   {
     "id": "wentux-controlador-indoor-pro",
@@ -297,7 +308,8 @@
     "precision": null,
     "capacidad": "6 salidas a relé (4 configurables); hasta 9 sensores inalámbricos adicionales",
     "wifi": true,
-    "notas": "Rangos y precisión de medición de temperatura/humedad no figuran en la ficha."
+    "notas": "Rangos y precisión de medición de temperatura/humedad no figuran en la ficha.",
+    "imagen_url": "https://wentux.com.ar/wp-content/uploads/2025/07/pro25-2-1.jpg"
   },
   {
     "id": "wentux-sensor-co2-wifi",
@@ -322,7 +334,8 @@
     "precision": "CO2: ±5% ±50 ppm (400-1000 ppm), ±5% ±100 ppm (1000-2000 ppm), ±10% ±100 ppm (2000-4500 ppm)",
     "capacidad": "Rango de CO2: 400 a 5000 ppm",
     "wifi": true,
-    "notas": "Tipo null: es un sensor de CO2 que no encaja en los tipos del esquema."
+    "notas": "Tipo null: es un sensor de CO2 que no encaja en los tipos del esquema.",
+    "imagen_url": "https://wentux.com.ar/wp-content/uploads/2025/07/co2-sensor.jpg"
   },
   {
     "id": "wentux-sensor-humedad-temperatura-wifi",
@@ -346,6 +359,7 @@
     "rango_humedad": null,
     "precision": null,
     "capacidad": "Hasta 6 sensores WiFi por controlador Wentux Pro",
-    "wifi": true
+    "wifi": true,
+    "imagen_url": "https://wentux.com.ar/wp-content/uploads/2025/07/ht-sensor.jpg"
   }
 ]

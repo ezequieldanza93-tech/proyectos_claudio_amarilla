@@ -28,7 +28,8 @@
     "ph_declarado": "5.8 - 6.4",
     "ce_declarada": "< 0.1 mS/cm",
     "uso_indicado": "ambos",
-    "notas": "pH y CE provienen del vendedor argentino (Ganga Grow), no del fabricante."
+    "notas": "pH y CE provienen del vendedor argentino (Ganga Grow), no del fabricante.",
+    "imagen_url": "https://zeqtxovzgd8vuuw9.public.blob.vercel-storage.com/coco-mix-packshot.jpg"
   },
   {
     "id": "biobizz-light-mix",
@@ -61,7 +62,8 @@
     "ph_declarado": null,
     "ce_declarada": null,
     "uso_indicado": "ambos",
-    "notas": "El fabricante no publica valores de pH ni CE (dice «CE media» y pH autorregulado). Presentaciones 20, 50 y 90 L según biobizz.com; en el vendedor argentino figura la de 20 L."
+    "notas": "El fabricante no publica valores de pH ni CE (dice «CE media» y pH autorregulado). Presentaciones 20, 50 y 90 L según biobizz.com; en el vendedor argentino figura la de 20 L.",
+    "imagen_url": "https://zeqtxovzgd8vuuw9.public.blob.vercel-storage.com/light-mix-packshot.jpg"
   },
   {
     "id": "cultivate-completo",
@@ -86,7 +88,8 @@
     "composicion_declarada": "Humus de lombriz de alta calidad, mix de turbas sphagnum fueguinas, compost de hojas, perlita y vermiculita, tricodermas y micorrizas.",
     "ph_declarado": null,
     "ce_declarada": null,
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3674.jpg"
   },
   {
     "id": "cultivate-indoor",
@@ -117,7 +120,8 @@
     "composicion_declarada": "Mix de turbas, humus de lombriz, perlita, vermiculita, fibra de coco seleccionada e hidratada, tricodermas.",
     "ph_declarado": null,
     "ce_declarada": null,
-    "uso_indicado": "indoor"
+    "uso_indicado": "indoor",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3197.jpg"
   },
   {
     "id": "cultivate-living-soil",
@@ -142,7 +146,8 @@
     "composicion_declarada": "Compost, humus, bokashi, cascarilla de arroz, resaca de río, carbón, vermiculita, dolomita, sulfato de yeso, harina de pescado, fosfito.",
     "ph_declarado": null,
     "ce_declarada": null,
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3672.jpg"
   },
   {
     "id": "cultivate-premium",
@@ -168,7 +173,8 @@
     "ph_declarado": null,
     "ce_declarada": null,
     "uso_indicado": null,
-    "notas": "La ficha solo dice «plus de compost de hojas y el doble de trichodermas y micorrizas»; no lista la composición completa."
+    "notas": "La ficha solo dice «plus de compost de hojas y el doble de trichodermas y micorrizas»; no lista la composición completa.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3195.jpg"
   },
   {
     "id": "growers-light-soil",
@@ -194,7 +200,8 @@
     "ph_declarado": "6 - 6,5",
     "ce_declarada": "0,5 - 1,0 mS/cm",
     "uso_indicado": "indoor",
-    "notas": "La ficha lista cultivo interior, crecimiento, floración y autoflorecientes (no menciona exterior). Composición no detallada."
+    "notas": "La ficha lista cultivo interior, crecimiento, floración y autoflorecientes (no menciona exterior). Composición no detallada.",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3047.jpg"
   },
   {
     "id": "growers-original",
@@ -226,7 +233,8 @@
     "ph_declarado": "6 - 7",
     "ce_declarada": "1 - 1,5 mS/cm",
     "uso_indicado": "ambos",
-    "notas": "La ficha no detalla la composición (el texto «Compuesto por:» queda vacío en la fuente)."
+    "notas": "La ficha no detalla la composición (el texto «Compuesto por:» queda vacío en la fuente).",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/3044.jpg"
   },
   {
     "id": "growers-super-soil",
@@ -258,7 +266,8 @@
     "ph_declarado": "6,5 - 7,5",
     "ce_declarada": "1,5 - 2,0 mS/cm",
     "uso_indicado": "ambos",
-    "notas": "La ficha no detalla la composición (el texto «Compuesto por:» queda vacío en la fuente)."
+    "notas": "La ficha no detalla la composición (el texto «Compuesto por:» queda vacío en la fuente).",
+    "imagen_url": "https://santaplanta.com.ar/wp-content/uploads/2025/01/GROWERS-SUPER-SOIL.jpg"
   },
   {
     "id": "landiner-full-grow",
@@ -284,7 +293,8 @@
     "ph_declarado": "6,5 - 7,5",
     "ce_declarada": "0,3 - 0,45 mS/cm",
     "uso_indicado": "ambos",
-    "notas": "Materia orgánica declarada por Divino Grow: 85-90 %. Otros vendedores (visto solo en buscador) indican pH 6,5-7; no verificado."
+    "notas": "Materia orgánica declarada por Divino Grow: 85-90 %. Otros vendedores (visto solo en buscador) indican pH 6,5-7; no verificado.",
+    "imagen_url": "https://d22fxaf9t8d39k.cloudfront.net/53df0ee670170c7c3e4810e6902e982a0abfbbff6570c9cf83946029124f1abf197244.jpg"
   },
   {
     "id": "lizard-sustrato-enraizador",
@@ -312,7 +322,8 @@
     "ph_declarado": null,
     "ce_declarada": null,
     "uso_indicado": null,
-    "notas": null
+    "notas": null,
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/001/220/151/products/diseno-sin-titulo-2-541cd33bd30762ac3e17599049692927-640-0.webp"
   },
   {
     "id": "silver-base",
@@ -339,7 +350,8 @@
     "ph_declarado": "5,5 - 6,5",
     "ce_declarada": "Baja a media (sin valor numérico)",
     "uso_indicado": "ambos",
-    "notas": "Presentaciones no confirmadas en la ficha. Uso: macetas indoor y outdoor."
+    "notas": "Presentaciones no confirmadas en la ficha. Uso: macetas indoor y outdoor.",
+    "imagen_url": "https://bairesgrow.com.ar/wp-content/uploads/2025/09/bairesgrow-a396f04a-0952-41ac-a530-1bc565bebe0712101-2.webp"
   },
   {
     "id": "silver-premium",
@@ -366,7 +378,8 @@
     "ph_declarado": "Aproximado 5,8",
     "ce_declarada": "~0,56 dS/m (estimada, según algunos reportes de la presentación grande)",
     "uso_indicado": "ambos",
-    "notas": "Uso indicado: todas las etapas, indoor y outdoor. Los litros 20 y 80 salen de los datos técnicos de la ficha."
+    "notas": "Uso indicado: todas las etapas, indoor y outdoor. Los litros 20 y 80 salen de los datos técnicos de la ficha.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/001/220/151/products/silver-20l-1835a1e6b3f4dddf1c17048279259870-640-0-968fdc6ca924d0e90017210527729106-640-0.webp"
   },
   {
     "id": "terrafertil-growmix-citrus",
@@ -397,7 +410,8 @@
     "ph_declarado": "5,10 - 6,00",
     "ce_declarada": "0,20 - 0,60 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha.",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/citrus_grande.jpg"
   },
   {
     "id": "terrafertil-growmix-citrus-ii",
@@ -428,7 +442,8 @@
     "ph_declarado": "5,10 - 6,00",
     "ce_declarada": "0,20 - 0,60 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha.",
+    "imagen_url": null
   },
   {
     "id": "terrafertil-growmix-compost-de-corteza",
@@ -459,7 +474,8 @@
     "ph_declarado": "5,00 - 5,90",
     "ce_declarada": "0,20 - 0,50 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales».",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/specialv_grande.jpg"
   },
   {
     "id": "terrafertil-growmix-hydro-p",
@@ -504,7 +520,8 @@
     "ph_declarado": null,
     "ce_declarada": "0,20 - 0,60 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sacos de cultivo hidropónico». La web muestra el pH como «50 – 55%», y la ficha técnica PDF del fabricante dice 5.20 - 6.00: el valor de la web parece la humedad corrida de columna, pero queda en conflicto sin elegir. Saco de 92 x 25,5 x 9,5 cm; 90 sacos por pallet."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sacos de cultivo hidropónico». La web muestra el pH como «50 – 55%», y la ficha técnica PDF del fabricante dice 5.20 - 6.00: el valor de la web parece la humedad corrida de columna, pero queda en conflicto sin elegir. Saco de 92 x 25,5 x 9,5 cm; 90 sacos por pallet.",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/hydrop_grande2-1024x481.jpg"
   },
   {
     "id": "terrafertil-growmix-master-e",
@@ -536,7 +553,8 @@
     "ph_declarado": "5,00 - 5,80",
     "ce_declarada": "0,20 - 0,60 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha.",
+    "imagen_url": null
   },
   {
     "id": "terrafertil-growmix-master-e-p",
@@ -582,7 +600,8 @@
     "ph_declarado": "5,00 - 5,90",
     "ce_declarada": null,
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha.",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/master_grande.jpg"
   },
   {
     "id": "terrafertil-growmix-multipro",
@@ -614,7 +633,8 @@
     "ph_declarado": "5,00 - 5,80",
     "ce_declarada": "0,20 - 0,60 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha. Es la línea profesional; el «MultiPro Indoor» de 20 L es otro producto (línea de jardín)."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha. Es la línea profesional; el «MultiPro Indoor» de 20 L es otro producto (línea de jardín).",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/multipro_grande.jpg"
   },
   {
     "id": "terrafertil-growmix-maximo",
@@ -640,7 +660,8 @@
     "ph_declarado": "5,20 - 5,90",
     "ce_declarada": "0,18 - 0,40 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Datos de la web; el PDF de ficha técnica enlazado da 404."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Datos de la web; el PDF de ficha técnica enlazado da 404.",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/maximo_grande.jpg"
   },
   {
     "id": "terrafertil-growmix-premium-t",
@@ -672,7 +693,8 @@
     "ph_declarado": "5,1 - 6,0",
     "ce_declarada": "0,20 - 0,60 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales».",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/premium_grande.jpg"
   },
   {
     "id": "terrafertil-growmix-special-v",
@@ -703,7 +725,8 @@
     "ph_declarado": "5,00 - 5,80",
     "ce_declarada": "0,20 - 0,60 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales».",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/specialv_grande.jpg"
   },
   {
     "id": "terrafertil-growmix-tabaco-a1",
@@ -735,7 +758,8 @@
     "ph_declarado": "5,00 - 5,70",
     "ce_declarada": "0,20 - 0,60 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha. En el PDF la CE figura como «0.20 - 0.60 ds/m»; la web dice mS/cm."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales». Presentación de 60 L: «rinde 100 L» según la ficha. En el PDF la CE figura como «0.20 - 0.60 ds/m»; la web dice mS/cm.",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/tabaco_grande.jpg"
   },
   {
     "id": "terrafertil-growmix-tr-flor",
@@ -766,7 +790,8 @@
     "ph_declarado": "5,20 - 6,20",
     "ce_declarada": "0,20 - 0,50 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales».",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/specialv_grande.jpg"
   },
   {
     "id": "terrafertil-growmix-transplante-y-repique",
@@ -797,7 +822,8 @@
     "ph_declarado": "5,40 - 5,90",
     "ce_declarada": "0,40 - 0,70 mS/cm",
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales».",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/specialv_grande.jpg"
   },
   {
     "id": "terrafertil-growmix-z-floricultura",
@@ -855,7 +881,8 @@
     "ph_declarado": null,
     "ce_declarada": null,
     "uso_indicado": null,
-    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales»."
+    "notas": "Sublínea en el sitio de Terrafertil: «Sustratos profesionales».",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/specialv_grande.jpg"
   },
   {
     "id": "terrafertil-bonsai",
@@ -880,7 +907,8 @@
     "composicion_declarada": "Compuesto de arena gruesa. Turba de musgo Sphagnum. Compost orgánico.",
     "ph_declarado": "5.5-6.5",
     "ce_declarada": "0.1-0.5 mS/cm",
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/bonsai_grande-e1792578940625.jpg"
   },
   {
     "id": "terrafertil-cactus-y-suculentas",
@@ -905,7 +933,8 @@
     "composicion_declarada": "Compost orgánico. Arena gruesa y grava. Perlita.",
     "ph_declarado": "6.5-7.5",
     "ce_declarada": "0.3-0.8 mS/cm",
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/cactus_grande-e1792578987360.jpg"
   },
   {
     "id": "terrafertil-compost",
@@ -933,7 +962,8 @@
     "composicion_declarada": "Compost de corteza de pino. Compost orgánico de poda urbana. Turba de musgo Sphagnum.",
     "ph_declarado": "5.5-6.5",
     "ce_declarada": "0.3-1.0 mS/cm",
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/compost_grande.jpg"
   },
   {
     "id": "terrafertil-citricos-y-palmeras",
@@ -958,7 +988,8 @@
     "composicion_declarada": "Compost orgánico. Compost de corteza de pino. Turbas de musgo Sphagnum seleccionadas. Perlita gruesa. Fertilizante.",
     "ph_declarado": "5,50-6,50",
     "ce_declarada": "0,30-0,60 mS/cm",
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/citricos_palm_grande.jpg"
   },
   {
     "id": "terrafertil-huertas",
@@ -983,7 +1014,8 @@
     "composicion_declarada": "Compuesto de turba. Compost. Perlita. Corrector de pH. Humectante.",
     "ph_declarado": "5.5-6.5",
     "ce_declarada": "0.2-0.6 mS/cm",
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/huertas_grande.jpg"
   },
   {
     "id": "terrafertil-iniciador-de-huertas",
@@ -1008,13 +1040,14 @@
     "composicion_declarada": "Turba de musgo Sphagnum seleccionada. Perlita. Bioestimulantes a base de extracto de algas (Durvillea antártica). Regulador de pH y humectante.",
     "ph_declarado": "5,2-5,9",
     "ce_declarada": "0,18-0,40 mS/cm",
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/iniciador_de_huertas-678x1024.png"
   },
   {
     "id": "terrafertil-multipro-indoor",
     "categoria": "sustrato",
     "marca": "Terrafertil",
-    "linea": "Línea de jardín",
+    "linea": "Growmix",
     "producto": "MultiPro Indoor",
     "modelo": null,
     "descripcion_corta": "Sustrato para una amplia gama de cultivos; apto para siembra y repique.",
@@ -1033,7 +1066,9 @@
     "composicion_declarada": "Compost de corteza. Turba. Perlita. Fertilizante. Corrector de pH. Humectante.",
     "ph_declarado": "5.5-6.2",
     "ce_declarada": "0.2-0.6 mS/cm",
-    "uso_indicado": "indoor"
+    "uso_indicado": "indoor",
+    "notas": "La foto del fabricante (growmix_indoor_grande.jpg) muestra la bolsa «GROW MIX · Sustrato profesional · Indoor Growing · MultiPro 20»: es el «Growmix Indoor» del pedido; línea corregida a Growmix el 19/11.",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/growmix_indoor_grande.jpg"
   },
   {
     "id": "terrafertil-orquideas",
@@ -1058,7 +1093,8 @@
     "composicion_declarada": "Compuesto de fibras de musgo Sphagnum. Corteza de pino seleccionada. Carbón vegetal.",
     "ph_declarado": "5.5-7.5",
     "ce_declarada": "0,1–0,4 mS/cm",
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/orquideas_grande-e1792579004314.jpg"
   },
   {
     "id": "terrafertil-plantas-de-flor-exterior",
@@ -1084,7 +1120,8 @@
     "composicion_declarada": "Compost de corteza de pino. Compost orgánico. Turba musgo Sphagnum / acículas de pino. Perlita. Corrector de pH. Fertilizante.",
     "ph_declarado": "6-6.5",
     "ce_declarada": "0.5 – 1.0 mS/cm",
-    "uso_indicado": "exterior"
+    "uso_indicado": "exterior",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/exterior_grande.jpg"
   },
   {
     "id": "terrafertil-plantas-de-interior",
@@ -1111,7 +1148,8 @@
     "composicion_declarada": "Compost de corteza de pino. Compost orgánico. Turba musgo Sphagnum / acículas de pino. Perlita. Fertilizante.",
     "ph_declarado": "5.5-6.5",
     "ce_declarada": "0.2-0.6 mS/cm",
-    "uso_indicado": "indoor"
+    "uso_indicado": "indoor",
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/interior_grande.jpg"
   },
   {
     "id": "terrafertil-rosales",
@@ -1137,7 +1175,8 @@
     "composicion_declarada": "Compost de corteza de pino. Compost orgánico. Turba musgo Sphagnum. Abono compostado. Corrector de pH.",
     "ph_declarado": "5.5-6.5",
     "ce_declarada": "0.2-0.6 mS/cm",
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/rosales_grande.jpg"
   },
   {
     "id": "terrafertil-arboles-y-arbustos",
@@ -1163,7 +1202,8 @@
     "composicion_declarada": "Compost de corteza de pino. Compost orgánico. Turba de musgo Sphagnum. Abono compostado. Perlita. Fertilizante.",
     "ph_declarado": "6.0-7.0",
     "ce_declarada": "0.3-0.8 mS/cm",
-    "uso_indicado": null
+    "uso_indicado": null,
+    "imagen_url": "https://terrafertil.com/wp-content/uploads/arboles_grande.jpg"
   },
   {
     "id": "vamp-sustrato-magico",
@@ -1187,6 +1227,7 @@
     "ph_declarado": null,
     "ce_declarada": null,
     "uso_indicado": null,
-    "notas": "La ficha no informa litros de la presentación."
+    "notas": "La ficha no informa litros de la presentación.",
+    "imagen_url": "https://acdn-us.mitiendanube.com/stores/008/127/720/products/sustrato-magico-elegi-la-cantidad-eb2503c9dd074e674917883799769031-640-0.webp"
   }
 ]

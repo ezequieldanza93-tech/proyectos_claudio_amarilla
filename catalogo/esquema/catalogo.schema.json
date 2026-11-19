@@ -81,7 +81,8 @@
         "fuentes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fuente" } },
         "conflictos": { "type": "array", "items": { "$ref": "#/$defs/conflicto" } },
         "verificado": { "type": "boolean" },
-        "notas": { "$ref": "#/$defs/texto" }
+        "notas": { "$ref": "#/$defs/texto" },
+        "imagen_url": { "anyOf": [{ "$ref": "#/$defs/url" }, { "type": "null" }], "description": "Link a la foto principal del producto, tomado de una página que ya está en «fuentes» (fabricante > distribuidor > vendedor). null si ninguna fuente tiene foto propia del producto." }
       },
       "allOf": [
         {
