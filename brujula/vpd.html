@@ -1,0 +1,190 @@
+<title>La curva del VPD</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: lámina vertical de 5 bloques; cada bloque = un paso del razonamiento (física → cuenta → planta → mapa → práctica) */
+:root{
+  --bg:#f2f5f3; --surface:#ffffff; --ink:#15211b; --muted:#5a6a62; --line:#d6dfd9;
+  --sat:#1f6f8b; --air:#7aa9b8; --gap:#e9a23b;
+  --z0:#5b7fbf; --z1:#57a7a0; --z2:#3f8f5a; --z3:#c58a2a; --z4:#c2502e;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1714; --surface:#17211c; --ink:#e4ece7; --muted:#9aaba2; --line:#2a3832;
+  --sat:#5fb4d1; --air:#3f6f7e; --gap:#f0b45a;
+  --z0:#7f9fe0; --z1:#62c0b7; --z2:#5fb87c; --z3:#e2a948; --z4:#ec7a55; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1714; --surface:#17211c; --ink:#e4ece7; --muted:#9aaba2; --line:#2a3832;
+  --sat:#5fb4d1; --air:#3f6f7e; --gap:#f0b45a;
+  --z0:#7f9fe0; --z1:#62c0b7; --z2:#5fb87c; --z3:#e2a948; --z4:#ec7a55; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.55}
+.wrap{max-width:880px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.1;text-wrap:balance}
+h1{font-size:clamp(2.2rem,7vw,3.6rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.45rem;font-weight:700}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0;max-width:62ch}
+.num,code{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hero{display:flex;flex-direction:column;gap:12px;padding-bottom:6px}
+.hero .lead{font-size:1.15rem;max-width:56ch}
+.hero .lead b{background:linear-gradient(transparent 62%,color-mix(in srgb,var(--gap) 45%,transparent) 62%)}
+.block{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.step{display:flex;gap:12px;align-items:baseline}
+.step .n{font-family:var(--f-mono);font-size:.8rem;color:var(--surface);background:var(--ink);border-radius:999px;min-width:26px;height:26px;display:grid;place-items:center;flex:none}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.ax{stroke:var(--line);stroke-width:1}
+.tk{fill:var(--muted);font:500 11px var(--f-mono)}
+.lbl{fill:var(--ink);font:600 12px var(--f-body)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.85rem}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:22px;height:4px;border-radius:2px;display:inline-block}
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--f-mono);font-size:clamp(.95rem,3.4vw,1.25rem);background:var(--bg);border-radius:12px;padding:16px 18px}
+.formula .op{color:var(--muted)}
+.pill{border-radius:8px;padding:4px 10px;font-weight:500}
+.pill.v{background:color-mix(in srgb,var(--gap) 28%,transparent)}
+.pill.s{background:color-mix(in srgb,var(--sat) 22%,transparent)}
+.pill.h{background:color-mix(in srgb,var(--air) 30%,transparent)}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{padding:8px 10px;border-top:1px solid var(--line);text-align:left}
+th:not(:first-child){text-align:right}
+th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;border-top:0}
+td.num{text-align:right}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.state{border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;background:color-mix(in srgb,var(--c) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--c) 40%,var(--line))}
+.state h3{color:var(--c)}
+.state .tag{font-family:var(--f-mono);font-size:.78rem;color:var(--c)}
+.state ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px;font-size:.92rem}
+.leaf{width:100%;max-width:200px;height:auto;align-self:center}
+.hm-wrap{overflow-x:auto;position:relative}
+.hm{min-width:560px}
+.hm rect.c{stroke:var(--surface);stroke-width:1}
+.hm text.v{font:500 9.5px var(--f-mono);fill:#fff;pointer-events:none}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font:500 .8rem var(--f-mono);padding:5px 9px;border-radius:7px;white-space:nowrap;transform:translate(-50%,-120%)}
+.knobs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.knob{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.knob b{font-family:var(--f-display);font-size:1.1rem}
+.note{border-left:3px solid var(--gap);padding:4px 0 4px 14px;font-size:.92rem}
+footer{font-size:.8rem}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">Clima de cultivo · déficit de presión de vapor</span>
+    <h1>La curva del VPD</h1>
+    <p class="lead">El VPD mide <b>qué tan fuerte el aire tira del agua de la hoja</b>. De eso depende cuánto transpira la planta y, con eso, cuánta agua y nutrientes sube desde la raíz.</p>
+  </header>
+
+  <section class="block">
+    <div class="step"><span class="n">1</span><h2>El aire tiene un techo de vapor que sube con el calor</h2></div>
+    <p>Cada temperatura admite un máximo de vapor de agua (presión de saturación). Ese techo no sube en línea recta: se acelera. La línea de abajo es el vapor que hay de verdad con 60 % de humedad. <b>El hueco entre las dos líneas es el VPD.</b></p>
+    <svg class="chart" id="curve" viewBox="0 0 640 330" role="img" aria-label="Curva de presión de saturación según temperatura, con el vapor real al 60 % de humedad y el VPD como diferencia"></svg>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--sat)"></i>Máximo de vapor (saturación)</span>
+      <span><i class="sw" style="background:var(--air)"></i>Vapor real con 60 % de humedad</span>
+      <span><i class="sw" style="background:var(--gap);height:10px"></i>VPD (lo que falta)</span>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="step"><span class="n">2</span><h2>La cuenta</h2></div>
+    <div class="formula"><span class="pill v">VPD</span><span class="op">=</span><span class="pill s">máximo de vapor a esa T</span><span class="op">×</span><span class="pill h">(1 − HR/100)</span></div>
+    <p class="muted">Misma humedad, 60 %, tres temperaturas: el tirón sobre la hoja casi se duplica.</p>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Temperatura</th><th>Máximo de vapor</th><th>Falta para saturar (40 %)</th><th>VPD</th></tr></thead>
+      <tbody id="ex"></tbody>
+    </table></div>
+  </section>
+
+  <section class="block">
+    <div class="step"><span class="n">3</span><h2>Qué le pasa a la planta</h2></div>
+    <div class="three">
+      <div class="state" style="--c:var(--z0)">
+        <svg class="leaf" viewBox="0 0 200 90" aria-hidden="true"><path d="M10 45 Q100 -10 190 45 Q100 100 10 45Z" fill="color-mix(in srgb,var(--z0) 25%,transparent)" stroke="var(--z0)" stroke-width="2"/><g fill="var(--z0)"><circle cx="70" cy="45" r="5"/><circle cx="100" cy="38" r="5"/><circle cx="130" cy="47" r="5"/></g><g stroke="var(--z0)" stroke-width="2" stroke-linecap="round"><path d="M100 30v-14" opacity=".35"/></g></svg>
+        <span class="tag">VPD bajo · aire casi saturado</span><h3>Transpira poco</h3>
+        <ul><li>Sube poca agua desde la raíz</li><li>Absorbe menos calcio y nutrientes</li><li>Más riesgo de oídio y botrytis</li></ul>
+      </div>
+      <div class="state" style="--c:var(--z2)">
+        <svg class="leaf" viewBox="0 0 200 90" aria-hidden="true"><path d="M10 45 Q100 -10 190 45 Q100 100 10 45Z" fill="color-mix(in srgb,var(--z2) 25%,transparent)" stroke="var(--z2)" stroke-width="2"/><g fill="none" stroke="var(--z2)" stroke-width="2.5"><ellipse cx="70" cy="45" rx="7" ry="4"/><ellipse cx="100" cy="38" rx="7" ry="4"/><ellipse cx="130" cy="47" rx="7" ry="4"/></g><g stroke="var(--z2)" stroke-width="2" stroke-linecap="round"><path d="M70 36v-14M100 29v-16M130 38v-14"/></g></svg>
+        <span class="tag">VPD en rango</span><h3>Estomas abiertos</h3>
+        <ul><li>Transpira y absorbe parejo</li><li>Hace fotosíntesis a pleno</li><li>Crecimiento constante</li></ul>
+      </div>
+      <div class="state" style="--c:var(--z4)">
+        <svg class="leaf" viewBox="0 0 200 90" aria-hidden="true"><path d="M10 45 Q100 -10 190 45 Q100 100 10 45Z" fill="color-mix(in srgb,var(--z4) 22%,transparent)" stroke="var(--z4)" stroke-width="2"/><g stroke="var(--z4)" stroke-width="3" stroke-linecap="round"><path d="M63 45h14M93 38h14M123 47h14"/></g><g stroke="var(--z4)" stroke-width="2" stroke-linecap="round" opacity=".6"><path d="M60 30l-6-14M100 24v-16M140 32l6-14"/></g></svg>
+        <span class="tag">VPD alto · aire seco y caliente</span><h3>Cierra los estomas</h3>
+        <ul><li>Pierde agua más rápido de lo que repone</li><li>Se frena la fotosíntesis</li><li>Puntas secas, hojas que se curvan</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="step"><span class="n">4</span><h2>El mapa temperatura × humedad</h2></div>
+    <p>Cada casilla es el VPD de esa combinación. Las zonas corren <b>en diagonal</b>: si sube la temperatura, hay que subir la humedad para quedarse en la misma zona. Y <b>se angostan con el calor</b>, porque ahí cada punto de humedad mueve más el VPD.</p>
+    <div class="hm-wrap" id="hmw"><svg class="chart hm" id="hm" role="img" aria-label="Mapa de VPD por temperatura y humedad relativa"></svg><div class="tip" id="tip" hidden></div></div>
+    <div class="legend" id="zl"></div>
+    <p class="muted" style="font-size:.84rem">Rangos por etapa: referencias habituales entre cultivadores, no un estándar oficial. Verificalos y ajustalos a tu genética y a tu espacio.</p>
+  </section>
+
+  <section class="block">
+    <div class="step"><span class="n">5</span><h2>En la práctica: dos perillas</h2></div>
+    <div class="knobs">
+      <div class="knob"><span class="eyebrow">Para bajar el VPD</span><b>Más humedad o menos calor</b><span class="muted">Humidificador, bajar la extracción, bajar la temperatura de la carpa.</span></div>
+      <div class="knob"><span class="eyebrow">Para subir el VPD</span><b>Menos humedad o más calor</b><span class="muted">Deshumidificador, más extracción y renovación de aire, subir algo la temperatura.</span></div>
+    </div>
+    <p class="note">La hoja bajo LED suele estar 1 a 3 °C más fría que el aire. El VPD que siente la hoja es algo menor que el calculado con la temperatura del aire, que es el que muestra la Brújula.</p>
+  </section>
+
+  <footer class="muted">Presión de saturación calculada con la fórmula de Tetens: 0,6108 × e^(17,27·T / (T + 237,3)) kPa, con T en °C.</footer>
+</div>
+
+<script>
+(function(){
+  const svp=t=>0.6108*Math.exp(17.27*t/(t+237.3));
+  const fmt=(v,d=2)=>v.toFixed(d).replace('.',',');
+  const NS='http://www.w3.org/2000/svg';
+  const el=(n,a,t)=>{const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;return e};
+
+  // 1. curva
+  const C=document.getElementById('curve');const W=640,H=330,L=48,R=20,T=18,B=40;const t0=10,t1=35,v1=6;
+  const x=t=>L+(t-t0)/(t1-t0)*(W-L-R),y=v=>T+(v1-v)/v1*(H-T-B);
+  for(let v=0;v<=v1;v++){C.append(el('line',{x1:L,x2:W-R,y1:y(v),y2:y(v),class:'ax'}));C.append(el('text',{x:L-8,y:y(v)+4,'text-anchor':'end',class:'tk'},v))}
+  for(let t=t0;t<=t1;t+=5)C.append(el('text',{x:x(t),y:H-B+18,'text-anchor':'middle',class:'tk'},t+' °C'));
+  C.append(el('text',{x:L,y:10,class:'tk'},'kPa'));
+  const pts=[],air=[];for(let t=t0;t<=t1;t+=.25){pts.push([x(t),y(svp(t))]);air.push([x(t),y(svp(t)*.6)])}
+  const d=a=>a.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  C.append(el('path',{d:d(pts)+' '+d(air.slice().reverse()).replace('M','L')+' Z',fill:'var(--gap)',opacity:.32}));
+  C.append(el('path',{d:d(air),fill:'none',stroke:'var(--air)','stroke-width':2.5}));
+  C.append(el('path',{d:d(pts),fill:'none',stroke:'var(--sat)','stroke-width':3}));
+  [20,25,30].forEach(t=>{const s=svp(t),a=s*.6;
+    C.append(el('line',{x1:x(t),x2:x(t),y1:y(s),y2:y(a),stroke:'var(--gap)','stroke-width':3,'stroke-linecap':'round'}));
+    C.append(el('circle',{cx:x(t),cy:y(s),r:4,fill:'var(--sat)'}));C.append(el('circle',{cx:x(t),cy:y(a),r:4,fill:'var(--air)'}));
+    C.append(el('text',{x:x(t)-8,y:(y(s)+y(a))/2+4,'text-anchor':'end',class:'lbl'},fmt(s-a)+' kPa'));});
+
+  // 2. tabla
+  document.getElementById('ex').innerHTML=[15,20,25,30].map(t=>{const s=svp(t);return `<tr><td class="num">${t} °C</td><td class="num">${fmt(s)} kPa</td><td class="num">${fmt(s)} × 0,40</td><td class="num"><b>${fmt(s*.4)} kPa</b></td></tr>`}).join('');
+
+  // 4. mapa
+  const Z=[[0,.4,'Muy bajo','var(--z0)'],[.4,.8,'Plántula y esqueje (0,4–0,8)','var(--z1)'],[.8,1.2,'Vege (0,8–1,2)','var(--z2)'],[1.2,1.5,'Flora (1,2–1,5)','var(--z3)'],[1.5,99,'Alto','var(--z4)']];
+  const zone=v=>Z.find(z=>v>=z[0]&&v<z[1]);
+  document.getElementById('zl').innerHTML=Z.map(z=>`<span><i class="sw" style="background:${z[3]};height:12px;width:14px"></i>${z[2]}</span>`).join('');
+  const M=document.getElementById('hm');const temps=[];for(let t=32;t>=16;t-=2)temps.push(t);const hums=[];for(let h=40;h<=85;h+=5)hums.push(h);
+  const cw=46,ch=30,ML=56,MT=26,MB=34;const MW=ML+hums.length*cw+6,MH=MT+temps.length*ch+MB;
+  M.setAttribute('viewBox',`0 0 ${MW} ${MH}`);
+  hums.forEach((h,j)=>M.append(el('text',{x:ML+j*cw+cw/2,y:MT-8,'text-anchor':'middle',class:'tk'},h+'%')));
+  M.append(el('text',{x:ML+hums.length*cw/2,y:MH-8,'text-anchor':'middle',class:'tk'},'Humedad relativa'));
+  temps.forEach((t,i)=>{M.append(el('text',{x:ML-8,y:MT+i*ch+ch/2+4,'text-anchor':'end',class:'tk'},t+' °C'));
+    hums.forEach((h,j)=>{const v=svp(t)*(1-h/100);const z=zone(v);
+      const r=el('rect',{class:'c',x:ML+j*cw,y:MT+i*ch,width:cw,height:ch,fill:z[3],rx:3,'data-tip':`${t} °C · ${h} % → ${fmt(v)} kPa`});M.append(r);
+      M.append(el('text',{class:'v',x:ML+j*cw+cw/2,y:MT+i*ch+ch/2+3.5,'text-anchor':'middle'},fmt(v,1)));});});
+  const tip=document.getElementById('tip'),wrap=document.getElementById('hmw');
+  M.addEventListener('pointermove',e=>{const r=e.target.closest&&e.target.closest('rect.c');if(!r){tip.hidden=true;return}
+    const wr=wrap.getBoundingClientRect(),rr=r.getBoundingClientRect();tip.textContent=r.dataset.tip;tip.style.left=(rr.left+rr.width/2-wr.left+wrap.scrollLeft)+'px';tip.style.top=(rr.top-wr.top)+'px';tip.hidden=false});
+  M.addEventListener('pointerleave',()=>tip.hidden=true);
+})();
+</script>
