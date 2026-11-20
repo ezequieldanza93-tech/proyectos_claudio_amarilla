@@ -290,6 +290,7 @@ textarea{min-height:70px;resize:vertical}
 .gm-secs{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.78rem}
 .gm-sec{display:inline-flex;align-items:center;gap:5px}
 .gm-sec i{width:8px;height:8px;border-radius:50%;background:var(--pc);display:inline-block}
+.pozo{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -574,9 +575,11 @@ const hasAmt=m=>m.amount!==''&&m.amount!=null;
 function hhComunSums(p,month){
   const its=hhItems(p,'comun',month);const mem=p.members||['Eze','Agus'];
   const total=its.filter(hasAmt).reduce((a,m)=>a+num(m.amount),0);const half=total/mem.length;
-  const paid={};mem.forEach(n=>paid[n]=its.filter(m=>m.paidBy===n&&hasAmt(m)).reduce((a,m)=>a+num(m.amount),0));
-  const owe={};mem.forEach(n=>owe[n]=half-paid[n]);
-  return {its,mem,total,half,paid,owe};
+  const aps=S.money.filter(x=>x.ledgerId===p.id&&x.scope==='aporte'&&(x.month||(x.date||'').slice(0,7))===month);
+  const direct={},put={},paid={};mem.forEach(n=>{direct[n]=its.filter(m=>m.paidBy===n&&hasAmt(m)).reduce((a,m)=>a+num(m.amount),0);put[n]=aps.filter(a=>a.member===n).reduce((a,x)=>a+num(x.amount),0);paid[n]=direct[n]+put[n]});
+  const owe={};mem.forEach(n=>owe[n]=Math.round((half-paid[n])*100)/100);
+  const pozoIn=aps.reduce((a,x)=>a+num(x.amount),0),pozoOut=its.filter(m=>m.paidBy==='Pozo'&&hasAmt(m)).reduce((a,m)=>a+num(m.amount),0);
+  return {its,mem,total,half,paid,owe,direct,put,aps,pozoIn,pozoOut,pozo:pozoIn-pozoOut};
 }
 function hhForm(p,scope,m){
   m=m||{};const mem=p.members||['Eze','Agus'];
@@ -587,7 +590,7 @@ function hhForm(p,scope,m){
         <label class="field" data-bwhen="conceptSel:__new"><span class="label">Nuevo concepto (se agrega a la librería)</span><input id="hh-new" name="conceptNew" placeholder="${scope==='comun'?'Ej.: Expensas':'Ej.: Celular'}"></label>`})()
       :`<label class="field"><span class="label">Concepto</span><input id="hh-name" name="concept" required value="${esc(m.concept)}" placeholder="${scope==='ingreso'?'Ej.: Sueldo':'Ej.: Supermercado'}"></label>`}
       <label class="field"><span class="label">Monto ($)</span><input id="hh-amt" name="amount" inputmode="decimal" value="${esc(dec(m.amount))}" placeholder="${scope==='variable'||scope==='ingreso'?'':'Vacío = importe pendiente'}"></label>
-      ${scope==='comun'?`<label class="field"><span class="label">Pagado por</span><select id="hh-paid" name="paidBy"><option value="">Todavía no se pagó</option>${mem.map(n=>`<option ${n===m.paidBy?'selected':''}>${esc(n)}</option>`).join('')}</select></label>`
+      ${scope==='comun'?`<label class="field"><span class="label">Pagado por</span><select id="hh-paid" name="paidBy"><option value="">Todavía no se pagó</option><option value="Pozo" ${m.paidBy==='Pozo'?'selected':''}>Pozo común</option>${mem.map(n=>`<option ${n===m.paidBy?'selected':''}>${esc(n)}</option>`).join('')}</select></label>`
         :scope==='fijo'?`<label class="field"><span class="label">Estado</span><select id="hh-st" name="status"><option value="pendiente" ${m.status!=='pagado'?'selected':''}>Pendiente</option><option value="pagado" ${m.status==='pagado'?'selected':''}>Pagado</option></select></label>`
         :scope==='ingreso'?`<label class="field"><span class="label">Fecha</span><input id="hh-date" name="date" type="date" value="${esc(m.date||today())}"></label>`
         :`<label class="field"><span class="label">Fecha</span><input id="hh-date" name="date" type="date" value="${esc(m.date||today())}"></label>
@@ -600,7 +603,7 @@ function hhForm(p,scope,m){
 }
 function hhRow(p,scope,m){
   const f=S.form;if(f&&f.type==='hh'&&f.id===m.id)return hhForm(p,scope,m);
-  const st=scope==='comun'?(m.paidBy?`<span class="tag st-tag-cumplido">Pagó ${esc(m.paidBy)}</span>`:'<span class="tag st-tag-planificado">Sin pagar</span>')
+  const st=scope==='comun'?(m.paidBy?`<span class="tag st-tag-cumplido">${m.paidBy==='Pozo'?'Pagado del pozo':'Pagó '+esc(m.paidBy)}</span>`:'<span class="tag st-tag-planificado">Sin pagar</span>')
     :scope==='fijo'?(m.status==='pagado'?'<span class="tag st-tag-cumplido">Pagado</span>':'<span class="tag st-tag-planificado">Pendiente</span>')
     :(m.category?`<span class="tag">${esc(m.category)}</span>`:'');
   return `<button class="hh-row" data-act="editHH" data-id="${esc(m.id)}">
@@ -634,11 +637,24 @@ function householdView(p){
   if(f&&f.type==='hh'&&!f.id)h+=hhForm(p,tab,{});
   const its=hhItems(p,tab,month).sort((a,c)=>tab==='variable'||tab==='ingreso'?(c.date||'').localeCompare(a.date||''):num(a.order??a.createdAt)-num(c.order??c.createdAt));
   if(tab==='comun'||tab==='fijo')h+=libPanel(p,tab);
-  if(tab==='comun'){const s=hhComunSums(p,month);
+  if(tab==='comun'){const s=hhComunSums(p,month);const pend=its.filter(m=>!m.paidBy&&hasAmt(m));const pendT=pend.reduce((a,m)=>a+num(m.amount),0);
+    h+=`<div class="pozo"><div class="row" style="gap:6px"><b>Pozo común</b><span class="spacer"></span>${f&&f.type==='aporte'?'':'<button class="small" data-act="newAporte">+ Aporte al pozo</button>'}</div>
+      ${f&&f.type==='aporte'?`<form class="inline-form" data-form="aporte" data-pid="${esc(p.id)}"><div class="grid3">
+        <label class="field"><span class="label">Quién</span><select id="ap-who" name="member">${s.mem.map(n=>`<option>${esc(n)}</option>`).join('')}</select></label>
+        <label class="field"><span class="label">Monto ($)</span><input id="ap-amt" name="amount" inputmode="decimal" required value="${esc(dec(Math.max(0,Math.round(s.owe[s.mem[0]]*100)/100)))}"></label>
+        <label class="field"><span class="label">Fecha</span><input id="ap-date" name="date" type="date" value="${today()}"></label></div>
+        <label class="field"><span class="label">Nota (opcional)</span><input id="ap-note" name="note" placeholder="Ej.: transferencia a Agus"></label>
+        <div class="row"><button class="primary" type="submit">Guardar aporte</button><button type="button" data-act="cancelForm">Cancelar</button></div></form>`:''}
+      <div class="money-sum"><div class="ms"><span class="label">Entró</span><b class="inc">${money(s.pozoIn)}</b></div><div class="ms"><span class="label">Se pagó del pozo</span><b>${money(s.pozoOut)}</b></div><div class="ms"><span class="label">Queda en el pozo</span><b class="${s.pozo<0?'exp':''}">${money(s.pozo)}</b></div></div>
+      ${s.aps.length?`<div class="hh-list">${s.aps.map(a=>`<div class="hh-row" style="cursor:default"><span><span class="num muted" style="font-size:.8rem">${fmtDate(a.date)}</span> Aporte de <b style="font-weight:500">${esc(a.member)}</b>${a.note?` <span class="muted">· ${esc(a.note)}</span>`:''}</span>
+        <span class="row" style="gap:4px;flex-wrap:nowrap"><span class="num inc">+${money(num(a.amount))}</span>${S.confirm==='ap'+a.id?`<button class="small danger" data-act="delHH" data-id="${esc(a.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="ap${esc(a.id)}" aria-label="Borrar aporte">✕</button>`}</span></div>`).join('')}</div>`:''}
+      ${pend.length?(S.confirm==='payall'?`<div class="row"><span class="muted" style="font-size:.85rem">¿Marcar ${pend.length} gastos (${money(pendT)}) como pagados del pozo?</span><button class="small primary" data-act="payAllPozo">Sí, pagar</button><button class="small" data-act="noConfirm">No</button></div>`
+        :`<button class="small" data-act="askDel" data-key="payall" style="align-self:flex-start">Pagar pendientes con el pozo (${pend.length} · ${money(pendT)})</button>`):''}
+    </div>`;
     h+=`<div class="money-sum">
       <div class="ms"><span class="label">Total de gastos</span><b>${money(s.total)}</b>${its.some(m=>!hasAmt(m))?'<span class="muted" style="font-size:.75rem">sin los que tienen importe pendiente</span>':''}</div>
       <div class="ms"><span class="label">A cada uno (${s.mem.length===2?'50/50':'partes iguales'})</span><b>${money(s.half)}</b></div>
-      ${s.mem.map(n=>`<div class="ms"><span class="label">${esc(n)}</span><span class="num muted" style="font-size:.82rem">pagó ${money(s.paid[n])}</span><b class="${s.owe[n]>0?'':'inc'}">${s.owe[n]>=0?'Debe '+money(s.owe[n]):'A favor '+money(-s.owe[n])}</b></div>`).join('')}
+      ${s.mem.map(n=>`<div class="ms"><span class="label">${esc(n)}</span><span class="num muted" style="font-size:.78rem">${s.put[n]?'puso '+money(s.put[n])+' al pozo':''}${s.put[n]&&s.direct[n]?' · ':''}${s.direct[n]?'pagó directo '+money(s.direct[n]):''}${!s.put[n]&&!s.direct[n]?'todavía no puso':''}</span><b class="${s.owe[n]>0?'':'inc'}">${s.owe[n]===0?'Al día':s.owe[n]>0?'Debe '+money(s.owe[n]):'A favor '+money(-s.owe[n])}</b></div>`).join('')}
     </div>`;}
   else{const tot=its.filter(hasAmt).reduce((a,m)=>a+num(m.amount),0);
     const paid=tab==='fijo'?its.filter(m=>m.status==='pagado'&&hasAmt(m)).reduce((a,m)=>a+num(m.amount),0):0;
@@ -1904,6 +1920,9 @@ app.addEventListener('click',e=>{
     closePick(){closePicker()},
     pickItem(){pickItem(+b.dataset.i)},
     libDel(){const pj=current();const sc=b.dataset.scope;const l=libOf(pj,sc);l.splice(+b.dataset.i,1);S.libOpen=sc;safe(()=>libSave(pj,sc,l))},
+    newAporte(){S.form={type:'aporte'};rerender()},
+    payAllPozo(){const p=current();const month=S.month||today().slice(0,7);const pend=hhItems(p,'comun',month).filter(m=>!m.paidBy&&hasAmt(m));
+      safe(async()=>{for(const m of pend)await db.doc('money/'+m.id).update({paidBy:'Pozo'});S.confirm=null})},
     hhTab(){S.hhTab=b.dataset.tab;S.form=null;rerender()},
     newHH(){S.form={type:'hh'};rerender();document.getElementById('hh-name')?.focus()},
     editHH(){S.form={type:'hh',id};rerender()},
@@ -2027,6 +2046,9 @@ app.addEventListener('submit',e=>{
     safe(async()=>{await db.collection('weights').add({projectId:f.dataset.pid,date:d.date||today(),kg,note:(d.note||'').trim(),createdAt:Date.now()});document.activeElement?.blur?.();rerender()});return}
   if(kind==='activity'){const act=(d.activity||'').trim();const mins=num(d.minutes);if(!act||!(mins>0)){S.err='Cargá la actividad y el tiempo en minutos.';rerender();return}
     safe(async()=>{await db.collection('activities').add({projectId:f.dataset.pid,date:d.date||today(),activity:act,minutes:mins,km:n2(d.km),note:(d.note||'').trim(),createdAt:Date.now()});document.activeElement?.blur?.();rerender()});return}
+  if(kind==='aporte'){const amt=num(d.amount);if(!(amt>0)){S.err='Cargá el monto del aporte.';rerender();return}
+    const month=S.month||today().slice(0,7);
+    safe(async()=>{await db.collection('money').add({ledgerId:f.dataset.pid,scope:'aporte',type:'aporte',member:d.member,amount:amt,date:d.date||today(),month,note:(d.note||'').trim(),createdAt:Date.now()});S.form=null;rerender()});return}
   if(kind==='lib'){const pj=current();const sc=f.dataset.scope;const c=(d.concept||'').trim();if(!c)return;S.libOpen=sc;
     safe(async()=>{await libSave(pj,sc,[...libOf(pj,sc),c]);rerender()});return}
   if(kind==='slip'){const what=(d.what||'').trim();if(!what)return;
