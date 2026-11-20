@@ -407,10 +407,17 @@ setInterval(tick,1000);
 
 /* ---------- gamificación ---------- */
 const XP_TASK=10,XP_HOUR=20,XP_WEEK=50,XP_LEVEL=250,GOOD_WEEK=.8,STREAK_MIN=.7;
-const isGameP=p=>p&&!isLedger(p);
+const isGameP=p=>p&&(!isLedger(p)||p.household);
+function finProgress(p){
+  if(!p.household)return null;const m=today().slice(0,7);
+  const its=S.money.filter(x=>x.ledgerId===p.id&&(x.scope==='comun'||x.scope==='fijo')&&(x.month||(x.date||'').slice(0,7))===m);
+  const done=its.filter(x=>x.scope==='comun'?!!x.paidBy:x.status==='pagado').length;
+  return its.length?{pct:done/its.length,done,total:its.length,fin:true}:null;
+}
 const evMinsOf=(p,a,b)=>S.events.filter(e=>e.projectId===p.id&&evStatus(e)==='cumplido'&&num(e.minutes)>0&&e.date>=a&&e.date<=b).reduce((s,e)=>s+num(e.minutes),0);
 const logMinsOf=(p,a,b)=>S.logs.filter(l=>l.projectId===p.id&&(l.date||'')>=a&&(l.date||'')<=b).reduce((s,l)=>s+num(l.minutes),0);
 function weekPct(p,ws){
+  if(p.household)return ws===sundayOf(today())?finProgress(p):null;
   const we=addDays(ws,6);
   const evs=S.events.filter(e=>e.projectId===p.id&&e.date>=ws&&e.date<=we);
   const tks=S.tasks.filter(t=>t.projectId===p.id&&t.due&&t.due>=ws&&t.due<=we);
@@ -437,6 +444,7 @@ function pctBar(w,label){
   return `<span class="gm-bar ${cls}" role="img" aria-label="${pc}% de lo planificado"><i style="width:${pc}%"></i></span><b class="num gm-pct">${pc}%</b>`;
 }
 function planTotal(p){
+  if(p.household)return finProgress(p);
   const evs=S.events.filter(e=>e.projectId===p.id);const tks=S.tasks.filter(t=>t.projectId===p.id);
   const total=evs.length+tks.length,done=evs.filter(e=>evStatus(e)==='cumplido').length+tks.filter(t=>t.status==='hecha').length;
   const last=[...evs.map(e=>e.date),...tks.map(t=>t.due)].filter(Boolean).sort().pop()||'';
@@ -444,29 +452,30 @@ function planTotal(p){
 }
 function gameStrip(){
   const ps=sortedProjects().filter(isGameP);if(!ps.length)return '';
-  const cur=sundayOf(today());let done=0,total=0,xp=0,streak=0;
-  const gs=ps.map(p=>{const g=gameOf(p);xp+=g.xp;streak=Math.max(streak,g.streak);if(g.now){done+=g.now.done;total+=g.now.total}return g});
-  const w=total?{pct:done/total,done,total}:null;const level=Math.floor(xp/XP_LEVEL)+1;
-  let pd=0,pt=0,last='';ps.forEach(p=>{const t=planTotal(p);if(t){pd+=t.done;pt+=t.total;if(t.last>last)last=t.last}});
+  const cur=sundayOf(today());let done=0,total=0,streak=0;
+  ps.forEach(p=>{const g=gameOf(p);if(!p.household)streak=Math.max(streak,g.streak);if(g.now){done+=g.now.done;total+=g.now.total}});
+  const w=total?{pct:done/total,done,total}:null;
+  let pd=0,pt=0,last='';ps.forEach(p=>{const t=planTotal(p);if(t){pd+=t.done;pt+=t.total;if(t.last&&t.last>last)last=t.last}});
   const all=pt?{pct:pd/pt,done:pd,total:pt}:null;
-  return `<section class="panel gm-panel hub-week"><div class="row"><span class="gm-lvl">Nv ${level}</span>
-    <div style="flex:1;min-width:0"><div class="row" style="gap:6px"><b>Semana ${fmtDate(cur)} – ${fmtDate(addDays(cur,6))}</b><span class="spacer"></span>${streak?`<span class="tag">Racha ${streak} sem.</span>`:''}</div>
+  const secs=(fn,cnt)=>ps.map(p=>{const t=fn(p);return t?`<span class="gm-sec" style="--pc:${pcolor(p)}"><i></i>${esc(p.name)} <b class="num">${Math.round(t.pct*100)}%</b>${cnt?` <span class="muted num">(${t.done}/${t.total})</span>`:''}</span>`:''}).join('');
+  return `<section class="panel gm-panel hub-week">
+    <div class="row" style="gap:6px"><b>Esta semana · ${fmtDate(cur)} – ${fmtDate(addDays(cur,6))}</b><span class="spacer"></span>${streak?`<span class="tag">Racha ${streak} sem.</span>`:''}</div>
     <div class="row" style="gap:8px;flex-wrap:nowrap">${pctBar(w)}</div>
-    <div class="muted" style="font-size:.75rem">${w?`${w.total} cosas planificadas esta semana · `:''}${xp} XP · faltan ${XP_LEVEL-xp%XP_LEVEL} para el nivel ${level+1}</div></div></div>
+    <div class="gm-secs">${secs(p=>gameOf(p).now,false)}</div>
     ${all?`<div class="gm-total"><div class="row" style="gap:6px"><b>Avance de todo el plan</b><span class="spacer"></span><span class="muted num" style="font-size:.78rem">${all.done} de ${all.total} hechas${last?' · plan hasta '+fmtDate(last):''}</span></div>
       <div class="row" style="gap:8px;flex-wrap:nowrap"><span class="gm-bar gm-big ${all.pct>=.8?'ok':all.pct>=.5?'mid':'low'}"><i style="width:${Math.round(all.pct*100)}%"></i></span><b class="num gm-pct">${Math.round(all.pct*100)}%</b></div>
-      <div class="gm-secs">${ps.map(p=>{const t=planTotal(p);return t?`<span class="gm-sec" style="--pc:${pcolor(p)}"><i></i>${esc(p.name)} <b class="num">${Math.round(t.pct*100)}%</b> <span class="muted num">(${t.done}/${t.total})</span></span>`:''}).join('')}</div></div>`:''}
+      <div class="gm-secs">${secs(planTotal,true)}</div></div>`:''}
+    <div class="muted" style="font-size:.72rem">Todas las secciones avanzan en paralelo. Finanzas personales cuenta los gastos del mes pagados (en común y fijos).</div>
   </section>`;
 }
 function gamePanel(p,pc){
-  if(!isGameP(p))return '';const g=gameOf(p);const w=g.now;
-  return `<section class="panel gm-panel" style="--pc:${pc}"><div class="row"><span class="gm-lvl">Nv ${g.level}</span>
-    <div style="flex:1;min-width:0"><div class="row" style="gap:6px"><b>Esta semana</b><span class="spacer"></span>${g.streak?`<span class="tag">Racha ${g.streak} sem.</span>`:''}</div>
+  if(!isGameP(p))return '';const g=gameOf(p);const w=g.now;const t=planTotal(p);
+  if(p.household)return t?`<section class="panel gm-panel" style="--pc:${pc}"><div class="row" style="gap:6px"><b>Gastos de ${MESES[+today().slice(5,7)-1]} pagados</b><span class="spacer"></span><span class="muted num" style="font-size:.78rem">${t.done} de ${t.total}</span></div><div class="row" style="gap:8px;flex-wrap:nowrap">${pctBar(t)}</div></section>`:'';
+  return `<section class="panel gm-panel" style="--pc:${pc}">
+    <div class="row" style="gap:6px"><b>Esta semana</b><span class="spacer"></span>${g.streak?`<span class="tag">Racha ${g.streak} sem.</span>`:''}</div>
     <div class="row" style="gap:8px;flex-wrap:nowrap">${pctBar(w)}</div>
-    <div class="muted" style="font-size:.75rem">${w?[w.evs?`${w.evs} tareas de calendario`:'',w.tks?`${w.tks} tareas con fecha`:'',w.goal?`${h1(w.hrs)} de ${h1(w.goal)} h de meta`:''].filter(Boolean).join(' · ')+' · ':''}${g.xp} XP · ${g.into}/${XP_LEVEL} al nivel ${g.level+1}</div>
-    <div class="gm-xp"><i style="width:${g.into/XP_LEVEL*100}%"></i></div>
-    ${(()=>{const t=planTotal(p);return t?`<div class="row" style="gap:8px;flex-wrap:nowrap;margin-top:6px"><span class="muted" style="font-size:.75rem;white-space:nowrap">Todo el plan</span>${pctBar(t)}</div><div class="muted" style="font-size:.72rem">${t.done} de ${t.total} hechas${t.last?' · plan hasta '+fmtDate(t.last):''}</div>`:''})()}</div></div>
-    <details><summary class="muted" style="font-size:.78rem">Cómo se suman los puntos</summary><div class="muted" style="font-size:.8rem">Cada tarea cumplida: ${XP_TASK} XP · cada hora dedicada: ${XP_HOUR} XP · semana cerrada con 80 % o más: ${XP_WEEK} XP extra · cada ${XP_LEVEL} XP subís de nivel · la racha cuenta semanas seguidas con 70 % o más.</div></details>
+    ${w?`<div class="muted" style="font-size:.75rem">${[w.evs?`${w.evs} tareas de calendario`:'',w.tks?`${w.tks} tareas con fecha`:'',w.goal?`${h1(w.hrs)} de ${h1(w.goal)} h de meta`:''].filter(Boolean).join(' · ')}</div>`:''}
+    ${t?`<div class="row" style="gap:8px;flex-wrap:nowrap;margin-top:4px"><span class="muted" style="font-size:.75rem;white-space:nowrap">Todo el plan</span>${pctBar(t)}</div><div class="muted" style="font-size:.72rem">${t.done} de ${t.total} hechas${t.last?' · plan hasta '+fmtDate(t.last):''}</div>`:''}
   </section>`;
 }
 function homeView(){
@@ -504,7 +513,7 @@ function linkItem(p,i){
     sub=st.ts.length||st.evTotalW||st.week?[st.ts.length?`${st.done.length}/${st.ts.length} tareas`:'',st.evTotalW?`${st.evDoneW}/${st.evTotalW} del calendario esta semana`:'',`${h1(st.week)} h esta semana`,st.next?'Próxima: '+esc(st.next.title):''].filter(Boolean).join(' · '):'Sin tareas: entrá y armá el plan';}
   return `<button class="link" style="--pc:${pcolor(p)}" data-act="open" data-id="${esc(p.id)}">
     <span class="ico">${isLedger(p)?'$':i+1}</span>
-    <span style="min-width:0"><span class="lt">${esc(p.name)}</span><span class="ls" style="display:block">${sub}</span>${isGameP(p)?(()=>{const g=gameOf(p);return `<span class="gm-link"><span class="gm-lvl sm">Nv ${g.level}</span>${pctBar(g.now)}</span>`})():''}</span>
+    <span style="min-width:0"><span class="lt">${esc(p.name)}</span><span class="ls" style="display:block">${sub}</span>${isGameP(p)?(()=>{const g=gameOf(p);return `<span class="gm-link"><span class="muted" style="font-size:.7rem">${p.household?'Mes':'Semana'}</span>${pctBar(g.now)}</span>`})():''}</span>
     <span class="arr" aria-hidden="true">→</span></button>`;
 }
 
@@ -617,6 +626,7 @@ function householdView(p){
   const pc=pcolor(p);const tab=S.hhTab||'comun';const month=S.month||today().slice(0,7);const f=S.form;
   let h=`<div class="row"><button class="ghost" data-act="home">← Inicio</button></div>
   <section class="detail-head" style="--pc:${pc}"><span class="chip" style="align-self:flex-start">Finanzas</span><h1>${esc(p.name)}</h1></section>
+  ${gamePanel(p,pc)}
   <div class="tabs" role="tablist" style="--pc:${pc}">${HH_TABS.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="hhTab" data-tab="${k}">${l}</button>`).join('')}</div>
   <section class="panel" style="--pc:${pc}"><div class="row">
     <button class="small" data-act="prevMonth" aria-label="Mes anterior">‹</button><h2 style="min-width:0">${monthName(month)}</h2><button class="small" data-act="nextMonth" aria-label="Mes siguiente">›</button>
