@@ -336,6 +336,9 @@ button.wkc-ev:hover,.cd button.ev:hover{outline:2px solid var(--pc);outline-offs
 .flash{animation:flash 1.6s ease-out}
 @keyframes flash{0%{background:color-mix(in srgb,var(--pc,var(--accent)) 25%,transparent)}100%{background:transparent}}
 @media (prefers-reduced-motion:reduce){.flash{animation:none}}
+.modal{position:fixed;inset:0;z-index:40;background:rgba(10,15,12,.55);display:flex;align-items:flex-end;justify-content:center;padding:max(12px,env(safe-area-inset-top,0px)) max(0px,env(safe-area-inset-right,0px)) 0 max(0px,env(safe-area-inset-left,0px))}
+.sheet{background:var(--surface);color:var(--ink);width:min(640px,100%);max-height:92vh;overflow-y:auto;border-radius:16px 16px 0 0;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:10px;cursor:default}
+@media (min-width:700px){.modal{align-items:center}.sheet{border-radius:16px}}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -424,7 +427,10 @@ function render(){
   html+=brandDatalists();
   if(S.lightbox)html+=`<div class="lightbox" data-act="closeLb"><img src="${esc(S.lightbox)}" alt="Foto ampliada"><button data-act="closeLb">Cerrar</button></div>`;
   const cp=current();S.pid=cp?cp.id:null;
+  if(S.modal&&!(S.form&&S.form.id===S.modal.id))S.modal=null;
+  const sf=S.form;if(S.modal)S.form=null;
   html+= cp?(cp.household?householdView(cp):isLedger(cp)?ledgerView(cp):detailView()):homeView();
+  if(S.modal){S.form=sf;html+=modalHTML();}
   const keep={};['.wkm-wrap','.cal-wrap'].forEach(k=>{const el=app.querySelector(k);if(el)keep[k]=el.scrollLeft});
   PICK=null;app.innerHTML=html;
   ['.wkm-wrap','.cal-wrap'].forEach(k=>{const el=app.querySelector(k);if(!el)return;
@@ -589,7 +595,23 @@ function homeAddBox(rows,sel){
   else h+=`<button type="button" class="small" data-act="cancelForm">Cancelar</button>`;
   return `<div class="inline-form" style="gap:8px">${h}</div>`;
 }
+function openModal(k,id){S.modal={k,id};S.confirm=null;S.form=k==='e'?{type:'event',id,mode:'edit'}:{type:'task',id};rerender()}
 function focusItem(id){setTimeout(()=>{const q=CSS.escape(id);const el=app.querySelector(`.wk-day .wk-sum[data-id="${q}"],.evrow .wk-sum[data-id="${q}"],[data-tid="${q}"]`);if(el){el.scrollIntoView({block:'center',behavior:'smooth'});const row=el.closest('.wk-ev,.evrow')||el;row.classList.add('flash');setTimeout(()=>row.classList.remove('flash'),1600)}},30)}
+function modalHTML(){
+  const m=S.modal;const f=S.form;let body='',head='',title='';
+  if(m.k==='e'){const e=S.events.find(x=>x.id===m.id);if(!e)return '';const p=S.projects.find(x=>x.id===e.projectId)||{id:e.projectId,name:''};
+    const st=evStatus(e);title=e.title;
+    head=`<div class="row" style="gap:6px"><span class="tag">${esc(e.type||'')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]||st}</span>${overEv(e)?WARN:''}<span class="muted num" style="font-size:.8rem">${fmtDate(e.date)}${e.spaceId?' · '+esc(spaceName(e.spaceId)):''}</span></div>
+      ${f.type==='event'&&st==='planificado'?`<div class="row" style="gap:6px"><button class="small primary" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button><button class="small ghost" data-act="evCancel" data-id="${esc(e.id)}">Cancelar tarea</button></div>`:''}`;
+    body=f.type==='done'?doneForm(e):f.type==='cancel'?cancelForm('e',e.id,e.title):eventForm(p,e);}
+  else{const t=S.tasks.find(x=>x.id===m.id);if(!t)return '';const p=S.projects.find(x=>x.id===t.projectId)||{id:t.projectId,name:''};title=t.title;
+    head=`<div class="row" style="gap:6px"><span class="tag">${esc(p.name)}</span><span class="tag">${esc(t.status||'pendiente')}</span>${overTk(t)?WARN:''}${t.due?`<span class="muted num" style="font-size:.8rem">${fmtDate(t.due)}</span>`:''}</div>
+      ${f.type==='task'&&t.status!=='hecha'&&t.status!=='cancelada'?`<div class="row" style="gap:6px"><button class="small primary" data-act="mTaskDone" data-id="${esc(t.id)}">✓ Hecha</button><button class="small ghost" data-act="tkCancel" data-id="${esc(t.id)}">Cancelar tarea</button></div>`:''}
+      ${t.status==='hecha'||t.status==='cancelada'?`<button class="small ghost" data-act="hTaskUndo" data-id="${esc(t.id)}" style="align-self:flex-start">${t.status==='hecha'?'Desmarcar como hecha':'Reactivar'}</button>`:''}`;
+    body=f.type==='cancel'?cancelForm('t',t.id,t.title):`${taskForm(t,p.id)}<div class="row">${S.confirm==='t'+t.id?`<button class="small danger" data-act="delTask" data-id="${esc(t.id)}">Confirmar eliminar</button><button class="small" data-act="noConfirm">No</button>`:`<button class="small ghost danger" data-act="askDel" data-key="t${esc(t.id)}">Eliminar tarea</button>`}</div>`;}
+  return `<div class="modal" data-act="closeModal"><div class="sheet" data-act="noop" role="dialog" aria-modal="true" aria-label="${esc(title)}">
+    <div class="row"><h2 style="min-width:0">${esc(title)}</h2><span class="spacer"></span><button class="small ghost" data-act="closeModal" aria-label="Cerrar">✕</button></div>${head}${body}</div></div>`;
+}
 function homeView(){
   const ps=sortedProjects();
   const loading=!db||!(S.loaded.projects&&S.loaded.tasks&&S.loaded.logs);
@@ -2120,9 +2142,12 @@ app.addEventListener('click',e=>{
     bellGo(){S.bellOpen=false;S.hhTab='venc';S.month=today().slice(0,7);go(id)},
     evCancel(){S.form={type:'cancel',id};rerender();setTimeout(()=>document.getElementById('cx-note')?.focus(),0)},
     tkCancel(){S.form={type:'cancel',id};rerender();setTimeout(()=>document.getElementById('cx-note')?.focus(),0)},
-    hwItem(){S.hSel=b.dataset.date;S.hRow=null;S.form=null;S.openEv=S.openEv||new Set();if(b.dataset.k==='e')S.openEv.add(id);rerender();focusItem(id)},
-    wkItem(){S.wkSel=b.dataset.date;S.form=null;S.openEv=S.openEv||new Set();S.openEv.add(id);rerender();focusItem(id)},
-    calItem(){S.form=null;S.openEv=S.openEv||new Set();S.openEv.add(id);rerender();focusItem(id)},
+    hwItem(){openModal(b.dataset.k,id)},
+    wkItem(){openModal('e',id)},
+    calItem(){openModal('e',id)},
+    closeModal(){S.modal=null;S.form=null;S.confirm=null;rerender()},
+    noop(){},
+    mTaskDone(){safe(()=>db.doc('tasks/'+id).update({status:'hecha'}))},
     hhTab(){S.hhTab=b.dataset.tab;S.form=null;rerender()},
     newHH(){S.form={type:'hh'};rerender();document.getElementById('hh-name')?.focus()},
     editHH(){S.form={type:'hh',id};rerender()},
@@ -2190,7 +2215,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','hwItem','wkItem','calItem','bell','bellGo','hwPrev','hwNext','hwToday','hwDay','hwCell','hwAll','hwClose','hwAdd','doneQuick','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','closeModal','noop','hwItem','wkItem','calItem','bell','bellGo','hwPrev','hwNext','hwToday','hwDay','hwCell','hwAll','hwClose','hwAdd','doneQuick','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
