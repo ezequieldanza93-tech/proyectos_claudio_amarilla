@@ -342,8 +342,11 @@ function projStats(p){
   const est=ts.reduce((s,t)=>s+num(t.estHours),0);
   const estDone=done.reduce((s,t)=>s+num(t.estHours),0);
   const ls=logsOf(p.id);const ws=weekStart();
+  const evs=S.events.filter(e=>e.projectId===p.id&&e.type!=='Compra');const evDone=evs.filter(e=>evStatus(e)==='cumplido');
+  const evMin=evDone.filter(e=>num(e.minutes)>0);
   return {ts,done,est,pct:est?estDone/est:(ts.length?done.length/ts.length:0),
-    dedicated:minsSum(ls)/60,week:minsSum(ls.filter(l=>(l.date||'')>=ws))/60,
+    dedicated:(minsSum(ls)+minsSum(evMin))/60,week:(minsSum(ls.filter(l=>(l.date||'')>=ws))+minsSum(evMin.filter(e=>(e.date||'')>=ws)))/60,
+    evDoneW:evDone.filter(e=>(e.date||'')>=ws&&e.date<=today()).length,evTotalW:evs.filter(e=>(e.date||'')>=ws&&e.date<=addDays(ws,6)).length,evDone:evDone.length,
     next:ts.find(t=>t.status!=='hecha')};
 }
 
@@ -417,7 +420,7 @@ function linkItem(p,i){
   else if(isLedger(p)){const m=today().slice(0,7);const s=ledgerSums(p,m);
     sub=`Saldo de ${MESES[+m.slice(5)-1]}: <span class="num ${s.bal<0?'exp':''}">${money(s.bal)}</span>`;}
   else{const st=projStats(p);
-    sub=st.ts.length?`${st.done.length}/${st.ts.length} tareas · ${h1(st.week)} h esta semana${st.next?' · Próxima: '+esc(st.next.title):''}`:'Sin tareas: entrá y armá el plan';}
+    sub=st.ts.length||st.evTotalW||st.week?[st.ts.length?`${st.done.length}/${st.ts.length} tareas`:'',st.evTotalW?`${st.evDoneW}/${st.evTotalW} del calendario esta semana`:'',`${h1(st.week)} h esta semana`,st.next?'Próxima: '+esc(st.next.title):''].filter(Boolean).join(' · '):'Sin tareas: entrá y armá el plan';}
   return `<button class="link" style="--pc:${pcolor(p)}" data-act="open" data-id="${esc(p.id)}">
     <span class="ico">${isLedger(p)?'$':i+1}</span>
     <span style="min-width:0"><span class="lt">${esc(p.name)}</span><span class="ls" style="display:block">${sub}</span></span>
@@ -657,6 +660,7 @@ function calendarPanel(p,pc){
   </section>`;
 }
 function evRow(e,confirming){
+  if(S.form&&S.form.type==='done'&&S.form.id===e.id)return doneForm(e);
   const st=evStatus(e);
   const moved=e.plannedDate&&e.plannedDate!==e.date;
   const open=S.openEv&&S.openEv.has(e.id);
@@ -887,6 +891,7 @@ function eventForm(p,e){
     ${transBox(e)}
     ${buyBox(e)}
     <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note" value="${esc(e.note)}"></label>
+    <label class="field"><span class="label">Tiempo dedicado (minutos)</span><input id="e-min" name="minutes" inputmode="numeric" value="${esc(e.minutes??'')}" placeholder="Al completarla: ej. 15, 30, 60"></label>
     ${isNew||mode==='edit'?'':`<label class="field"><span class="label">Motivo del ajuste (opcional)</span><input id="e-adj" name="adjustNote" value="${esc(e.adjustNote)}" placeholder="Ej.: se atrasó por lluvia, se cambió la dosis"></label>`}
     <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button>
       ${isNew?'':`<span class="spacer"></span>${S.confirm==='e'+e.id?`<button type="button" class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Confirmar eliminar</button><button type="button" class="small" data-act="noConfirm">No</button>`:`<button type="button" class="small ghost danger" data-act="askDel" data-key="e${esc(e.id)}">Eliminar tarea</button>`}`}</div>
@@ -1248,9 +1253,17 @@ const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+Stri
 const addDays=(s,n)=>{const d=new Date(s+'T00:00:00');d.setDate(d.getDate()+n);return ymd(d)};
 const mondayOf=s=>{const d=new Date(s+'T00:00:00');return addDays(s,-((d.getDay()+6)%7))};
 const DIAS=['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
+function doneForm(e){
+  return `<form class="inline-form" data-form="done" data-id="${esc(e.id)}"><b>✓ ${esc(e.title)}</b>
+    <span class="label">¿Cuánto tiempo le dedicaste?</span>
+    <div class="row" style="gap:6px">${[[15,'15 min'],[30,'30 min'],[60,'1 h'],[90,'1 h 30'],[120,'2 h']].map(([m,l])=>`<button type="button" class="small" data-act="doneQuick" data-min="${m}">${l}</button>`).join('')}</div>
+    <label class="row" style="gap:6px"><input id="dn-min" name="minutes" inputmode="numeric" style="width:90px" value="${esc(e.minutes??'')}" placeholder="min"><span class="muted">minutos</span></label>
+    <div class="row"><button class="primary" type="submit">Marcar como cumplida</button><button type="button" data-act="cancelForm">Cancelar</button></div></form>`;
+}
 function weekEvRow(p,e){
   const st=evStatus(e);const f=S.form;
   if(f&&f.type==='event'&&f.id===e.id)return eventForm(p,e);
+  if(f&&f.type==='done'&&f.id===e.id)return doneForm(e);
   const sp=S.spaces.find(x=>x.id===e.spaceId);
   const open=S.openEv&&S.openEv.has(e.id);
   const moved=e.plannedDate&&e.plannedDate!==e.date;
@@ -1704,6 +1717,7 @@ function detailView(){
   </section>`;}
   h+=`<section class="panel" style="--pc:${pc}"><div class="stats" style="border:0;padding:0;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))">
     <div class="stat"><b>${st.done.length}/${st.ts.length}</b><span>tareas hechas</span></div>
+    ${st.evTotalW?`<div class="stat"><b>${st.evDoneW}/${st.evTotalW}</b><span>tareas del calendario cumplidas esta semana</span></div>`:''}
     <div class="stat"><b>${h1(st.est)} h</b><span>estimadas en total</span></div>
     <div class="stat"><b>${h1(st.dedicated)} h</b><span>dedicadas en total</span></div>
     <div class="stat"><b>${h1(st.week)}${num(p.weeklyHours)?' / '+h1(num(p.weeklyHours)):''} h</b><span>esta semana${num(p.weeklyHours)?' / meta':''}</span></div>
@@ -1721,8 +1735,9 @@ function detailView(){
   if(!st.ts.length&&!(f&&f.type==='task'))h+=`<div class="empty">Sin tareas todavía. Dividí el objetivo en pasos concretos, con horas estimadas y lo que necesitás para cada uno.</div>`;
   h+=`<div class="tasks">${st.ts.map(t=>taskRow(t,p)).join('')}</div></section>`;
   // registro
-  const ls=logsOf(p.id).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||num(b.createdAt)-num(a.createdAt)).slice(0,30);
-  h+=`<section class="panel"><h2>Registro de tiempo</h2>${ls.length?`<div class="logs">${ls.map(l=>{const t=S.tasks.find(x=>x.id===l.taskId);
+  const evT=S.events.filter(e=>e.projectId===p.id&&evStatus(e)==='cumplido'&&num(e.minutes)>0).map(e=>({id:'ev:'+e.id,date:e.date,minutes:e.minutes,note:'',evTitle:e.title,evSpace:spaceName(e.spaceId),createdAt:e.confirmedAt||e.createdAt}));
+  const ls=[...logsOf(p.id),...evT].sort((a,b)=>(b.date||'').localeCompare(a.date||'')||num(b.createdAt)-num(a.createdAt)).slice(0,40);
+  h+=`<section class="panel"><h2>Registro de tiempo</h2>${ls.length?`<div class="logs">${ls.map(l=>{if(l.evTitle)return `<div class="log"><span class="num">${fmtDate(l.date)}</span><span class="num">${h1(num(l.minutes)/60)} h</span><span style="min-width:0">${esc(l.evTitle)} <span class="tag">calendario</span></span><span class="la"></span></div>`;const t=S.tasks.find(x=>x.id===l.taskId);
     return `<div class="log"><span class="num">${fmtDate(l.date)}</span><span class="num">${h1(num(l.minutes)/60)} h</span>
     <span style="min-width:0">${t?esc(t.title):'<span class="muted">General</span>'}${l.note?' <span class="muted">· '+esc(l.note)+'</span>':''}</span>
     <span class="la">${S.confirm==='l'+l.id?`<button class="small danger" data-act="delLog" data-id="${esc(l.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="l${esc(l.id)}" aria-label="Borrar registro">✕</button>`}</span></div>`}).join('')}</div>`
@@ -1763,7 +1778,8 @@ app.addEventListener('click',e=>{
     calPrev(){S.calMonth=shiftMonth(S.calMonth||today().slice(0,7),-1);rerender()},
     calNext(){S.calMonth=shiftMonth(S.calMonth||today().slice(0,7),1);rerender()},
     calDay(){S.form={type:'event',date:b.dataset.date};rerender();document.getElementById('e-title')?.focus()},
-    evDone(){safe(()=>db.doc('events/'+id).update({status:'cumplido',confirmedAt:Date.now()}))},
+    evDone(){S.form={type:'done',id};rerender();setTimeout(()=>document.getElementById('dn-min')?.focus(),0)},
+    doneQuick(){const i=document.getElementById('dn-min');if(i)i.value=b.dataset.min},
     evMiss(){safe(()=>db.doc('events/'+id).update({status:'no se hizo',confirmedAt:Date.now()}))},
     evEditFull(){S.form={type:'event',id,mode:'edit'};rerender();document.getElementById('e-title')?.focus()},
     evEdit(){S.form={type:'event',id,mode:'adjust'};rerender();document.getElementById('e-date')?.focus()},
@@ -1864,7 +1880,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','doneQuick','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
@@ -1915,6 +1931,7 @@ app.addEventListener('submit',e=>{
     if(key==='lights')it.aiFields=d.verified?[]:String(d.aiFields||'').split(',').filter(Boolean);
     const arr=[...(sp[key]||[])];if(idx>=0)arr[idx]=it;else arr.push(it);
     safe(async()=>{await db.doc('spaces/'+sp.id).update({[key]:arr});S.form=null;document.activeElement?.blur?.();rerender()});return}
+  if(kind==='done'){safe(async()=>{await db.doc('events/'+f.dataset.id).update({status:'cumplido',confirmedAt:Date.now(),minutes:n2(d.minutes)});S.form=null;rerender()});return}
   if(kind==='weight'){const kg=num(d.kg);if(!(kg>20&&kg<400)){S.err='Cargá el peso en kilos, por ejemplo 94,5.';rerender();return}
     safe(async()=>{await db.collection('weights').add({projectId:f.dataset.pid,date:d.date||today(),kg,note:(d.note||'').trim(),createdAt:Date.now()});document.activeElement?.blur?.();rerender()});return}
   if(kind==='activity'){const act=(d.activity||'').trim();const mins=num(d.minutes);if(!act||!(mins>0)){S.err='Cargá la actividad y el tiempo en minutos.';rerender();return}
@@ -1943,7 +1960,7 @@ app.addEventListener('submit',e=>{
       if(f.dataset.id)await db.doc('projects/'+f.dataset.id).update(data);
       else{const r=await db.collection('projects').add({...data,kind:d.kind||'project',createdAt:Date.now()});go(r.id)}
     }else if(kind==='event'){
-      const ev={date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),status:d.status||'planificado'};
+      const ev={date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),status:d.status||'planificado',minutes:n2(d.minutes)};
       if(RIEGO_USE[ev.type]){const fd=new FormData(f);const ids=fd.getAll('prodId'),ds=fd.getAll('dose'),us=fd.getAll('unit');
         ev.liters=num(d.liters)||'';ev.tank=n2(d.tank);
         ev.products=ids.map((pid,i)=>{const pr=S.products.find(x=>x.id===pid);return pr?{productId:pid,label:prodLabel(pr),dose:num(ds[i]),unit:us[i]||'ml'}:null}).filter(Boolean);}
