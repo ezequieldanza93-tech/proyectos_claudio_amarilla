@@ -1006,7 +1006,7 @@ function moveForm(p){
     <div class="row"><button class="primary" type="submit">Guardar movimiento</button><button type="button" data-act="cancelForm">Cancelar</button></div>
   </form>`;
 }
-const EV_TYPES=['Compra','Trasplante','Cambio de horas de luz','Riego foliar','Riego radicular','Germinación','Poda / entrenamiento','Inicio de floración','Cosecha','Secado / curado','Manicurado / enfrascado','Inspección','Otro'];
+const EV_TYPES=['Compra','Trasplante','Cambio de horas de luz','Riego foliar','Riego radicular','Germinación','Inicio de vegetativo','Poda / entrenamiento','Inicio de floración','Cosecha','Secado / curado','Manicurado / enfrascado','Inspección','Otro'];
 const evStatus=e=>e.status||'cumplido';
 const ST_LABEL={planificado:'Planificado',cumplido:'Cumplido','no se hizo':'No se hizo',cancelado:'Cancelada'};
 const WARN=`<svg class="warn" viewBox="0 0 24 24" width="15" height="15" role="img" aria-label="Vencida sin hacer"><path d="M12 2.5 1.5 21h21L12 2.5z" fill="#F5C518" stroke="#000" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.2v5.2" stroke="#000" stroke-width="2.3" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.35" fill="#000"/></svg>`;
@@ -2246,15 +2246,16 @@ function evsOfBatch(b){
 function marksOf(b){
   const c=S._mk||(S._mk={});if(c['m'+b.id])return c['m'+b.id];
   const evs=evsOfBatch(b);const first=fn=>evs.filter(fn).map(e=>e.date).sort()[0]||'';
-  return c['m'+b.id]={flora:first(e=>e.type==='Inicio de floración'),lavado:first(e=>/lavado/i.test(e.title||'')),cosecha:first(e=>e.type==='Cosecha')};
+  return c['m'+b.id]={vege:first(e=>e.type==='Inicio de vegetativo'),seed:b.origin==='Semilla'||evs.some(e=>e.type==='Germinación'),flora:first(e=>e.type==='Inicio de floración'),lavado:first(e=>/lavado/i.test(e.title||'')),cosecha:first(e=>e.type==='Cosecha')};
 }
-const STG={vege:['Vege','#3f8f5a'],flora:['Flora','#c0612f'],lavado:['Lavado','#3b7fb0'],seca:['Secado / curado','#8a6d3b']};
+const STG={germ:['Germinación','#a08a2e'],vege:['Vege','#3f8f5a'],flora:['Flora','#c0612f'],lavado:['Lavado','#3b7fb0'],seca:['Secado / curado','#8a6d3b']};
 function stageOf(b,ds){
   if(!b.startDate||ds<b.startDate||(b.endDate&&ds>b.endDate))return null;const m=marksOf(b);
   if(m.cosecha&&ds>=m.cosecha)return {k:'seca',day:cxDays(m.cosecha,ds)+1,txt:`Secado / curado · día ${cxDays(m.cosecha,ds)+1}`};
   if(m.lavado&&ds>=m.lavado)return {k:'lavado',day:cxDays(m.lavado,ds)+1,txt:`Lavado${m.flora?' · día '+(cxDays(m.flora,ds)+1)+' de flora':''}`};
   if(m.flora&&ds>=m.flora)return {k:'flora',day:cxDays(m.flora,ds)+1,txt:`Flora · día ${cxDays(m.flora,ds)+1}`};
-  return {k:'vege',day:cxDays(b.startDate,ds)+1,txt:`Vege · día ${cxDays(b.startDate,ds)+1}`};
+  if(m.seed&&!(m.vege&&ds>=m.vege))return {k:'germ',day:cxDays(b.startDate,ds)+1,txt:`Germinación · día ${cxDays(b.startDate,ds)+1}`};
+  const v0=m.vege||b.startDate;return {k:'vege',day:cxDays(v0,ds)+1,txt:`Vege · día ${cxDays(v0,ds)+1}`};
 }
 function mainBatch(sid,ds){return batchesAt(sid,ds).sort((a,c)=>num(c.qty)-num(a.qty))[0]}
 function stageBand(sid,ds){
@@ -2299,18 +2300,19 @@ function batchStats(b){
   const m=marksOf(b);const last=b.endDate||today();
   const pests=evsOfBatch(b).filter(e=>e.type==='Inspección'&&evStatus(e)==='cumplido'&&e.pest&&e.pest!=='Sin novedades');
   const r={buys,mins,kwh,light:kwh*kwhPrice(),dry,wet,
-    vege:b.startDate?cxDays(b.startDate,m.flora&&m.flora<=last?m.flora:last):null,
+    germ:m.seed&&!(m.vege&&m.vege<=last),
+    vege:(()=>{const v0=m.vege&&m.vege<=last?m.vege:(m.seed?null:b.startDate);return v0?cxDays(v0,m.flora&&m.flora<=last?m.flora:last):null})(),
     flora:m.flora&&m.flora<=last?cxDays(m.flora,m.cosecha&&m.cosecha<=last?m.cosecha:last):null,pests};
   r.total=r.buys+r.light;return c['s'+b.id]=r;
 }
 function lotsTab(){
   const bs=S.batches.filter(b=>b.projectId==='cultivo'||!b.projectId).sort((a,c)=>(c.startDate||'').localeCompare(a.startDate||''));
   const pr=kwhPrice();
-  let h=`<form class="row" data-form="tariff" style="gap:6px"><span class="label">Tarifa eléctrica</span><input name="kwhPrice" inputmode="decimal" style="width:90px" value="${esc(dec(cultP().kwhPrice))}" placeholder="$ por kWh"><span class="muted" style="font-size:.8rem">$/kWh (de tu factura)</span><button class="small" type="submit">Guardar</button></form>`;
+  let h=`<form class="row" data-form="tariff" style="gap:6px"><span class="label">Tarifa eléctrica</span><input name="kwhPrice" inputmode="decimal" style="width:120px" value="${esc(dec(cultP().kwhPrice))}" placeholder="$ por kWh"><span class="muted" style="font-size:.8rem">$/kWh (de tu factura)</span><button class="small" type="submit">Guardar</button></form>`;
   if(!bs.length)return h+'<div class="empty">Todavía no hay lotes.</div>';
   h+=`<div class="tbl-wrap"><table class="ptbl cmp"><thead><tr><th>Lote</th><th>Espacio</th><th>Vege</th><th>Flora</th><th>Seco</th><th>g/planta</th><th>Compras</th><th>Luz</th><th>$/g</th><th>Horas</th><th>h/g</th><th>Plagas</th></tr></thead><tbody>
   ${bs.map(b=>{const s=batchStats(b);return `<tr><td><b style="font-weight:600">${num(b.qty)} × ${esc(b.genetics||'—')}</b><span class="muted" style="display:block;font-size:.75rem">${fmtDate(b.startDate)}${b.status==='finalizado'?' → '+fmtDate(b.endDate):' · activo'}</span></td>
-    <td>${esc(spaceName(b.spaceId))}</td><td class="num">${s.vege!=null?s.vege+' d':'—'}</td><td class="num">${s.flora!=null?s.flora+' d':'—'}</td>
+    <td>${esc(spaceName(b.spaceId))}</td><td class="num">${s.germ?'<span class="muted">germinando</span>':s.vege!=null?s.vege+' d':'—'}</td><td class="num">${s.flora!=null?s.flora+' d':'—'}</td>
     <td class="num">${s.dry?gfmt(s.dry):'—'}</td><td class="num">${s.dry&&num(b.qty)?gfmt(s.dry/num(b.qty)):'—'}</td>
     <td class="num">${money(s.buys)}</td><td class="num">${pr?money(s.light):dec(Math.round(s.kwh))+' kWh'}</td><td class="num"><b>${s.dry&&s.total?money(s.total/s.dry):'—'}</b></td>
     <td class="num">${h1(s.mins/60)} h</td><td class="num"><b>${s.dry&&s.mins?dec(Math.round(s.mins/60/s.dry*1000)/1000):'—'}</b></td><td class="num">${s.pests.length||'—'}</td></tr>`}).join('')}</tbody></table></div>
@@ -2442,8 +2444,8 @@ function cureBox(b){
     ${(cu.log||[]).length?`<ul class="flist">${cu.log.slice().reverse().map(x=>`<li><span class="num">${fmtDate(x.date)}</span>${x.rh!==''&&x.rh!=null?' · HR <span class="num">'+dec(x.rh)+' %</span>'+flag(x.rh):''}${x.note?' · '+esc(x.note):''}</li>`).join('')}</ul>`:''}</div>`;
 }
 function batchExtras(b){
-  const f=S.form;
-  return plantsBox(b)+cureBox(b)+(f&&f.type==='tpl'&&f.id===b.id?`<form class="row" data-form="tpl" data-id="${esc(b.id)}" style="gap:6px"><input name="name" required style="flex:1;min-width:140px" value="${esc((b.genetics||'Lote')+' · '+spaceName(b.spaceId))}" aria-label="Nombre de la plantilla"><button class="small primary" type="submit">Guardar plantilla</button><button type="button" class="small" data-act="cancelForm">Cancelar</button></form>
+  const f=S.form;const st=stageOf(b,today());
+  return (st&&st.k==='germ'?`<button class="small primary" data-act="toVege" data-id="${esc(b.id)}" style="align-self:flex-start">Pasaron a vege hoy</button>`:'')+plantsBox(b)+cureBox(b)+(f&&f.type==='tpl'&&f.id===b.id?`<form class="row" data-form="tpl" data-id="${esc(b.id)}" style="gap:6px"><input name="name" required style="flex:1;min-width:140px" value="${esc((b.genetics||'Lote')+' · '+spaceName(b.spaceId))}" aria-label="Nombre de la plantilla"><button class="small primary" type="submit">Guardar plantilla</button><button type="button" class="small" data-act="cancelForm">Cancelar</button></form>
     <div class="muted" style="font-size:.78rem">Guarda ${tplFrom(b).length} tareas con su día relativo al inicio del lote. Los litros de riego se guardan por planta.</div>`:'');
 }
 /* clima */
@@ -2512,6 +2514,7 @@ const XACT={
   delPlantNote(b,id){const bt=S.batches.find(x=>x.id===id);const n=+b.dataset.n;const ps=(bt.plants||[]).map(p=>p.n===n?{...p,notes:(p.notes||[]).filter((_,i)=>i!==+b.dataset.i)}:p);safe(()=>db.doc('batches/'+id).update({plants:ps}))},
   cureNew(b,id){S.form={type:'cure',id};rerender()},
   climRangeEdit(){S.form={type:'climRange'};rerender()},
+  toVege(b,id){const bt=S.batches.find(x=>x.id===id);safe(()=>db.collection('events').add({projectId:'cultivo',spaceId:bt.spaceId,batchId:id,date:today(),plannedDate:today(),type:'Inicio de vegetativo',title:'Pasan a vege: '+bt.genetics,short:'Pasan a vege',status:'cumplido',confirmedAt:Date.now(),products:[],liters:'',createdAt:Date.now()}))},
   delClimate(b,id){safe(async()=>{await db.doc('climate/'+id).delete();S.confirm=null})},
 };
 const XFORM={
