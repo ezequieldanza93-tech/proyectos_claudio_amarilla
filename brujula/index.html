@@ -355,6 +355,18 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   .wb .track{grid-column:1/-1;grid-row:2}
 }
 @media (prefers-reduced-motion:no-preference){.card{transition:box-shadow .15s}}
+.cd{position:relative}
+.stg{position:absolute;left:0;right:0;bottom:0;height:5px;display:flex}
+.stg i{flex:1}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:6px}
+.pcell{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:6px 8px;font-size:.78rem;text-align:left}
+.pcell.on{border-color:var(--pc);box-shadow:inset 0 0 0 1px var(--pc)}
+.cure-days{display:flex;flex-wrap:wrap;gap:4px}
+.cday{min-width:24px;height:24px;display:grid;place-items:center;border-radius:6px;font-size:.72rem;border:1px dashed var(--pc);color:var(--pc)}
+.cday.st-cumplido{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.cday.st-no-se-hizo{background:var(--line);border-color:var(--line);color:var(--muted);text-decoration:line-through}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.cband{fill:var(--ok);opacity:.12}
 </style>
 
 <div class="wrap" id="app">
@@ -369,7 +381,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <script>
 (function(){
 const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
-const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],dbProducts:[],cat:null,batches:[],plans:[],slips:[],activities:[],weights:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],dbProducts:[],cat:null,batches:[],plans:[],slips:[],activities:[],weights:[],climate:[],templates:[],stock:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
 function hashId(){try{return decodeURIComponent(location.hash.slice(1))}catch(e){return ''}}
 const curId=()=>S.nav!==null?S.nav:hashId();
 function go(id){S.nav=id||'';S.space=null;S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
@@ -420,7 +432,7 @@ function projStats(p){
 function render(){
   const a=document.activeElement;
   if(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&!S._force){pending=true;return}
-  S._force=false;pending=false;S._avg=null;
+  S._force=false;pending=false;S._avg=null;S._mk={};
   let html='';
   html+=bellHTML();
   if(S.timer)html+=timerBar();
@@ -981,7 +993,7 @@ function moveForm(p){
     <div class="row"><button class="primary" type="submit">Guardar movimiento</button><button type="button" data-act="cancelForm">Cancelar</button></div>
   </form>`;
 }
-const EV_TYPES=['Compra','Trasplante','Cambio de horas de luz','Riego foliar','Riego radicular','Germinación','Poda / entrenamiento','Inicio de floración','Cosecha','Secado / curado','Manicurado / enfrascado','Otro'];
+const EV_TYPES=['Compra','Trasplante','Cambio de horas de luz','Riego foliar','Riego radicular','Germinación','Poda / entrenamiento','Inicio de floración','Cosecha','Secado / curado','Manicurado / enfrascado','Inspección','Otro'];
 const evStatus=e=>e.status||'cumplido';
 const ST_LABEL={planificado:'Planificado',cumplido:'Cumplido','no se hizo':'No se hizo',cancelado:'Cancelada'};
 const WARN=`<svg class="warn" viewBox="0 0 24 24" width="15" height="15" role="img" aria-label="Vencida sin hacer"><path d="M12 2.5 1.5 21h21L12 2.5z" fill="#F5C518" stroke="#000" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.2v5.2" stroke="#000" stroke-width="2.3" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.35" fill="#000"/></svg>`;
@@ -1004,7 +1016,7 @@ function calendarPanel(p,pc){
   for(let d=1;d<=days;d++){
     const ds=month+'-'+String(d).padStart(2,'0');const de=evs.filter(e=>e.date===ds);
     cells+=`<div role="button" tabindex="0" class="cd ${ds===t?'today':''} ${de.length?'has':''}" data-act="calDay" data-date="${ds}" aria-label="${d} de ${MESES[m-1]}${de.length?': '+esc(de.map(e=>e.title+' ('+ST_LABEL[evStatus(e)]+')').join(', ')):''}">
-      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<button type="button" class="ev st-${evStatus(e).replace(/ /g,'-')}" data-act="calItem" data-id="${esc(e.id)}" aria-label="Abrir ${esc(e.title)}">${overEv(e)?WARN+' ':''}${chipEv(e)}</button>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}</div>`;
+      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<button type="button" class="ev st-${evStatus(e).replace(/ /g,'-')}" data-act="calItem" data-id="${esc(e.id)}" aria-label="Abrir ${esc(e.title)}">${overEv(e)?WARN+' ':''}${chipEv(e)}</button>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}${S.space?stageBand(S.space,ds):''}</div>`;
   }
   const list=evs.filter(e=>(e.date||'').startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date));
   const germ=evs.filter(e=>e.type==='Germinación'&&evStatus(e)==='cumplido'&&e.date<=t).sort((a,b)=>b.date.localeCompare(a.date));
@@ -1022,6 +1034,7 @@ function calendarPanel(p,pc){
     ${f&&f.type==='event'&&!f.id?eventForm(p,f.prefill||{date:f.date}):''}
     <div class="cal-wrap"><div class="cal">${['lun','mar','mié','jue','vie','sáb','dom'].map(d=>`<div class="cw">${d}</div>`).join('')}${cells}</div></div>
     <div class="row muted" style="font-size:.75rem;gap:14px"><span><span class="ev-key st-planificado"></span> planificado</span><span><span class="ev-key st-cumplido"></span> cumplido</span><span><span class="ev-key st-no-se-hizo"></span> no se hizo</span></div>
+    ${S.space?`<div class="row muted" style="font-size:.75rem;gap:10px">${stageLegend()}</div>`:''}
     ${list.length?`<div class="logs">${list.map(e=>editing===e.id&&!toConfirm.includes(e)?eventForm(p,e):evRow(e,false)).join('')}</div>`
       :'<div class="empty">Sin eventos este mes. Tocá un día para planificar algo o registrar lo que pasó.</div>'}
   </section>`;
@@ -1041,7 +1054,7 @@ function evRow(e,confirming){
       <div><span class="tag" style="margin:0">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span></div>
       ${moved?`<span class="muted" style="font-size:.78rem">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
       ${evStatus(e)==='cancelado'&&e.cancelNote?`<span class="muted" style="font-size:.78rem">Cancelada: ${esc(e.cancelNote)}</span>`:''}
-      ${prodSummary(e)}${purchaseSummary(e)}
+      ${prodSummary(e)}${purchaseSummary(e)}${xtraEvSummary(e)}
       ${e.note?`<span class="muted" style="font-size:.78rem">${esc(e.note)}</span>`:''}
       <span class="t-actions" style="justify-content:flex-start">
       ${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button><button class="small ghost" data-act="evCancel" data-id="${esc(e.id)}">Cancelar</button>`
@@ -1260,6 +1273,7 @@ function eventForm(p,e){
     ${prodBox(e)}
     ${transBox(e)}
     ${buyBox(e)}
+    ${xtraEvFields(e)}
     <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note" value="${esc(e.note)}"></label>
     <label class="field"><span class="label">Tiempo estimado (minutos) *</span><input id="e-est" name="estMin" inputmode="numeric" data-req-plan ${num(e.estMin)?'':'data-auto="1"'} value="${esc(num(e.estMin)?e.estMin:(ruleMin(e)||''))}" placeholder="Para planificar: ej. 15, 30, 60"><span class="muted est-hint" style="font-size:.75rem">${MIN_PER_PLANT[e.type]?MIN_PER_PLANT[e.type]+' min por planta':''}</span></label>
     <label class="field"><span class="label">Tiempo dedicado (minutos)</span><input id="e-min" name="minutes" inputmode="numeric" value="${esc(e.minutes??'')}" placeholder="Al completarla: ej. 15, 30, 60"></label>
@@ -1505,7 +1519,7 @@ const COMP_SCHEMA=[
   {k:'size',l:'Medida de boca',t:'select',o:['4"','6"'],whenNot:'Ventilador'},
   {k:'mount',l:'Tipo de ventilador',t:'select',o:['De pinza','De pie','De pared'],when:'Ventilador'},
   {k:'diameter',l:'Diámetro de aspas',t:'text',ph:'Ej.: 16", 20" o 40 cm',when:'Ventilador'},
-  {k:'power',l:'Potencia (W)',t:'num',when:'Ventilador'},
+  {k:'power',l:'Potencia (W)',t:'num'},
   {k:'brand',l:'Marca',t:'text',dl:'air'},{k:'model',l:'Modelo',t:'text'},
   {k:'oscillating',l:'Oscilante',t:'check',when:'Ventilador'},
   {k:'dimmer',l:'Regulador de velocidad (dimmer)',t:'check'},
@@ -1516,6 +1530,7 @@ const CLIMATE_SCHEMA=[
   {k:'type',l:'Equipo',t:'select',o:CLIMATE_TYPES},
   {k:'brand',l:'Marca',t:'text',dl:'climate'},{k:'model',l:'Modelo',t:'text'},
   {k:'setpoint',l:'Setpoint / capacidad',t:'text',ph:'Ej.: 60 % HR, 25 °C, 12 L/día'},
+  {k:'power',l:'Potencia (W)',t:'num'},
   {k:'qty',l:'Cantidad',t:'num'},{k:'note',l:'Nota',t:'text'},
 ];
 const LIGHT_TYPES=['Sodio','Full spectrum','LED galponera','LED proyector','LED alto rendimiento','Otro'];
@@ -1541,9 +1556,9 @@ function itemSummary(key,it){
   const yes=v=>v?'sí':'no';
   if(key.startsWith('air')){
     if(it.kind==='Ventilador')return [`${it.qty>1?it.qty+' × ':''}Ventilador${it.mount?' '+it.mount.toLowerCase():''}`,[it.brand,it.model].filter(Boolean).join(' '),it.diameter,it.power?it.power+' W':'',it.oscillating?'oscilante':'no oscilante',it.dimmer?'con regulador de velocidad':'sin regulador'].filter(Boolean).join(' · ');
-    return [`${it.qty>1?it.qty+' × ':''}${it.kind||''} ${it.size||''}`.trim(),[it.brand,it.model].filter(Boolean).join(' '),it.dimmer?'con dimmer':''].filter(Boolean).join(' · ');
+    return [`${it.qty>1?it.qty+' × ':''}${it.kind||''} ${it.size||''}`.trim(),[it.brand,it.model].filter(Boolean).join(' '),it.power?it.power+' W':'',it.dimmer?'con dimmer':''].filter(Boolean).join(' · ');
   }
-  if(key==='climate')return [`${it.qty>1?it.qty+' × ':''}${it.type||''}`,[it.brand,it.model].filter(Boolean).join(' '),it.setpoint,it.note].filter(Boolean).join(' · ');
+  if(key==='climate')return [`${it.qty>1?it.qty+' × ':''}${it.type||''}`,[it.brand,it.model].filter(Boolean).join(' '),it.setpoint,it.power?it.power+' W':'',it.note].filter(Boolean).join(' · ');
   const dims=[it.panelL,it.panelW,it.panelH].filter(x=>x!==''&&x!=null);
   return [`${it.qty>1?it.qty+' × ':''}${it.type||''}`,[it.brand,it.model].filter(Boolean).join(' '),it.watts?it.watts+' W':'',dims.length?dims.map(dec).join('×')+' cm':'',it.ppf?it.ppf+' µmol/s':'',it.efficacy?dec(it.efficacy)+' µmol/J':'',it.spectrum,it.dimmer?'dimmer':'',it.hangHeight?'colgada a '+it.hangHeight+' cm':''].filter(Boolean).join(' · ');
 }
@@ -1646,7 +1661,7 @@ function weekEvRow(p,e){
     ${open?`<div class="wk-det">
       <div><span class="tag" style="margin:0">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span></div>
       ${evStatus(e)==='cancelado'&&e.cancelNote?`<span class="muted" style="font-size:.78rem">Cancelada: ${esc(e.cancelNote)}</span>`:''}
-      ${prodSummary(e)}${purchaseSummary(e)}
+      ${prodSummary(e)}${purchaseSummary(e)}${xtraEvSummary(e)}
       ${moved?`<span class="muted" style="font-size:.78rem">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
       ${e.note?`<span class="muted" style="font-size:.78rem">${esc(e.note)}</span>`:''}
     <span class="t-actions">${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button><button class="small ghost" data-act="evCancel" data-id="${esc(e.id)}">Cancelar</button>`:`<button class="small ghost" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button>`}${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Confirmar eliminar</button><button class="small" data-act="noConfirm">No</button>`:`<button class="small ghost danger" data-act="askDel" data-key="e${esc(e.id)}">Eliminar</button>`}</span>
@@ -1694,13 +1709,14 @@ function weekPanel(p,pc){
 }
 function spaceView(p,s,pc){
   const area=num(s.width)*num(s.length);const tab=S.spaceTab||'ficha';
-  const tabs=[['ficha','Ficha técnica'],['plan','Planificador'],['seg','Registro de fotos']];
+  const tabs=[['ficha','Ficha técnica'],['plan','Planificador'],['clima','Clima'],['seg','Registro de fotos']];
   let h=`<div class="row"><button class="ghost" data-act="closeSpace">← ${esc(p.name)}</button></div>
   <section class="detail-head" style="--pc:${pc}"><span class="chip" style="align-self:flex-start">Espacio de cultivo</span><h1>${esc(s.name)}</h1>
-    <div class="muted">${esc(spaceSummary(s))}${area?` · ${dec(Math.round(area*100)/100)} m²`:''}</div></section>
+    <div class="muted">${esc(spaceSummary(s))}${area?` · ${dec(Math.round(area*100)/100)} m²`:''}</div></section>${tab==='clima'?'':climAlert(s)}
   <div class="tabs" role="tablist" style="--pc:${pc}">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="spaceTab" data-tab="${k}">${l}</button>`).join('')}</div>`;
   if(tab==='ficha')h+=S.fichaEdit?spaceEditForm(s,pc)+equipPanels(s,pc)+`<div class="row"><button class="primary" data-act="fichaDone">Listo, ver ficha</button></div>`:fichaView(s,pc);
   else if(tab==='plan')h+=plannerView(p,s,pc)+(p.calendar?calendarPanel(p,pc):'');
+  else if(tab==='clima')h+=climatePanel(s,pc);
   else h+=(p.calendar?mediaPanel(p,pc):'');
   return h;
 }
@@ -1729,6 +1745,7 @@ function spaceEditForm(s,pc){
     <div class="grid2">
       <label class="field"><span class="label">Temperatura promedio (°C)</span><input id="s-temp" name="temp" inputmode="decimal" value="${esc(dec(s.temp))}"></label>
       <label class="field"><span class="label">Humedad promedio (%)</span><input id="s-hum" name="humidity" inputmode="decimal" value="${esc(dec(s.humidity))}"></label>
+      <label class="field"><span class="label">Ventilación y clima encendidos (h/día)</span><input id="s-airh" name="airHours" inputmode="decimal" value="${esc(dec(s.airHours))}" placeholder="Si lo dejás vacío: 24"></label>
     </div>
     <div class="muted" style="font-size:.82rem">Las plantas se cargan en la pestaña Planificador.</div>
     <div class="row"><button class="primary" type="submit">Guardar ficha</button>${S.spaceMsg?`<span class="muted" style="font-size:.85rem">${esc(S.spaceMsg)}</span>`:''}</div>
@@ -1758,6 +1775,7 @@ function fichaView(s,pc){
     <h3>Ventilación</h3><dl class="fdl">${row('Extracción',list('airExtraccion'))}${row('Intracción',list('airIntraccion'))}${row('Ventilación',list('airVentilacion'))}</dl>
     <h3>Control del clima</h3>${list('climate')}
     <h3>Luces</h3>${list('lights')}
+    ${energyBlock(s)}
   </section>`;
 }
 function batchLine(b){
@@ -1874,18 +1892,20 @@ function plannerView(p,s,pc){
     if(f&&f.type==='batch'&&f.id===b.id)return batchForm(s,b);
     const day=b.startDate?-daysLeft(b.startDate):null;
     return `<div class="batch">
-      <div class="row"><b class="bt">${num(b.qty)} × ${esc(b.genetics||'Sin genética')}</b>${day!==null&&day>=0?`<span class="chip">día ${day}</span>`:''}<span class="spacer"></span>
+      <div class="row"><b class="bt">${num(b.qty)} × ${esc(b.genetics||'Sin genética')}</b>${day!==null&&day>=0?`<span class="chip">día ${day}</span>`:''}${(()=>{const st=stageOf(b,today());return st?`<span class="chip" style="background:${STG[st.k][1]};color:#fff">${esc(st.txt)}</span>`:''})()}<span class="spacer"></span>
         <span class="muted num" style="font-size:.8rem">Inicio ${fmtDate(b.startDate)}</span></div>
       <div class="muted" style="font-size:.86rem">${esc(batchLine(b))||'Completá tipo de cultivo, maceta y sustrato con «Editar».'}</div>
       ${b.note?`<div style="font-size:.86rem">${esc(b.note)}</div>`:''}
       ${genSheet(b)}
       ${riegoAssist(b)}
+      ${batchExtras(b)}
       ${f&&f.type==='transfer'&&f.id===b.id?transferForm(s,b):''}
       ${f&&f.type==='finish'&&f.id===b.id?finishForm(b):''}
       <div class="row">
         <button class="small" data-act="transferBatch" data-id="${esc(b.id)}">Transferir</button>
         <button class="small ghost" data-act="editBatch" data-id="${esc(b.id)}">Editar</button>
         <button class="small ghost" data-act="finishBatch" data-id="${esc(b.id)}">Finalizar</button>
+        <button class="small ghost" data-act="tplNew" data-id="${esc(b.id)}">Guardar como plantilla</button>
         <span class="spacer"></span>
         ${S.confirm==='b'+b.id?`<button class="small danger" data-act="delBatch" data-id="${esc(b.id)}">Confirmar borrado</button>`:`<button class="small ghost danger" data-act="askDel" data-key="b${esc(b.id)}" aria-label="Borrar lote">✕</button>`}
       </div>
@@ -1914,6 +1934,7 @@ function batchForm(s,b){
       <label class="field"><span class="label">Mi regla de riego (% del volumen de maceta)</span><input id="b-pct" name="wateringPct" inputmode="decimal" value="${esc(dec(b.wateringPct))}" placeholder="Ej.: 20"></label>
     </div>
     <label class="field"><span class="label">Nota (opcional)</span><input id="b-note" name="note" value="${esc(b.note)}"></label>
+    ${!b.id&&S.templates.length?`<label class="field"><span class="label">Armar el calendario con una plantilla (opcional)</span><select id="b-tpl" name="tplId"><option value="">Sin plantilla</option>${S.templates.map(t=>`<option value="${esc(t.id)}">${esc(t.name)} (${(t.events||[]).length} tareas)</option>`).join('')}</select></label>`:''}
     <div class="row"><button class="primary" type="submit">Guardar lote</button><button type="button" data-act="cancelForm">Cancelar</button></div>
   </form>`;
 }
@@ -1945,7 +1966,8 @@ async function saveBatch(f,d){
   {const g=(S.cat&&S.cat.geneticas||[]).find(x=>genLabel(x)===data.genetics);if(g)data.geneticsId='cat:'+g.id;else if(f.dataset.id){const old=S.batches.find(x=>x.id===f.dataset.id);if(old&&old.genetics!==data.genetics)data.geneticsId=''}}
   if(!data.qty){S.err='Cargá la cantidad de plantas.';rerender();return}
   if(f.dataset.id)await db.doc('batches/'+f.dataset.id).update(data);
-  else await db.collection('batches').add({...data,projectId:'cultivo',spaceId:sid,status:'activo',history:[{date:data.startDate,text:`Inicio: ${data.qty} plantas en ${spaceName(sid)}`}],createdAt:Date.now()});
+  else{const r=await db.collection('batches').add({...data,projectId:'cultivo',spaceId:sid,status:'activo',history:[{date:data.startDate,text:`Inicio: ${data.qty} plantas en ${spaceName(sid)}`}],createdAt:Date.now()});
+    const tpl=d.tplId&&S.templates.find(x=>x.id===d.tplId);if(tpl)await applyTemplate(tpl,{...data,id:r.id,spaceId:sid});}
 }
 async function transferBatch(b,qty,dest,date){
   const src=spaceName(b.spaceId),dst=spaceName(dest);qty=Math.round(qty);
@@ -2073,7 +2095,7 @@ function detailView(){
     if(tab==='peso')return h+weightPanel(p,pc);
     if(tab==='actividad')return h+activityPanel(p,pc);
     if(tab==='desvios')return h+slipsPanel(p,pc);}
-  if(p.calendar&&spacesOf(p.id).length)h+=weekPanel(p,pc)+budgetPanel(p,pc);
+  if(p.calendar&&spacesOf(p.id).length)h+=weekPanel(p,pc)+budgetPanel(p,pc)+cxPanel(p,pc);
   h+=spacesPanel(p,pc);
   if(spacesOf(p.id).length)h+=catalogPanel(p,pc);
   if(f&&f.type==='project'&&f.id===p.id){h+=`<div class="panel" style="--pc:${pc}">${projectForm(p)}</div>`}
@@ -2142,6 +2164,355 @@ function taskRow(t,p){
   </div>`;
 }
 
+/* ---------- cultivo: rendimiento, stock, plantillas, plantas, clima, sanidad, etapas, luz, curado ---------- */
+const PESTS=['Sin novedades','Araña roja','Trips','Mosca blanca','Pulgón','Mosquita del sustrato','Orugas','Oídio','Botrytis','Carencia / exceso','Otra'];
+const LOT_OWN=['Riego radicular','Trasplante'];
+const cxDays=(a,b)=>Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000);
+const cultP=()=>S.projects.find(x=>x.calendar)||{};
+const isDry=t=>t==='Secado / curado'||t==='Manicurado / enfrascado';
+const gfmt=v=>v>=1000?dec(Math.round(v/10)/100)+' kg':dec(Math.round(v*10)/10)+' g';
+function lotOptions(e){const sc=e.spaceId||S.space;const bs=S.batches.filter(b=>(b.status!=='finalizado'||b.id===e.batchId)&&(!sc||b.spaceId===sc));
+  return '<option value="">Sin lote</option>'+bs.map(b=>`<option value="${esc(b.id)}" ${b.id===e.batchId?'selected':''}>${num(b.qty)} × ${esc(b.genetics)}${sc?'':' ('+esc(spaceName(b.spaceId))+')'}</option>`).join('')}
+function xtraEvFields(e){
+  return `<label class="field" data-bwhen="type:${EV_TYPES.filter(t=>!LOT_OWN.includes(t)).join('|')}"><span class="label">Lote</span><select name="evBatch">${lotOptions(e)}</select></label>
+  <label class="field" data-bwhen="type:Cambio de horas de luz"><span class="label">Horas de luz por día</span><input name="lightHours" inputmode="decimal" value="${esc(dec(e.lightHours))}" placeholder="Ej.: 18 o 12"><span class="muted" style="font-size:.75rem">Se usa para calcular el consumo eléctrico.</span></label>
+  <label class="field" data-bwhen="type:Cosecha"><span class="label">Peso húmedo cosechado (g)</span><input name="wetG" inputmode="decimal" value="${esc(dec(e.wetG))}"></label>
+  <label class="field" data-bwhen="type:Secado / curado|Manicurado / enfrascado"><span class="label">Gramos secos obtenidos en esta tarea (opcional)</span><input name="dryG" inputmode="decimal" value="${esc(dec(e.dryG))}"><span class="muted" style="font-size:.75rem">Se suman los de todas las tareas del lote.</span></label>
+  <div class="grid2" data-bwhen="type:Inspección">
+    <label class="field"><span class="label">Qué encontraste</span><select name="pest">${PESTS.map(x=>`<option ${x===e.pest?'selected':''}>${x}</option>`).join('')}</select></label>
+    <label class="field"><span class="label">Gravedad</span><select name="severity"><option value="">—</option>${['Leve','Media','Alta'].map(x=>`<option ${x===e.severity?'selected':''}>${x}</option>`).join('')}</select></label>
+    <label class="field"><span class="label">Tratamiento aplicado</span><input name="treatment" value="${esc(e.treatment||'')}" placeholder="Ej.: neem 5 ml/L"></label>
+    <label class="field"><span class="label">Seguimiento en (días)</span><input name="followDays" inputmode="numeric" value="${esc(e.followDays??'')}" placeholder="Ej.: 3"></label>
+  </div>`;
+}
+function xtraEvSave(ev,d){
+  if(!LOT_OWN.includes(ev.type))ev.batchId=d.evBatch||'';
+  ev.lightHours=ev.type==='Cambio de horas de luz'?n2(d.lightHours):'';
+  ev.wetG=ev.type==='Cosecha'?n2(d.wetG):'';
+  ev.dryG=isDry(ev.type)?n2(d.dryG):'';
+  if(ev.type==='Inspección'){ev.pest=d.pest||'';ev.severity=d.severity||'';ev.treatment=(d.treatment||'').trim();ev.followDays=n2(d.followDays);}
+}
+function xtraEvSummary(e){
+  const p=[];
+  if(e.type==='Inspección'&&e.pest)p.push(`${e.pest}${e.severity?' ('+e.severity.toLowerCase()+')':''}${e.treatment?' · tratamiento: '+e.treatment:''}${num(e.followDays)?' · seguimiento a los '+num(e.followDays)+' días':''}`);
+  if(num(e.wetG))p.push('Húmedo: '+gfmt(num(e.wetG)));
+  if(num(e.dryG))p.push('Seco: '+gfmt(num(e.dryG)));
+  if(num(e.lightHours))p.push(num(e.lightHours)+' h de luz por día');
+  const b=e.batchId&&S.batches.find(x=>x.id===e.batchId);if(b&&!LOT_OWN.includes(e.type))p.push('Lote: '+num(b.qty)+' × '+b.genetics);
+  const ph=e.type==='Inspección'?S.media.filter(x=>(x.spaceId||'')===(e.spaceId||'')&&x.date===e.date).length:0;if(ph)p.push(ph+' foto(s) de ese día en Registro de fotos');
+  return p.length?`<span class="muted" style="font-size:.78rem;display:block">${esc(p.join(' · '))}</span>`:'';
+}
+async function syncFollowUp(id,ev,spaceId){
+  const fid='seg-'+id;const ex=S.events.find(x=>x.id===fid);
+  const n=ev.type==='Inspección'?Math.round(num(ev.followDays)):0;
+  if(!n){if(ex&&evStatus(ex)==='planificado')await db.doc('events/'+fid).delete();return}
+  if(ex&&evStatus(ex)!=='planificado')return;
+  const date=addDays(ev.date,n);if(ex&&ex.date===date)return;
+  await db.doc('events/'+fid).set({projectId:'cultivo',spaceId:spaceId||'',batchId:ev.batchId||'',date,plannedDate:date,type:'Inspección',
+    title:'Seguimiento: '+(ev.pest&&ev.pest!=='Sin novedades'?ev.pest:'inspección'),short:'Seguimiento',status:'planificado',estMin:ex?ex.estMin:(num(ev.estMin)||''),
+    products:[],liters:'',followOf:id,note:ev.treatment?'Tratamiento aplicado: '+ev.treatment:'',createdAt:ex?ex.createdAt:Date.now()});
+}
+/* lotes: fechas clave y etapas */
+function batchesAt(sid,ds){return S.batches.filter(x=>(sid==null||x.spaceId===sid)&&x.startDate&&x.startDate<=ds&&(!x.endDate||ds<=x.endDate))}
+function evsOfBatch(b){
+  const c=S._mk||(S._mk={});if(c['e'+b.id])return c['e'+b.id];
+  const end=b.endDate||'9999';
+  const r=S.events.filter(e=>liveEv(e)&&evStatus(e)!=='no se hizo'&&(e.batchId===b.id||(!e.batchId&&e.spaceId===b.spaceId&&e.date>=(b.startDate||'')&&e.date<=end&&batchesAt(b.spaceId,e.date).length===1)));
+  return c['e'+b.id]=r;
+}
+function marksOf(b){
+  const c=S._mk||(S._mk={});if(c['m'+b.id])return c['m'+b.id];
+  const evs=evsOfBatch(b);const first=fn=>evs.filter(fn).map(e=>e.date).sort()[0]||'';
+  return c['m'+b.id]={flora:first(e=>e.type==='Inicio de floración'),lavado:first(e=>/lavado/i.test(e.title||'')),cosecha:first(e=>e.type==='Cosecha')};
+}
+const STG={vege:['Vege','#3f8f5a'],flora:['Flora','#c0612f'],lavado:['Lavado','#3b7fb0'],seca:['Secado / curado','#8a6d3b']};
+function stageOf(b,ds){
+  if(!b.startDate||ds<b.startDate||(b.endDate&&ds>b.endDate))return null;const m=marksOf(b);
+  if(m.cosecha&&ds>=m.cosecha)return {k:'seca',day:cxDays(m.cosecha,ds)+1,txt:`Secado / curado · día ${cxDays(m.cosecha,ds)+1}`};
+  if(m.lavado&&ds>=m.lavado)return {k:'lavado',day:cxDays(m.lavado,ds)+1,txt:`Lavado${m.flora?' · día '+(cxDays(m.flora,ds)+1)+' de flora':''}`};
+  if(m.flora&&ds>=m.flora)return {k:'flora',day:cxDays(m.flora,ds)+1,txt:`Flora · día ${cxDays(m.flora,ds)+1}`};
+  return {k:'vege',day:cxDays(b.startDate,ds)+1,txt:`Vege · día ${cxDays(b.startDate,ds)+1}`};
+}
+function mainBatch(sid,ds){return batchesAt(sid,ds).sort((a,c)=>num(c.qty)-num(a.qty))[0]}
+function stageBand(sid,ds){
+  const bs=batchesAt(sid,ds);if(!bs.length)return '';
+  const sts=bs.map(b=>[b,stageOf(b,ds)]).filter(x=>x[1]);if(!sts.length)return '';
+  const tip=sts.map(([b,s])=>`${b.genetics}: ${s.txt}`).join(' · ');
+  return `<span class="stg" title="${esc(tip)}">${sts.map(([b,s])=>`<i style="background:${STG[s.k][1]}"></i>`).join('')}</span>`;
+}
+const stageLegend=()=>`<span>Franja inferior: </span>${Object.values(STG).map(([l,c])=>`<span><span class="ev-key" style="background:${c};border-color:${c}"></span> ${l}</span>`).join('')}`;
+/* luz */
+function spaceW(s){const w=k=>(s[k]||[]).reduce((a,it)=>a+num(it.watts||it.power)*(num(it.qty)||1),0);return {light:w('lights'),other:w('airExtraccion')+w('airIntraccion')+w('airVentilacion')+w('climate')}}
+function lightHoursAt(sid,ds){const c=S._mk||(S._mk={});const k='lh'+sid;
+  const list=c[k]||(c[k]=S.events.filter(x=>x.spaceId===sid&&x.type==='Cambio de horas de luz'&&num(x.lightHours)>0&&liveEv(x)&&evStatus(x)!=='no se hizo').sort((a,b)=>a.date.localeCompare(b.date)));
+  let h=null;for(const e of list){if(e.date<=ds)h=num(e.lightHours);else break}return h}
+const airH=s=>s.airHours===''||s.airHours==null?24:num(s.airHours);
+function dayKwh(s,ds){const W=spaceW(s);const lh=lightHoursAt(s.id,ds)||0;return (lh*W.light+airH(s)*W.other)/1000}
+const kwhPrice=()=>num(cultP().kwhPrice);
+function energyBlock(s){
+  const W=spaceW(s);const lh=lightHoursAt(s.id,today());const k=dayKwh(s,today());const pr=kwhPrice();
+  if(!W.light&&!W.other)return `<h3>Consumo eléctrico</h3><div class="muted" style="font-size:.85rem">Cargá la potencia (W) de luces, extractores y equipos de clima para calcular el consumo.</div>`;
+  return `<h3>Consumo eléctrico</h3><dl class="fdl">
+    <div class="frow"><dt>Luces</dt><dd>${dec(W.light)} W × ${lh==null?'<span class="muted">sin horas de luz cargadas</span>':dec(lh)+' h/día'}</dd></div>
+    <div class="frow"><dt>Ventilación y clima</dt><dd>${dec(W.other)} W × ${dec(airH(s))} h/día</dd></div>
+    <div class="frow"><dt>Hoy</dt><dd class="num">${dec(Math.round(k*100)/100)} kWh/día · ${dec(Math.round(k*30))} kWh/mes${pr?` · <b>${money(k*30*pr)}/mes</b>`:''}</dd></div></dl>
+    ${pr?'':'<div class="muted" style="font-size:.8rem">Cargá la tarifa ($/kWh) en Cultivo → Análisis del cultivo → Rendimiento para ver el costo.</div>'}
+    ${lh==null&&W.light?'<div class="muted" style="font-size:.8rem">Las horas de luz salen de las tareas «Cambio de horas de luz» (campo «Horas de luz por día»).</div>':''}`;
+}
+/* costos y rendimiento por lote */
+function shareOf(b,sid,ds){const bs=batchesAt(sid||null,ds);const tot=bs.reduce((a,x)=>a+num(x.qty),0);return tot&&bs.some(x=>x.id===b.id)?num(b.qty)/tot:0}
+const buyCost=e=>e.actual!==''&&e.actual!=null?num(e.actual):buyEstimate(e);
+function batchStats(b){
+  const c=S._mk||(S._mk={});if(c['s'+b.id])return c['s'+b.id];
+  const end=b.endDate&&b.endDate<today()?b.endDate:today();let buys=0,mins=0;
+  S.events.forEach(e=>{if(e.projectId!=='cultivo'||evStatus(e)!=='cumplido')return;
+    const sh=e.batchId===b.id?1:e.batchId?0:shareOf(b,e.spaceId,e.date);if(!sh)return;
+    if(e.type==='Compra')buys+=buyCost(e)*sh;mins+=num(e.minutes)*sh;});
+  let kwh=0;const s=S.spaces.find(x=>x.id===b.spaceId);
+  if(s&&b.startDate)for(let ds=b.startDate;ds<=end;ds=addDays(ds,1))kwh+=dayKwh(s,ds)*shareOf(b,b.spaceId,ds);
+  const own=S.events.filter(e=>e.batchId===b.id&&evStatus(e)==='cumplido');
+  const plantDry=(b.plants||[]).reduce((a,p)=>a+num(p.yieldG),0);
+  const dry=own.reduce((a,e)=>a+num(e.dryG),0)||plantDry;const wet=own.reduce((a,e)=>a+num(e.wetG),0);
+  const m=marksOf(b);const last=b.endDate||today();
+  const pests=evsOfBatch(b).filter(e=>e.type==='Inspección'&&evStatus(e)==='cumplido'&&e.pest&&e.pest!=='Sin novedades');
+  const r={buys,mins,kwh,light:kwh*kwhPrice(),dry,wet,
+    vege:b.startDate?cxDays(b.startDate,m.flora&&m.flora<=last?m.flora:last):null,
+    flora:m.flora&&m.flora<=last?cxDays(m.flora,m.cosecha&&m.cosecha<=last?m.cosecha:last):null,pests};
+  r.total=r.buys+r.light;return c['s'+b.id]=r;
+}
+function lotsTab(){
+  const bs=S.batches.filter(b=>b.projectId==='cultivo'||!b.projectId).sort((a,c)=>(c.startDate||'').localeCompare(a.startDate||''));
+  const pr=kwhPrice();
+  let h=`<form class="row" data-form="tariff" style="gap:6px"><span class="label">Tarifa eléctrica</span><input name="kwhPrice" inputmode="decimal" style="width:90px" value="${esc(dec(cultP().kwhPrice))}" placeholder="$ por kWh"><span class="muted" style="font-size:.8rem">$/kWh (de tu factura)</span><button class="small" type="submit">Guardar</button></form>`;
+  if(!bs.length)return h+'<div class="empty">Todavía no hay lotes.</div>';
+  h+=`<div class="tbl-wrap"><table class="ptbl cmp"><thead><tr><th>Lote</th><th>Espacio</th><th>Vege</th><th>Flora</th><th>Seco</th><th>g/planta</th><th>Compras</th><th>Luz</th><th>$/g</th><th>Horas</th><th>h/g</th><th>Plagas</th></tr></thead><tbody>
+  ${bs.map(b=>{const s=batchStats(b);return `<tr><td><b style="font-weight:600">${num(b.qty)} × ${esc(b.genetics||'—')}</b><span class="muted" style="display:block;font-size:.75rem">${fmtDate(b.startDate)}${b.status==='finalizado'?' → '+fmtDate(b.endDate):' · activo'}</span></td>
+    <td>${esc(spaceName(b.spaceId))}</td><td class="num">${s.vege!=null?s.vege+' d':'—'}</td><td class="num">${s.flora!=null?s.flora+' d':'—'}</td>
+    <td class="num">${s.dry?gfmt(s.dry):'—'}</td><td class="num">${s.dry&&num(b.qty)?gfmt(s.dry/num(b.qty)):'—'}</td>
+    <td class="num">${money(s.buys)}</td><td class="num">${pr?money(s.light):dec(Math.round(s.kwh))+' kWh'}</td><td class="num"><b>${s.dry&&s.total?money(s.total/s.dry):'—'}</b></td>
+    <td class="num">${h1(s.mins/60)} h</td><td class="num"><b>${s.dry&&s.mins?dec(Math.round(s.mins/60/s.dry*1000)/1000):'—'}</b></td><td class="num">${s.pests.length||'—'}</td></tr>`}).join('')}</tbody></table></div>
+  <div class="muted" style="font-size:.78rem">Compras, horas y luz: lo cargado con el lote, más lo del espacio sin lote repartido por cantidad de plantas. Seco: suma de «Gramos secos» de las tareas de secado o manicurado del lote (o de las plantas). Rendimiento económico: $/g = (compras + luz) ÷ gramos secos. Rendimiento en tiempo: h/g = horas dedicadas ÷ gramos secos. En los dos, cuanto más bajo, mejor.</div>`;
+  return h;
+}
+/* stock de insumos */
+function stockCalc(st){
+  const pr=S.products.find(x=>x.id===st.productId);const label=pr?prodLabel(pr):(st.label||'');
+  const after=e=>num(e.confirmedAt||e.createdAt)>num(st.countedAt);let used=0,bought=0;
+  S.events.forEach(e=>{if(evStatus(e)!=='cumplido'||!after(e))return;
+    (e.products||[]).forEach(x=>{if(x.productId===st.productId&&(x.unit||'ml')===st.unit)used+=num(x.dose)*num(e.liters)});
+    if(e.type==='Compra')(e.items||[]).forEach(i=>{if(i.name===label)bought+=num(i.qty||1)*num(st.pack)});});
+  const now=num(st.qty)-used+bought;const min=st.min===''||st.min==null?null:num(st.min);
+  let left=now,hit=min!=null&&now<=min?today():'';
+  S.events.filter(e=>evStatus(e)==='planificado'&&(e.products||[]).some(x=>x.productId===st.productId)).sort((a,c)=>a.date.localeCompare(c.date)).forEach(e=>{
+    e.products.forEach(x=>{if(x.productId===st.productId&&(x.unit||'ml')===st.unit)left-=num(x.dose)*num(e.liters)});
+    if(!hit&&min!=null&&left<=min)hit=e.date<today()?today():e.date;});
+  return {label,now,used,bought,hit,end:left,min};
+}
+let _stockT=null;function autoStockSoon(){clearTimeout(_stockT);_stockT=setTimeout(()=>autoStock().catch(()=>{}),1500)}
+async function autoStock(){
+  if(!db||!S.loaded.events||!S.loaded.stock)return;
+  for(const st of S.stock){const c=stockCalc(st);if(!c.hit)continue;
+    const mine=S.events.filter(e=>e.autoStock===st.id).sort((a,b)=>num(b.createdAt)-num(a.createdAt));
+    if(mine.some(e=>evStatus(e)==='planificado'))continue;
+    const last=mine[0];if(last&&evStatus(last)!=='cumplido'&&Date.now()-num(last.cancelledAt||last.confirmedAt||last.createdAt)<7*864e5)continue;
+    if(last&&evStatus(last)==='cumplido'&&num(last.confirmedAt)>num(st.countedAt)&&c.now>c.min)continue;
+    const id='compra-stock-'+st.id+'-'+mine.length;if(S.events.find(e=>e.id===id))continue;
+    const date=c.hit<=addDays(today(),7)?today():addDays(c.hit,-7);
+    await db.doc('events/'+id).set({projectId:'cultivo',spaceId:'',date,plannedDate:date,type:'Compra',title:'Reponer '+c.label,short:'Reponer',status:'planificado',
+      items:[{name:c.label,qty:1,price:n2(st.price),sub:st.use||''}],actual:'',products:[],liters:'',autoStock:st.id,
+      note:`Stock proyectado en el mínimo (${dec(c.min)} ${st.unit}) el ${fmtDate(c.hit)}.`,createdAt:Date.now()});}
+}
+function stockForm(st){st=st||{};
+  const opts=['radicular','foliar'].map(u=>`<optgroup label="${USE_LABEL[u]}">${prodsFor(u).map(x=>`<option value="${esc(x.id)}" ${x.id===st.productId?'selected':''}>${esc(prodLabel(x))}</option>`).join('')}</optgroup>`).join('');
+  return `<form class="inline-form" data-form="stock" data-id="${esc(st.id||'')}">
+    <div class="grid2">
+      <label class="field"><span class="label">Insumo</span><select name="productId" required ${st.id?'disabled':''}><option value="">Elegir…</option>${opts}</select></label>
+      <label class="field"><span class="label">Unidad</span><select name="unit"><option value="ml" ${st.unit!=='g'?'selected':''}>ml</option><option value="g" ${st.unit==='g'?'selected':''}>g</option></select></label>
+      ${st.id?'':`<label class="field"><span class="label">Cuánto tenés hoy</span><input name="qty" inputmode="decimal" required placeholder="Ej.: 750"></label>`}
+      <label class="field"><span class="label">Mínimo para reponer</span><input name="min" inputmode="decimal" value="${esc(dec(st.min))}" placeholder="Ej.: 200"></label>
+      <label class="field"><span class="label">Contenido de cada envase que comprás</span><input name="pack" inputmode="decimal" value="${esc(dec(st.pack))}" placeholder="Ej.: 1000"></label>
+      <label class="field"><span class="label">Precio por envase (opcional)</span><input name="price" inputmode="decimal" value="${esc(dec(st.price))}" placeholder="$"></label>
+    </div>
+    <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button></div></form>`;
+}
+function stockTab(){
+  const f=S.form;
+  let h=`<div class="row"><span class="muted" style="font-size:.82rem">Cada riego cumplido descuenta la dosis × litros. Cuando lo proyectado con los riegos planificados llega al mínimo, se planifica sola una compra.</span><span class="spacer"></span>${f&&f.type==='stock'&&!f.id?'':'<button class="small primary" data-act="stockNew">+ Insumo</button>'}</div>`;
+  if(f&&f.type==='stock'&&!f.id)h+=stockForm({});
+  if(!S.stock.length&&!(f&&f.type==='stock'))return h+'<div class="empty">Cargá tus fertilizantes y foliares con lo que tenés hoy.</div>';
+  h+=`<div class="logs">${S.stock.map(st=>{if(f&&f.type==='stock'&&f.id===st.id)return stockForm(st);const c=stockCalc(st);const low=c.min!=null&&c.now<=c.min;
+    return `<div class="batch" style="gap:4px"><div class="row"><b class="bt">${esc(c.label)}</b>${low?'<span class="tag st-tag-no-se-hizo">bajo el mínimo</span>':''}<span class="spacer"></span>
+      <b class="num ${c.now<0?'over':''}">${dec(Math.round(c.now))} ${esc(st.unit)}</b></div>
+      <div class="muted" style="font-size:.8rem">Contado ${fmtDate(st.date)}: ${dec(num(st.qty))} ${esc(st.unit)} · usado desde entonces ${dec(Math.round(c.used))} · comprado ${dec(Math.round(c.bought))}${c.min!=null?' · mínimo '+dec(c.min):''}</div>
+      <div style="font-size:.84rem">${c.hit?`Llega al mínimo: <b>${fmtDate(c.hit)}</b>`:`Con los riegos planificados queda en ${dec(Math.round(c.end))} ${esc(st.unit)}`}</div>
+      ${f&&f.type==='stockCount'&&f.id===st.id?`<form class="row" data-form="stockCount" data-id="${esc(st.id)}" style="gap:6px"><input name="qty" inputmode="decimal" required style="width:100px" placeholder="${esc(st.unit)}" aria-label="Cantidad contada"><button class="small primary" type="submit">Guardar conteo</button><button type="button" class="small" data-act="cancelForm">Cancelar</button></form>`
+        :`<div class="row"><button class="small" data-act="stockCount" data-id="${esc(st.id)}">Recontar</button><button class="small ghost" data-act="stockEdit" data-id="${esc(st.id)}">Editar</button><span class="spacer"></span>${S.confirm==='st'+st.id?`<button class="small danger" data-act="delStock" data-id="${esc(st.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="st${esc(st.id)}" aria-label="Borrar">✕</button>`}</div>`}</div>`}).join('')}</div>`;
+  return h+`<div class="muted" style="font-size:.78rem">Las compras cumplidas suman stock cuando el ítem tiene el mismo nombre que el insumo (elegilo del catálogo) × contenido del envase.</div>`;
+}
+/* plantillas */
+function tplFrom(b){
+  return evsOfBatch(b).filter(e=>!e.autoFor&&!e.autoStock&&!e.followOf&&!e.cureOf&&e.date>=b.startDate&&(e.type!=='Compra'||e.batchId===b.id)).sort((a,c)=>a.date.localeCompare(c.date)).map(e=>({
+    off:cxDays(b.startDate,e.date),type:e.type,title:e.title,short:e.short||'',estMin:num(e.estMin)||num(e.minutes)||'',note:e.note||'',products:e.products||[],
+    perPlantL:num(e.liters)&&num(b.qty)?num(e.liters)/num(b.qty):'',perPlant:e.perPlant??'',tank:e.tank??'',tpFrom:e.tpFrom??'',tpTo:e.tpTo??'',tpBuy:e.tpBuy,lightHours:e.lightHours??'',items:e.items||[],pest:e.pest||'',followDays:e.followDays??''}));
+}
+async function applyTemplate(tpl,b){
+  for(const t of tpl.events||[]){const date=addDays(b.startDate,num(t.off));
+    const ev={projectId:'cultivo',spaceId:b.spaceId,batchId:b.id,date,plannedDate:date,type:t.type,title:t.title,short:t.short,status:'planificado',estMin:t.estMin,note:t.note,
+      products:t.products||[],liters:t.perPlantL?Math.round(num(t.perPlantL)*num(b.qty)*100)/100:'',perPlant:t.perPlant,tank:t.tank,lightHours:t.lightHours,items:t.items||[],fromTpl:tpl.id,createdAt:Date.now()};
+    if(t.type==='Trasplante')Object.assign(ev,{tpQty:num(b.qty),tpFrom:t.tpFrom,tpTo:t.tpTo,tpBuy:t.tpBuy!==false});
+    if(t.type==='Inspección')Object.assign(ev,{pest:'',followDays:''});
+    const r=await db.collection('events').add(ev);if(t.type==='Trasplante')await syncSubstrateBuy(r.id,ev,b.spaceId);}
+}
+function tplTab(){
+  if(!S.templates.length)return '<div class="empty">Sin plantillas. En el Planificador de un espacio, en un lote, tocá «Guardar como plantilla». Después, al crear un lote nuevo, elegís la plantilla y se arma todo el calendario.</div>';
+  return `<div class="logs">${S.templates.map(t=>`<div class="batch" style="gap:4px"><div class="row"><b class="bt">${esc(t.name)}</b><span class="spacer"></span>
+    ${S.confirm==='tp'+t.id?`<button class="small danger" data-act="delTpl" data-id="${esc(t.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="tp${esc(t.id)}" aria-label="Borrar plantilla">✕</button>`}</div>
+    <div class="muted" style="font-size:.8rem">${(t.events||[]).length} tareas en ${(t.events||[]).length?num(t.events[t.events.length-1].off)+1:0} días · desde ${esc(t.source||'')}</div>
+    <details><summary class="muted" style="font-size:.8rem">Ver tareas</summary><ul class="flist">${(t.events||[]).map(x=>`<li><span class="num">día ${num(x.off)}</span> · ${esc(x.title)}</li>`).join('')}</ul></details></div>`).join('')}</div>`;
+}
+function cxPanel(p,pc){
+  const tab=S.cxTab||'lotes';const tabs=[['lotes','Rendimiento'],['stock','Stock de insumos'],['tpl','Plantillas']];
+  return `<section class="panel" style="--pc:${pc}"><h2>Análisis del cultivo</h2>
+    <div class="tabs" role="tablist" style="--pc:${pc}">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="cxTab" data-tab="${k}">${l}</button>`).join('')}</div>
+    ${tab==='lotes'?lotsTab():tab==='stock'?stockTab():tplTab()}</section>`;
+}
+/* plantas, curado y plantilla dentro de cada lote */
+function plantsBox(b){
+  const n=num(b.qty);if(!n)return '';const ps=b.plants||[];const get=i=>ps.find(x=>x.n===i)||{n:i};
+  const open=S.plantOpen===b.id;const sel=S.plantSel&&S.plantSel.b===b.id?S.plantSel.n:null;
+  let h=`<button class="small ghost" data-act="plantsToggle" data-id="${esc(b.id)}" style="align-self:flex-start">${open?'▴':'▾'} Plantas una por una (${n})${ps.some(x=>x.keep)?' · ★ '+ps.filter(x=>x.keep).length:''}</button>`;
+  if(!open)return h;
+  h+=`<div class="pgrid">${Array.from({length:n},(_,k)=>{const p=get(k+1);const last=(p.notes||[]).slice(-1)[0];
+    return `<button class="pcell ${sel===k+1?'on':''}" data-act="plantPick" data-id="${esc(b.id)}" data-n="${k+1}"><b>${p.keep?'★ ':''}P${k+1}</b>${p.name?`<span>${esc(p.name)}</span>`:''}${last&&num(last.height)?`<span class="num">${dec(last.height)} cm</span>`:''}${(p.notes||[]).length?`<span class="muted">${p.notes.length} nota(s)</span>`:''}</button>`}).join('')}</div>`;
+  if(sel){const p=get(sel);
+    h+=`<form class="inline-form" data-form="plant" data-id="${esc(b.id)}" data-n="${sel}"><div class="row"><b>Planta P${sel}</b><span class="spacer"></span><button type="button" class="small ghost" data-act="plantClose">✕</button></div>
+      <div class="grid2"><label class="field"><span class="label">Nombre / fenotipo</span><input name="name" value="${esc(p.name||'')}" placeholder="Ej.: Fancy feno lima"></label>
+      <label class="field"><span class="label">Gramos secos de esta planta (al cosechar)</span><input name="yieldG" inputmode="decimal" value="${esc(dec(p.yieldG))}"></label></div>
+      <label class="checkf"><input type="checkbox" name="keep" ${p.keep?'checked':''}> ★ Elegida (madre o feno para repetir)</label>
+      <div class="label">Agregar nota</div>
+      <div class="grid3"><label class="field"><span class="muted" style="font-size:.78rem">Fecha</span><input name="nDate" type="date" value="${today()}"></label>
+      <label class="field"><span class="muted" style="font-size:.78rem">Altura (cm)</span><input name="height" inputmode="decimal"></label>
+      <label class="field"><span class="muted" style="font-size:.78rem">Qué viste</span><input name="text" placeholder="Ej.: puntas quemadas, muy olorosa"></label></div>
+      <div class="row"><button class="primary" type="submit">Guardar</button></div>
+      ${(p.notes||[]).length?`<ul class="flist">${p.notes.map((x,i)=>`<li><span class="num">${fmtDate(x.date)}</span>${num(x.height)?' · <span class="num">'+dec(x.height)+' cm</span>':''}${x.text?' · '+esc(x.text):''} <button type="button" class="ghost small" data-act="delPlantNote" data-id="${esc(b.id)}" data-n="${sel}" data-i="${i}" aria-label="Borrar nota">✕</button></li>`).join('')}</ul>`:''}
+    </form>`;}
+  return h;
+}
+function cureBox(b){
+  const st=stageOf(b,today());const cu=b.cure;const f=S.form;
+  if(!cu&&!(st&&st.k==='seca')&&!(f&&f.type==='cure'&&f.id===b.id))return '';
+  if(f&&f.type==='cure'&&f.id===b.id)return `<form class="inline-form" data-form="cure" data-id="${esc(b.id)}"><b>Iniciar curado</b>
+    <div class="grid2"><label class="field"><span class="label">Fecha de enfrascado</span><input name="start" type="date" value="${today()}" required></label>
+    <label class="field"><span class="label">Cantidad de frascos</span><input name="jars" inputmode="numeric"></label>
+    <label class="field"><span class="label">Minutos por apertura *</span><input name="min" inputmode="numeric" required placeholder="Ej.: 5"></label>
+    <label class="field"><span class="label">Días con apertura diaria</span><input name="days" inputmode="numeric" value="14"></label>
+    <label class="field"><span class="label">HR objetivo mín. (%) (opcional)</span><input name="rhMin" inputmode="decimal"></label>
+    <label class="field"><span class="label">HR objetivo máx. (%) (opcional)</span><input name="rhMax" inputmode="decimal"></label></div>
+    <div class="muted" style="font-size:.78rem">Se planifica una tarea «Abrir frascos» por día.</div>
+    <div class="row"><button class="primary" type="submit">Iniciar</button><button type="button" data-act="cancelForm">Cancelar</button></div></form>`;
+  if(!cu)return `<button class="small" data-act="cureNew" data-id="${esc(b.id)}" style="align-self:flex-start">Iniciar curado en frascos</button>`;
+  const evs=S.events.filter(e=>e.cureOf===b.id).sort((a,c)=>a.date.localeCompare(c.date));
+  const flag=v=>cu.rhMin!==''&&cu.rhMin!=null&&num(v)<num(cu.rhMin)?' <span class="exp">baja</span>':cu.rhMax!==''&&cu.rhMax!=null&&num(v)>num(cu.rhMax)?' <span class="exp">alta</span>':(cu.rhMin!==''||cu.rhMax!==''?' <span class="inc">ok</span>':'');
+  return `<div class="assist"><div class="row"><span class="label">Curado · día ${cxDays(cu.start,today())+1}</span><span class="spacer"></span><span class="muted" style="font-size:.8rem">${num(cu.jars)?num(cu.jars)+' frascos · ':''}desde ${fmtDate(cu.start)}${cu.rhMin!==''||cu.rhMax!==''?' · HR objetivo '+rng(cu.rhMin,cu.rhMax,'%'):''}</span></div>
+    <div class="cure-days">${evs.map((e,i)=>`<span class="cday st-${evStatus(e).replace(/ /g,'-')}" title="${esc(fmtDate(e.date)+' · '+ST_LABEL[evStatus(e)])}">${i+1}</span>`).join('')}</div>
+    <form class="row" data-form="cureLog" data-id="${esc(b.id)}" style="gap:6px"><input name="date" type="date" value="${today()}" style="width:auto" aria-label="Fecha"><input name="rh" inputmode="decimal" placeholder="HR %" style="width:80px" aria-label="Humedad del frasco"><input name="note" placeholder="Nota" style="flex:1;min-width:100px" aria-label="Nota"><button class="small" type="submit">Registrar</button></form>
+    ${(cu.log||[]).length?`<ul class="flist">${cu.log.slice().reverse().map(x=>`<li><span class="num">${fmtDate(x.date)}</span>${x.rh!==''&&x.rh!=null?' · HR <span class="num">'+dec(x.rh)+' %</span>'+flag(x.rh):''}${x.note?' · '+esc(x.note):''}</li>`).join('')}</ul>`:''}</div>`;
+}
+function batchExtras(b){
+  const f=S.form;
+  return plantsBox(b)+cureBox(b)+(f&&f.type==='tpl'&&f.id===b.id?`<form class="row" data-form="tpl" data-id="${esc(b.id)}" style="gap:6px"><input name="name" required style="flex:1;min-width:140px" value="${esc((b.genetics||'Lote')+' · '+spaceName(b.spaceId))}" aria-label="Nombre de la plantilla"><button class="small primary" type="submit">Guardar plantilla</button><button type="button" class="small" data-act="cancelForm">Cancelar</button></form>
+    <div class="muted" style="font-size:.78rem">Guarda ${tplFrom(b).length} tareas con su día relativo al inicio del lote. Los litros de riego se guardan por planta.</div>`:'');
+}
+/* clima */
+const svp=t=>0.6108*Math.exp(17.27*t/(t+237.3));
+const vpdOf=(t,h)=>t===''||h===''||t==null||h==null?null:Math.round(svp(num(t))*(1-num(h)/100)*100)/100;
+const CL_KEYS=[['tMin','T mín.'],['tMax','T máx.'],['hMin','HR mín.'],['hMax','HR máx.'],['vMin','VPD mín.'],['vMax','VPD máx.']];
+function rangeFor(s,ds){const b=mainBatch(s.id,ds);const st=b&&stageOf(b,ds);const r=st&&(s.climRanges||{})[st.k];return {st,r}}
+function climFlags(s,x){const {st,r}=rangeFor(s,x.date);if(!r)return {st,out:[]};const v=vpdOf(x.temp,x.hum);const out=[];
+  const chk=(val,a,b2,l,u)=>{if(val===''||val==null)return;if(r[a]!==''&&r[a]!=null&&num(val)<num(r[a]))out.push(`${l} baja (${dec(val)}${u} < ${dec(r[a])})`);else if(r[b2]!==''&&r[b2]!=null&&num(val)>num(r[b2]))out.push(`${l} alta (${dec(val)}${u} > ${dec(r[b2])})`)};
+  chk(x.temp,'tMin','tMax','Temperatura',' °C');chk(x.hum,'hMin','hMax','Humedad',' %');chk(v,'vMin','vMax','VPD',' kPa');return {st,out};}
+function climAlert(s){const last=S.climate.filter(x=>x.spaceId===s.id).sort((a,c)=>(c.date+(c.time||'')).localeCompare(a.date+(a.time||'')))[0];
+  if(!last)return '';const {out}=climFlags(s,last);return out.length?`<div class="notice">Clima fuera de rango (${fmtDate(last.date)}): ${esc(out.join(' · '))}</div>`:''}
+function climChart(rows,key,label,unit,lo0,hi0){
+  if(rows.length<2)return '';const W=360,H=150,L=30,R=10,T=12,B=22;const vals=rows.map(r=>num(r[key]));
+  let lo=Math.max(key==='vpd'?0:-99,Math.floor(Math.min(...vals,lo0??Infinity)-1)),hi=Math.ceil(Math.max(...vals,hi0??-Infinity)+1);
+  const d0=new Date(rows[0].date+'T00:00:00').getTime(),d1=Math.max(new Date(rows[rows.length-1].date+'T00:00:00').getTime(),d0+864e5);
+  const x=t=>L+(t-d0)/(d1-d0)*(W-L-R),y=v=>T+(hi-v)/(hi-lo)*(H-T-B);
+  const pts=rows.map(r=>[x(new Date(r.date+'T00:00:00').getTime()),y(num(r[key])),r]);
+  return `<div class="wchart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">
+    ${lo0!=null&&hi0!=null?`<rect x="${L}" y="${y(hi0)}" width="${W-L-R}" height="${Math.max(0,y(lo0)-y(hi0))}" class="cband"/>`:''}
+    ${[lo,hi].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" class="wg"/><text x="${L-6}" y="${y(v)+4}" class="wt" text-anchor="end">${v}</text>`).join('')}
+    <path d="${pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ')}" class="wline"/>
+    ${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" class="wdot"/><circle cx="${p[0]}" cy="${p[1]}" r="12" class="whit" data-tip="${esc(fmtDate(p[2].date)+' · '+dec(num(p[2][key]))+unit)}"/>`).join('')}
+    <text x="${L}" y="${H-6}" class="wt">${label}</text><text x="${W-R}" y="${H-6}" class="wt" text-anchor="end">${fmtDate(rows[rows.length-1].date)}</text>
+  </svg><div class="wtip" hidden></div></div>`;
+}
+function climatePanel(s,pc){
+  const f=S.form;const rows=S.climate.filter(x=>x.spaceId===s.id).sort((a,c)=>(a.date+(a.time||'')).localeCompare(c.date+(c.time||'')));
+  const recent=rows.filter(x=>x.date>=addDays(today(),-30));const {st,r}=rangeFor(s,today());const R=s.climRanges||{};
+  const withV=recent.map(x=>({...x,vpd:vpdOf(x.temp,x.hum)}));
+  let h=`<section class="panel" style="--pc:${pc}"><h2>Registro de clima</h2>${climAlert(s)}
+    <form class="inline-form" data-form="climate" data-sid="${esc(s.id)}"><div class="grid3">
+      <label class="field"><span class="label">Fecha</span><input name="date" type="date" value="${today()}"></label>
+      <label class="field"><span class="label">Hora (opcional)</span><input name="time" type="time"></label>
+      <label class="field"><span class="label">Temperatura (°C)</span><input name="temp" inputmode="decimal" required></label>
+      <label class="field"><span class="label">Humedad (%)</span><input name="hum" inputmode="decimal" required></label>
+      <label class="field"><span class="label">Nota</span><input name="note" placeholder="Ej.: luces encendidas"></label></div>
+      <div class="row"><button class="primary" type="submit">Registrar</button><span class="muted" style="font-size:.78rem">VPD calculado con la temperatura del aire.</span></div></form>
+    <div class="muted" style="font-size:.85rem">Etapa actual: ${st?esc(st.txt):'sin lote activo'}${r?'':st?' · sin rangos cargados para esta etapa':''}</div>`;
+  if(withV.length>=2)h+=`<div class="cgrid">${climChart(withV,'temp','Temperatura °C',' °C',r&&r.tMin!==''?num(r.tMin):null,r&&r.tMax!==''?num(r.tMax):null)}${climChart(withV,'hum','Humedad %',' %',r&&r.hMin!==''?num(r.hMin):null,r&&r.hMax!==''?num(r.hMax):null)}${climChart(withV.filter(x=>x.vpd!=null),'vpd','VPD kPa',' kPa',r&&r.vMin!==''?num(r.vMin):null,r&&r.vMax!==''?num(r.vMax):null)}</div>`;
+  h+=rows.length?`<div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Fecha</th><th>T °C</th><th>HR %</th><th>VPD kPa</th><th>Estado</th><th></th></tr></thead><tbody>${rows.slice().reverse().slice(0,30).map(x=>{const fl=climFlags(s,x);
+    return `<tr><td class="num">${fmtDate(x.date)}${x.time?' '+esc(x.time):''}</td><td class="num">${dec(x.temp)}</td><td class="num">${dec(x.hum)}</td><td class="num">${vpdOf(x.temp,x.hum)!=null?dec(vpdOf(x.temp,x.hum)):'—'}</td><td>${fl.out.length?`<span class="exp">${esc(fl.out.join(' · '))}</span>`:(fl.st&&R[fl.st.k]?'<span class="inc">en rango</span>':'—')}${x.note?' <span class="muted">· '+esc(x.note)+'</span>':''}</td>
+    <td>${S.confirm==='cl'+x.id?`<button class="small danger" data-act="delClimate" data-id="${esc(x.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="cl${esc(x.id)}" aria-label="Borrar">✕</button>`}</td></tr>`}).join('')}</tbody></table></div>`:'<div class="empty">Sin mediciones todavía.</div>';
+  h+=`<div class="row"><h3>Rangos por etapa</h3><span class="spacer"></span>${f&&f.type==='climRange'?'':'<button class="small" data-act="climRangeEdit">Editar rangos</button>'}</div>`;
+  if(f&&f.type==='climRange')h+=`<form class="inline-form" data-form="climRange" data-sid="${esc(s.id)}"><div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Etapa</th>${CL_KEYS.map(([,l])=>`<th>${l}</th>`).join('')}</tr></thead><tbody>
+    ${Object.entries(STG).map(([k,[l]])=>`<tr><td>${l}</td>${CL_KEYS.map(([ck,cl])=>`<td><input name="${k}_${ck}" inputmode="decimal" style="width:64px" aria-label="${l} ${cl}" value="${esc(dec((R[k]||{})[ck]))}"></td>`).join('')}</tr>`).join('')}</tbody></table></div>
+    <div class="muted" style="font-size:.78rem">Temperatura en °C, humedad en %, VPD en kPa. Cargá los que uses; los vacíos no se controlan.</div>
+    <div class="row"><button class="primary" type="submit">Guardar rangos</button><button type="button" data-act="cancelForm">Cancelar</button></div></form>`;
+  else h+=Object.keys(R).length?`<div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Etapa</th><th>T °C</th><th>HR %</th><th>VPD kPa</th></tr></thead><tbody>${Object.entries(STG).filter(([k])=>R[k]).map(([k,[l]])=>`<tr><td>${l}</td><td class="num">${rng(R[k].tMin,R[k].tMax)}</td><td class="num">${rng(R[k].hMin,R[k].hMax)}</td><td class="num">${rng(R[k].vMin,R[k].vMax)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted" style="font-size:.85rem">Sin rangos cargados: cargalos para que la app te avise cuando te salís.</div>';
+  return h+`</section>`;
+}
+/* acciones y formularios del módulo */
+const XNODB=['cxTab','plantsToggle','plantPick','plantClose','stockNew','stockEdit','stockCount','climRangeEdit','cureNew','tplNew'];
+const XACT={
+  cxTab(b){S.cxTab=b.dataset.tab;S.form=null;rerender()},
+  stockNew(){S.form={type:'stock'};rerender()},
+  stockEdit(b,id){S.form={type:'stock',id};rerender()},
+  stockCount(b,id){S.form={type:'stockCount',id};rerender();setTimeout(()=>app.querySelector('form[data-form=stockCount] input')?.focus(),0)},
+  delStock(b,id){safe(async()=>{await db.doc('stock/'+id).delete();S.confirm=null})},
+  delTpl(b,id){safe(async()=>{await db.doc('templates/'+id).delete();S.confirm=null})},
+  tplNew(b,id){S.form={type:'tpl',id};rerender()},
+  plantsToggle(b,id){S.plantOpen=S.plantOpen===id?null:id;S.plantSel=null;rerender()},
+  plantPick(b,id){const n=+b.dataset.n;S.plantSel=S.plantSel&&S.plantSel.b===id&&S.plantSel.n===n?null:{b:id,n};rerender()},
+  plantClose(){S.plantSel=null;rerender()},
+  delPlantNote(b,id){const bt=S.batches.find(x=>x.id===id);const n=+b.dataset.n;const ps=(bt.plants||[]).map(p=>p.n===n?{...p,notes:(p.notes||[]).filter((_,i)=>i!==+b.dataset.i)}:p);safe(()=>db.doc('batches/'+id).update({plants:ps}))},
+  cureNew(b,id){S.form={type:'cure',id};rerender()},
+  climRangeEdit(){S.form={type:'climRange'};rerender()},
+  delClimate(b,id){safe(async()=>{await db.doc('climate/'+id).delete();S.confirm=null})},
+};
+const XFORM={
+  tariff(f,d){safe(async()=>{await db.doc('projects/'+cultP().id).update({kwhPrice:n2(d.kwhPrice)});document.activeElement?.blur?.();rerender()})},
+  stock(f,d){const id=f.dataset.id;const old=S.stock.find(x=>x.id===id);const pid=old?old.productId:d.productId;const pr=S.products.find(x=>x.id===pid);if(!pr)return;
+    const data={productId:pid,label:prodLabel(pr),use:pr.use,unit:d.unit||'ml',min:n2(d.min),pack:n2(d.pack),price:n2(d.price)};
+    safe(async()=>{if(id)await db.doc('stock/'+id).update(data);else await db.collection('stock').add({...data,qty:num(d.qty),date:today(),countedAt:Date.now(),createdAt:Date.now()});S.form=null;rerender()})},
+  stockCount(f,d){safe(async()=>{await db.doc('stock/'+f.dataset.id).update({qty:num(d.qty),date:today(),countedAt:Date.now()});S.form=null;rerender()})},
+  tpl(f,d){const b=S.batches.find(x=>x.id===f.dataset.id);const evs=tplFrom(b);if(!evs.length){S.err='Este lote no tiene tareas para guardar como plantilla.';rerender();return}
+    safe(async()=>{await db.collection('templates').add({name:(d.name||'').trim()||b.genetics,source:`${num(b.qty)} × ${b.genetics} (${spaceName(b.spaceId)}, ${fmtDate(b.startDate)})`,events:evs,createdAt:Date.now()});S.form=null;S.spaceMsg='';rerender()})},
+  plant(f,d){const b=S.batches.find(x=>x.id===f.dataset.id);const n=+f.dataset.n;const ps=[...(b.plants||[])];let i=ps.findIndex(x=>x.n===n);if(i<0){ps.push({n,notes:[]});i=ps.length-1}
+    const p={...ps[i],name:(d.name||'').trim(),keep:!!d.keep,yieldG:n2(d.yieldG)};
+    if((d.text||'').trim()||String(d.height||'').trim())p.notes=[...(p.notes||[]),{date:d.nDate||today(),text:(d.text||'').trim(),height:n2(d.height)}];
+    ps[i]=p;safe(async()=>{await db.doc('batches/'+b.id).update({plants:ps.sort((a,c)=>a.n-c.n)});document.activeElement?.blur?.();rerender()})},
+  cure(f,d){const b=S.batches.find(x=>x.id===f.dataset.id);const days=Math.max(1,Math.min(60,Math.round(num(d.days)||14)));const min=num(d.min);if(!(min>0))return;
+    safe(async()=>{await db.doc('batches/'+b.id).update({cure:{start:d.start||today(),jars:n2(d.jars),rhMin:n2(d.rhMin),rhMax:n2(d.rhMax),min,log:[]}});
+      for(let i=0;i<days;i++){const date=addDays(d.start||today(),i);await db.doc('events/curado-'+b.id+'-'+(i+1)).set({projectId:'cultivo',spaceId:b.spaceId,batchId:b.id,date,plannedDate:date,type:'Secado / curado',title:`Abrir frascos (curado día ${i+1})`,short:'Abrir frascos',status:'planificado',estMin:min,products:[],liters:'',cureOf:b.id,createdAt:Date.now()})}
+      S.form=null;rerender()})},
+  cureLog(f,d){const b=S.batches.find(x=>x.id===f.dataset.id);if(!String(d.rh||'').trim()&&!(d.note||'').trim())return;
+    safe(async()=>{await db.doc('batches/'+b.id).update({cure:{...b.cure,log:[...(b.cure.log||[]),{date:d.date||today(),rh:n2(d.rh),note:(d.note||'').trim()}]}});document.activeElement?.blur?.();rerender()})},
+  climate(f,d){if(!String(d.temp).trim()||!String(d.hum).trim())return;
+    safe(async()=>{await db.collection('climate').add({projectId:'cultivo',spaceId:f.dataset.sid,date:d.date||today(),time:d.time||'',temp:num(d.temp),hum:num(d.hum),note:(d.note||'').trim(),createdAt:Date.now()});document.activeElement?.blur?.();rerender()})},
+  climRange(f,d){const R={};Object.keys(STG).forEach(k=>{const o={};let any=false;CL_KEYS.forEach(([ck])=>{o[ck]=n2(d[k+'_'+ck]);if(o[ck]!=='')any=true});if(any)R[k]=o});
+    safe(async()=>{await db.doc('spaces/'+f.dataset.sid).update({climRanges:R});S.form=null;rerender()})},
+};
 /* ---------- acciones ---------- */
 async function safe(fn){try{S.err=null;await fn()}catch(e){S.err='No se pudo guardar: '+(e&&e.message||e)+'. Revisá la conexión y probá de nuevo.';rerender()}}
 app.addEventListener('click',e=>{
@@ -2279,6 +2650,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
+  if(!A[act]&&XACT[act]){if(db||XNODB.includes(act))XACT[act](b,id);return}
   if(A[act]&&(db||['home','open','toggleEv','weekPdf','closeModal','noop','hwItem','wkItem','calItem','bell','bellGo','hwPrev','hwNext','hwToday','hwDay','hwCell','hwAll','hwClose','hwAdd','doneQuick','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
@@ -2327,6 +2699,7 @@ app.addEventListener('input',e=>{
 app.addEventListener('submit',e=>{
   e.preventDefault();const f=e.target;const d=Object.fromEntries(new FormData(f).entries());
   const kind=f.dataset.form;
+  if(XFORM[kind]){XFORM[kind](f,d);return}
   if(kind==='event'&&(d.status||'planificado')==='planificado'&&!(num(d.estMin)>0)){const el=f.querySelector('[name=estMin]');if(el){el.setCustomValidity('Cargá el tiempo estimado en minutos para planificar la tarea.');el.reportValidity();el.addEventListener('input',()=>el.setCustomValidity(''),{once:true})}return}
   if(kind==='task'&&(d.status||'pendiente')!=='hecha'&&!(num(d.estHours)>0)){const el=f.querySelector('[name=estHours]');if(el){el.setCustomValidity('Cargá las horas estimadas (por ejemplo 1 o 0,5).');el.reportValidity();el.addEventListener('input',()=>el.setCustomValidity(''),{once:true})}return}
   if(kind==='media'){uploadMedia(f).catch(()=>{});return}
@@ -2369,7 +2742,7 @@ app.addEventListener('submit',e=>{
   if(kind==='space'){
     const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
     const data={tentBrand:(d.tentBrand||'').trim(),tentModel:(d.tentModel||'').trim(),portsTop:n(d.portsTop),portsBottom:n(d.portsBottom),
-      portsTopD:new FormData(f).getAll('portsTopD').map(x=>String(x).trim()),portsBottomD:new FormData(f).getAll('portsBottomD').map(x=>String(x).trim()),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity)};
+      portsTopD:new FormData(f).getAll('portsTopD').map(x=>String(x).trim()),portsBottomD:new FormData(f).getAll('portsBottomD').map(x=>String(x).trim()),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),airHours:n(d.airHours)};
     safe(async()=>{await db.doc('spaces/'+f.dataset.id).update(data);S.spaceMsg='Guardado.';document.activeElement?.blur?.();rerender()});return}
   safe(async()=>{
     if(kind==='project'){
@@ -2386,14 +2759,15 @@ app.addEventListener('submit',e=>{
       if(ev.type==='Compra'){const fd=new FormData(f);const ns=fd.getAll('biName'),qs=fd.getAll('biQty'),ps=fd.getAll('biPrice');
         const subs=fd.getAll('biSub');ev.items=ns.map((nm,i)=>({name:String(nm).trim(),qty:num(qs[i])||1,price:n2(ps[i]),sub:subs[i]||''})).filter(x=>x.name);ev.actual=n2(d.actual);}
       if(ev.type==='Trasplante'){ev.batchId=d.tpBatch||'';ev.tpQty=n2(d.tpQty);ev.tpFrom=n2(d.tpFrom);ev.tpTo=n2(d.tpTo);ev.tpBuy=!!d.tpBuy;}
+      xtraEvSave(ev,d);
       if(ev.type==='Riego radicular'){ev.batchId=d.batchId||'';ev.perPlant=n2(d.perPlant);ev.drained=d.drained||'';ev.ecIn=n2(d.ecIn);ev.phIn=n2(d.phIn);ev.ecOut=n2(d.ecOut);ev.phOut=n2(d.phOut);}
       if(f.dataset.id){const old=S.events.find(x=>x.id===f.dataset.id)||{};
         if(f.dataset.mode==='edit'){if(d.spaceId!==undefined)ev.spaceId=d.spaceId;if(ev.status==='planificado'&&(!old.plannedDate||old.plannedDate===old.date))ev.plannedDate=ev.date;}
         else{if(!old.plannedDate&&old.date&&old.date!==ev.date)ev.plannedDate=old.date;ev.adjustNote=(d.adjustNote||'').trim();}
         await db.doc('events/'+f.dataset.id).update(ev);
-        await syncSubstrateBuy(f.dataset.id,{...old,...ev},ev.spaceId||old.spaceId);}
+        await syncSubstrateBuy(f.dataset.id,{...old,...ev},ev.spaceId||old.spaceId);await syncFollowUp(f.dataset.id,{...old,...ev},ev.spaceId||old.spaceId);}
       else{const sp=d.spaceId||S.space||'';const r=await db.collection('events').add({...ev,plannedDate:ev.date,projectId:f.dataset.pid,spaceId:sp,createdAt:Date.now()});
-        await syncSubstrateBuy(r.id,ev,sp);}
+        await syncSubstrateBuy(r.id,ev,sp);await syncFollowUp(r.id,ev,sp);}
     }else if(kind==='product'){
       const name=(d.name||'').trim();if(!name)return;
       if(/^(equipo|plantas):/.test(d.use||'')){const [c2,sb]=d.use.split(':');
@@ -2458,7 +2832,10 @@ async function boot(){
   db.collection('media').onSnapshot(s=>{S.media=toList(s);render()},onErr);
   claude.use('sample').then(x=>{sample=x;rerender()}).catch(()=>{});
   claude.use('assets').then(a=>{assets=a;rerender()}).catch(()=>{});
-  db.collection('events').onSnapshot(s=>{S.events=toList(s);render()},onErr);
+  db.collection('events').onSnapshot(s=>{S.events=toList(s);S.loaded.events=true;render();autoStockSoon()},onErr);
+  db.collection('climate').onSnapshot(s=>{S.climate=toList(s);render()},onErr);
+  db.collection('templates').onSnapshot(s=>{S.templates=toList(s);render()},onErr);
+  db.collection('stock').onSnapshot(s=>{S.stock=toList(s);S.loaded.stock=true;render();autoStockSoon()},onErr);
   db.collection('money').onSnapshot(s=>{S.money=toList(s);render()},onErr);
   db.doc('timer/current').onSnapshot(s=>{S.timer=s.exists?s.data():null;render()},onErr);
 }
