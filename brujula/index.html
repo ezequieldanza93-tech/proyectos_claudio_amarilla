@@ -291,6 +291,19 @@ textarea{min-height:70px;resize:vertical}
 .gm-sec{display:inline-flex;align-items:center;gap:5px}
 .gm-sec i{width:8px;height:8px;border-radius:50%;background:var(--pc);display:inline-block}
 .pozo{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.hrs{border-collapse:collapse;font-size:.8rem;min-width:820px;width:100%;margin-top:8px}
+.hrs th,.hrs td{border-top:1px solid var(--line);padding:5px 4px;text-align:center;white-space:nowrap}
+.hrs thead th{font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
+.hrs thead th.today{color:var(--ink)}
+.hrs tbody th{text-align:left;font-weight:500;position:sticky;left:0;background:var(--surface);z-index:1;min-width:120px}
+.hrs thead th:first-child{position:sticky;left:0;background:var(--surface);z-index:1;text-align:left}
+.hrs tr.tot th,.hrs tr.tot td{border-top:2px solid var(--line)}
+.hrs sup{color:var(--muted);font-size:.65rem}
+.hr-cell{font-size:.68rem;color:var(--muted);font-weight:600;align-self:flex-end}
+.hr-wk{display:block;font-size:.66rem;color:var(--muted);font-weight:500}
+.hr-tot{font-size:.78rem;font-weight:700;text-align:center;padding:6px 0;border-top:2px solid var(--line)}
+.hr-tot.today{color:var(--accent)}
+.hr-tot-l{font-size:.7rem;color:var(--ink);border-left-color:var(--line);border-top:2px solid var(--line)}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -384,6 +397,7 @@ function render(){
   ['.wkm-wrap','.cal-wrap'].forEach(k=>{const el=app.querySelector(k);if(!el)return;
     if(keep[k]!=null){el.scrollLeft=keep[k];return}
     const td=el.querySelector('.wkm-day.today,.cd.today');if(td)el.scrollLeft=Math.max(0,td.offsetLeft-(k==='.wkm-wrap'?80:8));});
+  app.querySelectorAll('.panel').forEach(pn=>{const ws=pn.querySelectorAll('.wkm-wrap');if(ws.length>1)ws.forEach((w,i)=>{if(i)w.scrollLeft=ws[0].scrollLeft})});
   app.querySelectorAll('form[data-form=event]').forEach(f=>{updateDoseTotals(f);updateBuyTotals(f);updateTransCalc(f)});
   app.querySelectorAll('form[data-form=item]').forEach(applyKindVisibility);
   app.querySelectorAll('form[data-form=batch],form[data-form=product],form[data-form=event],form[data-form=hh]').forEach(applyBatchVis);
@@ -490,6 +504,19 @@ function homeTaskRow(p,t){
   return `<div class="wk-ev ${done?'':''}" style="--pc:${pcolor(p)}"><div class="wk-sum" style="cursor:default"><span class="st-dot st-${done?'cumplido':'planificado'}"></span><span class="ev-title" style="${done?'text-decoration:line-through;color:var(--muted)':''}">${esc(t.title)}</span><span class="sp-chip">${esc(p.name)}</span></div>
     <span class="t-actions" style="justify-content:flex-start">${done?`<button class="small ghost" data-act="hTaskUndo" data-id="${esc(t.id)}">Desmarcar</button>`:`<button class="small" data-act="hTaskDone" data-id="${esc(t.id)}">✓ Hecha</button>`}${num(t.estHours)?`<span class="muted" style="font-size:.78rem">${dec(t.estHours)} h estimadas</span>`:''}</span></div>`;
 }
+function typeAvgs(){const acc={};S.events.forEach(e=>{if(num(e.minutes)>0){(acc[e.type]=acc[e.type]||[]).push(num(e.minutes))}});
+  const out={};for(const k in acc)out[k]=acc[k].reduce((a,b)=>a+b,0)/acc[k].length;return out}
+function planMinEv(e,avg){return num(e.estMin)||num(e.minutes)||(avg[e.type]||0)}
+function homeHours(rows,ws){
+  const avg=typeAvgs();const days=[...Array(7)].map((_,i)=>addDays(ws,i));
+  const m={};rows.forEach(p=>{m[p.id]=days.map(ds=>{let mm=0,guess=false;
+    S.events.filter(e=>e.projectId===p.id&&e.date===ds).forEach(e=>{const v=planMinEv(e,avg);if(!num(e.estMin)&&!num(e.minutes)&&v)guess=true;mm+=v});
+    S.tasks.filter(t=>t.projectId===p.id&&t.due===ds).forEach(t=>mm+=num(t.estHours)*60);return {mm,guess}})});
+  const dayTot=days.map((_,i)=>rows.reduce((a,p)=>a+m[p.id][i].mm,0));
+  const wk={};rows.forEach(p=>wk[p.id]=m[p.id].reduce((a,c)=>a+c.mm,0));
+  return {m,dayTot,wk,anyGuess:rows.some(p=>m[p.id].some(c=>c.guess))};
+}
+const hhm=v=>v?(v>=60?Math.floor(v/60)+' h'+(Math.round(v%60)?' '+Math.round(v%60)+'′':''):Math.round(v)+'′'):'';
 function homeWeek(){
   const rows=sortedProjects().filter(p=>!isLedger(p));if(!rows.length)return '';
   const t=today();const ws=S.hWeek||sundayOf(t);const we=addDays(ws,6);const f=S.form;
@@ -499,12 +526,14 @@ function homeWeek(){
     <button class="small" data-act="hwNext" aria-label="Semana siguiente">›</button>${ws!==sundayOf(t)?'<button class="small" data-act="hwToday">Hoy</button>':''}</div>
     <div class="wkm-wrap"><div class="wkm"><div class="wkm-corner"></div>`;
   for(let i=0;i<7;i++){const ds=addDays(ws,i);h+=`<button class="wkm-day ${ds===t?'today':''} ${ds===sel?'sel':''}" data-act="hwDay" data-date="${ds}" aria-label="${DIAS_D[(i+1)%7]} ${fmtDate(ds)}"><span>${DIAS_D[(i+1)%7].slice(0,3)}</span><b class="num">${+ds.slice(8)}</b></button>`;}
+  const HR=homeHours(rows,ws);
   for(const p of rows){const c=pcolor(p);
-    h+=`<div class="wkm-sp" style="--pc:${c}">${esc(p.name)}</div>`;
-    for(let i=0;i<7;i++){const ds=addDays(ws,i);const its=homeItems(p,ds);
+    h+=`<div class="wkm-sp" style="--pc:${c}"><span>${esc(p.name)}${HR.wk[p.id]?`<span class="hr-wk num">${hhm(HR.wk[p.id])}/sem</span>`:''}</span></div>`;
+    for(let i=0;i<7;i++){const ds=addDays(ws,i);const its=homeItems(p,ds);const cm=HR.m[p.id][i];
       h+=`<button class="wkm-cell ${ds===t?'today':''} ${ds===sel&&S.hRow===p.id?'sel':''}" style="--pc:${c}" data-act="hwCell" data-date="${ds}" data-pid="${esc(p.id)}" aria-label="${esc(p.name)}, ${fmtDate(ds)}: ${its.length} tarea(s)">
-        ${its.slice(0,3).map(x=>`<span class="wkc-ev st-${x.st.replace(/ /g,'-')}">${esc(x.title)}</span>`).join('')}${its.length>3?`<span class="wkc-more">+${its.length-3}</span>`:''}</button>`;}}
-  h+=`</div></div>`;
+        ${cm.mm?`<span class="hr-cell num">${hhm(cm.mm)}${cm.guess?'≈':''}</span>`:''}${its.slice(0,3).map(x=>`<span class="wkc-ev st-${x.st.replace(/ /g,'-')}">${esc(x.title)}</span>`).join('')}${its.length>3?`<span class="wkc-more">+${its.length-3}</span>`:''}</button>`;}}
+  h+=`<div class="wkm-sp hr-tot-l">Total del día</div>${HR.dayTot.map((v,i)=>`<div class="hr-tot num ${addDays(ws,i)===t?'today':''}">${hhm(v)||'—'}</div>`).join('')}`;
+  h+=`</div></div><div class="muted" style="font-size:.72rem">Horas planificadas en la semana: <b class="num">${hhm(HR.dayTot.reduce((a,b)=>a+b,0))||'0'}</b>. Suman el tiempo estimado de cada tarea.${HR.anyGuess?' ≈: tareas de cultivo sin tiempo estimado; uso el promedio de lo que te llevaron otras del mismo tipo.':''} En cultivo cargá «Tiempo estimado» al planificar para que el total sea más preciso.</div>`;
   if(sel){const di=(new Date(sel+'T00:00:00')).getDay();
     const groups=rows.filter(p=>!S.hRow||p.id===S.hRow).map(p=>({p,its:homeItems(p,sel)})).filter(g=>g.its.length);
     h+=`<div class="wk-day today"><div class="wk-head"><b>${DIAS_D[di]}</b> <span class="num muted">${fmtDate(sel)}</span>${S.hRow?`<span class="tag">${esc(spaceOrProj(S.hRow))}</span><button class="small ghost" data-act="hwAll">Ver todas</button>`:''}<span class="spacer"></span><button class="small ghost" data-act="hwClose" aria-label="Cerrar día">✕</button></div>
@@ -1044,6 +1073,7 @@ function eventForm(p,e){
     ${transBox(e)}
     ${buyBox(e)}
     <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note" value="${esc(e.note)}"></label>
+    <label class="field"><span class="label">Tiempo estimado (minutos)</span><input id="e-est" name="estMin" inputmode="numeric" value="${esc(e.estMin??'')}" placeholder="Para planificar: ej. 15, 30, 60"></label>
     <label class="field"><span class="label">Tiempo dedicado (minutos)</span><input id="e-min" name="minutes" inputmode="numeric" value="${esc(e.minutes??'')}" placeholder="Al completarla: ej. 15, 30, 60"></label>
     ${isNew||mode==='edit'?'':`<label class="field"><span class="label">Motivo del ajuste (opcional)</span><input id="e-adj" name="adjustNote" value="${esc(e.adjustNote)}" placeholder="Ej.: se atrasó por lluvia, se cambió la dosis"></label>`}
     <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button>
@@ -2077,6 +2107,7 @@ app.addEventListener('change',e=>{
 app.addEventListener('pointerover',e=>{const c=e.target.closest&&e.target.closest('.whit');if(!c)return;const box=c.closest('.wchart');const tip=box.querySelector('.wtip');const r=box.getBoundingClientRect(),cr=c.getBoundingClientRect();
   tip.textContent=c.dataset.tip;tip.style.left=(cr.left+cr.width/2-r.left)+'px';tip.style.top=(cr.top+cr.height/2-r.top)+'px';tip.hidden=false});
 app.addEventListener('pointerout',e=>{const c=e.target.closest&&e.target.closest('.whit');if(c){const t=c.closest('.wchart').querySelector('.wtip');if(t)t.hidden=true}});
+app.addEventListener('scroll',e=>{const t=e.target;if(!t.classList||!t.classList.contains('wkm-wrap')||S._sync)return;const pn=t.closest('.panel');if(!pn)return;S._sync=true;pn.querySelectorAll('.wkm-wrap').forEach(w=>{if(w!==t)w.scrollLeft=t.scrollLeft});S._sync=false},true);
 document.addEventListener('toggle',e=>{const t=e.target;if(t.matches&&t.matches('[data-libtoggle]'))S.libOpen=t.open?t.dataset.libtoggle:null},true);
 app.addEventListener('input',e=>{
   if(e.target.closest('.transbox')||e.target.matches('[name=date]'))updateTransCalc(e.target.closest('form')||document.body);
@@ -2130,7 +2161,7 @@ app.addEventListener('submit',e=>{
       if(f.dataset.id)await db.doc('projects/'+f.dataset.id).update(data);
       else{const r=await db.collection('projects').add({...data,kind:d.kind||'project',createdAt:Date.now()});go(r.id)}
     }else if(kind==='event'){
-      const ev={date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),status:d.status||'planificado',minutes:n2(d.minutes)};
+      const ev={date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),status:d.status||'planificado',minutes:n2(d.minutes),estMin:n2(d.estMin)};
       if(RIEGO_USE[ev.type]){const fd=new FormData(f);const ids=fd.getAll('prodId'),ds=fd.getAll('dose'),us=fd.getAll('unit');
         ev.liters=num(d.liters)||'';ev.tank=n2(d.tank);
         ev.products=ids.map((pid,i)=>{const pr=S.products.find(x=>x.id===pid);return pr?{productId:pid,label:prodLabel(pr),dose:num(ds[i]),unit:us[i]||'ml'}:null}).filter(Boolean);}
