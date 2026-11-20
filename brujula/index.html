@@ -355,6 +355,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   .wb .track{grid-column:1/-1;grid-row:2}
 }
 @media (prefers-reduced-motion:no-preference){.card{transition:box-shadow .15s}}
+.cu-tabs{flex-wrap:wrap;overflow:visible;row-gap:0}
+.cu-tabs .tab{padding:9px 11px}
 .cd{position:relative}
 .stg{position:absolute;left:0;right:0;bottom:0;height:5px;display:flex}
 .stg i{flex:1}
@@ -2095,9 +2097,19 @@ function detailView(){
     if(tab==='peso')return h+weightPanel(p,pc);
     if(tab==='actividad')return h+activityPanel(p,pc);
     if(tab==='desvios')return h+slipsPanel(p,pc);}
-  if(p.calendar&&spacesOf(p.id).length)h+=weekPanel(p,pc)+budgetPanel(p,pc)+cxPanel(p,pc);
+  if(p.calendar&&spacesOf(p.id).length){const tab=S.cuTab||'semana';
+    const tabs=[['semana','Semana'],['espacios','Espacios'],['compras','Compras y stock'],['rend','Rendimiento'],['tpl','Plantillas'],['catalogo','Catálogo'],['objetivo','Objetivo y tareas']];
+    h+=`<div class="tabs cu-tabs" role="tablist" style="--pc:${pc}">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="cuTab" data-tab="${k}">${l}</button>`).join('')}</div>`;
+    const sec=(t,body)=>`<section class="panel" style="--pc:${pc}"><h2>${t}</h2>${body}</section>`;
+    if(tab==='semana')return h+weekPanel(p,pc);
+    if(tab==='espacios')return h+spacesPanel(p,pc);
+    if(tab==='compras')return h+budgetPanel(p,pc)+sec('Stock de insumos',stockTab());
+    if(tab==='rend')return h+sec('Rendimiento por lote',lotsTab());
+    if(tab==='tpl')return h+sec('Plantillas de cultivo',tplTab());
+    if(tab==='catalogo')return h+catalogPanel(p,pc);
+  }else{
   h+=spacesPanel(p,pc);
-  if(spacesOf(p.id).length)h+=catalogPanel(p,pc);
+  if(spacesOf(p.id).length)h+=catalogPanel(p,pc);}
   if(f&&f.type==='project'&&f.id===p.id){h+=`<div class="panel" style="--pc:${pc}">${projectForm(p)}</div>`}
   else{
   h+=`<section class="detail-head" style="--pc:${pc}">
@@ -2256,7 +2268,7 @@ function energyBlock(s){
     <div class="frow"><dt>Luces</dt><dd>${dec(W.light)} W × ${lh==null?'<span class="muted">sin horas de luz cargadas</span>':dec(lh)+' h/día'}</dd></div>
     <div class="frow"><dt>Ventilación y clima</dt><dd>${dec(W.other)} W × ${dec(airH(s))} h/día</dd></div>
     <div class="frow"><dt>Hoy</dt><dd class="num">${dec(Math.round(k*100)/100)} kWh/día · ${dec(Math.round(k*30))} kWh/mes${pr?` · <b>${money(k*30*pr)}/mes</b>`:''}</dd></div></dl>
-    ${pr?'':'<div class="muted" style="font-size:.8rem">Cargá la tarifa ($/kWh) en Cultivo → Análisis del cultivo → Rendimiento para ver el costo.</div>'}
+    ${pr?'':'<div class="muted" style="font-size:.8rem">Cargá la tarifa ($/kWh) en Cultivo → Rendimiento para ver el costo.</div>'}
     ${lh==null&&W.light?'<div class="muted" style="font-size:.8rem">Las horas de luz salen de las tareas «Cambio de horas de luz» (campo «Horas de luz por día»).</div>':''}`;
 }
 /* costos y rendimiento por lote */
@@ -2364,7 +2376,7 @@ async function applyTemplate(tpl,b){
     const r=await db.collection('events').add(ev);if(t.type==='Trasplante')await syncSubstrateBuy(r.id,ev,b.spaceId);}
 }
 function tplTab(){
-  if(!S.templates.length)return '<div class="empty">Sin plantillas. En el Planificador de un espacio, en un lote, tocá «Guardar como plantilla». Después, al crear un lote nuevo, elegís la plantilla y se arma todo el calendario.</div>';
+  if(!S.templates.length)return '<div class="empty">Sin plantillas. En Espacios → un espacio → Planificador, en un lote, tocá «Guardar como plantilla». Después, al crear un lote nuevo, elegís la plantilla y se arma todo el calendario.</div>';
   return `<div class="logs">${S.templates.map(t=>`<div class="batch" style="gap:4px"><div class="row"><b class="bt">${esc(t.name)}</b><span class="spacer"></span>
     ${S.confirm==='tp'+t.id?`<button class="small danger" data-act="delTpl" data-id="${esc(t.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="tp${esc(t.id)}" aria-label="Borrar plantilla">✕</button>`}</div>
     <div class="muted" style="font-size:.8rem">${(t.events||[]).length} tareas en ${(t.events||[]).length?num(t.events[t.events.length-1].off)+1:0} días · desde ${esc(t.source||'')}</div>
@@ -2473,9 +2485,10 @@ function climatePanel(s,pc){
   return h+`</section>`;
 }
 /* acciones y formularios del módulo */
-const XNODB=['cxTab','plantsToggle','plantPick','plantClose','stockNew','stockEdit','stockCount','climRangeEdit','cureNew','tplNew'];
+const XNODB=['cuTab','cxTab','plantsToggle','plantPick','plantClose','stockNew','stockEdit','stockCount','climRangeEdit','cureNew','tplNew'];
 const XACT={
   cxTab(b){S.cxTab=b.dataset.tab;S.form=null;rerender()},
+  cuTab(b){S.cuTab=b.dataset.tab;S.form=null;S.confirm=null;if(S.cuTab==='catalogo')S.catalogOpen=true;window.scrollTo(0,0);rerender()},
   stockNew(){S.form={type:'stock'};rerender()},
   stockEdit(b,id){S.form={type:'stock',id};rerender()},
   stockCount(b,id){S.form={type:'stockCount',id};rerender();setTimeout(()=>app.querySelector('form[data-form=stockCount] input')?.focus(),0)},
