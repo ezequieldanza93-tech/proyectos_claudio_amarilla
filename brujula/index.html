@@ -322,6 +322,11 @@ textarea{min-height:70px;resize:vertical}
 .bell-pop{width:min(320px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 8px 30px rgba(0,0,0,.18)}
 .bell-it{text-align:left;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--ink);font-size:.88rem}
 .bell-it.today{border-color:var(--warn)}
+.warn{vertical-align:-2px;flex:none}
+.wkc-ev .warn{width:12px;height:12px;vertical-align:-1px}
+.wkc-ev.st-cancelado,.cd .ev.st-cancelado{background:transparent;color:var(--muted);text-decoration:line-through;border:1px solid var(--line)}
+.st-dot.st-cancelado{background:var(--line)}
+.over-n{white-space:nowrap;color:var(--ink);font-weight:600}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -386,11 +391,11 @@ const minsSum=arr=>arr.reduce((s,l)=>s+num(l.minutes),0);
 const taskMins=tid=>minsSum(S.logs.filter(l=>l.taskId===tid));
 
 function projStats(p){
-  const ts=tasksOf(p.id);const done=ts.filter(t=>t.status==='hecha');
+  const ts=tasksOf(p.id).filter(liveTk);const done=ts.filter(t=>t.status==='hecha');
   const est=ts.reduce((s,t)=>s+num(t.estHours),0);
   const estDone=done.reduce((s,t)=>s+num(t.estHours),0);
   const ls=logsOf(p.id);const ws=weekStart();
-  const evs=S.events.filter(e=>e.projectId===p.id&&e.type!=='Compra');const evDone=evs.filter(e=>evStatus(e)==='cumplido');
+  const evs=S.events.filter(e=>e.projectId===p.id&&e.type!=='Compra'&&liveEv(e));const evDone=evs.filter(e=>evStatus(e)==='cumplido');
   const evMin=evDone.filter(e=>num(e.minutes)>0);
   return {ts,done,est,pct:est?estDone/est:(ts.length?done.length/ts.length:0),
     dedicated:(minsSum(ls)+minsSum(evMin))/60,week:(minsSum(ls.filter(l=>(l.date||'')>=ws))+minsSum(evMin.filter(e=>(e.date||'')>=ws)))/60,
@@ -453,8 +458,8 @@ const logMinsOf=(p,a,b)=>S.logs.filter(l=>l.projectId===p.id&&(l.date||'')>=a&&(
 function weekPct(p,ws){
   if(p.household)return ws===sundayOf(today())?finProgress(p):null;
   const we=addDays(ws,6);
-  const evs=S.events.filter(e=>e.projectId===p.id&&e.date>=ws&&e.date<=we);
-  const tks=S.tasks.filter(t=>t.projectId===p.id&&t.due&&t.due>=ws&&t.due<=we);
+  const evs=S.events.filter(e=>e.projectId===p.id&&e.date>=ws&&e.date<=we&&liveEv(e));
+  const tks=S.tasks.filter(t=>t.projectId===p.id&&t.due&&t.due>=ws&&t.due<=we&&liveTk(t));
   const goal=num(p.weeklyHours);const hrs=(evMinsOf(p,ws,we)+logMinsOf(p,ws,we))/60;
   let total=evs.length+tks.length,done=evs.filter(e=>evStatus(e)==='cumplido').length+tks.filter(t=>t.status==='hecha').length;
   if(goal>0){total+=1;done+=Math.min(1,hrs/goal)}
@@ -479,7 +484,7 @@ function pctBar(w,none){
 }
 function planTotal(p){
   if(p.household)return finProgress(p);
-  const evs=S.events.filter(e=>e.projectId===p.id);const tks=S.tasks.filter(t=>t.projectId===p.id);
+  const evs=S.events.filter(e=>e.projectId===p.id&&liveEv(e));const tks=S.tasks.filter(t=>t.projectId===p.id&&liveTk(t));
   const total=evs.length+tks.length,done=evs.filter(e=>evStatus(e)==='cumplido').length+tks.filter(t=>t.status==='hecha').length;
   const last=[...evs.map(e=>e.date),...tks.map(t=>t.due)].filter(Boolean).sort().pop()||'';
   return total?{pct:done/total,done,total,last}:null;
@@ -515,14 +520,15 @@ function gamePanel(p,pc){
 }
 /* ---------- semana general (inicio) ---------- */
 function homeItems(p,ds){
-  const ev=S.events.filter(e=>e.projectId===p.id&&e.date===ds).map(e=>({k:'e',id:e.id,title:e.title,st:evStatus(e),ref:e}));
-  const tk=S.tasks.filter(t=>t.projectId===p.id&&t.due===ds).map(t=>({k:'t',id:t.id,title:t.title,st:t.status==='hecha'?'cumplido':'planificado',ref:t}));
+  const ev=S.events.filter(e=>e.projectId===p.id&&e.date===ds).map(e=>({k:'e',id:e.id,title:e.title,st:evStatus(e),over:overEv(e),ref:e}));
+  const tk=S.tasks.filter(t=>t.projectId===p.id&&t.due===ds).map(t=>({k:'t',id:t.id,title:t.title,st:t.status==='hecha'?'cumplido':t.status==='cancelada'?'cancelado':'planificado',over:overTk(t),ref:t}));
   return [...ev,...tk];
 }
 function homeTaskRow(p,t){
-  const done=t.status==='hecha';
-  return `<div class="wk-ev ${done?'':''}" style="--pc:${pcolor(p)}"><div class="wk-sum" style="cursor:default"><span class="st-dot st-${done?'cumplido':'planificado'}"></span><span class="ev-title" style="${done?'text-decoration:line-through;color:var(--muted)':''}">${esc(t.title)}</span><span class="sp-chip">${esc(p.name)}</span></div>
-    <span class="t-actions" style="justify-content:flex-start">${done?`<button class="small ghost" data-act="hTaskUndo" data-id="${esc(t.id)}">Desmarcar</button>`:`<button class="small" data-act="hTaskDone" data-id="${esc(t.id)}">✓ Hecha</button>`}${num(t.estHours)?`<span class="muted" style="font-size:.78rem">${dec(t.estHours)} h estimadas</span>`:''}</span></div>`;
+  const done=t.status==='hecha';const cx=t.status==='cancelada';
+  if(S.form&&S.form.type==='cancel'&&S.form.id===t.id)return cancelForm('t',t.id,t.title);
+  return `<div class="wk-ev ${done?'':''}" style="--pc:${pcolor(p)}"><div class="wk-sum" style="cursor:default"><span class="st-dot st-${done?'cumplido':'planificado'}"></span><span class="ev-title" style="${done||cx?'text-decoration:line-through;color:var(--muted)':''}">${overTk(t)?WARN+' ':''}${esc(t.title)}</span><span class="sp-chip">${esc(p.name)}</span></div>
+    <span class="t-actions" style="justify-content:flex-start">${cx?`<span class="muted" style="font-size:.78rem">Cancelada${t.cancelNote?': '+esc(t.cancelNote):''}</span><button class="small ghost" data-act="hTaskUndo" data-id="${esc(t.id)}">Reactivar</button>`:done?`<button class="small ghost" data-act="hTaskUndo" data-id="${esc(t.id)}">Desmarcar</button>`:`<button class="small" data-act="hTaskDone" data-id="${esc(t.id)}">✓ Hecha</button><button class="small ghost" data-act="tkCancel" data-id="${esc(t.id)}">Cancelar</button>`}${num(t.estHours)?`<span class="muted" style="font-size:.78rem">${dec(t.estHours)} h estimadas</span>`:''}</span></div>`;
 }
 function typeAvgs(){const acc={};S.events.forEach(e=>{if(num(e.minutes)>0){(acc[e.type]=acc[e.type]||[]).push(num(e.minutes))}});
   const out={};for(const k in acc)out[k]=acc[k].reduce((a,b)=>a+b,0)/acc[k].length;return out}
@@ -530,8 +536,8 @@ function planMinEv(e,avg){return num(e.estMin)||num(e.minutes)||(avg[e.type]||0)
 function homeHours(rows,ws){
   const avg=typeAvgs();const days=[...Array(7)].map((_,i)=>addDays(ws,i));
   const m={};rows.forEach(p=>{m[p.id]=days.map(ds=>{let mm=0,guess=false;
-    S.events.filter(e=>e.projectId===p.id&&e.date===ds).forEach(e=>{const v=planMinEv(e,avg);if(!num(e.estMin)&&!num(e.minutes)&&v)guess=true;mm+=v});
-    S.tasks.filter(t=>t.projectId===p.id&&t.due===ds).forEach(t=>mm+=num(t.estHours)*60);return {mm,guess}})});
+    S.events.filter(e=>e.projectId===p.id&&e.date===ds&&liveEv(e)).forEach(e=>{const v=planMinEv(e,avg);if(!num(e.estMin)&&!num(e.minutes)&&v)guess=true;mm+=v});
+    S.tasks.filter(t=>t.projectId===p.id&&t.due===ds&&liveTk(t)).forEach(t=>mm+=num(t.estHours)*60);return {mm,guess}})});
   const dayTot=days.map((_,i)=>rows.reduce((a,p)=>a+m[p.id][i].mm,0));
   const wk={};rows.forEach(p=>wk[p.id]=m[p.id].reduce((a,c)=>a+c.mm,0));
   return {m,dayTot,wk,anyGuess:rows.some(p=>m[p.id].some(c=>c.guess))};
@@ -551,7 +557,7 @@ function homeWeek(){
     h+=`<div class="wkm-sp" style="--pc:${c}"><span>${esc(p.name)}${HR.wk[p.id]?`<span class="hr-wk num">${hhm(HR.wk[p.id])}/sem</span>`:''}</span></div>`;
     for(let i=0;i<7;i++){const ds=addDays(ws,i);const its=homeItems(p,ds);const cm=HR.m[p.id][i];
       h+=`<button class="wkm-cell ${ds===t?'today':''} ${ds===sel&&S.hRow===p.id?'sel':''}" style="--pc:${c}" data-act="hwCell" data-date="${ds}" data-pid="${esc(p.id)}" aria-label="${esc(p.name)}, ${fmtDate(ds)}: ${its.length} tarea(s)">
-        ${cm.mm?`<span class="hr-cell num">${hhm(cm.mm)}${cm.guess?'≈':''}</span>`:''}${its.slice(0,3).map(x=>`<span class="wkc-ev st-${x.st.replace(/ /g,'-')}">${esc(x.title)}</span>`).join('')}${its.length>3?`<span class="wkc-more">+${its.length-3}</span>`:''}</button>`;}}
+        ${cm.mm?`<span class="hr-cell num">${hhm(cm.mm)}${cm.guess?'≈':''}</span>`:''}${its.slice(0,3).map(x=>`<span class="wkc-ev st-${x.st.replace(/ /g,'-')}">${x.over?WARN+' ':''}${esc(x.title)}</span>`).join('')}${its.length>3?`<span class="wkc-more">+${its.length-3}</span>`:''}</button>`;}}
   h+=`<div class="wkm-sp hr-tot-l">Total del día</div>${HR.dayTot.map((v,i)=>`<div class="hr-tot num ${addDays(ws,i)===t?'today':''}">${hhm(v)||'—'}</div>`).join('')}`;
   h+=`</div></div><div class="muted" style="font-size:.72rem">Horas planificadas en la semana: <b class="num">${hhm(HR.dayTot.reduce((a,b)=>a+b,0))||'0'}</b>. Suman el tiempo estimado de cada tarea.${HR.anyGuess?' ≈: tareas de cultivo sin tiempo estimado; uso el promedio de lo que te llevaron otras del mismo tipo.':''} En cultivo cargá «Tiempo estimado» al planificar para que el total sea más preciso.</div>`;
   if(sel){const di=(new Date(sel+'T00:00:00')).getDay();
@@ -609,6 +615,8 @@ function linkItem(p,i){
     sub=`Saldo de ${MESES[+m.slice(5)-1]}: <span class="num ${s.bal<0?'exp':''}">${money(s.bal)}</span>`;}
   else{const st=projStats(p);
     sub=st.ts.length||st.evTotalW||st.week?[st.ts.length?`${st.done.length}/${st.ts.length} tareas`:'',st.evTotalW?`${st.evDoneW}/${st.evTotalW} del calendario esta semana`:'',`${h1(st.week)} h esta semana`,st.next?'Próxima: '+esc(st.next.title):''].filter(Boolean).join(' · '):'Sin tareas: entrá y armá el plan';}
+  const nOver=isLedger(p)?0:S.events.filter(e=>e.projectId===p.id&&overEv(e)).length+S.tasks.filter(t=>t.projectId===p.id&&overTk(t)).length;
+  if(nOver)sub+=` · <span class="over-n">${WARN} ${nOver} vencida${nOver>1?'s':''}</span>`;
   return `<button class="link" style="--pc:${pcolor(p)}" data-act="open" data-id="${esc(p.id)}">
     <span class="ico">${isLedger(p)?'$':i+1}</span>
     <span style="min-width:0"><span class="lt">${esc(p.name)}</span><span class="ls" style="display:block">${sub}</span>${isGameP(p)?(()=>{const g=gameOf(p);return `<span class="gm-link"><span class="muted" style="font-size:.7rem">${p.household?'Mes':'Semana'}</span>${pctBar(g.now,p.household?'sin gastos cargados este mes':'')}</span>`})():''}</span>
@@ -880,7 +888,16 @@ function moveForm(p){
 }
 const EV_TYPES=['Compra','Trasplante','Cambio de horas de luz','Riego foliar','Riego radicular','Germinación','Poda / entrenamiento','Inicio de floración','Cosecha','Secado / curado','Manicurado / enfrascado','Otro'];
 const evStatus=e=>e.status||'cumplido';
-const ST_LABEL={planificado:'Planificado',cumplido:'Cumplido','no se hizo':'No se hizo'};
+const ST_LABEL={planificado:'Planificado',cumplido:'Cumplido','no se hizo':'No se hizo',cancelado:'Cancelada'};
+const WARN=`<svg class="warn" viewBox="0 0 24 24" width="15" height="15" role="img" aria-label="Vencida sin hacer"><path d="M12 2.5 1.5 21h21L12 2.5z" fill="#F5C518" stroke="#000" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9.2v5.2" stroke="#000" stroke-width="2.3" stroke-linecap="round"/><circle cx="12" cy="17.6" r="1.35" fill="#000"/></svg>`;
+const overEv=e=>!!e&&evStatus(e)==='planificado'&&e.date<today();
+const overTk=t=>t&&t.status!=='hecha'&&t.status!=='cancelada'&&t.due&&t.due<today();
+const liveEv=e=>evStatus(e)!=='cancelado';const liveTk=t=>t.status!=='cancelada';
+function cancelForm(kind,id,title){
+  return `<form class="inline-form" data-form="cancel" data-kind="${kind}" data-id="${esc(id)}"><b>Cancelar «${esc(title)}»</b>
+    <label class="field"><span class="label">Motivo</span><input id="cx-note" name="note" required placeholder="Ej.: ya no hace falta, se reemplazó por otra tarea"></label>
+    <div class="row"><button class="primary" type="submit">Cancelar la tarea</button><button type="button" data-act="cancelForm">Volver</button></div></form>`;
+}
 function calendarPanel(p,pc){
   const month=S.calMonth||today().slice(0,7);const f=S.form;
   const evs=S.events.filter(e=>e.projectId===p.id&&(e.spaceId||'')===(S.space||''));
@@ -892,7 +909,7 @@ function calendarPanel(p,pc){
   for(let d=1;d<=days;d++){
     const ds=month+'-'+String(d).padStart(2,'0');const de=evs.filter(e=>e.date===ds);
     cells+=`<button class="cd ${ds===t?'today':''} ${de.length?'has':''}" data-act="calDay" data-date="${ds}" aria-label="${d} de ${MESES[m-1]}${de.length?': '+esc(de.map(e=>e.title+' ('+ST_LABEL[evStatus(e)]+')').join(', ')):''}">
-      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<span class="ev st-${evStatus(e).replace(/ /g,'-')}">${esc(e.title)}</span>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}</button>`;
+      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<span class="ev st-${evStatus(e).replace(/ /g,'-')}">${overEv(e)?WARN+' ':''}${esc(e.title)}</span>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}</button>`;
   }
   const list=evs.filter(e=>(e.date||'').startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date));
   const germ=evs.filter(e=>e.type==='Germinación'&&evStatus(e)==='cumplido'&&e.date<=t).sort((a,b)=>b.date.localeCompare(a.date));
@@ -916,6 +933,7 @@ function calendarPanel(p,pc){
 }
 function evRow(e,confirming){
   if(S.form&&S.form.type==='done'&&S.form.id===e.id)return doneForm(e);
+  if(S.form&&S.form.type==='cancel'&&S.form.id===e.id)return cancelForm('e',e.id,e.title);
   const st=evStatus(e);
   const moved=e.plannedDate&&e.plannedDate!==e.date;
   const open=S.openEv&&S.openEv.has(e.id);
@@ -923,14 +941,15 @@ function evRow(e,confirming){
     <button class="wk-sum" data-act="toggleEv" data-id="${esc(e.id)}" aria-expanded="${!!open}">
       <span class="num muted" style="font-size:.8rem;min-width:62px">${fmtDate(e.date)}</span>
       <span class="st-dot st-${st.replace(/ /g,'-')}" title="${ST_LABEL[st]}"></span>
-      <span class="ev-title">${esc(e.title)}</span><span class="chev" aria-hidden="true">${open?'▴':'▾'}</span></button>
+      <span class="ev-title">${overEv(e)?WARN+' ':''}${esc(e.title)}</span><span class="chev" aria-hidden="true">${open?'▴':'▾'}</span></button>
     ${open?`<div class="wk-det" style="padding-left:70px">
       <div><span class="tag" style="margin:0">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span></div>
       ${moved?`<span class="muted" style="font-size:.78rem">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
+      ${evStatus(e)==='cancelado'&&e.cancelNote?`<span class="muted" style="font-size:.78rem">Cancelada: ${esc(e.cancelNote)}</span>`:''}
       ${prodSummary(e)}${purchaseSummary(e)}
       ${e.note?`<span class="muted" style="font-size:.78rem">${esc(e.note)}</span>`:''}
       <span class="t-actions" style="justify-content:flex-start">
-      ${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`
+      ${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button><button class="small ghost" data-act="evCancel" data-id="${esc(e.id)}">Cancelar</button>`
         :`<button class="small ghost" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button>`}
       ${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="e${esc(e.id)}" aria-label="Borrar evento">✕</button>`}
       </span></div>`:''}</div>`;
@@ -1520,19 +1539,21 @@ function weekEvRow(p,e){
   const st=evStatus(e);const f=S.form;
   if(f&&f.type==='event'&&f.id===e.id)return eventForm(p,e);
   if(f&&f.type==='done'&&f.id===e.id)return doneForm(e);
+  if(f&&f.type==='cancel'&&f.id===e.id)return cancelForm('e',e.id,e.title);
   const sp=S.spaces.find(x=>x.id===e.spaceId);
   const open=S.openEv&&S.openEv.has(e.id);
   const moved=e.plannedDate&&e.plannedDate!==e.date;
   return `<div class="wk-ev ${st==='no se hizo'?'missed':''} ${open?'open':''}" style="--pc:${sp?spaceColor(sp):'var(--muted)'}">
     <button class="wk-sum" data-act="toggleEv" data-id="${esc(e.id)}" aria-expanded="${open}">
       <span class="st-dot st-${st.replace(/ /g,'-')}" title="${ST_LABEL[st]}"></span>
-      <span class="ev-title">${esc(e.title)}</span><span class="sp-chip">${esc(sp?sp.name:'General')}</span><span class="chev" aria-hidden="true">${open?'▴':'▾'}</span></button>
+      <span class="ev-title">${overEv(e)?WARN+' ':''}${esc(e.title)}</span><span class="sp-chip">${esc(sp?sp.name:'General')}</span><span class="chev" aria-hidden="true">${open?'▴':'▾'}</span></button>
     ${open?`<div class="wk-det">
       <div><span class="tag" style="margin:0">${esc(e.type||'Otro')}</span><span class="tag st-tag-${st.replace(/ /g,'-')}">${ST_LABEL[st]}</span></div>
+      ${evStatus(e)==='cancelado'&&e.cancelNote?`<span class="muted" style="font-size:.78rem">Cancelada: ${esc(e.cancelNote)}</span>`:''}
       ${prodSummary(e)}${purchaseSummary(e)}
       ${moved?`<span class="muted" style="font-size:.78rem">Planificado para el ${fmtDate(e.plannedDate)}${e.adjustNote?' · Ajuste: '+esc(e.adjustNote):''}</span>`:(e.adjustNote?`<span class="muted" style="font-size:.78rem">Ajuste: ${esc(e.adjustNote)}</span>`:'')}
       ${e.note?`<span class="muted" style="font-size:.78rem">${esc(e.note)}</span>`:''}
-    <span class="t-actions">${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button>`:`<button class="small ghost" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button>`}${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Confirmar eliminar</button><button class="small" data-act="noConfirm">No</button>`:`<button class="small ghost danger" data-act="askDel" data-key="e${esc(e.id)}">Eliminar</button>`}</span>
+    <span class="t-actions">${st==='planificado'?`<button class="small" data-act="evDone" data-id="${esc(e.id)}">✓ Se cumplió</button><button class="small" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button><button class="small" data-act="evEdit" data-id="${esc(e.id)}">Ajustar</button><button class="small ghost danger" data-act="evMiss" data-id="${esc(e.id)}">No se hizo</button><button class="small ghost" data-act="evCancel" data-id="${esc(e.id)}">Cancelar</button>`:`<button class="small ghost" data-act="evEditFull" data-id="${esc(e.id)}">Editar</button>`}${S.confirm==='e'+e.id?`<button class="small danger" data-act="delEvent" data-id="${esc(e.id)}">Confirmar eliminar</button><button class="small" data-act="noConfirm">No</button>`:`<button class="small ghost danger" data-act="askDel" data-key="e${esc(e.id)}">Eliminar</button>`}</span>
     </div>`:''}
   </div>`;
 }
@@ -1565,7 +1586,7 @@ function weekPanel(p,pc){
     for(let i=0;i<7;i++){const ds=addDays(ws,i);
       const de=wkEvs.filter(e=>e.date===ds&&(r.id?e.spaceId===r.id:!rows.find(x=>x.id===e.spaceId)));
       h+=`<button class="wkm-cell ${ds===t?'today':''} ${ds===sel?'sel':''}" style="--pc:${r.color}" data-act="wkCell" data-date="${ds}" data-sp="${esc(r.id)}" aria-label="${esc(r.name)}, ${DIAS_D[(i+1)%7]} ${fmtDate(ds)}: ${de.length} tarea(s)">
-        ${de.slice(0,3).map(e=>`<span class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}">${esc(e.title)}</span>`).join('')}${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</button>`;}
+        ${de.slice(0,3).map(e=>`<span class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}">${overEv(e)?WARN+' ':''}${esc(e.title)}</span>`).join('')}${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</button>`;}
   }
   h+=`</div></div>`;
   if(sel){const i=(new Date(sel+'T00:00:00')).getDay();const de=evs.filter(e=>e.date===sel);
@@ -2003,20 +2024,22 @@ function detailView(){
 function taskRow(t,p){
   const f=S.form;
   if(f&&f.type==='task'&&f.id===t.id)return `<div class="task">${taskForm(t,p.id)}</div>`;
+  if(f&&f.type==='cancel'&&f.id===t.id)return `<div class="task">${cancelForm('t',t.id,t.title)}</div>`;
   const ded=taskMins(t.id)/60;const est=num(t.estHours);const dl=daysLeft(t.due);
   const cls=t.status==='hecha'?'on':(t.status==='en curso'?'mid':'');
   const running=S.timer&&S.timer.taskId===t.id;
   return `<div class="task ${t.status==='hecha'?'done':''}">
     <button class="check ${cls}" data-act="cycle" data-id="${esc(t.id)}" title="Estado: ${esc(t.status||'pendiente')} (tocar para cambiar)" aria-label="Cambiar estado">${t.status==='hecha'?'✓':''}</button>
-    <div style="min-width:0"><div class="t-title">${esc(t.title)}</div>
+    <div style="min-width:0"><div class="t-title" style="${t.status==='cancelada'?'text-decoration:line-through;color:var(--muted)':''}">${overTk(t)?WARN+' ':''}${esc(t.title)}</div>
       <div class="t-meta"><span class="num ${est&&ded>est?'over':''}">${h1(ded)}${est?' / '+h1(est):''} h</span>
       ${t.due?`<span class="num ${dl!==null&&dl<0&&t.status!=='hecha'?'over':''}">vence ${fmtDate(t.due)}</span>`:''}
-      <span>${esc(t.status||'pendiente')}</span>
+      <span>${esc(t.status||'pendiente')}${t.status==='cancelada'&&t.cancelNote?': '+esc(t.cancelNote):''}</span>
       ${t.resources?`<span>Recursos: ${esc(t.resources)}</span>`:''}</div></div>
     <div class="t-actions">
       ${t.status!=='hecha'?`<button class="small" data-act="startTimer" data-id="${esc(t.id)}" ${running?'disabled':''} title="Cronometrar">${running?'● en curso':'▶'}</button>`:''}
       <button class="small" data-act="logTask" data-id="${esc(t.id)}" title="Cargar horas a mano">+ h</button>
       <button class="small ghost" data-act="editTask" data-id="${esc(t.id)}">Editar</button>
+      ${t.status!=='hecha'&&t.status!=='cancelada'?`<button class="small ghost" data-act="tkCancel" data-id="${esc(t.id)}">Cancelar</button>`:''}
       ${S.confirm==='t'+t.id?`<button class="small danger" data-act="delTask" data-id="${esc(t.id)}">Confirmar</button>`:`<button class="small ghost danger" data-act="askDel" data-key="t${esc(t.id)}" aria-label="Borrar tarea">✕</button>`}
     </div>
     ${f&&f.type==='log'&&f.tid===t.id?logForm(p.id,t.id):''}
@@ -2081,9 +2104,11 @@ app.addEventListener('click',e=>{
     hwClose(){S.hSel=null;S.hRow=null;if(S.form&&S.form.where==='home')S.form=null;rerender()},
     hwAdd(){S.form={type:'event',where:'home',prefill:{date:S.hSel,fixedDate:true,status:'planificado'}};S.hAdd=S.hRow||'';rerender()},
     hTaskDone(){safe(()=>db.doc('tasks/'+id).update({status:'hecha'}))},
-    hTaskUndo(){safe(()=>db.doc('tasks/'+id).update({status:'pendiente'}))},
+    hTaskUndo(){safe(()=>db.doc('tasks/'+id).update({status:'pendiente',cancelNote:''}))},
     bell(){S.bellOpen=!S.bellOpen;rerender()},
     bellGo(){S.bellOpen=false;S.hhTab='venc';S.month=today().slice(0,7);go(id)},
+    evCancel(){S.form={type:'cancel',id};rerender();setTimeout(()=>document.getElementById('cx-note')?.focus(),0)},
+    tkCancel(){S.form={type:'cancel',id};rerender();setTimeout(()=>document.getElementById('cx-note')?.focus(),0)},
     hhTab(){S.hhTab=b.dataset.tab;S.form=null;rerender()},
     newHH(){S.form={type:'hh'};rerender();document.getElementById('hh-name')?.focus()},
     editHH(){S.form={type:'hh',id};rerender()},
@@ -2204,6 +2229,9 @@ app.addEventListener('submit',e=>{
     if(key==='lights')it.aiFields=d.verified?[]:String(d.aiFields||'').split(',').filter(Boolean);
     const arr=[...(sp[key]||[])];if(idx>=0)arr[idx]=it;else arr.push(it);
     safe(async()=>{await db.doc('spaces/'+sp.id).update({[key]:arr});S.form=null;document.activeElement?.blur?.();rerender()});return}
+  if(kind==='cancel'){const note=(d.note||'').trim();if(!note)return;
+    safe(async()=>{if(f.dataset.kind==='e')await db.doc('events/'+f.dataset.id).update({status:'cancelado',cancelNote:note,cancelledAt:Date.now()});
+      else await db.doc('tasks/'+f.dataset.id).update({status:'cancelada',cancelNote:note,cancelledAt:Date.now()});S.form=null;rerender()});return}
   if(kind==='done'){safe(async()=>{await db.doc('events/'+f.dataset.id).update({status:'cumplido',confirmedAt:Date.now(),minutes:n2(d.minutes)});S.form=null;rerender()});return}
   if(kind==='weight'){const kg=num(d.kg);if(!(kg>20&&kg<400)){S.err='Cargá el peso en kilos, por ejemplo 94,5.';rerender();return}
     safe(async()=>{await db.collection('weights').add({projectId:f.dataset.pid,date:d.date||today(),kg,note:(d.note||'').trim(),createdAt:Date.now()});document.activeElement?.blur?.();rerender()});return}
