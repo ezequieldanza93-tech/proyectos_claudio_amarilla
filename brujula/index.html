@@ -339,6 +339,7 @@ button.wkc-ev:hover,.cd button.ev:hover{outline:2px solid var(--pc);outline-offs
 .modal{position:fixed;inset:0;z-index:40;background:rgba(10,15,12,.55);display:flex;align-items:flex-end;justify-content:center;padding:max(12px,env(safe-area-inset-top,0px)) max(0px,env(safe-area-inset-right,0px)) 0 max(0px,env(safe-area-inset-left,0px))}
 .sheet{background:var(--surface);color:var(--ink);width:min(640px,100%);max-height:92vh;overflow-y:auto;border-radius:16px 16px 0 0;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:10px;cursor:default}
 @media (min-width:700px){.modal{align-items:center}.sheet{border-radius:16px}}
+.chip-t{font-weight:700;opacity:.85;white-space:nowrap}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -419,7 +420,7 @@ function projStats(p){
 function render(){
   const a=document.activeElement;
   if(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&!S._force){pending=true;return}
-  S._force=false;pending=false;
+  S._force=false;pending=false;S._avg=null;
   let html='';
   html+=bellHTML();
   if(S.timer)html+=timerBar();
@@ -534,9 +535,13 @@ function gamePanel(p,pc){
   </section>`;
 }
 /* ---------- semana general (inicio) ---------- */
+const short3=t=>String(t||'').trim().split(/\s+/).slice(0,3).join(' ');
+function chipEv(e){const avg=S._avg||(S._avg=typeAvgs());const m=num(e.estMin)||num(e.minutes)||0;const g=!m&&avg[e.type]?avg[e.type]:0;
+  return esc(e.short||short3(e.title))+((m||g)?` <span class="chip-t">${hhm(m||g)}${g?'≈':''}</span>`:'');}
+function chipTk(t){const m=num(t.estHours)*60;return esc(t.short||short3(t.title))+(m?` <span class="chip-t">${hhm(m)}</span>`:'');}
 function homeItems(p,ds){
-  const ev=S.events.filter(e=>e.projectId===p.id&&e.date===ds).map(e=>({k:'e',id:e.id,title:e.title,st:evStatus(e),over:overEv(e),ref:e}));
-  const tk=S.tasks.filter(t=>t.projectId===p.id&&t.due===ds).map(t=>({k:'t',id:t.id,title:t.title,st:t.status==='hecha'?'cumplido':t.status==='cancelada'?'cancelado':'planificado',over:overTk(t),ref:t}));
+  const ev=S.events.filter(e=>e.projectId===p.id&&e.date===ds).map(e=>({k:'e',id:e.id,title:e.title,chip:chipEv(e),st:evStatus(e),over:overEv(e),ref:e}));
+  const tk=S.tasks.filter(t=>t.projectId===p.id&&t.due===ds).map(t=>({k:'t',id:t.id,title:t.title,chip:chipTk(t),st:t.status==='hecha'?'cumplido':t.status==='cancelada'?'cancelado':'planificado',over:overTk(t),ref:t}));
   return [...ev,...tk];
 }
 function homeTaskRow(p,t){
@@ -573,7 +578,7 @@ function homeWeek(){
     h+=`<div class="wkm-sp" style="--pc:${c}"><span>${esc(p.name)}${HR.wk[p.id]?`<span class="hr-wk num">${hhm(HR.wk[p.id])}/sem</span>`:''}</span></div>`;
     for(let i=0;i<7;i++){const ds=addDays(ws,i);const its=homeItems(p,ds);const cm=HR.m[p.id][i];
       h+=`<div role="button" tabindex="0" class="wkm-cell ${ds===t?'today':''} ${ds===sel&&S.hRow===p.id?'sel':''}" style="--pc:${c}" data-act="hwCell" data-date="${ds}" data-pid="${esc(p.id)}" aria-label="${esc(p.name)}, ${fmtDate(ds)}: ${its.length} tarea(s)">
-        ${cm.mm?`<span class="hr-cell num">${hhm(cm.mm)}${cm.guess?'≈':''}</span>`:''}${its.slice(0,3).map(x=>`<button type="button" class="wkc-ev st-${x.st.replace(/ /g,'-')}" data-act="hwItem" data-k="${x.k}" data-id="${esc(x.id)}" data-date="${ds}" aria-label="Abrir ${esc(x.title)}">${x.over?WARN+' ':''}${esc(x.title)}</button>`).join('')}${its.length>3?`<span class="wkc-more">+${its.length-3}</span>`:''}</div>`;}}
+        ${cm.mm?`<span class="hr-cell num">${hhm(cm.mm)}${cm.guess?'≈':''}</span>`:''}${its.slice(0,3).map(x=>`<button type="button" class="wkc-ev st-${x.st.replace(/ /g,'-')}" data-act="hwItem" data-k="${x.k}" data-id="${esc(x.id)}" data-date="${ds}" aria-label="Abrir ${esc(x.title)}">${x.over?WARN+' ':''}${x.chip}</button>`).join('')}${its.length>3?`<span class="wkc-more">+${its.length-3}</span>`:''}</div>`;}}
   h+=`<div class="wkm-sp hr-tot-l">Total del día</div>${HR.dayTot.map((v,i)=>`<div class="hr-tot num ${addDays(ws,i)===t?'today':''}">${hhm(v)||'—'}</div>`).join('')}`;
   h+=`</div></div><div class="muted" style="font-size:.72rem">Horas planificadas en la semana: <b class="num">${hhm(HR.dayTot.reduce((a,b)=>a+b,0))||'0'}</b>. Suman el tiempo estimado de cada tarea.${HR.anyGuess?' ≈: tareas de cultivo sin tiempo estimado; uso el promedio de lo que te llevaron otras del mismo tipo.':''} En cultivo cargá «Tiempo estimado» al planificar para que el total sea más preciso.</div>`;
   if(sel){const di=(new Date(sel+'T00:00:00')).getDay();
@@ -685,8 +690,9 @@ function projectForm(p){
 function taskForm(t,pid){
   return `<form class="inline-form" data-form="task" data-id="${esc(t.id||'')}" data-pid="${esc(pid)}">
     <label class="field"><span class="label">Tarea</span><input id="t-title" name="title" required value="${esc(t.title)}"></label>
+    <label class="field"><span class="label">Texto en el calendario (2–3 palabras)</span><input id="t-short" name="short" maxlength="32" value="${esc(t.short||'')}" placeholder="Ej.: Correr 4 km"></label>
     <div class="grid2">
-      <label class="field"><span class="label">Horas estimadas</span><input id="t-est" name="estHours" inputmode="decimal" value="${esc(t.estHours||'')}"></label>
+      <label class="field"><span class="label">Horas estimadas *</span><input id="t-est" name="estHours" inputmode="decimal" value="${esc(t.estHours||'')}" placeholder="Ej.: 1 o 0,5"></label>
       <label class="field"><span class="label">Fecha límite</span><input id="t-due" name="due" type="date" value="${esc(t.due)}"></label>
       <label class="field"><span class="label">Estado</span><select id="t-status" name="status">
         ${['pendiente','en curso','hecha'].map(s=>`<option ${ (t.status||'pendiente')===s?'selected':''}>${s}</option>`).join('')}</select></label>
@@ -942,7 +948,7 @@ function calendarPanel(p,pc){
   for(let d=1;d<=days;d++){
     const ds=month+'-'+String(d).padStart(2,'0');const de=evs.filter(e=>e.date===ds);
     cells+=`<div role="button" tabindex="0" class="cd ${ds===t?'today':''} ${de.length?'has':''}" data-act="calDay" data-date="${ds}" aria-label="${d} de ${MESES[m-1]}${de.length?': '+esc(de.map(e=>e.title+' ('+ST_LABEL[evStatus(e)]+')').join(', ')):''}">
-      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<button type="button" class="ev st-${evStatus(e).replace(/ /g,'-')}" data-act="calItem" data-id="${esc(e.id)}" aria-label="Abrir ${esc(e.title)}">${overEv(e)?WARN+' ':''}${esc(e.title)}</button>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}</div>`;
+      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<button type="button" class="ev st-${evStatus(e).replace(/ /g,'-')}" data-act="calItem" data-id="${esc(e.id)}" aria-label="Abrir ${esc(e.title)}">${overEv(e)?WARN+' ':''}${chipEv(e)}</button>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}</div>`;
   }
   const list=evs.filter(e=>(e.date||'').startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date));
   const germ=evs.filter(e=>e.type==='Germinación'&&evStatus(e)==='cumplido'&&e.date<=t).sort((a,b)=>b.date.localeCompare(a.date));
@@ -1190,15 +1196,16 @@ function eventForm(p,e){
     <div class="grid2">
       ${e.fixedDate?`<input type="hidden" name="date" value="${esc(e.date)}"><div class="field"><span class="label">Día</span><b class="num" style="padding:7px 0">${fmtDate(e.date)}</b></div>`:`<label class="field"><span class="label">Fecha</span><input id="e-date" name="date" type="date" value="${esc(e.date||today())}" required></label>`}
       ${(isNew||mode==='edit')&&!S.space?`<label class="field"><span class="label">Espacio</span><select id="e-space" name="spaceId">${S.spaces.filter(x=>x.projectId===p.id&&x.enabled!==false).sort((a,c)=>num(a.order)-num(c.order)).map(x=>`<option value="${esc(x.id)}" ${x.id===e.spaceId?'selected':''}>${esc(x.name)}</option>`).join('')}<option value="" ${e.spaceId===''?'selected':''}>General (todo el cultivo)</option></select></label>`:''}
-      <label class="field"><span class="label">Tipo</span><select id="e-type" name="type" data-evtype data-bvis>${EV_TYPES.map(x=>`<option ${x===e.type?'selected':''}>${x}</option>`).join('')}</select></label>
+      <label class="field"><span class="label">Tipo</span><select id="e-type" name="type" data-evtype data-bvis required>${e.type?'':'<option value="" selected>Elegí el tipo…</option>'}${EV_TYPES.map(x=>`<option ${x===e.type?'selected':''}>${x}</option>`).join('')}</select></label>
       <label class="field"><span class="label">Estado</span><select id="e-status" name="status">${Object.entries(ST_LABEL).map(([k,v])=>`<option value="${k}" ${k===st?'selected':''}>${v}</option>`).join('')}</select></label>
     </div>
     <label class="field"><span class="label">Qué hay que hacer / qué pasó</span><input id="e-title" name="title" required value="${esc(e.title)}"></label>
+    <label class="field"><span class="label">Texto en el calendario (2–3 palabras)</span><input id="e-short" name="short" maxlength="32" value="${esc(e.short||'')}" placeholder="Ej.: Riego Amazonia"></label>
     ${prodBox(e)}
     ${transBox(e)}
     ${buyBox(e)}
     <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note" value="${esc(e.note)}"></label>
-    <label class="field"><span class="label">Tiempo estimado (minutos)</span><input id="e-est" name="estMin" inputmode="numeric" value="${esc(e.estMin??'')}" placeholder="Para planificar: ej. 15, 30, 60"></label>
+    <label class="field"><span class="label">Tiempo estimado (minutos) *</span><input id="e-est" name="estMin" inputmode="numeric" data-req-plan value="${esc(e.estMin??'')}" placeholder="Para planificar: ej. 15, 30, 60"></label>
     <label class="field"><span class="label">Tiempo dedicado (minutos)</span><input id="e-min" name="minutes" inputmode="numeric" value="${esc(e.minutes??'')}" placeholder="Al completarla: ej. 15, 30, 60"></label>
     ${isNew||mode==='edit'?'':`<label class="field"><span class="label">Motivo del ajuste (opcional)</span><input id="e-adj" name="adjustNote" value="${esc(e.adjustNote)}" placeholder="Ej.: se atrasó por lluvia, se cambió la dosis"></label>`}
     <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button>
@@ -1619,7 +1626,7 @@ function weekPanel(p,pc){
     for(let i=0;i<7;i++){const ds=addDays(ws,i);
       const de=wkEvs.filter(e=>e.date===ds&&(r.id?e.spaceId===r.id:!rows.find(x=>x.id===e.spaceId)));
       h+=`<div role="button" tabindex="0" class="wkm-cell ${ds===t?'today':''} ${ds===sel?'sel':''}" style="--pc:${r.color}" data-act="wkCell" data-date="${ds}" data-sp="${esc(r.id)}" aria-label="${esc(r.name)}, ${DIAS_D[(i+1)%7]} ${fmtDate(ds)}: ${de.length} tarea(s)">
-        ${de.slice(0,3).map(e=>`<button type="button" class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}" data-act="wkItem" data-id="${esc(e.id)}" data-date="${ds}" aria-label="Abrir ${esc(e.title)}">${overEv(e)?WARN+' ':''}${esc(e.title)}</button>`).join('')}${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</div>`;}
+        ${de.slice(0,3).map(e=>`<button type="button" class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}" data-act="wkItem" data-id="${esc(e.id)}" data-date="${ds}" aria-label="Abrir ${esc(e.title)}">${overEv(e)?WARN+' ':''}${chipEv(e)}</button>`).join('')}${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</div>`;}
   }
   h+=`</div></div>`;
   if(sel){const i=(new Date(sel+'T00:00:00')).getDay();const de=evs.filter(e=>e.date===sel);
@@ -2258,6 +2265,8 @@ app.addEventListener('input',e=>{
 app.addEventListener('submit',e=>{
   e.preventDefault();const f=e.target;const d=Object.fromEntries(new FormData(f).entries());
   const kind=f.dataset.form;
+  if(kind==='event'&&(d.status||'planificado')==='planificado'&&!(num(d.estMin)>0)){const el=f.querySelector('[name=estMin]');if(el){el.setCustomValidity('Cargá el tiempo estimado en minutos para planificar la tarea.');el.reportValidity();el.addEventListener('input',()=>el.setCustomValidity(''),{once:true})}return}
+  if(kind==='task'&&(d.status||'pendiente')!=='hecha'&&!(num(d.estHours)>0)){const el=f.querySelector('[name=estHours]');if(el){el.setCustomValidity('Cargá las horas estimadas (por ejemplo 1 o 0,5).');el.reportValidity();el.addEventListener('input',()=>el.setCustomValidity(''),{once:true})}return}
   if(kind==='media'){uploadMedia(f).catch(()=>{});return}
   if(kind==='item'){const key=f.dataset.key,idx=+f.dataset.idx;const sp=S.spaces.find(x=>x.id===f.dataset.sid);if(!sp||!EQUIP[key])return;
     const it={};const kindV=d.kind;
@@ -2307,7 +2316,7 @@ app.addEventListener('submit',e=>{
       if(f.dataset.id)await db.doc('projects/'+f.dataset.id).update(data);
       else{const r=await db.collection('projects').add({...data,kind:d.kind||'project',createdAt:Date.now()});go(r.id)}
     }else if(kind==='event'){
-      const ev={date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),status:d.status||'planificado',minutes:n2(d.minutes),estMin:n2(d.estMin)};
+      const ev={date:d.date||today(),type:d.type||'Otro',title:(d.title||'').trim(),note:(d.note||'').trim(),status:d.status||'planificado',minutes:n2(d.minutes),estMin:n2(d.estMin),short:(d.short||'').trim()};
       if(RIEGO_USE[ev.type]){const fd=new FormData(f);const ids=fd.getAll('prodId'),ds=fd.getAll('dose'),us=fd.getAll('unit');
         ev.liters=num(d.liters)||'';ev.tank=n2(d.tank);
         ev.products=ids.map((pid,i)=>{const pr=S.products.find(x=>x.id===pid);return pr?{productId:pid,label:prodLabel(pr),dose:num(ds[i]),unit:us[i]||'ml'}:null}).filter(Boolean);}
@@ -2352,7 +2361,7 @@ app.addEventListener('submit',e=>{
       const amt=num(d.amount);if(amt<=0){S.err='Cargá un monto mayor a cero.';rerender();return}
       await db.collection('money').add({ledgerId:f.dataset.pid,type:d.type==='ingreso'?'ingreso':'gasto',amount:amt,category:(d.category||'').trim(),scope:d.scope||'',date:d.date||today(),note:(d.note||'').trim(),createdAt:Date.now()});
     }else if(kind==='task'){
-      const data={title:d.title.trim(),estHours:num(d.estHours),due:d.due||'',status:d.status||'pendiente',resources:d.resources.trim()};
+      const data={title:d.title.trim(),short:(d.short||'').trim(),estHours:num(d.estHours),due:d.due||'',status:d.status||'pendiente',resources:d.resources.trim()};
       if(f.dataset.id)await db.doc('tasks/'+f.dataset.id).update(data);
       else await db.collection('tasks').add({...data,projectId:f.dataset.pid,createdAt:Date.now()});
     }else if(kind==='log'){
