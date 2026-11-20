@@ -573,7 +573,7 @@ function homeWeek(){
   const rows=sortedProjects().filter(p=>!isLedger(p));if(!rows.length)return '';
   const t=today();const ws=S.hWeek||sundayOf(t);const we=addDays(ws,6);const f=S.form;
   const sel=S.hSel&&S.hSel>=ws&&S.hSel<=we?S.hSel:null;
-  let h=`<section class="panel"><div class="row"><h2>Semana general</h2><span class="spacer"></span>
+  let h=`<section class="panel"><div class="row"><h2>Semana general</h2><button class="small" data-act="weekPdf">Calendario PDF</button>${S.pdfMsg?`<span class="muted" style="font-size:.78rem">${esc(S.pdfMsg)}</span>`:''}<span class="spacer"></span>
     <button class="small" data-act="hwPrev" aria-label="Semana anterior">‹</button><span class="num" style="font-size:.85rem">${fmtDate(ws)} – ${fmtDate(we)}</span>
     <button class="small" data-act="hwNext" aria-label="Semana siguiente">›</button>${ws!==sundayOf(t)?'<button class="small" data-act="hwToday">Hoy</button>':''}</div>
     <div class="wkm-wrap"><div class="wkm"><div class="wkm-corner"></div>`;
@@ -621,6 +621,57 @@ function modalHTML(){
     body=f.type==='cancel'?cancelForm('t',t.id,t.title):`${taskForm(t,p.id)}<div class="row">${S.confirm==='t'+t.id?`<button class="small danger" data-act="delTask" data-id="${esc(t.id)}">Confirmar eliminar</button><button class="small" data-act="noConfirm">No</button>`:`<button class="small ghost danger" data-act="askDel" data-key="t${esc(t.id)}">Eliminar tarea</button>`}</div>`;}
   return `<div class="modal" data-act="closeModal"><div class="sheet" data-act="noop" role="dialog" aria-modal="true" aria-label="${esc(title)}">
     <div class="row"><h2 style="min-width:0">${esc(title)}</h2><span class="spacer"></span><button class="small ghost" data-act="closeModal" aria-label="Cerrar">✕</button></div>${head}${body}</div></div>`;
+}
+/* ---------- calendario PDF ---------- */
+const PDF_COLORS=['#2f6b4f','#3d4f9a','#a5651a','#1f7a83','#7a4a8c','#8a5a3c'];
+function loadScript(src){return new Promise((ok,ko)=>{if(document.querySelector(`script[src="${src}"]`)){ok();return}const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>ko(new Error('No se pudo cargar el generador de PDF'));document.head.appendChild(s)})}
+const pdfTxt=t=>String(t||'').replace(/[′]/g,"'").replace(/[≈]/g,'~').replace(/[–—]/g,'-').replace(/[“”«»]/g,'"').replace(/[^\x20-\xFF]/g,'');
+const pdfMin=v=>v?(v>=60?Math.floor(v/60)+'\u00a0h'+(Math.round(v%60)?' '+Math.round(v%60)+"'":''):Math.round(v)+"'"):'';
+async function exportWeekPdf(){
+  const msg=t=>{S.pdfMsg=t;rerender()};
+  try{
+    msg('Generando PDF…');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    const {jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+    const rows=sortedProjects().filter(p=>!isLedger(p));const ws=S.hWeek||sundayOf(today());const days=[...Array(7)].map((_,i)=>addDays(ws,i));
+    const avg=typeAvgs();const W=297,H=210,M=10,LC=34,HR=11,FOOT=10;const DC=(W-2*M-LC)/7;
+    doc.setFont('helvetica','bold');doc.setFontSize(14);doc.text(pdfTxt(`Semana del ${fmtDate(ws)} al ${fmtDate(addDays(ws,6))}`),M,M+4);
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(110);doc.text(pdfTxt('Brújula · tareas planificadas por proyecto'),W-M,M+4,{align:'right'});doc.setTextColor(0);
+    const top=M+9;
+    // items y alturas
+    const cellItems=rows.map(p=>days.map(ds=>homeItems(p,ds).filter(x=>x.st!=='cancelado').map(x=>{const r=x.ref;const mins=x.k==='e'?planMinEv(r,avg):num(r.estHours)*60;
+      return {txt:pdfTxt((r.short||short3(r.title))+(mins?' · '+pdfMin(mins):'')),done:x.st==='cumplido',over:x.over,mins}})));
+    doc.setFontSize(7.5);const lineH=3.3;
+    const need=cellItems.map(r=>Math.max(14,...r.map(c=>c.reduce((a,it)=>a+doc.splitTextToSize('! '+it.txt,DC-7).length*lineH+1.2,4))));
+    const avail=H-top-HR-FOOT-M;const scale=avail/need.reduce((a,b)=>a+b,0);const ts=Math.min(1,scale);
+    // cabecera de días
+    doc.setFillColor(243,245,242);doc.rect(M,top,W-2*M,HR,'F');doc.setFont('helvetica','bold');doc.setFontSize(9);
+    days.forEach((ds,i)=>{const x=M+LC+i*DC;doc.text(pdfTxt(DIAS_D[(i+1)%7].slice(0,3).toUpperCase()+' '+(+ds.slice(8))),x+DC/2,top+7,{align:'center'});});
+    let y=top+HR;const dayTot=days.map(()=>0);
+    rows.forEach((p,ri)=>{const h=need[ri]*scale;const col=PDF_COLORS[ri%PDF_COLORS.length];
+      const wk=cellItems[ri].reduce((a,c)=>a+c.reduce((b,it)=>b+it.mins,0),0);
+      doc.setDrawColor(200);doc.setLineWidth(.2);doc.line(M,y,W-M,y);
+      doc.setFillColor(col);doc.rect(M,y+1,1.4,h-2,'F');
+      doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(col);doc.text(doc.splitTextToSize(pdfTxt(p.name),LC-5),M+3,y+5);
+      doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(110);if(wk)doc.text(pdfTxt(pdfMin(wk)+'/sem'),M+3,y+h-2.5);doc.setTextColor(0);
+      days.forEach((ds,i)=>{const x=M+LC+i*DC;let yy=y+4;doc.setFontSize(7.5);
+        cellItems[ri][i].forEach(it=>{dayTot[i]+=it.mins;doc.setFont('helvetica',it.over?'bold':'normal');const lines=doc.splitTextToSize((it.over?'! ':'')+it.txt,DC-7);
+          doc.setDrawColor(90);doc.setLineWidth(.25);doc.rect(x+1.5,yy-2.4,2.6,2.6);
+          if(it.done){doc.setFillColor(90,90,90);doc.rect(x+1.9,yy-2,1.8,1.8,'F');doc.setTextColor(140)}
+          doc.text(lines,x+5.4,yy,{lineHeightFactor:1.15});
+          doc.setTextColor(0);yy+=lines.length*lineH*ts+1.2*ts;});
+        doc.setDrawColor(225);doc.line(x,y,x,y+h);});
+      y+=h;});
+    doc.setDrawColor(120);doc.setLineWidth(.4);doc.line(M,y,W-M,y);
+    doc.setFont('helvetica','bold');doc.setFontSize(8.5);doc.text('Total del día',M+3,y+5.5);
+    days.forEach((ds,i)=>doc.text(pdfTxt(pdfMin(dayTot[i])||'-'),M+LC+i*DC+DC/2,y+5.5,{align:'center'}));
+    doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(110);
+    doc.text(pdfTxt(`Total semana: ${pdfMin(dayTot.reduce((a,b)=>a+b,0))||'0'} · ! = vencida sin hacer · casilla llena = hecha · generado el ${fmtDate(today())}`),M,H-M+2);
+    const dl=window.claude&&await window.claude.use('downloads');
+    const data=doc.output('arraybuffer');const name=`semana-${ws}.pdf`;
+    if(!dl){msg('Descargar archivos no está disponible en esta vista.');return}
+    const r=await dl.save({filename:name,data});msg(r&&r.status?'PDF listo: '+name:'');
+  }catch(e){msg(e&&e.code==='declined'?'Descarga cancelada.':'No se pudo generar el PDF: '+(e&&e.message||e))}
 }
 function homeView(){
   const ps=sortedProjects();
@@ -2160,6 +2211,7 @@ app.addEventListener('click',e=>{
     closeModal(){S.modal=null;S.form=null;S.confirm=null;rerender()},
     noop(){},
     mTaskDone(){safe(()=>db.doc('tasks/'+id).update({status:'hecha'}))},
+    weekPdf(){exportWeekPdf()},
     hhTab(){S.hhTab=b.dataset.tab;S.form=null;rerender()},
     newHH(){S.form={type:'hh'};rerender();document.getElementById('hh-name')?.focus()},
     editHH(){S.form={type:'hh',id};rerender()},
@@ -2227,7 +2279,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','closeModal','noop','hwItem','wkItem','calItem','bell','bellGo','hwPrev','hwNext','hwToday','hwDay','hwCell','hwAll','hwClose','hwAdd','doneQuick','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','weekPdf','closeModal','noop','hwItem','wkItem','calItem','bell','bellGo','hwPrev','hwNext','hwToday','hwDay','hwCell','hwAll','hwClose','hwAdd','doneQuick','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
