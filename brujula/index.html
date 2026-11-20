@@ -383,6 +383,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .vmap-wrap{overflow-x:auto}
 .vfix{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:8px}
 .vfix>div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.vgo{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.bud{display:flex;flex-direction:column;gap:8px}
+.bud-row{display:grid;grid-template-columns:minmax(90px,160px) 1fr auto auto;gap:10px;align-items:center;font-size:.86rem}
+.warnc{color:var(--p3)}
+@media (max-width:560px){.bud-row{grid-template-columns:1fr auto}.bud-row .track{grid-column:1/-1;grid-row:2}.bud-row form{grid-column:1/-1}}
 </style>
 
 <div class="wrap" id="app">
@@ -798,7 +803,7 @@ function logForm(pid,tid){
 }
 
 /* ---------- finanzas personales: común / fijos / no fijos ---------- */
-const HH_TABS=[['venc','Vencimientos'],['comun','Gastos en común de la casa'],['fijo','Personales fijos'],['variable','Personales no fijos'],['ingreso','Ingresos'],['tarjetas','Tarjetas y cuotas']];
+const HH_TABS=[['venc','Vencimientos'],['comun','Gastos en común de la casa'],['fijo','Personales fijos'],['variable','Personales no fijos'],['ingreso','Ingresos'],['tarjetas','Tarjetas y cuotas'],['ahorro','Ahorro'],['analisis','Análisis']];
 const hhItems=(p,scope,month)=>S.money.filter(m=>m.ledgerId===p.id&&m.scope===scope&&(m.month||(m.date||'').slice(0,7))===month);
 const hasAmt=m=>m.amount!==''&&m.amount!=null;
 function hhComunSums(p,month){
@@ -817,7 +822,7 @@ function hhForm(p,scope,m){
       ${scope==='comun'||scope==='fijo'?(()=>{const lib=libOf(p,scope);const opts=[...lib];if(m.concept&&!opts.includes(m.concept))opts.unshift(m.concept);
         return `<label class="field"><span class="label">Concepto</span><select id="hh-name" name="conceptSel" data-bvis required><option value="">Elegí de la librería…</option>${opts.map(c=>`<option ${c===m.concept?'selected':''}>${esc(c)}</option>`).join('')}<option value="__new">+ Nuevo concepto…</option></select></label>
         <label class="field" data-bwhen="conceptSel:__new"><span class="label">Nuevo concepto (se agrega a la librería)</span><input id="hh-new" name="conceptNew" placeholder="${scope==='comun'?'Ej.: Expensas':'Ej.: Celular'}"></label>`})()
-      :`<label class="field"><span class="label">Concepto</span><input id="hh-name" name="concept" required value="${esc(m.concept)}" placeholder="${scope==='ingreso'?'Ej.: Sueldo':'Ej.: Supermercado'}"></label>`}
+      :`<label class="field"><span class="label">Concepto</span><input id="hh-name" name="concept" required value="${esc(m.concept)}" ${scope==='ingreso'?'list="dl-inclib"':''} placeholder="${scope==='ingreso'?'Ej.: Sueldo':'Ej.: Supermercado'}">${scope==='ingreso'?`<datalist id="dl-inclib">${libOf(p,'ingreso').map(c=>`<option value="${esc(c)}">`).join('')}</datalist>`:''}</label>`}
       <label class="field"><span class="label">Monto ($)</span><input id="hh-amt" name="amount" inputmode="decimal" value="${esc(dec(m.amount))}" placeholder="${scope==='variable'||scope==='ingreso'?'':'Vacío = importe pendiente'}"></label>
       ${scope==='comun'?`<label class="field"><span class="label">Pagado por</span><select id="hh-paid" name="paidBy"><option value="">Todavía no se pagó</option><option value="Pozo" ${m.paidBy==='Pozo'?'selected':''}>Pozo común</option>${mem.map(n=>`<option ${n===m.paidBy?'selected':''}>${esc(n)}</option>`).join('')}</select></label>`
         :scope==='fijo'?`<label class="field"><span class="label">Estado</span><select id="hh-st" name="status"><option value="pendiente" ${m.status!=='pagado'?'selected':''}>Pendiente</option><option value="pagado" ${m.status==='pagado'?'selected':''}>Pagado</option></select></label>`
@@ -850,9 +855,9 @@ function hhTotals(p,month){
 const libOf=(p,scope)=>((p.conceptLib||{})[scope]||[]).slice();
 function libPanel(p,scope){
   const lib=libOf(p,scope);const open=S.libOpen===scope;
-  return `<details ${open?'open':''} data-libtoggle="${scope}"><summary class="muted" style="font-size:.85rem">Librería de conceptos ${scope==='comun'?'de la casa':'personales fijos'} (${lib.length})</summary>
+  return `<details ${open?'open':''} data-libtoggle="${scope}"><summary class="muted" style="font-size:.85rem">Librería de conceptos ${scope==='comun'?'de la casa':scope==='ingreso'?'de ingresos':'personales fijos'} (${lib.length})</summary>
     <div class="lib-list">${lib.map((c,i)=>`<form class="lib-row" data-form="due" data-scope="${scope}" data-concept="${esc(c)}"><span style="flex:1;min-width:0">${esc(c)}</span>
-      <label class="row" style="gap:4px;flex-wrap:nowrap"><span class="muted" style="font-size:.78rem">vence el día</span><input name="day" inputmode="numeric" style="width:52px" value="${dueDayOf(p,scope,c)||''}" placeholder="—"></label>
+      <label class="row" style="gap:4px;flex-wrap:nowrap"><span class="muted" style="font-size:.78rem">${scope==='ingreso'?'cobrás el día':'vence el día'}</span><input name="day" inputmode="numeric" style="width:52px" value="${dueDayOf(p,scope,c)||''}" placeholder="—"></label>
       <button class="small" type="submit">OK</button><button type="button" class="ghost small" data-act="libDel" data-scope="${scope}" data-i="${i}" aria-label="Quitar ${esc(c)} de la librería">✕</button></form>`).join('')||'<span class="muted" style="font-size:.85rem">Vacía</span>'}</div>
     <form class="row" data-form="lib" data-scope="${scope}" style="margin-top:6px"><input name="concept" placeholder="Agregar concepto" style="flex:1;min-width:140px"><button class="small" type="submit">Agregar</button></form></details>`;
 }
@@ -862,10 +867,10 @@ const dueKey=(scope,c)=>scope+':'+c;
 const dueDayOf=(p,scope,c)=>num((p.dueDays||{})[dueKey(scope,c)])||0;
 function dueList(p,month){
   const out=[];const [y,m]=month.split('-').map(Number);const last=new Date(y,m,0).getDate();
-  for(const scope of ['comun','fijo'])libOf(p,scope).forEach(c=>{const d=dueDayOf(p,scope,c);if(!d)return;
+  for(const scope of ['comun','fijo','ingreso'])libOf(p,scope).forEach(c=>{const d=dueDayOf(p,scope,c);if(!d)return;
     const day=Math.min(d,last);const date=month+'-'+String(day).padStart(2,'0');
-    const it=S.money.find(x=>x.ledgerId===p.id&&x.scope===scope&&x.concept===c&&(x.month||(x.date||'').slice(0,7))===month);
-    const paid=it?(scope==='comun'?!!it.paidBy:it.status==='pagado'):false;
+    const it=S.money.find(x=>x.ledgerId===p.id&&x.scope===scope&&String(x.concept||'').trim().toLowerCase()===c.trim().toLowerCase()&&(x.month||(x.date||'').slice(0,7))===month);
+    const paid=it?(scope==='comun'?!!it.paidBy:scope==='ingreso'?hasAmt(it):it.status==='pagado'):false;
     const st=paid?'pagado':date<today()?'vencido':'pendiente';
     out.push({scope,concept:c,date,day,amount:it&&hasAmt(it)?num(it.amount):null,paid,st,it});});
   return [...out,...cardDues(p,month)].sort((a,b)=>a.day-b.day||a.concept.localeCompare(b.concept));
@@ -873,7 +878,7 @@ function dueList(p,month){
 function dueView(p,pc){
   const month=S.month||today().slice(0,7);const ls=dueList(p,month);
   const [y,m]=month.split('-').map(Number);const first=new Date(y,m-1,1);const lead=(first.getDay()+6)%7;const days=new Date(y,m,0).getDate();
-  const noDay=['comun','fijo'].flatMap(sc=>libOf(p,sc).filter(c=>!dueDayOf(p,sc,c)).map(c=>({sc,c})));
+  const noDay=['comun','fijo','ingreso'].flatMap(sc=>libOf(p,sc).filter(c=>!dueDayOf(p,sc,c)).map(c=>({sc,c})));
   let cells='';for(let i=0;i<lead;i++)cells+='<div class="cd out"></div>';
   for(let d=1;d<=days;d++){const ds=month+'-'+String(d).padStart(2,'0');const de=ls.filter(x=>x.day===d);
     cells+=`<div class="cd ${ds===today()?'today':''} ${de.length?'has':''}"><span class="dn num">${d}</span>${de.map(x=>`<span class="ev due-${x.st}">${esc(x.concept)}</span>`).join('')}</div>`;}
@@ -883,7 +888,7 @@ function dueView(p,pc){
     <div class="money-sum"><div class="ms"><span class="label">Vencen este mes</span><b>${ls.length}</b></div><div class="ms"><span class="label">Vencidos sin pagar</span><b class="${ls.some(x=>x.st==='vencido')?'exp':''}">${ls.filter(x=>x.st==='vencido').length}</b></div><div class="ms"><span class="label">Falta pagar</span><b>${money(pend)}</b><span class="muted" style="font-size:.72rem">de ${money(tot)} con importe cargado</span></div></div>
     <div class="cal-wrap"><div class="cal">${['lun','mar','mié','jue','vie','sáb','dom'].map(d=>`<div class="cw">${d}</div>`).join('')}${cells}</div></div>
     <div class="row muted" style="font-size:.75rem;gap:14px"><span><span class="ev-key due-key-pendiente"></span> pendiente</span><span><span class="ev-key due-key-vencido"></span> vencido</span><span><span class="ev-key due-key-pagado"></span> pagado</span></div>
-    ${ls.length?`<div class="hh-list">${ls.map(x=>`<div class="hh-row" style="cursor:default"><span><span class="num muted" style="font-size:.8rem">día ${x.day}</span> <b style="font-weight:500">${esc(x.concept)}</b> <span class="tag">${x.scope==='comun'?'Casa':x.scope==='tarjeta'?'Tarjeta':'Fijo'}</span><span class="tag due-tag-${x.st}">${x.st==='pagado'?'Pagado':x.st==='vencido'?'Vencido':'Pendiente'}</span></span><span class="num">${x.amount!=null?money(x.amount):'<span class="muted">sin importe</span>'}</span></div>`).join('')}</div>`:'<div class="empty">Todavía no hay conceptos con día de vencimiento. Cargalos en la librería de conceptos de cada pestaña.</div>'}
+    ${ls.length?`<div class="hh-list">${ls.map(x=>`<div class="hh-row" style="cursor:default"><span><span class="num muted" style="font-size:.8rem">día ${x.day}</span> <b style="font-weight:500">${esc(x.concept)}</b> <span class="tag">${x.scope==='comun'?'Casa':x.scope==='tarjeta'?'Tarjeta':x.scope==='ingreso'?'A cobrar':'Fijo'}</span><span class="tag due-tag-${x.st}">${x.st==='pagado'?(x.scope==='ingreso'?'Cobrado':'Pagado'):x.st==='vencido'?(x.scope==='ingreso'?'Sin cobrar':'Vencido'):'Pendiente'}</span></span><span class="num">${x.amount!=null?money(x.amount):'<span class="muted">sin importe</span>'}</span></div>`).join('')}</div>`:'<div class="empty">Todavía no hay conceptos con día de vencimiento. Cargalos en la librería de conceptos de cada pestaña.</div>'}
     ${noDay.length?`<div class="muted" style="font-size:.78rem">Sin día de vencimiento: ${noDay.map(x=>esc(x.c)).join(', ')}.</div>`:''}
   </section>`;
 }
@@ -903,7 +908,7 @@ function bellHTML(){
   return `<div class="bell-wrap"><button class="bell ${al.length?'on':''}" data-act="bell" aria-label="Avisos de vencimientos: ${al.length}" aria-expanded="${!!S.bellOpen}">
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.84V3a1.5 1.5 0 0 0-3 0v1.16A7 7 0 0 0 5 11v5l-2 2v1h18v-1Z" fill="currentColor"/></svg>
     ${al.length?`<span class="bell-n num">${al.length}</span>`:''}</button>
-    ${S.bellOpen?`<div class="bell-pop" role="dialog" aria-label="Vencimientos"><b>Vencimientos</b>${al.length?al.map(x=>`<button class="bell-it ${x.when==='hoy'?'today':''}" data-act="bellGo" data-id="${esc(x.pid)}"><span class="tag ${x.when==='hoy'?'due-tag-vencido':''}">${x.when==='hoy'?'Vence hoy':'Vence mañana'}</span> <b style="font-weight:600">${esc(x.concept)}</b>${x.amount!=null?` · <span class="num">${money(x.amount)}</span>`:''}<span class="muted" style="display:block;font-size:.75rem">${fmtDate(x.date)} · sin pagar</span></button>`).join(''):'<div class="muted" style="font-size:.85rem">No hay vencimientos sin pagar para hoy ni mañana.</div>'}</div>`:''}</div>`;
+    ${S.bellOpen?`<div class="bell-pop" role="dialog" aria-label="Vencimientos"><b>Vencimientos</b>${al.length?al.map(x=>`<button class="bell-it ${x.when==='hoy'?'today':''}" data-act="bellGo" data-id="${esc(x.pid)}"><span class="tag ${x.when==='hoy'?'due-tag-vencido':''}">${x.scope==='ingreso'?(x.when==='hoy'?'Cobrás hoy':'Cobrás mañana'):(x.when==='hoy'?'Vence hoy':'Vence mañana')}</span> <b style="font-weight:600">${esc(x.concept)}</b>${x.amount!=null?` · <span class="num">${money(x.amount)}</span>`:''}<span class="muted" style="display:block;font-size:.75rem">${fmtDate(x.date)} · ${x.scope==='ingreso'?'sin cobrar':'sin pagar'}</span></button>`).join(''):'<div class="muted" style="font-size:.85rem">No hay vencimientos sin pagar para hoy ni mañana.</div>'}</div>`:''}</div>`;
 }
 /* ---------- tarjetas y cuotas ---------- */
 const cardsOf=p=>p.cards||[];
@@ -982,19 +987,126 @@ function projectionPanel(p,pc,month){
     </dl>
     <div class="muted" style="font-size:.78rem">Estimación: los importes que no cargaste salen del mismo concepto del mes anterior.</div></section>`;
 }
+/* ---------- presupuesto por categoría (no fijos) ---------- */
+function budgetBox(p,month,its){
+  const B=p.budgets||{};const spent={};its.filter(hasAmt).forEach(m=>{const c=m.category||'Sin categoría';spent[c]=(spent[c]||0)+num(m.amount)});
+  const cats=[...new Set([...Object.keys(B),...Object.keys(spent)])].sort((a,c)=>(spent[c]||0)-(spent[a]||0));
+  if(!cats.length)return '';
+  return `<h3>Por categoría y tope mensual</h3><div class="bud">${cats.map(c=>{const sp=spent[c]||0,cap=num(B[c]);const pct=cap?sp/cap:0;const cls=!cap?'':pct>=1?'exp':pct>=.8?'warnc':'inc';
+    return `<div class="bud-row"><span style="min-width:0"><b style="font-weight:500">${esc(c)}</b>${cap&&pct>=.8?`<span class="tag ${pct>=1?'due-tag-vencido':''}">${pct>=1?'pasado del tope':'más del 80 %'}</span>`:''}</span>
+      <div class="track"><div class="fill" style="width:${Math.min(100,cap?pct*100:100)}%;background:${!cap?'var(--pc)':pct>=1?'var(--warn)':pct>=.8?'var(--p3)':'var(--ok)'}"></div></div>
+      <span class="num ${cls}" style="text-align:right">${money(sp)}${cap?` / ${money(cap)}`:''}</span>
+      <form class="row" data-form="budget" data-cat="${esc(c)}" style="gap:4px;flex-wrap:nowrap"><input name="cap" inputmode="decimal" style="width:96px" value="${esc(dec(B[c]))}" placeholder="Tope $" aria-label="Tope mensual de ${esc(c)}"><button class="small" type="submit">OK</button></form></div>`}).join('')}</div>
+    <form class="row" data-form="budget" style="gap:6px"><input name="cat" placeholder="Otra categoría" style="flex:1;min-width:120px" aria-label="Categoría"><input name="cap" inputmode="decimal" placeholder="Tope $" style="width:110px" aria-label="Tope"><button class="small" type="submit">Agregar tope</button></form>`;
+}
+/* ---------- ahorro con objetivos ---------- */
+const goalsOf=p=>p.goals||[];
+const goalSaved=(p,gid,until)=>S.money.filter(x=>x.ledgerId===p.id&&x.scope==='ahorro'&&x.goalId===gid&&(!until||(x.month||'')<=until)).reduce((a,x)=>a+num(x.amount),0);
+const savedIn=(p,month)=>S.money.filter(x=>x.ledgerId===p.id&&x.scope==='ahorro'&&x.month===month).reduce((a,x)=>a+num(x.amount),0);
+function goalsView(p,pc){
+  const f=S.form;const gs=goalsOf(p);const month=today().slice(0,7);
+  let h=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Ahorro con objetivos</h2><span class="spacer"></span>${f&&f.type==='goal'?'':'<button class="small primary" data-act="newGoal">+ Objetivo</button>'}</div>`;
+  if(f&&f.type==='goal'){const g=gs.find(x=>x.id===f.id)||{};h+=`<form class="inline-form" data-form="goal" data-pid="${esc(p.id)}" data-id="${esc(g.id||'')}"><div class="grid3">
+    <label class="field"><span class="label">Para qué</span><input id="gl-name" name="name" required value="${esc(g.name||'')}" placeholder="Ej.: Fondo de emergencia"></label>
+    <label class="field"><span class="label">Meta ($)</span><input id="gl-target" name="target" inputmode="decimal" required value="${esc(dec(g.target))}"></label>
+    <label class="field"><span class="label">Para cuándo</span><input id="gl-dl" name="deadline" type="date" value="${esc(g.deadline||'')}"></label></div>
+    <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button></div></form>`}
+  if(!gs.length&&!(f&&f.type==='goal'))return h+'<div class="empty">Creá un objetivo con su meta y fecha. Cada aporte suma al avance y la app te dice cuánto tenés que apartar por mes.</div></section>';
+  h+=gs.map(g=>{const sv=goalSaved(p,g.id);const t=num(g.target);const pct=t?Math.min(1,sv/t):0;const left=Math.max(0,t-sv);
+    const ms=g.deadline?Math.max(1,monthDiff(month,g.deadline.slice(0,7))+1):null;const perM=ms&&left?left/ms:0;
+    const aps=S.money.filter(x=>x.ledgerId===p.id&&x.scope==='ahorro'&&x.goalId===g.id).sort((a,c)=>(c.date||'').localeCompare(a.date||''));
+    return `<div class="batch" style="gap:6px"><div class="row"><b class="bt">${esc(g.name)}</b>${pct>=1?'<span class="tag st-tag-cumplido">Cumplido</span>':''}<span class="spacer"></span>
+      <button class="small" data-act="newSave" data-id="${esc(g.id)}">+ Aporte</button><button class="small ghost" data-act="editGoal" data-id="${esc(g.id)}">Editar</button>
+      ${S.confirm==='gl'+g.id?`<button class="small danger" data-act="delGoal" data-id="${esc(g.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="gl${esc(g.id)}" aria-label="Borrar objetivo">✕</button>`}</div>
+      <div class="row" style="gap:10px;flex-wrap:nowrap"><div class="gm-bar ok" style="flex:1"><i style="width:${Math.round(pct*100)}%"></i></div><b class="num">${Math.round(pct*100)} %</b></div>
+      <div class="muted num" style="font-size:.82rem">${money(sv)} de ${money(t)} · faltan ${money(left)}${g.deadline?` · para el ${fmtDate(g.deadline)}`:''}</div>
+      ${perM?`<div style="font-size:.88rem">Para llegar: apartá <b class="num">${money(perM)}</b> por mes durante ${ms} ${ms===1?'mes':'meses'}.</div>`:''}
+      ${f&&f.type==='save'&&f.id===g.id?`<form class="row" data-form="save" data-pid="${esc(p.id)}" data-id="${esc(g.id)}" style="gap:6px"><input name="amount" inputmode="decimal" required placeholder="$" style="width:120px" aria-label="Monto del aporte"><input name="date" type="date" value="${today()}" style="width:auto" aria-label="Fecha"><button class="small primary" type="submit">Guardar aporte</button><button type="button" class="small" data-act="cancelForm">Cancelar</button></form>`:''}
+      ${aps.length?`<details><summary class="muted" style="font-size:.8rem">Aportes (${aps.length})</summary><div class="hh-list">${aps.map(a=>`<div class="hh-row" style="cursor:default"><span class="num muted" style="font-size:.82rem">${fmtDate(a.date)}</span><span class="row" style="gap:4px;flex-wrap:nowrap"><span class="num inc">${money(num(a.amount))}</span>${S.confirm==='sv'+a.id?`<button class="small danger" data-act="delHH" data-id="${esc(a.id)}">Borrar</button>`:`<button class="ghost small" data-act="askDel" data-key="sv${esc(a.id)}" aria-label="Borrar aporte">✕</button>`}</span></div>`).join('')}</div></details>`:''}</div>`}).join('');
+  return h+'</section>';
+}
+/* ---------- análisis: evolución, inflación, dólar, cierre del mes ---------- */
+function inflFactor(p,m,to){let f=1;const I=p.ipc||{};for(let x=shiftMonth(m,1);x<=to;x=shiftMonth(x,1))f*=1+num(I[x])/100;return f}
+function analysisView(p,pc){
+  const cur=today().slice(0,7);const ms=[];for(let i=11;i>=0;i--)ms.push(shiftMonth(cur,-i));
+  const real=!!S.finReal;const I=p.ipc||{},U=p.usd||{};
+  const rows=ms.map(m=>{const t=hhTotals(p,m);const sv=savedIn(p,m);const k=real?inflFactor(p,m,cur):1;return {m,inc:t.inc*k,exp:t.exp*k,sv:sv*k,raw:t,usd:num(U[m])}});
+  const missing=real?ms.slice(1).filter(m=>I[m]===undefined||I[m]===''):[];
+  const mx=Math.max(1,...rows.map(r=>Math.max(r.inc,r.exp)));const W=640,H=220,L=56,R=10,T=12,B=30;const bw=(W-L-R)/rows.length;
+  const y=v=>T+(1-v/mx)*(H-T-B);const ticks=[0,mx/2,mx];
+  const short=m=>MESES[+m.slice(5)-1].slice(0,3);
+  const svg=`<div class="wchart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Ingresos y gastos de los últimos 12 meses">
+    ${ticks.map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" class="wg"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" class="wt">${v>=1e6?dec(Math.round(v/1e5)/10)+' M':Math.round(v/1e3)+' k'}</text>`).join('')}
+    ${rows.map((r,i)=>{const x0=L+i*bw+bw*.15,w=bw*.33;return `<rect x="${x0}" y="${y(r.inc)}" width="${w}" height="${Math.max(0,y(0)-y(r.inc))}" rx="2" style="fill:var(--ok)"/><rect x="${x0+w+2}" y="${y(r.exp)}" width="${w}" height="${Math.max(0,y(0)-y(r.exp))}" rx="2" style="fill:var(--warn)"/>
+      <rect x="${L+i*bw}" y="${T}" width="${bw}" height="${H-T-B}" class="whit" data-tip="${esc(monthName(r.m)+' · ingresos '+money(r.inc)+' · gastos '+money(r.exp)+' · saldo '+money(r.inc-r.exp))}"/>
+      <text x="${L+i*bw+bw/2}" y="${H-12}" text-anchor="middle" class="wt">${short(r.m)}</text>`}).join('')}
+  </svg><div class="wtip" hidden></div></div>`;
+  let h=`<section class="panel" style="--pc:${pc}"><div class="row"><h2>Evolución mes a mes</h2><span class="spacer"></span>
+      <button class="small ${real?'primary':''}" data-act="finReal">${real?'En pesos de hoy':'En pesos de cada mes'}</button></div>
+    <div class="row muted" style="font-size:.78rem;gap:12px"><span><span class="ev-key" style="background:var(--ok)"></span> ingresos</span><span><span class="ev-key" style="background:var(--warn)"></span> gastos</span></div>${svg}
+    ${missing.length?`<div class="muted" style="font-size:.78rem">Para pasar a pesos de hoy falta la inflación de: ${missing.map(monthName).join(', ')} (se toma 0 %).</div>`:''}
+    <div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Mes</th><th>Ingresos</th><th>Gastos</th><th>Ahorro</th><th>Saldo</th><th>Saldo en USD</th></tr></thead><tbody>
+    ${rows.slice().reverse().map(r=>`<tr><td>${monthName(r.m)}</td><td class="num">${money(r.inc)}</td><td class="num">${money(r.exp)}</td><td class="num">${money(r.sv)}</td><td class="num ${r.inc-r.exp<0?'exp':'inc'}">${money(r.inc-r.exp)}</td><td class="num">${r.usd?'US$ '+dec(Math.round((r.raw.inc-r.raw.exp)/r.usd)):'—'}</td></tr>`).join('')}</tbody></table></div></section>`;
+  // variación por categoría
+  const cats=m=>{const o={};hhItems(p,'variable',m).filter(hasAmt).forEach(x=>{const c=x.category||'Sin categoría';o[c]=(o[c]||0)+num(x.amount)});return o};
+  const a=cats(shiftMonth(cur,-1)),b=cats(cur);const all=[...new Set([...Object.keys(a),...Object.keys(b)])].sort((x,z)=>(b[z]||0)-(b[x]||0));
+  if(all.length)h+=`<section class="panel" style="--pc:${pc}"><h3>No fijos: ${monthName(cur)} contra ${monthName(shiftMonth(cur,-1))}</h3><div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Categoría</th><th>Mes anterior</th><th>Este mes</th><th>Variación</th></tr></thead><tbody>
+    ${all.map(c=>{const x=a[c]||0,z=b[c]||0;const d=x?(z-x)/x:null;return `<tr><td>${esc(c)}</td><td class="num">${money(x)}</td><td class="num">${money(z)}</td><td class="num ${d>0?'exp':d<0?'inc':''}">${d==null?'nuevo':(d>0?'+':'')+Math.round(d*100)+' %'}</td></tr>`}).join('')}</tbody></table></div>
+    <div class="muted" style="font-size:.78rem">Este mes va en curso: compará con eso en mente.</div></section>`;
+  // inflación y dólar
+  const em=ms.slice().reverse();
+  h+=`<section class="panel" style="--pc:${pc}"><h3>Inflación y dólar por mes</h3>
+    <div class="muted" style="font-size:.82rem">Cargá la inflación mensual (%) y la cotización del dólar que quieras usar como referencia. La app no las busca sola: salen de lo que cargues.</div>
+    <form class="inline-form" data-form="infl" data-pid="${esc(p.id)}"><div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Mes</th><th>Inflación (%)</th><th>Dólar ($ por US$)</th></tr></thead><tbody>
+    ${em.map(m=>`<tr><td>${monthName(m)}</td><td><input name="ipc_${m}" inputmode="decimal" style="width:90px" value="${esc(dec(I[m]))}" aria-label="Inflación ${monthName(m)}"></td><td><input name="usd_${m}" inputmode="decimal" style="width:110px" value="${esc(dec(U[m]))}" aria-label="Dólar ${monthName(m)}"></td></tr>`).join('')}</tbody></table></div>
+    <div class="row"><button class="primary" type="submit">Guardar</button></div></form></section>`;
+  h+=closeView(p,pc);
+  return h;
+}
+function closeData(p,month){
+  const t=hhTotals(p,month);const s=hhComunSums(p,month);const mem=s.mem.length;
+  const items=[...hhItems(p,'fijo',month).filter(hasAmt).map(m=>({l:m.concept,v:num(m.amount),g:'Fijo'})),...hhItems(p,'variable',month).filter(hasAmt).map(m=>({l:m.concept,v:num(m.amount),g:m.category||'No fijo'})),
+    ...hhItems(p,'comun',month).filter(hasAmt).map(m=>({l:m.concept,v:num(m.amount)/mem,g:'Casa (tu parte)'})),...cuotasIn(p,month).map(x=>({l:x.concept+' (cuota '+x.k+'/'+num(x.n)+')',v:x.amt,g:'Tarjeta'}))].sort((a,b)=>b.v-a.v);
+  const blocks=[['Tu parte de la casa',t.myC],['Personales fijos',t.fixedT],['Personales no fijos',t.varT],['Cuotas de tarjeta',t.cardT],...t.apps.map(a=>['Gastos de '+a.name,a.exp])].filter(x=>x[1]>0);
+  return {t,s,top:items.slice(0,5),blocks,sv:savedIn(p,month)};
+}
+function closeView(p,pc){
+  const month=S.month||today().slice(0,7);const c=closeData(p,month);const tot=c.blocks.reduce((a,x)=>a+x[1],0)||1;
+  return `<section class="panel" style="--pc:${pc}"><div class="row"><h2>Cierre del mes</h2><span class="spacer"></span><span class="pnav"><button class="small" data-act="prevMonth" aria-label="Mes anterior">‹</button><span class="num pm">${monthName(month)}</span><button class="small" data-act="nextMonth" aria-label="Mes siguiente">›</button></span></div>
+    <div class="money-sum"><div class="ms"><span class="label">Ingresos</span><b class="inc">${money(c.t.inc)}</b></div><div class="ms"><span class="label">Gastos</span><b class="exp">${money(c.t.exp)}</b></div><div class="ms"><span class="label">Ahorraste</span><b>${money(c.sv)}</b></div><div class="ms"><span class="label">Saldo</span><b class="${c.t.inc-c.t.exp-c.sv<0?'exp':'inc'}">${money(c.t.inc-c.t.exp-c.sv)}</b><span class="muted" style="font-size:.72rem">después de ahorrar</span></div></div>
+    <h3>En qué se fue la plata</h3>${c.blocks.map(([l,v])=>`<div class="cat"><span>${esc(l)}</span><div class="track"><div class="fill" style="width:${v/tot*100}%;background:var(--pc)"></div></div><span class="num" style="text-align:right">${money(v)} · ${Math.round(v/tot*100)} %</span></div>`).join('')||'<span class="muted">Sin gastos.</span>'}
+    <h3>Los 5 gastos más grandes</h3>${c.top.length?`<div class="hh-list">${c.top.map((x,i)=>`<div class="hh-row" style="cursor:default"><span><span class="num muted">${i+1}.</span> <b style="font-weight:500">${esc(x.l)}</b> <span class="tag">${esc(x.g)}</span></span><span class="num">${money(x.v)}</span></div>`).join('')}</div>`:'<span class="muted">Sin gastos.</span>'}
+    <div class="frow"><dt>Pozo común con ${esc(c.s.mem.filter(n=>n!==c.s.mem[0]).join(', '))}</dt><dd class="num" style="text-align:right">queda ${money(c.s.pozo)} · ${c.s.mem.map(n=>esc(n)+': '+(c.s.owe[n]===0?'al día':c.s.owe[n]>0?'debe '+money(c.s.owe[n]):'a favor '+money(-c.s.owe[n]))).join(' · ')}</dd></div>
+    <div class="row"><button class="small" data-act="closePdf">Exportar cierre en PDF</button>${S.pdfMsg2?`<span class="muted" style="font-size:.8rem">${esc(S.pdfMsg2)}</span>`:''}</div></section>`;
+}
+async function exportClosePdf(p){
+  const month=S.month||today().slice(0,7);const c=closeData(p,month);const msg=t=>{S.pdfMsg2=t;rerender()};
+  try{msg('Generando PDF…');await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+    const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'});let y=20;const M=18,W=210;const T=t=>pdfTxt(t);
+    doc.setFont('helvetica','bold');doc.setFontSize(18);doc.text(T('Cierre de '+monthName(month)),M,y);y+=6;doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(110);doc.text(T(p.name+' · generado el '+fmtDate(today())),M,y);doc.setTextColor(0);y+=10;
+    const kv=[['Ingresos',c.t.inc],['Gastos',c.t.exp],['Ahorro',c.sv],['Saldo despues de ahorrar',c.t.inc-c.t.exp-c.sv]];
+    doc.setFontSize(11);kv.forEach(([l,v])=>{doc.text(T(l),M,y);doc.text(T(money(v)),W-M,y,{align:'right'});y+=7});y+=4;
+    const sec=t=>{doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text(T(t),M,y);y+=7;doc.setFont('helvetica','normal');doc.setFontSize(10)};
+    sec('En que se fue la plata');const tot=c.blocks.reduce((a,x)=>a+x[1],0)||1;c.blocks.forEach(([l,v])=>{doc.text(T(l),M,y);doc.text(T(money(v)+'  ('+Math.round(v/tot*100)+' %)'),W-M,y,{align:'right'});y+=6});y+=4;
+    sec('Los 5 gastos mas grandes');c.top.forEach((x,i)=>{doc.text(T((i+1)+'. '+x.l+' ('+x.g+')'),M,y);doc.text(T(money(x.v)),W-M,y,{align:'right'});y+=6});y+=4;
+    sec('Pozo comun');doc.text(T('Queda en el pozo: '+money(c.s.pozo)),M,y);y+=6;c.s.mem.forEach(n=>{doc.text(T(n+': '+(c.s.owe[n]===0?'al dia':c.s.owe[n]>0?'debe '+money(c.s.owe[n]):'a favor '+money(-c.s.owe[n]))),M,y);y+=6});
+    const dl=window.claude&&await window.claude.use('downloads');if(!dl){msg('Descargar archivos no está disponible en esta vista.');return}
+    await dl.save({filename:`cierre-${month}.pdf`,data:doc.output('arraybuffer')});msg('PDF listo: cierre-'+month+'.pdf');
+  }catch(e){msg(e&&e.code==='declined'?'Descarga cancelada.':'No se pudo generar el PDF: '+(e&&e.message||e))}
+}
 function householdView(p){
   const pc=pcolor(p);const tab=S.hhTab||'venc';const month=S.month||today().slice(0,7);const f=S.form;
   let h=`<div class="row"><button class="ghost" data-act="home">← Inicio</button></div>
   <section class="detail-head" style="--pc:${pc}"><span class="chip" style="align-self:flex-start">Finanzas</span><h1>${esc(p.name)}</h1></section>
   ${gamePanel(p,pc)}
   <div class="tabs" role="tablist" style="--pc:${pc}">${HH_TABS.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="hhTab" data-tab="${k}">${l}</button>`).join('')}</div>
-  ${tab==='venc'?dueView(p,pc):tab==='tarjetas'?cardsView(p,pc):''}
-  <section class="panel" style="--pc:${pc}" ${tab==='venc'||tab==='tarjetas'?'hidden':''}><div class="row">
+  ${tab==='venc'?dueView(p,pc):tab==='tarjetas'?cardsView(p,pc):tab==='ahorro'?goalsView(p,pc):tab==='analisis'?analysisView(p,pc):''}
+  <section class="panel" style="--pc:${pc}" ${['venc','tarjetas','ahorro','analisis'].includes(tab)?'hidden':''}><div class="row">
     <span class="pnav"><button class="small" data-act="prevMonth" aria-label="Mes anterior">‹</button><h2 class="pm">${monthName(month)}</h2><button class="small" data-act="nextMonth" aria-label="Mes siguiente">›</button></span>
     <span class="spacer"></span>${f&&f.type==='hh'&&!f.id?'':`<button class="small primary" data-act="newHH">${tab==='ingreso'?'+ Ingreso':'+ Gasto'}</button>`}</div>`;
   if(f&&f.type==='hh'&&!f.id)h+=hhForm(p,tab,{});
   const its=hhItems(p,tab,month).sort((a,c)=>tab==='variable'||tab==='ingreso'?(c.date||'').localeCompare(a.date||''):num(a.order??a.createdAt)-num(c.order??c.createdAt));
-  if(tab==='comun'||tab==='fijo')h+=libPanel(p,tab);
+  if(tab==='comun'||tab==='fijo'||tab==='ingreso')h+=libPanel(p,tab);
   if(tab==='comun'){const s=hhComunSums(p,month);const pend=its.filter(m=>!m.paidBy&&hasAmt(m));const pendT=pend.reduce((a,m)=>a+num(m.amount),0);
     h+=`<div class="pozo"><div class="row" style="gap:6px"><b>Pozo común</b><span class="spacer"></span>${f&&f.type==='aporte'?'':'<button class="small" data-act="newAporte">+ Aporte al pozo</button>'}</div>
       ${f&&f.type==='aporte'?`<form class="inline-form" data-form="aporte" data-pid="${esc(p.id)}"><div class="grid3">
@@ -1020,15 +1132,14 @@ function householdView(p){
   h+=its.length?`<div class="hh-list">${its.map(m=>hhRow(p,tab,m)).join('')}</div>`:`<div class="empty">Sin gastos en ${monthName(month)}.${tab!=='variable'?' Tocá «Copiar del mes anterior» o «'+(tab==='ingreso'?'+ Ingreso':'+ Gasto')+'».':' Tocá «+ Gasto».'}</div>`;
   if(tab!=='variable'){const prev=hhItems(p,tab,shiftMonth(month,-1));
     if(prev.length&&!its.length)h+=`<button class="small" data-act="copyHH" style="align-self:flex-start">Copiar del mes anterior (${prev.length} gastos, sin estado de pago)</button>`;}
-  if(tab==='variable'&&its.length){const cats={};its.forEach(m=>{const c=m.category||'Sin categoría';cats[c]=(cats[c]||0)+num(m.amount)});const cl=Object.entries(cats).sort((a,b)=>b[1]-a[1]);const mx=cl[0][1]||1;
-    h+=`<h3>Por categoría</h3>${cl.map(([c,v])=>`<div class="cat"><span>${esc(c)}</span><div class="track"><div class="fill" style="width:${v/mx*100}%;background:var(--pc)"></div></div><span class="num" style="text-align:right">${money(v)}</span></div>`).join('')}`;}
+  if(tab==='variable')h+=budgetBox(p,month,its);
   h+=`</section>`;
   const t=hhTotals(p,month);
   const line=(l,v,cls)=>`<div class="frow"><dt>${l}</dt><dd class="num ${cls||''}" style="text-align:right">${money(v)}</dd></div>`;
   h+=`<section class="panel" style="--pc:${pc}"><h3>Mi mes en total · ${monthName(month)}</h3>
     <div class="money-sum"><div class="ms"><span class="label">Ingresos</span><b class="inc">${money(t.inc)}</b></div><div class="ms"><span class="label">Gastos</span><b class="exp">${money(t.exp)}</b></div><div class="ms"><span class="label">Saldo</span><b class="${t.inc-t.exp<0?'exp':'inc'}">${money(t.inc-t.exp)}</b></div></div>
     <dl class="fdl">${line('Ingresos personales',t.incP,'inc')}${t.apps.map(a=>line('Ingresos de '+esc(a.name),a.inc,'inc')).join('')}
-      ${line('Mi parte de la casa',t.myC)}${line('Personales fijos',t.fixedT)}${line('Personales no fijos',t.varT)}${t.cardT?line('Cuotas de tarjeta',t.cardT):''}${t.apps.map(a=>line('Gastos de '+esc(a.name),a.exp)).join('')}</dl>
+      ${line('Mi parte de la casa',t.myC)}${line('Personales fijos',t.fixedT)}${line('Personales no fijos',t.varT)}${t.cardT?line('Cuotas de tarjeta',t.cardT):''}${savedIn(p,month)?line('Ahorro a tus objetivos',savedIn(p,month))+line('Saldo después de ahorrar',t.inc-t.exp-savedIn(p,month),t.inc-t.exp-savedIn(p,month)<0?'exp':'inc'):''}${t.apps.map(a=>line('Gastos de '+esc(a.name),a.exp)).join('')}</dl>
     ${t.apps.length?`<div class="muted" style="font-size:.78rem">Los movimientos de ${t.apps.map(a=>esc(a.name)).join(', ')} se suman solos; se cargan en esa sección.</div>`:''}
   </section>`+projectionPanel(p,pc,month);
   return h;
@@ -2569,7 +2680,8 @@ function climatePanel(s,pc){
       <label class="field"><span class="label">Temperatura (°C)</span><input name="temp" inputmode="decimal" required></label>
       <label class="field"><span class="label">Humedad (%)</span><input name="hum" inputmode="decimal" required></label>
       <label class="field"><span class="label">Nota</span><input name="note" placeholder="Ej.: luces encendidas"></label></div>
-      <div class="row"><button class="primary" type="submit">Registrar</button><span class="muted" style="font-size:.78rem">VPD calculado con la temperatura del aire.</span></div></form>
+      <div class="clim-live"></div>
+      <div class="row"><button class="primary" type="submit">Registrar</button><span class="muted" style="font-size:.78rem">Cargá temperatura y humedad: la app calcula el VPD (con la temperatura del aire).</span></div></form>
     <div class="muted" style="font-size:.85rem">Etapa actual: ${st?esc(st.txt):'sin lote activo'}${r?'':st?' · sin rangos cargados para esta etapa':''}</div>`;
   if(rows.length)h+=vpdAdvice(s,rows[rows.length-1]);
   h+=vpdMap(s,rows);
@@ -2592,23 +2704,34 @@ const tFromSvp=es=>{const a=Math.log(es/0.6108);return 237.3*a/(17.27-a)};
 function vpdTarget(s,st){if(!st)return null;const r=(s.climRanges||{})[st.k]||{};
   if(r.vMin!==''&&r.vMin!=null&&r.vMax!==''&&r.vMax!=null)return {lo:num(r.vMin),hi:num(r.vMax),own:true};
   const f=VREF[st.k];return f?{lo:f[0],hi:f[1],own:false}:null}
-function vpdAdvice(s,x){
-  const {st}=rangeFor(s,x.date);const tg=vpdTarget(s,st);const v=vpdOf(x.temp,x.hum);
-  if(v==null)return '';
-  if(!tg)return `<div class="assist"><b>VPD ${dec(v)} kPa</b><span class="muted">${st?'Sin rango de VPD para la etapa «'+esc(STG[st.k][0])+'». Cargalo en Rangos por etapa.':'Sin lote activo en este espacio.'}</span></div>`;
-  const T=num(x.temp),H=num(x.hum);const src=tg.own?'tu rango':'referencia de cultivadores, a verificar';
-  if(v>=tg.lo&&v<=tg.hi)return `<div class="assist"><b>VPD ${dec(v)} kPa · en rango</b><span class="muted">Objetivo para ${esc(st.txt)}: ${dec(tg.lo)}–${dec(tg.hi)} kPa (${src}). No hace falta corregir.</span></div>`;
-  const goal=(tg.lo+tg.hi)/2;const r1=n=>dec(Math.round(n*10)/10);
-  const H2=Math.min(99,Math.max(0,100*(1-goal/svp(T))));const T2=tFromSvp(goal/(1-H/100));
-  const r=(s.climRanges||{})[st.k]||{};
-  const tWarn=(r.tMin!==''&&r.tMin!=null&&T2<num(r.tMin))||(r.tMax!==''&&r.tMax!=null&&T2>num(r.tMax));
-  const hWarn=(r.hMin!==''&&r.hMin!=null&&H2<num(r.hMin))||(r.hMax!==''&&r.hMax!=null&&H2>num(r.hMax));
-  const dT=T2-T,dH=H2-H;const low=v<tg.lo;
-  return `<div class="assist" style="--pc:${low?'#5b7fbf':'#c2502e'}"><b>VPD ${dec(v)} kPa · ${low?'bajo':'alto'}</b>
-    <span class="muted">Objetivo para ${esc(st.txt)}: ${dec(tg.lo)}–${dec(tg.hi)} kPa (${src}). Para llevarlo al centro (${dec(Math.round(goal*100)/100)} kPa), una de estas dos:</span>
-    <div class="vfix"><div><span class="label">Solo humedad (con ${r1(T)} °C)</span><b class="num">${dH<0?'Bajar':'Subir'} ${Math.abs(Math.round(H2)-Math.round(H))} puntos → ${Math.round(H2)} %</b>${hWarn?'<span class="exp" style="font-size:.78rem">queda fuera de tu rango de humedad</span>':''}</div>
-    <div><span class="label">Solo temperatura (con ${r1(H)} %)</span><b class="num">${dT<0?'Bajar':'Subir'} ${r1(Math.abs(dT))} °C → ${r1(T2)} °C</b>${tWarn?'<span class="exp" style="font-size:.78rem">queda fuera de tu rango de temperatura</span>':''}</div></div>
-    <span class="muted" style="font-size:.78rem">También podés combinar: mover un poco cada una.</span></div>`;
+function vpdAdvice(s,x,live){
+  const {st}=rangeFor(s,x.date||today());const tg=vpdTarget(s,st);const v=vpdOf(x.temp,x.hum);
+  if(v==null)return '';const T=num(x.temp),H=num(x.hum);const r1=n=>dec(Math.round(n*10)/10);
+  const head=`<b>${live?'Con estos valores: ':''}VPD ${dec(v)} kPa</b>`;
+  if(!tg)return `<div class="assist">${head}<span class="muted">${st?'Sin rango de VPD para la etapa «'+esc(STG[st.k][0])+'». Cargalo en Rangos por etapa.':'Sin lote activo en este espacio.'}</span></div>`;
+  const r=(s.climRanges||{})[st.k]||{};const has=k=>r[k]!==''&&r[k]!=null;
+  const tLo=has('tMin')?num(r.tMin):T-8,tHi=has('tMax')?num(r.tMax):T+8,hLo=has('hMin')?num(r.hMin):Math.max(20,H-30),hHi=has('hMax')?num(r.hMax):Math.min(95,H+30);
+  const vOk=v>=tg.lo&&v<=tg.hi,tOk=!has('tMin')&&!has('tMax')||T>=tLo&&T<=tHi,hOk=!has('hMin')&&!has('hMax')||H>=hLo&&H<=hHi;
+  const src=tg.own?'':' · referencia a verificar';
+  const obj=`<span class="muted">Objetivo para ${esc(st.txt)}: VPD ${dec(tg.lo)}–${dec(tg.hi)} kPa${has('tMin')||has('tMax')?` · ${rng(r.tMin,r.tMax)} °C`:''}${has('hMin')||has('hMax')?` · ${rng(r.hMin,r.hMax)} %`:''}${src}</span>`;
+  if(vOk&&tOk&&hOk)return `<div class="assist" style="--pc:var(--ok)">${head}${obj}<span>Está todo en rango. No hace falta corregir.</span></div>`;
+  const w=tg.hi-tg.lo,band=[tg.lo+w*.25,tg.hi-w*.25];let best=null;
+  const scan=(a,b,c,d)=>{for(let t=a;t<=b+1e-9;t+=.5)for(let h=Math.ceil(c);h<=d+1e-9;h+=1){const vv=svp(t)*(1-h/100);if(vv<band[0]||vv>band[1])continue;const k=Math.abs(t-T)+Math.abs(h-H)/3;if(!best||k<best.k)best={t,h,v:vv,k}}};
+  scan(tLo,tHi,hLo,hHi);const outR=!best;if(!best)scan(T-10,T+10,Math.max(15,H-40),Math.min(95,H+40));
+  const mv=(d,u,dec1)=>Math.abs(d)<(u==='°C'?.25:.5)?'mantener':`${d<0?'bajar':'subir'} ${dec1?r1(Math.abs(d)):Math.round(Math.abs(d))} ${u==='°C'?'°C':'puntos'}`;
+  const how=[];if(best){const dT=best.t-T,dH=best.h-H;
+    if(dT>=.25)how.push('Subir temperatura: menos extracción, calefactor, luces un poco más cerca');
+    if(dT<=-.25)how.push('Bajar temperatura: más extracción o intracción de aire fresco, aire acondicionado, luces más lejos');
+    if(dH>=.5)how.push('Subir humedad: humidificador, menos extracción, recipientes con agua o paños húmedos');
+    if(dH<=-.5)how.push('Bajar humedad: deshumidificador, más extracción y ventilación, regar al encender las luces');}
+  const goal=(tg.lo+tg.hi)/2;const H2=Math.min(99,Math.max(0,100*(1-goal/svp(T))));const T2=tFromSvp(goal/(1-H/100));
+  return `<div class="assist" style="--pc:${v<tg.lo?'#5b7fbf':v>tg.hi?'#c2502e':'var(--p3)'}">${head}${obj}
+    <span>${!vOk?`El VPD está ${v<tg.lo?'bajo':'alto'}.`:''}${!tOk?` La temperatura está ${T<tLo?'baja':'alta'}.`:''}${!hOk?` La humedad está ${H<hLo?'baja':'alta'}.`:''}</span>
+    ${best?`<div class="vgo"><span class="label">Llevalo a</span><b class="num">${r1(best.t)} °C y ${Math.round(best.h)} % → VPD ${dec(Math.round(best.v*100)/100)} kPa</b>
+      <span>Temperatura: <b>${mv(best.t-T,'°C',1)}</b> · Humedad: <b>${mv(best.h-H,'%')}</b></span>${outR?'<span class="exp" style="font-size:.78rem">No hay una combinación que cumpla los tres rangos; esta es la más cercana para el VPD.</span>':''}</div>`:''}
+    ${how.length?`<ul class="flist" style="font-size:.85rem">${how.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
+    ${!vOk?`<details><summary class="muted" style="font-size:.8rem">Moviendo una sola variable</summary><div class="vfix" style="margin-top:6px"><div><span class="label">Solo humedad (con ${r1(T)} °C)</span><b class="num">${H2<H?'Bajar':'Subir'} ${Math.abs(Math.round(H2)-Math.round(H))} puntos → ${Math.round(H2)} %</b></div><div><span class="label">Solo temperatura (con ${Math.round(H)} %)</span><b class="num">${T2<T?'Bajar':'Subir'} ${r1(Math.abs(T2-T))} °C → ${r1(T2)} °C</b></div></div></details>`:''}
+  </div>`;
 }
 function vpdMap(s,rows){
   const {st}=rangeFor(s,today());const tg=vpdTarget(s,st);
@@ -2632,9 +2755,15 @@ function vpdMap(s,rows){
     <div class="muted" style="font-size:.78rem">${tg?`Casillas con borde blanco: objetivo de ${esc(st.txt)} (${dec(tg.lo)}–${dec(tg.hi)} kPa, ${tg.own?'tu rango':'referencia de cultivadores, a verificar'}). `:''}Puntos: tus últimas ${pts.length} mediciones; el lleno es la última.</div>`;
 }
 /* acciones y formularios del módulo */
-const XNODB=['newCard','editCard','newCuota','cuTab','cxTab','plantsToggle','plantPick','plantClose','stockNew','stockEdit','stockCount','climRangeEdit','cureNew','tplNew'];
+const XNODB=['newGoal','editGoal','newSave','finReal','newCard','editCard','newCuota','cuTab','cxTab','plantsToggle','plantPick','plantClose','stockNew','stockEdit','stockCount','climRangeEdit','cureNew','tplNew'];
 const XACT={
   cxTab(b){S.cxTab=b.dataset.tab;S.form=null;rerender()},
+  newGoal(){S.form={type:'goal'};rerender();setTimeout(()=>document.getElementById('gl-name')?.focus(),0)},
+  editGoal(b,id){S.form={type:'goal',id};rerender()},
+  delGoal(b,id){const p=current();safe(async()=>{for(const x of S.money.filter(x=>x.ledgerId===p.id&&x.scope==='ahorro'&&x.goalId===id))await db.doc('money/'+x.id).delete();await db.doc('projects/'+p.id).update({goals:goalsOf(p).filter(g=>g.id!==id)});S.confirm=null})},
+  newSave(b,id){S.form={type:'save',id};rerender();setTimeout(()=>app.querySelector('form[data-form=save] input')?.focus(),0)},
+  finReal(){S.finReal=!S.finReal;rerender()},
+  closePdf(){exportClosePdf(current())},
   newCard(){S.form={type:'card'};rerender()},
   editCard(b,id){S.form={type:'card',id};rerender()},
   delCard(b,id){const p=current();if(S.money.some(x=>x.ledgerId===p.id&&x.scope==='cuota'&&x.card===id)){S.err='Esa tarjeta tiene compras cargadas: borralas primero.';S.confirm=null;rerender();return}safe(async()=>{await db.doc('projects/'+p.id).update({cards:cardsOf(p).filter(c=>c.id!==id)});S.confirm=null})},
@@ -2658,6 +2787,16 @@ const XACT={
   delClimate(b,id){safe(async()=>{await db.doc('climate/'+id).delete();S.confirm=null})},
 };
 const XFORM={
+  budget(f,d){const p=current();const cat=(f.dataset.cat||d.cat||'').trim();if(!cat)return;const B={...(p.budgets||{})};const v=n2(d.cap);if(v===''||!v)delete B[cat];else B[cat]=v;
+    safe(async()=>{await db.doc('projects/'+p.id).update({budgets:B});document.activeElement?.blur?.();rerender()})},
+  goal(f,d){const p=S.projects.find(x=>x.id===f.dataset.pid);const t=num(d.target);if(!(t>0)){S.err='Cargá la meta en pesos.';rerender();return}
+    const g={id:f.dataset.id||('g'+Date.now().toString(36)),name:(d.name||'').trim(),target:t,deadline:d.deadline||''};
+    const gs=f.dataset.id?goalsOf(p).map(x=>x.id===g.id?g:x):[...goalsOf(p),g];safe(async()=>{await db.doc('projects/'+p.id).update({goals:gs});S.form=null;rerender()})},
+  save(f,d){const a=num(d.amount);if(!(a>0))return;const date=d.date||today();
+    safe(async()=>{await db.collection('money').add({ledgerId:f.dataset.pid,scope:'ahorro',type:'ahorro',goalId:f.dataset.id,amount:a,date,month:date.slice(0,7),createdAt:Date.now()});S.form=null;rerender()})},
+  infl(f,d){const p=S.projects.find(x=>x.id===f.dataset.pid);const I={...(p.ipc||{})},U={...(p.usd||{})};
+    Object.keys(d).forEach(k=>{const [kind,m]=k.split('_');const v=n2(d[k]);const o=kind==='ipc'?I:U;if(v==='')delete o[m];else o[m]=v});
+    safe(async()=>{await db.doc('projects/'+p.id).update({ipc:I,usd:U});document.activeElement?.blur?.();rerender()})},
   card(f,d){const p=S.projects.find(x=>x.id===f.dataset.pid);const cd=Math.round(num(d.closeDay)),du=Math.round(num(d.dueDay));
     if(!(cd>=1&&cd<=31&&du>=1&&du<=31)){S.err='Los días de cierre y vencimiento van del 1 al 31.';rerender();return}
     const c={id:f.dataset.id||('c'+Date.now().toString(36)),name:(d.name||'').trim(),closeDay:cd,dueDay:du};
@@ -2865,6 +3004,7 @@ app.addEventListener('scroll',e=>{const t=e.target;if(!t.classList||!t.classList
 app.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role=button][data-act]')){e.preventDefault();e.target.click()}});
 document.addEventListener('toggle',e=>{const t=e.target;if(t.matches&&t.matches('[data-libtoggle]'))S.libOpen=t.open?t.dataset.libtoggle:null},true);
 app.addEventListener('input',e=>{
+  {const cf=e.target.closest&&e.target.closest('form[data-form=climate]');if(cf){const sp=S.spaces.find(x=>x.id===cf.dataset.sid);const g=n=>cf.querySelector(`[name=${n}]`).value;const box=cf.querySelector('.clim-live');if(sp&&box)box.innerHTML=String(g('temp')).trim()&&String(g('hum')).trim()?vpdAdvice(sp,{temp:g('temp'),hum:g('hum'),date:g('date')},true):''}}
   if(e.target.matches&&e.target.matches('[name=estMin]'))delete e.target.dataset.auto;
   if(e.target.closest('.transbox')||e.target.matches('[name=date]'))updateTransCalc(e.target.closest('form')||document.body);
   if(PICK&&e.target.matches('[data-pq]')){PICK.q=e.target.value;renderPicker(false);return}
