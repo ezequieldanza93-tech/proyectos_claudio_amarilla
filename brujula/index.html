@@ -553,11 +553,11 @@ function homeTaskRow(p,t){
 }
 function typeAvgs(){const acc={};S.events.forEach(e=>{if(num(e.minutes)>0){(acc[e.type]=acc[e.type]||[]).push(num(e.minutes))}});
   const out={};for(const k in acc)out[k]=acc[k].reduce((a,b)=>a+b,0)/acc[k].length;return out}
-const MIN_PER_PLANT={'Riego radicular':3,'Riego foliar':3};
+const MIN_PER_PLANT={'Riego radicular':3,'Riego foliar':3,'Trasplante':10};
 function plantsFor(e,sid){const sp=e.spaceId||sid||S.space;
   if(sp)return S.batches.filter(x=>x.spaceId===sp&&x.status!=='finalizado').reduce((a,x)=>a+num(x.qty),0);
   const b=S.batches.find(x=>x.id===e.batchId);return b?num(b.qty):0}
-const ruleMin=(e,sid)=>MIN_PER_PLANT[e.type]?MIN_PER_PLANT[e.type]*plantsFor(e,sid):0;
+const ruleMin=(e,sid)=>MIN_PER_PLANT[e.type]?MIN_PER_PLANT[e.type]*(e.type==='Trasplante'&&num(e.tpQty)?num(e.tpQty):plantsFor(e,sid)):0;
 function planMinEv(e,avg){return num(e.estMin)||num(e.minutes)||ruleMin(e)||(avg[e.type]||0)}
 function homeHours(rows,ws){
   const avg=typeAvgs();const days=[...Array(7)].map((_,i)=>addDays(ws,i));
@@ -1210,7 +1210,7 @@ function eventForm(p,e){
     ${transBox(e)}
     ${buyBox(e)}
     <label class="field"><span class="label">Nota (opcional)</span><input id="e-note" name="note" value="${esc(e.note)}"></label>
-    <label class="field"><span class="label">Tiempo estimado (minutos) *</span><input id="e-est" name="estMin" inputmode="numeric" data-req-plan ${num(e.estMin)?'':'data-auto="1"'} value="${esc(num(e.estMin)?e.estMin:(ruleMin(e)||''))}" placeholder="Para planificar: ej. 15, 30, 60"><span class="muted est-hint" style="font-size:.75rem">${MIN_PER_PLANT[e.type]?'Riegos: 3 min por planta':''}</span></label>
+    <label class="field"><span class="label">Tiempo estimado (minutos) *</span><input id="e-est" name="estMin" inputmode="numeric" data-req-plan ${num(e.estMin)?'':'data-auto="1"'} value="${esc(num(e.estMin)?e.estMin:(ruleMin(e)||''))}" placeholder="Para planificar: ej. 15, 30, 60"><span class="muted est-hint" style="font-size:.75rem">${MIN_PER_PLANT[e.type]?MIN_PER_PLANT[e.type]+' min por planta':''}</span></label>
     <label class="field"><span class="label">Tiempo dedicado (minutos)</span><input id="e-min" name="minutes" inputmode="numeric" value="${esc(e.minutes??'')}" placeholder="Al completarla: ej. 15, 30, 60"></label>
     ${isNew||mode==='edit'?'':`<label class="field"><span class="label">Motivo del ajuste (opcional)</span><input id="e-adj" name="adjustNote" value="${esc(e.adjustNote)}" placeholder="Ej.: se atrasó por lluvia, se cambió la dosis"></label>`}
     <div class="row"><button class="primary" type="submit">Guardar</button><button type="button" data-act="cancelForm">Cancelar</button>
@@ -2238,11 +2238,11 @@ app.addEventListener('change',e=>{
   if(e.target.matches('[data-kind-toggle]')){const fm=e.target.closest('form');const led=e.target.value==='ledger';
     fm.querySelector('.only-ledger').hidden=!led;fm.querySelector('.only-project').hidden=led;}
   if(e.target.matches('[data-hadd]')){S.hAdd=e.target.value;S.form={type:'event',where:'home',prefill:{date:S.hSel,fixedDate:true,status:'planificado'}};rerender();return}
-  {const fm=e.target.closest&&e.target.closest('form[data-form=event]');if(fm&&e.target.matches('[name=type],[name=spaceId],[name=batchId]')){const est=fm.querySelector('[name=estMin]');
-    const ev={type:fm.querySelector('[name=type]').value,batchId:fm.querySelector('[name=batchId]')?.value,spaceId:fm.querySelector('[name=spaceId]')?.value};
-    const r=ruleMin(ev,S.space);const hint=fm.querySelector('.est-hint');if(hint)hint.textContent=MIN_PER_PLANT[ev.type]?'Riegos: 3 min por planta'+(r?` (${r/3} plantas)`:''):'';
+  {const fm=e.target.closest&&e.target.closest('form[data-form=event]');if(fm&&e.target.matches('[name=type],[name=spaceId],[name=batchId],[name=tpQty],[name=tpBatch]')){const est=fm.querySelector('[name=estMin]');
+    const ev={type:fm.querySelector('[name=type]').value,batchId:fm.querySelector('[name=type]').value==='Trasplante'?fm.querySelector('[name=tpBatch]')?.value:fm.querySelector('[name=batchId]')?.value,spaceId:fm.querySelector('[name=spaceId]')?.value,tpQty:fm.querySelector('[name=tpQty]')?.value};
+    const r=ruleMin(ev,S.space);const hint=fm.querySelector('.est-hint');if(hint)hint.textContent=MIN_PER_PLANT[ev.type]?MIN_PER_PLANT[ev.type]+' min por planta'+(r?` (${r/MIN_PER_PLANT[ev.type]} plantas)`:''):'';
     if(est&&(est.dataset.auto||!est.value)){est.value=r||'';est.dataset.auto='1';}}}
-  if(e.target.matches('[data-tpbatch]')){const o=e.target.selectedOptions[0];const fm=e.target.closest('form');if(o&&o.dataset.q){fm.querySelector('[name=tpQty]').value=o.dataset.q;if(o.dataset.p)fm.querySelector('[name=tpFrom]').value=dec(o.dataset.p)}updateTransCalc(fm)}
+  if(e.target.matches('[data-tpbatch]')){const o=e.target.selectedOptions[0];const fm=e.target.closest('form');if(o&&o.dataset.q){fm.querySelector('[name=tpQty]').value=o.dataset.q;setTimeout(()=>fm.querySelector('[name=tpQty]').dispatchEvent(new Event('change',{bubbles:true})),0);if(o.dataset.p)fm.querySelector('[name=tpFrom]').value=dec(o.dataset.p)}updateTransCalc(fm)}
   if(e.target.closest&&e.target.closest('.transbox'))updateTransCalc(e.target.closest('form'));
   if(e.target.matches('[data-bvis]'))applyBatchVis(e.target.closest('form'));
   if(e.target.matches('[data-buysub]')){const it=e.target.closest('.buy-item');it.querySelector('[data-buypick]').innerHTML=buyPickOptions(e.target.value,'');}
