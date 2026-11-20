@@ -285,6 +285,11 @@ textarea{min-height:70px;resize:vertical}
 .gm-xp i{display:block;height:100%;background:var(--accent)}
 .gm-link{display:flex;gap:6px;align-items:center;margin-top:4px}
 .gm-none{font-size:.72rem;color:var(--muted)}
+.gm-total{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.gm-big{height:14px;border-radius:7px}
+.gm-secs{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.78rem}
+.gm-sec{display:inline-flex;align-items:center;gap:5px}
+.gm-sec i{width:8px;height:8px;border-radius:50%;background:var(--pc);display:inline-block}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -431,15 +436,26 @@ function pctBar(w,label){
   const pc=Math.round(w.pct*100);const cls=pc>=80?'ok':pc>=50?'mid':'low';
   return `<span class="gm-bar ${cls}" role="img" aria-label="${pc}% de lo planificado"><i style="width:${pc}%"></i></span><b class="num gm-pct">${pc}%</b>`;
 }
+function planTotal(p){
+  const evs=S.events.filter(e=>e.projectId===p.id);const tks=S.tasks.filter(t=>t.projectId===p.id);
+  const total=evs.length+tks.length,done=evs.filter(e=>evStatus(e)==='cumplido').length+tks.filter(t=>t.status==='hecha').length;
+  const last=[...evs.map(e=>e.date),...tks.map(t=>t.due)].filter(Boolean).sort().pop()||'';
+  return total?{pct:done/total,done,total,last}:null;
+}
 function gameStrip(){
   const ps=sortedProjects().filter(isGameP);if(!ps.length)return '';
   const cur=sundayOf(today());let done=0,total=0,xp=0,streak=0;
   const gs=ps.map(p=>{const g=gameOf(p);xp+=g.xp;streak=Math.max(streak,g.streak);if(g.now){done+=g.now.done;total+=g.now.total}return g});
   const w=total?{pct:done/total,done,total}:null;const level=Math.floor(xp/XP_LEVEL)+1;
+  let pd=0,pt=0,last='';ps.forEach(p=>{const t=planTotal(p);if(t){pd+=t.done;pt+=t.total;if(t.last>last)last=t.last}});
+  const all=pt?{pct:pd/pt,done:pd,total:pt}:null;
   return `<section class="panel gm-panel hub-week"><div class="row"><span class="gm-lvl">Nv ${level}</span>
     <div style="flex:1;min-width:0"><div class="row" style="gap:6px"><b>Semana ${fmtDate(cur)} – ${fmtDate(addDays(cur,6))}</b><span class="spacer"></span>${streak?`<span class="tag">Racha ${streak} sem.</span>`:''}</div>
     <div class="row" style="gap:8px;flex-wrap:nowrap">${pctBar(w)}</div>
     <div class="muted" style="font-size:.75rem">${w?`${w.total} cosas planificadas esta semana · `:''}${xp} XP · faltan ${XP_LEVEL-xp%XP_LEVEL} para el nivel ${level+1}</div></div></div>
+    ${all?`<div class="gm-total"><div class="row" style="gap:6px"><b>Avance de todo el plan</b><span class="spacer"></span><span class="muted num" style="font-size:.78rem">${all.done} de ${all.total} hechas${last?' · plan hasta '+fmtDate(last):''}</span></div>
+      <div class="row" style="gap:8px;flex-wrap:nowrap"><span class="gm-bar gm-big ${all.pct>=.8?'ok':all.pct>=.5?'mid':'low'}"><i style="width:${Math.round(all.pct*100)}%"></i></span><b class="num gm-pct">${Math.round(all.pct*100)}%</b></div>
+      <div class="gm-secs">${ps.map(p=>{const t=planTotal(p);return t?`<span class="gm-sec" style="--pc:${pcolor(p)}"><i></i>${esc(p.name)} <b class="num">${Math.round(t.pct*100)}%</b> <span class="muted num">(${t.done}/${t.total})</span></span>`:''}).join('')}</div></div>`:''}
   </section>`;
 }
 function gamePanel(p,pc){
@@ -448,7 +464,8 @@ function gamePanel(p,pc){
     <div style="flex:1;min-width:0"><div class="row" style="gap:6px"><b>Esta semana</b><span class="spacer"></span>${g.streak?`<span class="tag">Racha ${g.streak} sem.</span>`:''}</div>
     <div class="row" style="gap:8px;flex-wrap:nowrap">${pctBar(w)}</div>
     <div class="muted" style="font-size:.75rem">${w?[w.evs?`${w.evs} tareas de calendario`:'',w.tks?`${w.tks} tareas con fecha`:'',w.goal?`${h1(w.hrs)} de ${h1(w.goal)} h de meta`:''].filter(Boolean).join(' · ')+' · ':''}${g.xp} XP · ${g.into}/${XP_LEVEL} al nivel ${g.level+1}</div>
-    <div class="gm-xp"><i style="width:${g.into/XP_LEVEL*100}%"></i></div></div></div>
+    <div class="gm-xp"><i style="width:${g.into/XP_LEVEL*100}%"></i></div>
+    ${(()=>{const t=planTotal(p);return t?`<div class="row" style="gap:8px;flex-wrap:nowrap;margin-top:6px"><span class="muted" style="font-size:.75rem;white-space:nowrap">Todo el plan</span>${pctBar(t)}</div><div class="muted" style="font-size:.72rem">${t.done} de ${t.total} hechas${t.last?' · plan hasta '+fmtDate(t.last):''}</div>`:''})()}</div></div>
     <details><summary class="muted" style="font-size:.78rem">Cómo se suman los puntos</summary><div class="muted" style="font-size:.8rem">Cada tarea cumplida: ${XP_TASK} XP · cada hora dedicada: ${XP_HOUR} XP · semana cerrada con 80 % o más: ${XP_WEEK} XP extra · cada ${XP_LEVEL} XP subís de nivel · la racha cuenta semanas seguidas con 70 % o más.</div></details>
   </section>`;
 }
