@@ -327,6 +327,15 @@ textarea{min-height:70px;resize:vertical}
 .wkc-ev.st-cancelado,.cd .ev.st-cancelado{background:transparent;color:var(--muted);text-decoration:line-through;border:1px solid var(--line)}
 .st-dot.st-cancelado{background:var(--line)}
 .over-n{white-space:nowrap;color:var(--ink);font-weight:600}
+button.wkc-ev,.cd button.ev{border:0;font:inherit;cursor:pointer;text-align:left;width:100%;margin:0}
+button.wkc-ev{font-size:.74rem;line-height:1.25;padding:3px 5px;border-radius:5px}
+.cd button.ev{font-size:.72rem;line-height:1.25;padding:2px 4px;border-radius:4px}
+button.wkc-ev.st-planificado,.cd button.ev.st-planificado{border:1px dashed var(--pc)}
+button.wkc-ev:hover,.cd button.ev:hover{outline:2px solid var(--pc);outline-offset:1px}
+.wkm-cell[role=button],.cd[role=button]{cursor:pointer}
+.flash{animation:flash 1.6s ease-out}
+@keyframes flash{0%{background:color-mix(in srgb,var(--pc,var(--accent)) 25%,transparent)}100%{background:transparent}}
+@media (prefers-reduced-motion:reduce){.flash{animation:none}}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -527,7 +536,7 @@ function homeItems(p,ds){
 function homeTaskRow(p,t){
   const done=t.status==='hecha';const cx=t.status==='cancelada';
   if(S.form&&S.form.type==='cancel'&&S.form.id===t.id)return cancelForm('t',t.id,t.title);
-  return `<div class="wk-ev ${done?'':''}" style="--pc:${pcolor(p)}"><div class="wk-sum" style="cursor:default"><span class="st-dot st-${done?'cumplido':'planificado'}"></span><span class="ev-title" style="${done||cx?'text-decoration:line-through;color:var(--muted)':''}">${overTk(t)?WARN+' ':''}${esc(t.title)}</span><span class="sp-chip">${esc(p.name)}</span></div>
+  return `<div class="wk-ev" data-tid="${esc(t.id)}" style="--pc:${pcolor(p)}"><div class="wk-sum" style="cursor:default"><span class="st-dot st-${done?'cumplido':'planificado'}"></span><span class="ev-title" style="${done||cx?'text-decoration:line-through;color:var(--muted)':''}">${overTk(t)?WARN+' ':''}${esc(t.title)}</span><span class="sp-chip">${esc(p.name)}</span></div>
     <span class="t-actions" style="justify-content:flex-start">${cx?`<span class="muted" style="font-size:.78rem">Cancelada${t.cancelNote?': '+esc(t.cancelNote):''}</span><button class="small ghost" data-act="hTaskUndo" data-id="${esc(t.id)}">Reactivar</button>`:done?`<button class="small ghost" data-act="hTaskUndo" data-id="${esc(t.id)}">Desmarcar</button>`:`<button class="small" data-act="hTaskDone" data-id="${esc(t.id)}">✓ Hecha</button><button class="small ghost" data-act="tkCancel" data-id="${esc(t.id)}">Cancelar</button>`}${num(t.estHours)?`<span class="muted" style="font-size:.78rem">${dec(t.estHours)} h estimadas</span>`:''}</span></div>`;
 }
 function typeAvgs(){const acc={};S.events.forEach(e=>{if(num(e.minutes)>0){(acc[e.type]=acc[e.type]||[]).push(num(e.minutes))}});
@@ -556,8 +565,8 @@ function homeWeek(){
   for(const p of rows){const c=pcolor(p);
     h+=`<div class="wkm-sp" style="--pc:${c}"><span>${esc(p.name)}${HR.wk[p.id]?`<span class="hr-wk num">${hhm(HR.wk[p.id])}/sem</span>`:''}</span></div>`;
     for(let i=0;i<7;i++){const ds=addDays(ws,i);const its=homeItems(p,ds);const cm=HR.m[p.id][i];
-      h+=`<button class="wkm-cell ${ds===t?'today':''} ${ds===sel&&S.hRow===p.id?'sel':''}" style="--pc:${c}" data-act="hwCell" data-date="${ds}" data-pid="${esc(p.id)}" aria-label="${esc(p.name)}, ${fmtDate(ds)}: ${its.length} tarea(s)">
-        ${cm.mm?`<span class="hr-cell num">${hhm(cm.mm)}${cm.guess?'≈':''}</span>`:''}${its.slice(0,3).map(x=>`<span class="wkc-ev st-${x.st.replace(/ /g,'-')}">${x.over?WARN+' ':''}${esc(x.title)}</span>`).join('')}${its.length>3?`<span class="wkc-more">+${its.length-3}</span>`:''}</button>`;}}
+      h+=`<div role="button" tabindex="0" class="wkm-cell ${ds===t?'today':''} ${ds===sel&&S.hRow===p.id?'sel':''}" style="--pc:${c}" data-act="hwCell" data-date="${ds}" data-pid="${esc(p.id)}" aria-label="${esc(p.name)}, ${fmtDate(ds)}: ${its.length} tarea(s)">
+        ${cm.mm?`<span class="hr-cell num">${hhm(cm.mm)}${cm.guess?'≈':''}</span>`:''}${its.slice(0,3).map(x=>`<button type="button" class="wkc-ev st-${x.st.replace(/ /g,'-')}" data-act="hwItem" data-k="${x.k}" data-id="${esc(x.id)}" data-date="${ds}" aria-label="Abrir ${esc(x.title)}">${x.over?WARN+' ':''}${esc(x.title)}</button>`).join('')}${its.length>3?`<span class="wkc-more">+${its.length-3}</span>`:''}</div>`;}}
   h+=`<div class="wkm-sp hr-tot-l">Total del día</div>${HR.dayTot.map((v,i)=>`<div class="hr-tot num ${addDays(ws,i)===t?'today':''}">${hhm(v)||'—'}</div>`).join('')}`;
   h+=`</div></div><div class="muted" style="font-size:.72rem">Horas planificadas en la semana: <b class="num">${hhm(HR.dayTot.reduce((a,b)=>a+b,0))||'0'}</b>. Suman el tiempo estimado de cada tarea.${HR.anyGuess?' ≈: tareas de cultivo sin tiempo estimado; uso el promedio de lo que te llevaron otras del mismo tipo.':''} En cultivo cargá «Tiempo estimado» al planificar para que el total sea más preciso.</div>`;
   if(sel){const di=(new Date(sel+'T00:00:00')).getDay();
@@ -579,6 +588,7 @@ function homeAddBox(rows,sel){
   else h+=`<button type="button" class="small" data-act="cancelForm">Cancelar</button>`;
   return `<div class="inline-form" style="gap:8px">${h}</div>`;
 }
+function focusItem(id){setTimeout(()=>{const q=CSS.escape(id);const el=app.querySelector(`.wk-day .wk-sum[data-id="${q}"],.evrow .wk-sum[data-id="${q}"],[data-tid="${q}"]`);if(el){el.scrollIntoView({block:'center',behavior:'smooth'});const row=el.closest('.wk-ev,.evrow')||el;row.classList.add('flash');setTimeout(()=>row.classList.remove('flash'),1600)}},30)}
 function homeView(){
   const ps=sortedProjects();
   const loading=!db||!(S.loaded.projects&&S.loaded.tasks&&S.loaded.logs);
@@ -908,8 +918,8 @@ function calendarPanel(p,pc){
   for(let i=0;i<lead;i++)cells+='<div class="cd out"></div>';
   for(let d=1;d<=days;d++){
     const ds=month+'-'+String(d).padStart(2,'0');const de=evs.filter(e=>e.date===ds);
-    cells+=`<button class="cd ${ds===t?'today':''} ${de.length?'has':''}" data-act="calDay" data-date="${ds}" aria-label="${d} de ${MESES[m-1]}${de.length?': '+esc(de.map(e=>e.title+' ('+ST_LABEL[evStatus(e)]+')').join(', ')):''}">
-      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<span class="ev st-${evStatus(e).replace(/ /g,'-')}">${overEv(e)?WARN+' ':''}${esc(e.title)}</span>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}</button>`;
+    cells+=`<div role="button" tabindex="0" class="cd ${ds===t?'today':''} ${de.length?'has':''}" data-act="calDay" data-date="${ds}" aria-label="${d} de ${MESES[m-1]}${de.length?': '+esc(de.map(e=>e.title+' ('+ST_LABEL[evStatus(e)]+')').join(', ')):''}">
+      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<button type="button" class="ev st-${evStatus(e).replace(/ /g,'-')}" data-act="calItem" data-id="${esc(e.id)}" aria-label="Abrir ${esc(e.title)}">${overEv(e)?WARN+' ':''}${esc(e.title)}</button>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}</div>`;
   }
   const list=evs.filter(e=>(e.date||'').startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date));
   const germ=evs.filter(e=>e.type==='Germinación'&&evStatus(e)==='cumplido'&&e.date<=t).sort((a,b)=>b.date.localeCompare(a.date));
@@ -1585,8 +1595,8 @@ function weekPanel(p,pc){
     h+=`<div class="wkm-sp" style="--pc:${r.color}">${esc(r.name)}</div>`;
     for(let i=0;i<7;i++){const ds=addDays(ws,i);
       const de=wkEvs.filter(e=>e.date===ds&&(r.id?e.spaceId===r.id:!rows.find(x=>x.id===e.spaceId)));
-      h+=`<button class="wkm-cell ${ds===t?'today':''} ${ds===sel?'sel':''}" style="--pc:${r.color}" data-act="wkCell" data-date="${ds}" data-sp="${esc(r.id)}" aria-label="${esc(r.name)}, ${DIAS_D[(i+1)%7]} ${fmtDate(ds)}: ${de.length} tarea(s)">
-        ${de.slice(0,3).map(e=>`<span class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}">${overEv(e)?WARN+' ':''}${esc(e.title)}</span>`).join('')}${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</button>`;}
+      h+=`<div role="button" tabindex="0" class="wkm-cell ${ds===t?'today':''} ${ds===sel?'sel':''}" style="--pc:${r.color}" data-act="wkCell" data-date="${ds}" data-sp="${esc(r.id)}" aria-label="${esc(r.name)}, ${DIAS_D[(i+1)%7]} ${fmtDate(ds)}: ${de.length} tarea(s)">
+        ${de.slice(0,3).map(e=>`<button type="button" class="wkc-ev st-${evStatus(e).replace(/ /g,'-')}" data-act="wkItem" data-id="${esc(e.id)}" data-date="${ds}" aria-label="Abrir ${esc(e.title)}">${overEv(e)?WARN+' ':''}${esc(e.title)}</button>`).join('')}${de.length>3?`<span class="wkc-more">+${de.length-3}</span>`:''}</div>`;}
   }
   h+=`</div></div>`;
   if(sel){const i=(new Date(sel+'T00:00:00')).getDay();const de=evs.filter(e=>e.date===sel);
@@ -2109,6 +2119,9 @@ app.addEventListener('click',e=>{
     bellGo(){S.bellOpen=false;S.hhTab='venc';S.month=today().slice(0,7);go(id)},
     evCancel(){S.form={type:'cancel',id};rerender();setTimeout(()=>document.getElementById('cx-note')?.focus(),0)},
     tkCancel(){S.form={type:'cancel',id};rerender();setTimeout(()=>document.getElementById('cx-note')?.focus(),0)},
+    hwItem(){S.hSel=b.dataset.date;S.hRow=null;S.form=null;S.openEv=S.openEv||new Set();if(b.dataset.k==='e')S.openEv.add(id);rerender();focusItem(id)},
+    wkItem(){S.wkSel=b.dataset.date;S.form=null;S.openEv=S.openEv||new Set();S.openEv.add(id);rerender();focusItem(id)},
+    calItem(){S.form=null;S.openEv=S.openEv||new Set();S.openEv.add(id);rerender();focusItem(id)},
     hhTab(){S.hhTab=b.dataset.tab;S.form=null;rerender()},
     newHH(){S.form={type:'hh'};rerender();document.getElementById('hh-name')?.focus()},
     editHH(){S.form={type:'hh',id};rerender()},
@@ -2176,7 +2189,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','bell','bellGo','hwPrev','hwNext','hwToday','hwDay','hwCell','hwAll','hwClose','hwAdd','doneQuick','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','hwItem','wkItem','calItem','bell','bellGo','hwPrev','hwNext','hwToday','hwDay','hwCell','hwAll','hwClose','hwAdd','doneQuick','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
@@ -2208,6 +2221,7 @@ app.addEventListener('pointerover',e=>{const c=e.target.closest&&e.target.closes
   tip.textContent=c.dataset.tip;tip.style.left=(cr.left+cr.width/2-r.left)+'px';tip.style.top=(cr.top+cr.height/2-r.top)+'px';tip.hidden=false});
 app.addEventListener('pointerout',e=>{const c=e.target.closest&&e.target.closest('.whit');if(c){const t=c.closest('.wchart').querySelector('.wtip');if(t)t.hidden=true}});
 app.addEventListener('scroll',e=>{const t=e.target;if(!t.classList||!t.classList.contains('wkm-wrap')||S._sync)return;const pn=t.closest('.panel');if(!pn)return;S._sync=true;pn.querySelectorAll('.wkm-wrap').forEach(w=>{if(w!==t)w.scrollLeft=t.scrollLeft});S._sync=false},true);
+app.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role=button][data-act]')){e.preventDefault();e.target.click()}});
 document.addEventListener('toggle',e=>{const t=e.target;if(t.matches&&t.matches('[data-libtoggle]'))S.libOpen=t.open?t.dataset.libtoggle:null},true);
 app.addEventListener('input',e=>{
   if(e.target.closest('.transbox')||e.target.matches('[name=date]'))updateTransCalc(e.target.closest('form')||document.body);
