@@ -315,6 +315,13 @@ textarea{min-height:70px;resize:vertical}
 .due-up{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.82rem}
 .due-chip{border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:var(--surface)}
 .due-chip.due-vencido{border-color:var(--warn);color:var(--warn)}
+.bell-wrap{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:calc(12px + env(safe-area-inset-right,0px));z-index:30;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.bell{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;padding:0;background:var(--surface);color:var(--muted);box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.bell.on{color:var(--warn);border-color:var(--warn)}
+.bell-n{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:var(--warn);color:var(--surface);font-size:.72rem;display:grid;place-items:center;padding:0 5px}
+.bell-pop{width:min(320px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 8px 30px rgba(0,0,0,.18)}
+.bell-it{text-align:left;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--ink);font-size:.88rem}
+.bell-it.today{border-color:var(--warn)}
 /* cronómetro */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 .timerbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -397,6 +404,7 @@ function render(){
   if(a&&app.contains(a)&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&!S._force){pending=true;return}
   S._force=false;pending=false;
   let html='';
+  html+=bellHTML();
   if(S.timer)html+=timerBar();
   if(S.err)html+=`<div class="notice">${esc(S.err)}</div>`;
   html+=brandDatalists();
@@ -751,6 +759,18 @@ function upcomingDue(){
   const t=today();const ls=[...dueList(p,t.slice(0,7)),...dueList(p,shiftMonth(t.slice(0,7),1))].filter(x=>!x.paid&&x.date<=addDays(t,21)).slice(0,6);
   if(!ls.length)return '';
   return `<div class="due-up"><span class="label">Próximos vencimientos</span>${ls.map(x=>`<span class="due-chip due-${x.st}"><b class="num">${fmtDate(x.date)}</b> ${esc(x.concept)}${x.amount!=null?` · ${money(x.amount)}`:''}</span>`).join('')}</div>`;
+}
+function dueAlerts(){
+  const p=S.projects.find(x=>x.household);if(!p)return [];
+  const t=today(),tm=addDays(t,1);const ms=[...new Set([t.slice(0,7),tm.slice(0,7)])];
+  return ms.flatMap(m=>dueList(p,m)).filter(x=>!x.paid&&(x.date===t||x.date===tm)).map(x=>({...x,when:x.date===t?'hoy':'mañana',pid:p.id}));
+}
+function bellHTML(){
+  if(!S.loaded.projects)return '';const al=dueAlerts();
+  return `<div class="bell-wrap"><button class="bell ${al.length?'on':''}" data-act="bell" aria-label="Avisos de vencimientos: ${al.length}" aria-expanded="${!!S.bellOpen}">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.84V3a1.5 1.5 0 0 0-3 0v1.16A7 7 0 0 0 5 11v5l-2 2v1h18v-1Z" fill="currentColor"/></svg>
+    ${al.length?`<span class="bell-n num">${al.length}</span>`:''}</button>
+    ${S.bellOpen?`<div class="bell-pop" role="dialog" aria-label="Vencimientos"><b>Vencimientos</b>${al.length?al.map(x=>`<button class="bell-it ${x.when==='hoy'?'today':''}" data-act="bellGo" data-id="${esc(x.pid)}"><span class="tag ${x.when==='hoy'?'due-tag-vencido':''}">${x.when==='hoy'?'Vence hoy':'Vence mañana'}</span> <b style="font-weight:600">${esc(x.concept)}</b>${x.amount!=null?` · <span class="num">${money(x.amount)}</span>`:''}<span class="muted" style="display:block;font-size:.75rem">${fmtDate(x.date)} · sin pagar</span></button>`).join(''):'<div class="muted" style="font-size:.85rem">No hay vencimientos sin pagar para hoy ni mañana.</div>'}</div>`:''}</div>`;
 }
 function householdView(p){
   const pc=pcolor(p);const tab=S.hhTab||'venc';const month=S.month||today().slice(0,7);const f=S.form;
@@ -2062,6 +2082,8 @@ app.addEventListener('click',e=>{
     hwAdd(){S.form={type:'event',where:'home',prefill:{date:S.hSel,fixedDate:true,status:'planificado'}};S.hAdd=S.hRow||'';rerender()},
     hTaskDone(){safe(()=>db.doc('tasks/'+id).update({status:'hecha'}))},
     hTaskUndo(){safe(()=>db.doc('tasks/'+id).update({status:'pendiente'}))},
+    bell(){S.bellOpen=!S.bellOpen;rerender()},
+    bellGo(){S.bellOpen=false;S.hhTab='venc';S.month=today().slice(0,7);go(id)},
     hhTab(){S.hhTab=b.dataset.tab;S.form=null;rerender()},
     newHH(){S.form={type:'hh'};rerender();document.getElementById('hh-name')?.focus()},
     editHH(){S.form={type:'hh',id};rerender()},
@@ -2129,7 +2151,7 @@ app.addEventListener('click',e=>{
       for(const ev of S.events.filter(x=>x.projectId===pid))await db.doc('events/'+ev.id).delete();
       await db.doc('projects/'+pid).delete();go('')})},
   };
-  if(A[act]&&(db||['home','open','toggleEv','hwPrev','hwNext','hwToday','hwDay','hwCell','hwAll','hwClose','hwAdd','doneQuick','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
+  if(A[act]&&(db||['home','open','toggleEv','bell','bellGo','hwPrev','hwNext','hwToday','hwDay','hwCell','hwAll','hwClose','hwAdd','doneQuick','mfTab','hhTab','openPick','closePick','pickItem','catPick','subPick','catItem','toggleAddOwn','addBuyRow','rmBuyRow','wkDay','wkCell','wkClose','addPlanRow','rmPlanRow','addPlanDose','rmPlanDose','addPlantRow','rmPlantRow','closeSpace','addDoseRow','rmDoseRow','toggleCatalog'].includes(act)))A[act]();
 });
 async function saveTimerLog(){
   const T=S.timer;if(!T)return;
