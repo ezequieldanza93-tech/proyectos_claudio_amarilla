@@ -388,6 +388,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .bud-row{display:grid;grid-template-columns:minmax(90px,160px) 1fr auto auto;gap:10px;align-items:center;font-size:.86rem}
 .warnc{color:var(--p3)}
 @media (max-width:560px){.bud-row{grid-template-columns:1fr auto}.bud-row .track{grid-column:1/-1;grid-row:2}.bud-row form{grid-column:1/-1}}
+.wx{display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line);padding-bottom:14px}
 </style>
 
 <div class="wrap" id="app">
@@ -402,7 +403,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <script>
 (function(){
 const PCOL=['--p1','--p2','--p3','--p4','--p5','--p6'];
-const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],dbProducts:[],cat:null,batches:[],plans:[],slips:[],activities:[],weights:[],climate:[],templates:[],stock:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
+const S={projects:[],tasks:[],logs:[],money:[],events:[],media:[],spaces:[],products:[],dbProducts:[],cat:null,batches:[],plans:[],slips:[],activities:[],weights:[],climate:[],templates:[],stock:[],weather:[],spaceTab:'ficha',fichaEdit:false,catalogOpen:false,space:null,spaceMsg:'',upload:null,lightbox:null,timer:null,month:null,calMonth:null,nav:null,form:null,confirm:null,loaded:{projects:false,tasks:false,logs:false},err:null};
 function hashId(){try{return decodeURIComponent(location.hash.slice(1))}catch(e){return ''}}
 const curId=()=>S.nav!==null?S.nav:hashId();
 function go(id){S.nav=id||'';S.space=null;S.form=null;S.confirm=null;try{if(hashId()!==S.nav)location.hash=S.nav}catch(e){}window.scrollTo(0,0);rerender()}
@@ -2673,7 +2674,7 @@ function climatePanel(s,pc){
   const f=S.form;const rows=S.climate.filter(x=>x.spaceId===s.id).sort((a,c)=>(a.date+(a.time||'')).localeCompare(c.date+(c.time||'')));
   const recent=rows.filter(x=>x.date>=addDays(today(),-30));const {st,r}=rangeFor(s,today());const R=s.climRanges||{};
   const withV=recent.map(x=>({...x,vpd:vpdOf(x.temp,x.hum)}));
-  let h=`<section class="panel" style="--pc:${pc}"><h2>Registro de clima</h2>${climAlert(s)}
+  let h=`<section class="panel" style="--pc:${pc}"><h2>Clima</h2>${wxBox(s)}<h3>Registro de clima</h3>${climAlert(s)}
     <form class="inline-form" data-form="climate" data-sid="${esc(s.id)}"><div class="grid3">
       <label class="field"><span class="label">Fecha</span><input name="date" type="date" value="${today()}"></label>
       <label class="field"><span class="label">Hora (opcional)</span><input name="time" type="time"></label>
@@ -2754,10 +2755,31 @@ function vpdMap(s,rows){
     <div class="row muted" style="font-size:.75rem;gap:10px">${VZ.map(z=>`<span><span class="ev-key" style="background:${z[3]};border-color:${z[3]}"></span> ${z[2]}${z[1]<99&&z[0]>0?' ('+dec(z[0])+'–'+dec(z[1])+')':''}</span>`).join('')}</div>
     <div class="muted" style="font-size:.78rem">${tg?`Casillas con borde blanco: objetivo de ${esc(st.txt)} (${dec(tg.lo)}–${dec(tg.hi)} kPa, ${tg.own?'tu rango':'referencia de cultivadores, a verificar'}). `:''}Puntos: tus últimas ${pts.length} mediciones; el lleno es la última.</div>`;
 }
+/* clima del municipio (se actualiza solo cada mañana) */
+const MUNIS=['Almirante Brown','Avellaneda','Berazategui','Ciudad Autónoma de Buenos Aires','Escobar','Esteban Echeverría','Ezeiza','Florencio Varela','General San Martín','Hurlingham','Ituzaingó','José C. Paz','La Matanza','La Plata','Lanús','Lomas de Zamora','Malvinas Argentinas','Merlo','Moreno','Morón','Pilar','Quilmes','San Fernando','San Isidro','San Miguel','Tigre','Tres de Febrero','Vicente López'];
+function wxBox(s){
+  const w=S.weather.find(x=>x.spaceId===s.id);const ok=w&&s.municipio&&w.municipio===s.municipio;const ext=s.cropType==='exterior';
+  const {st}=rangeFor(s,today());const r=st&&(s.climRanges||{})[st.k]||{};const has=k=>r[k]!==''&&r[k]!=null;
+  const tc=v=>has('tMax')&&v>num(r.tMax)||has('tMin')&&v<num(r.tMin)?'exp':'';
+  let h=`<div class="wx"><div class="row"><h3>Clima del municipio</h3><span class="spacer"></span>
+    <form class="row" data-form="muni" data-sid="${esc(s.id)}" style="gap:6px;flex-wrap:nowrap"><input id="wx-muni-${esc(s.id)}" name="municipio" list="dl-muni" value="${esc(s.municipio||'')}" placeholder="Elegí el municipio" style="width:210px" aria-label="Municipio de referencia"><button class="small" type="submit">Guardar</button></form>
+    <datalist id="dl-muni">${MUNIS.map(m=>`<option value="${esc(m)}">`).join('')}</datalist></div>`;
+  if(!s.municipio)return h+'<div class="muted" style="font-size:.85rem">Elegí el municipio donde está el cultivo y la app trae el clima de ahí todas las mañanas.</div></div>';
+  if(!ok)return h+`<div class="muted" style="font-size:.85rem">Municipio guardado: ${esc(s.municipio)}. El clima se carga en la próxima actualización (todas las mañanas, 6:44).</div></div>`;
+  const c=w.current||{};const v=vpdOf(c.temp,c.hum);
+  h+=`<div class="money-sum"><div class="ms"><span class="label">Ahora · ${esc((c.time||'').slice(11))}</span><b class="num ${ext?tc(num(c.temp)):''}">${dec(c.temp)} °C · ${Math.round(num(c.hum))} %</b><span class="muted" style="font-size:.75rem">VPD ${v!=null?dec(v):'—'} kPa</span></div>
+    ${(w.days||[])[0]?`<div class="ms"><span class="label">Hoy</span><b class="num">${dec(w.days[0].tMin)}–${dec(w.days[0].tMax)} °C</b><span class="muted" style="font-size:.75rem">HR media ${w.days[0].humMean} %${w.days[0].rainMm?` · lluvia ${dec(w.days[0].rainMm)} mm`:''}</span></div>`:''}</div>
+    ${ext?`<button class="small" data-act="wxUse" data-sid="${esc(s.id)}" data-t="${esc(c.temp)}" data-h="${esc(Math.round(num(c.hum)))}" style="align-self:flex-start">Usar como medición de ahora</button>`:'<div class="muted" style="font-size:.78rem">Es el clima de afuera: sirve de referencia para la carpa (ventilación, calor o frío que entra), no reemplaza tu medición adentro.</div>'}
+    <div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Día</th><th>Mín</th><th>Máx</th><th>HR media</th><th>VPD máx.</th><th>Lluvia</th></tr></thead><tbody>
+    ${(w.days||[]).map(d=>{const dt0=new Date(d.date+'T00:00:00');return `<tr><td>${DIAS_D[dt0.getDay()].slice(0,3)} ${fmtDate(d.date).slice(0,5)}</td><td class="num ${ext?tc(d.tMin):''}">${dec(d.tMin)} °C</td><td class="num ${ext?tc(d.tMax):''}">${dec(d.tMax)} °C</td><td class="num">${d.humMean} %</td><td class="num">${dec(d.vpdMax)}</td><td class="num">${d.rainMm==null?'—':d.rainMm?dec(d.rainMm)+' mm':'0'}</td></tr>`}).join('')}</tbody></table></div>
+    <div class="muted" style="font-size:.75rem">${esc(w.place||w.municipio)} · actualizado ${esc(w.updatedLocal||'')} · fuente: ${esc(w.source||'')}${ext&&(has('tMin')||has('tMax'))?' · en rojo: fuera del rango de temperatura de la etapa':''}</div></div>`;
+  return h;
+}
 /* acciones y formularios del módulo */
-const XNODB=['newGoal','editGoal','newSave','finReal','newCard','editCard','newCuota','cuTab','cxTab','plantsToggle','plantPick','plantClose','stockNew','stockEdit','stockCount','climRangeEdit','cureNew','tplNew'];
+const XNODB=['wxUse','newGoal','editGoal','newSave','finReal','newCard','editCard','newCuota','cuTab','cxTab','plantsToggle','plantPick','plantClose','stockNew','stockEdit','stockCount','climRangeEdit','cureNew','tplNew'];
 const XACT={
   cxTab(b){S.cxTab=b.dataset.tab;S.form=null;rerender()},
+  wxUse(b){const f=app.querySelector(`form[data-form=climate][data-sid="${b.dataset.sid}"]`);if(!f)return;f.querySelector('[name=temp]').value=dec(b.dataset.t);f.querySelector('[name=hum]').value=b.dataset.h;f.querySelector('[name=time]').value=new Date().toTimeString().slice(0,5);f.querySelector('[name=note]').value='Clima del municipio';f.querySelector('[name=hum]').dispatchEvent(new Event('input',{bubbles:true}))},
   newGoal(){S.form={type:'goal'};rerender();setTimeout(()=>document.getElementById('gl-name')?.focus(),0)},
   editGoal(b,id){S.form={type:'goal',id};rerender()},
   delGoal(b,id){const p=current();safe(async()=>{for(const x of S.money.filter(x=>x.ledgerId===p.id&&x.scope==='ahorro'&&x.goalId===id))await db.doc('money/'+x.id).delete();await db.doc('projects/'+p.id).update({goals:goalsOf(p).filter(g=>g.id!==id)});S.confirm=null})},
@@ -2787,6 +2809,7 @@ const XACT={
   delClimate(b,id){safe(async()=>{await db.doc('climate/'+id).delete();S.confirm=null})},
 };
 const XFORM={
+  muni(f,d){const m=(d.municipio||'').trim();safe(async()=>{await db.doc('spaces/'+f.dataset.sid).update({municipio:m});document.activeElement?.blur?.();rerender()})},
   budget(f,d){const p=current();const cat=(f.dataset.cat||d.cat||'').trim();if(!cat)return;const B={...(p.budgets||{})};const v=n2(d.cap);if(v===''||!v)delete B[cat];else B[cat]=v;
     safe(async()=>{await db.doc('projects/'+p.id).update({budgets:B});document.activeElement?.blur?.();rerender()})},
   goal(f,d){const p=S.projects.find(x=>x.id===f.dataset.pid);const t=num(d.target);if(!(t>0)){S.err='Cargá la meta en pesos.';rerender();return}
@@ -3149,6 +3172,7 @@ async function boot(){
   claude.use('assets').then(a=>{assets=a;rerender()}).catch(()=>{});
   db.collection('events').onSnapshot(s=>{S.events=toList(s);S.loaded.events=true;render();autoStockSoon()},onErr);
   db.collection('climate').onSnapshot(s=>{S.climate=toList(s);render()},onErr);
+  db.collection('weather').onSnapshot(s=>{S.weather=toList(s);render()},onErr);
   db.collection('templates').onSnapshot(s=>{S.templates=toList(s);render()},onErr);
   db.collection('stock').onSnapshot(s=>{S.stock=toList(s);S.loaded.stock=true;render();autoStockSoon()},onErr);
   db.collection('money').onSnapshot(s=>{S.money=toList(s);render()},onErr);
