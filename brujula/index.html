@@ -389,6 +389,25 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .warnc{color:var(--p3)}
 @media (max-width:560px){.bud-row{grid-template-columns:1fr auto}.bud-row .track{grid-column:1/-1;grid-row:2}.bud-row form{grid-column:1/-1}}
 .wx{display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.ctr{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px}
+.ctr-h{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.ctr-h>div:first-child{display:flex;flex-direction:column;flex:1}
+.ctr-n{font-family:var(--f-display);font-size:1.1rem}
+.ctr-w{display:flex;flex-direction:column;align-items:flex-end}
+.wx-l{flex-direction:column;align-items:flex-start;justify-content:center;font-size:.7rem;border-left-color:var(--muted);color:var(--muted)}
+.wx-l .muted{font-size:.62rem;font-weight:500}
+.wx-c{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;border:1px dashed var(--line);border-radius:8px;padding:3px 2px;font-size:.66rem;line-height:1.2;color:var(--ink)}
+.wx-c b{font-size:.8rem}.wx-c.today{border-color:var(--pc);border-style:solid}
+.wx-m{display:block;font-size:.6rem;color:var(--muted);font-family:var(--f-mono)}
+.hwx{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.hwx-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
+.hwx-d{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hwx-c{display:flex;flex-direction:column;gap:2px;border-radius:10px;padding:8px 10px;background:var(--bg);min-width:0}
+.hwx-c.on{background:color-mix(in srgb,var(--accent) 12%,var(--surface))}
+.hwx-c b{font-size:1.25rem;font-family:var(--f-mono)}
+.hwx-c .num.muted{font-size:.75rem}
+.hwx-w{display:grid;grid-template-columns:repeat(7,minmax(74px,1fr));gap:6px;overflow-x:auto}
+.hwx-w .hwx-c b{font-size:1.05rem}
 </style>
 
 <div class="wrap" id="app">
@@ -712,7 +731,7 @@ function homeView(){
   const ps=sortedProjects();
   const loading=!db||!(S.loaded.projects&&S.loaded.tasks&&S.loaded.logs);
   let h=`<header class="hub-head"><h1 class="brand"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 5l3.2 11H12.8z" fill="var(--accent)"/><path d="M16 27l-3.2-11h6.4z" fill="currentColor" opacity=".35"/><circle cx="16" cy="16" r="1.8" fill="currentColor"/></svg>Brújula</h1>
-    <p class="muted">Mis objetivos, mis números y el tiempo que le dedico a cada cosa.</p></header>`;
+    <p class="muted">Mis objetivos, mis números y el tiempo que le dedico a cada cosa.</p></header>`+homeWx();
   if(loading&&!S.err){return h+`<div class="empty links">Cargando…</div>`}
   h+=homeWeek();
   h+=gameStrip();
@@ -1223,7 +1242,7 @@ function calendarPanel(p,pc){
   for(let d=1;d<=days;d++){
     const ds=month+'-'+String(d).padStart(2,'0');const de=evs.filter(e=>e.date===ds);
     cells+=`<div role="button" tabindex="0" class="cd ${ds===t?'today':''} ${de.length?'has':''}" data-act="calDay" data-date="${ds}" aria-label="${d} de ${MESES[m-1]}${de.length?': '+esc(de.map(e=>e.title+' ('+ST_LABEL[evStatus(e)]+')').join(', ')):''}">
-      <span class="dn num">${d}</span>${de.slice(0,2).map(e=>`<button type="button" class="ev st-${evStatus(e).replace(/ /g,'-')}" data-act="calItem" data-id="${esc(e.id)}" aria-label="Abrir ${esc(e.title)}">${overEv(e)?WARN+' ':''}${chipEv(e)}</button>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}${S.space?stageBand(S.space,ds):''}</div>`;
+      <span class="dn num">${d}${(()=>{const sp=S.space&&S.spaces.find(x=>x.id===S.space);const wd=sp&&wxDay(centerOf(sp),ds);return wd?`<span class="wx-m" title="${esc(wxTip(wd))}">${Math.round(wd.tMax)}°/${Math.round(wd.tMin)}°</span>`:''})()}</span>${de.slice(0,2).map(e=>`<button type="button" class="ev st-${evStatus(e).replace(/ /g,'-')}" data-act="calItem" data-id="${esc(e.id)}" aria-label="Abrir ${esc(e.title)}">${overEv(e)?WARN+' ':''}${chipEv(e)}</button>`).join('')}${de.length>2?`<span class="ev more">+${de.length-2}</span>`:''}${S.media.some(x=>x.projectId===p.id&&(x.spaceId||'')===(S.space||'')&&x.date===ds)?'<span class="ph" title="Tiene fotos o videos"></span>':''}${S.space?stageBand(S.space,ds):''}</div>`;
   }
   const list=evs.filter(e=>(e.date||'').startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date));
   const germ=evs.filter(e=>e.type==='Germinación'&&evStatus(e)==='cumplido'&&e.date<=t).sort((a,b)=>b.date.localeCompare(a.date));
@@ -1553,11 +1572,14 @@ function spaceSummary(s){
   return parts.join(' · ')||'Sin configurar: tocá para cargar los datos';
 }
 function spacesPanel(p,pc){
-  const ss=spacesOf(p.id);if(!ss.length)return '';
-  return `<section class="panel" style="--pc:${pc}"><h2>Espacios de cultivo</h2>
+  const all=spacesOf(p.id);if(!all.length)return '';const cs=centersOf();const f=S.form;
+  const grp=cs.length?cs.map(c=>[c,all.filter(s=>centerOf(s)===c)]):[[null,all]];
+  return `<section class="panel" style="--pc:${pc}"><div class="row"><h2>Centros y sectores de cultivo</h2><span class="spacer"></span>${f&&f.type==='center'&&!f.id?'':'<button class="small" data-act="newCenter">+ Centro</button>'}</div>
+    ${f&&f.type==='center'&&!f.id?centerForm({}):''}
+    ${grp.map(([c,ss])=>`<div class="ctr">${c?(f&&f.type==='center'&&f.id===c.id?centerForm(c):centerHead(c,true)):''}
     <div class="spaces">${ss.map(s=>s.enabled===false
       ?`<div class="space off" aria-disabled="true"><span class="lt">${esc(s.name)}</span><span class="ls">Apagado por ahora</span></div>`
-      :`<button class="space" data-act="openSpace" data-id="${esc(s.id)}"><span class="lt">${esc(s.name)}</span><span class="ls">${esc(spaceSummary(s))}</span></button>`).join('')}</div></section>`;
+      :`<button class="space" data-act="openSpace" data-id="${esc(s.id)}"><span class="lt">${esc(s.name)}</span><span class="ls">${esc(spaceSummary(s))}</span></button>`).join('')||'<span class="muted" style="font-size:.85rem">Sin sectores en este centro.</span>'}</div></div>`).join('')}</section>`;
 }
 function plantRow(g,q){return `<div class="prow"><input name="genetics" aria-label="Genética" placeholder="Genética (ej.: Gorilla Piña, BSF)" value="${esc(g)}"><input name="qty" aria-label="Cantidad" inputmode="numeric" placeholder="Cant." value="${esc(q)}"><button type="button" class="ghost small danger" data-act="rmPlantRow" aria-label="Quitar genética">✕</button></div>`}
 // Marcas vistas en grow shops argentinos (sugerencias; se puede escribir cualquier otra)
@@ -1899,6 +1921,9 @@ function weekPanel(p,pc){
   h+=`<div class="wkm-wrap"><div class="wkm"><div class="wkm-corner"></div>`;
   for(let i=0;i<7;i++){const ds=addDays(ws,i);
     h+=`<button class="wkm-day ${ds===t?'today':''} ${ds===sel?'sel':''}" data-act="wkDay" data-date="${ds}" aria-label="${DIAS_D[(i+1)%7]} ${fmtDate(ds)}"><span>${DIAS_D[(i+1)%7].slice(0,3)}</span><b class="num">${+ds.slice(8)}</b></button>`;}
+  {const cset=[...new Set(rows.map(centerOf).filter(Boolean))];for(const c of cset){if(!wxOfCenter(c))continue;
+    h+=`<div class="wkm-sp wx-l" title="${esc(c.name)}">Clima<span class="muted">${esc(c.municipio||'')}</span></div>`;
+    for(let i=0;i<7;i++){const ds=addDays(ws,i);const d=wxDay(c,ds);h+=`<div class="wx-c ${ds===t?'today':''}" title="${esc(wxTip(d))}">${d?`<b class="num">${Math.round(d.tMax)}°<span class="muted">/${Math.round(d.tMin)}°</span></b><span class="num">${d.humMean}%${d.rainMm?' · '+dec(d.rainMm)+' mm':''}</span>`:'<span class="muted">—</span>'}</div>`}}}
   for(const r of rowDefs){
     h+=`<div class="wkm-sp" style="--pc:${r.color}">${esc(r.name)}</div>`;
     for(let i=0;i<7;i++){const ds=addDays(ws,i);
@@ -1918,7 +1943,7 @@ function spaceView(p,s,pc){
   const area=num(s.width)*num(s.length);const tab=S.spaceTab||'ficha';
   const tabs=[['ficha','Ficha técnica'],['plan','Planificador'],['clima','Clima'],['seg','Registro de fotos']];
   let h=`<div class="row"><button class="ghost" data-act="closeSpace">← ${esc(p.name)}</button></div>
-  <section class="detail-head" style="--pc:${pc}"><span class="chip" style="align-self:flex-start">Espacio de cultivo</span><h1>${esc(s.name)}</h1>
+  <section class="detail-head" style="--pc:${pc}"><span class="chip" style="align-self:flex-start">Sector de cultivo${centerOf(s)?' · '+esc(centerOf(s).name):''}</span><h1>${esc(s.name)}</h1>
     <div class="muted">${esc(spaceSummary(s))}${area?` · ${dec(Math.round(area*100)/100)} m²`:''}</div></section>${tab==='clima'?'':climAlert(s)}
   <div class="tabs" role="tablist" style="--pc:${pc}">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="spaceTab" data-tab="${k}">${l}</button>`).join('')}</div>`;
   if(tab==='ficha')h+=S.fichaEdit?spaceEditForm(s,pc)+equipPanels(s,pc)+`<div class="row"><button class="primary" data-act="fichaDone">Listo, ver ficha</button></div>`:fichaView(s,pc);
@@ -1954,6 +1979,7 @@ function spaceEditForm(s,pc){
       <label class="field"><span class="label">Humedad promedio (%)</span><input id="s-hum" name="humidity" inputmode="decimal" value="${esc(dec(s.humidity))}"></label>
       <label class="field"><span class="label">Ventilación y clima encendidos (h/día)</span><input id="s-airh" name="airHours" inputmode="decimal" value="${esc(dec(s.airHours))}" placeholder="Si lo dejás vacío: 24"></label>
     </div>
+    ${centersOf().length?`<label class="field"><span class="label">Centro de cultivo</span><select id="s-center" name="centerId">${centersOf().map(c=>`<option value="${esc(c.id)}" ${centerOf(s)===c?'selected':''}>${esc(c.name)}</option>`).join('')}</select></label>`:''}
     <div class="muted" style="font-size:.82rem">Las plantas se cargan en la pestaña Planificador.</div>
     <div class="row"><button class="primary" type="submit">Guardar ficha</button>${S.spaceMsg?`<span class="muted" style="font-size:.85rem">${esc(S.spaceMsg)}</span>`:''}</div>
   </form>`;
@@ -2297,13 +2323,13 @@ function detailView(){
   if(sp)return spaceView(p,sp,pc);
   let h=`<div class="row"><button class="ghost" data-act="home">← Inicio</button></div>`+gamePanel(p,pc);
   if(p.fitness){const tab=S.mfTab||'peso';const tabs=[['peso','Peso'],['actividad','Actividad'],['desvios','Desvíos'],['objetivo','Objetivo y tareas']];
-    h+=(tab==='objetivo'?'':`<section class="detail-head" style="--pc:${pc}"><h1>${esc(p.name)}</h1>${p.goal?`<div>${esc(p.goal)}</div>`:''}</section>`)+`
+    h+=(tab==='objetivo'?'':`<section class="detail-head" style="--pc:${pc}"><h1>${esc(p.name)}</h1>${p.goal?`<div>${esc(p.goal)}</div>`:''}</section>`)+projWx(p)+`
       <div class="tabs" role="tablist" style="--pc:${pc}">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="mfTab" data-tab="${k}">${l}</button>`).join('')}</div>`;
     if(tab==='peso')return h+weightPanel(p,pc);
     if(tab==='actividad')return h+activityPanel(p,pc);
     if(tab==='desvios')return h+slipsPanel(p,pc);}
   if(p.calendar&&spacesOf(p.id).length){const tab=S.cuTab||'semana';
-    const tabs=[['semana','Semana'],['espacios','Espacios'],['compras','Compras y stock'],['rend','Rendimiento'],['tpl','Plantillas'],['catalogo','Catálogo'],['objetivo','Objetivo y tareas']];
+    const tabs=[['semana','Semana'],['espacios','Centros y sectores'],['compras','Compras y stock'],['rend','Rendimiento'],['tpl','Plantillas'],['catalogo','Catálogo'],['objetivo','Objetivo y tareas']];
     h+=`<div class="tabs cu-tabs" role="tablist" style="--pc:${pc}">${tabs.map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="tab ${tab===k?'on':''}" data-act="cuTab" data-tab="${k}">${l}</button>`).join('')}</div>`;
     const sec=(t,body)=>`<section class="panel" style="--pc:${pc}"><h2>${t}</h2>${body}</section>`;
     if(tab==='semana')return h+weekPanel(p,pc);
@@ -2758,27 +2784,59 @@ function vpdMap(s,rows){
 /* clima del municipio (se actualiza solo cada mañana) */
 const MUNIS=['Almirante Brown','Avellaneda','Berazategui','Ciudad Autónoma de Buenos Aires','Escobar','Esteban Echeverría','Ezeiza','Florencio Varela','General San Martín','Hurlingham','Ituzaingó','José C. Paz','La Matanza','La Plata','Lanús','Lomas de Zamora','Malvinas Argentinas','Merlo','Moreno','Morón','Pilar','Quilmes','San Fernando','San Isidro','San Miguel','Tigre','Tres de Febrero','Vicente López'];
 function wxBox(s){
-  const w=S.weather.find(x=>x.spaceId===s.id);const ok=w&&s.municipio&&w.municipio===s.municipio;const ext=s.cropType==='exterior';
+  const c=centerOf(s);const w=wxOfCenter(c);const ok=c&&w&&w.municipio===c.municipio;const ext=s.cropType==='exterior';
   const {st}=rangeFor(s,today());const r=st&&(s.climRanges||{})[st.k]||{};const has=k=>r[k]!==''&&r[k]!=null;
   const tc=v=>has('tMax')&&v>num(r.tMax)||has('tMin')&&v<num(r.tMin)?'exp':'';
-  let h=`<div class="wx"><div class="row"><h3>Clima del municipio</h3><span class="spacer"></span>
-    <form class="row" data-form="muni" data-sid="${esc(s.id)}" style="gap:6px;flex-wrap:nowrap"><input id="wx-muni-${esc(s.id)}" name="municipio" list="dl-muni" value="${esc(s.municipio||'')}" placeholder="Elegí el municipio" style="width:210px" aria-label="Municipio de referencia"><button class="small" type="submit">Guardar</button></form>
-    <datalist id="dl-muni">${MUNIS.map(m=>`<option value="${esc(m)}">`).join('')}</datalist></div>`;
-  if(!s.municipio)return h+'<div class="muted" style="font-size:.85rem">Elegí el municipio donde está el cultivo y la app trae el clima de ahí todas las mañanas.</div></div>';
-  if(!ok)return h+`<div class="muted" style="font-size:.85rem">Municipio guardado: ${esc(s.municipio)}. El clima se carga en la próxima actualización (todas las mañanas, 6:44).</div></div>`;
-  const c=w.current||{};const v=vpdOf(c.temp,c.hum);
-  h+=`<div class="money-sum"><div class="ms"><span class="label">Ahora · ${esc((c.time||'').slice(11))}</span><b class="num ${ext?tc(num(c.temp)):''}">${dec(c.temp)} °C · ${Math.round(num(c.hum))} %</b><span class="muted" style="font-size:.75rem">VPD ${v!=null?dec(v):'—'} kPa</span></div>
-    ${(w.days||[])[0]?`<div class="ms"><span class="label">Hoy</span><b class="num">${dec(w.days[0].tMin)}–${dec(w.days[0].tMax)} °C</b><span class="muted" style="font-size:.75rem">HR media ${w.days[0].humMean} %${w.days[0].rainMm?` · lluvia ${dec(w.days[0].rainMm)} mm`:''}</span></div>`:''}</div>
-    ${ext?`<button class="small" data-act="wxUse" data-sid="${esc(s.id)}" data-t="${esc(c.temp)}" data-h="${esc(Math.round(num(c.hum)))}" style="align-self:flex-start">Usar como medición de ahora</button>`:'<div class="muted" style="font-size:.78rem">Es el clima de afuera: sirve de referencia para la carpa (ventilación, calor o frío que entra), no reemplaza tu medición adentro.</div>'}
+  let h=`<div class="wx">${c?centerHead(c,false):'<div class="muted">Este sector no tiene centro de cultivo. Creá uno en Cultivo → Centros y sectores.</div>'}`;
+  if(!ok)return h+'</div>';
+  const cur=w.current||{};
+  h+=`${ext?`<button class="small" data-act="wxUse" data-sid="${esc(s.id)}" data-t="${esc(cur.temp)}" data-h="${esc(Math.round(num(cur.hum)))}" style="align-self:flex-start">Usar el clima de ahora como medición</button>`:'<div class="muted" style="font-size:.78rem">Es el clima de afuera del centro: referencia para ventilar o prever calor y frío; no reemplaza tu medición adentro.</div>'}
     <div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Día</th><th>Mín</th><th>Máx</th><th>HR media</th><th>VPD máx.</th><th>Lluvia</th></tr></thead><tbody>
     ${(w.days||[]).map(d=>{const dt0=new Date(d.date+'T00:00:00');return `<tr><td>${DIAS_D[dt0.getDay()].slice(0,3)} ${fmtDate(d.date).slice(0,5)}</td><td class="num ${ext?tc(d.tMin):''}">${dec(d.tMin)} °C</td><td class="num ${ext?tc(d.tMax):''}">${dec(d.tMax)} °C</td><td class="num">${d.humMean} %</td><td class="num">${dec(d.vpdMax)}</td><td class="num">${d.rainMm==null?'—':d.rainMm?dec(d.rainMm)+' mm':'0'}</td></tr>`}).join('')}</tbody></table></div>
     <div class="muted" style="font-size:.75rem">${esc(w.place||w.municipio)} · actualizado ${esc(w.updatedLocal||'')} · fuente: ${esc(w.source||'')}${ext&&(has('tMin')||has('tMax'))?' · en rojo: fuera del rango de temperatura de la etapa':''}</div></div>`;
   return h;
 }
+function projWx(p){
+  const w=S.weather.find(x=>x.kind==='project'&&x.projectId===p.id);if(!w)return '';const ds=(w.days||[]).filter(d=>d.date>=today()).slice(0,7);if(!ds.length)return '';
+  return `<section class="hwx" aria-label="Clima de la semana en ${esc(w.municipio)}"><div class="hwx-h"><b>Clima de la semana · ${esc(w.municipio)}</b><span class="muted num">ahora ${dec(w.current?.temp)} °C · ${Math.round(num(w.current?.hum))} %</span></div>
+    <div class="hwx-w">${ds.map((d,i)=>`<div class="hwx-c ${i===0?'on':''}"><span class="label">${i===0?'Hoy':DIAS_D[new Date(d.date+'T00:00:00').getDay()].slice(0,3)+' '+(+d.date.slice(8))}</span><b class="num">${Math.round(d.tMax)}°<span class="muted">/${Math.round(d.tMin)}°</span></b><span class="num muted">${d.humMean} %${d.rainMm?` · ${dec(d.rainMm)} mm`:''}</span></div>`).join('')}</div>
+    <span class="muted" style="font-size:.7rem">Actualizado ${esc(w.updatedLocal||'')} · MET Norway</span></section>`;
+}
+function homeWx(){
+  const w=S.weather.find(x=>x.kind==='home');if(!w)return '';const ds=(w.days||[]).filter(d=>d.date>=today()).slice(0,3);if(!ds.length)return '';
+  const lab=(d,i)=>i===0?'Hoy':i===1?'Mañana':DIAS_D[new Date(d.date+'T00:00:00').getDay()];
+  return `<section class="hwx" aria-label="Clima en ${esc(w.municipio)}"><div class="hwx-h"><b>${esc(w.municipio)}</b><span class="muted num">ahora ${dec(w.current?.temp)} °C · ${Math.round(num(w.current?.hum))} %</span></div>
+    <div class="hwx-d">${ds.map((d,i)=>`<div class="hwx-c ${i===0?'on':''}"><span class="label">${lab(d,i)}</span><b class="num">${Math.round(d.tMax)}°<span class="muted"> / ${Math.round(d.tMin)}°</span></b><span class="num muted">HR ${d.humMean} %${d.rainMm?` · lluvia ${dec(d.rainMm)} mm`:''}</span></div>`).join('')}</div>
+    <span class="muted" style="font-size:.7rem">Actualizado ${esc(w.updatedLocal||'')} · MET Norway</span></section>`;
+}
+/* centros de cultivo: agrupan sectores y llevan la ubicación y el clima */
+const centersOf=()=>cultP().centers||[];
+const centerOf=s=>{const cs=centersOf();return cs.find(c=>c.id===s.centerId)||cs[0]||null};
+const wxOfCenter=c=>c&&S.weather.find(x=>x.centerId===c.id);
+function wxDay(c,ds){const w=wxOfCenter(c);if(!w)return null;return (w.days||[]).find(d=>d.date===ds)||(w.history||{})[ds]||null}
+const wxShort=d=>d?`${Math.round(d.tMax)}°/${Math.round(d.tMin)}° · ${d.humMean}%${d.rainMm?` · ${dec(d.rainMm)} mm`:''}`:'';
+const wxTip=d=>d?`Máx ${dec(d.tMax)} °C · mín ${dec(d.tMin)} °C · HR media ${d.humMean} %${d.vpdMax!=null?' · VPD máx '+dec(d.vpdMax)+' kPa':''}${d.rainMm?' · lluvia '+dec(d.rainMm)+' mm':''}`:'';
+async function saveCenters(cs){await db.doc('projects/'+cultP().id).update({centers:cs})}
+function centerHead(c,full){
+  const w=wxOfCenter(c);const t=wxDay(c,today());
+  return `<div class="ctr-h"><div style="min-width:0"><span class="label">Centro de cultivo</span><b class="ctr-n">${esc(c.name)}</b><span class="muted" style="font-size:.8rem">${esc([c.municipio,c.provincia,c.pais].filter(Boolean).join(', '))||'Sin ubicación'}</span></div>
+    ${w&&w.municipio===c.municipio?`<div class="ctr-w"><b class="num">${dec(w.current?.temp)} °C · ${Math.round(num(w.current?.hum))} %</b><span class="muted" style="font-size:.75rem">ahora${t?' · hoy '+wxShort(t):''}</span></div>`:c.municipio?'<span class="muted" style="font-size:.78rem">El clima se carga en la próxima actualización (6:44).</span>':''}
+    ${full?`<button class="small ghost" data-act="editCenter" data-id="${esc(c.id)}">Editar</button>`:''}</div>`;
+}
+function centerForm(c){c=c||{};
+  return `<form class="inline-form" data-form="center" data-id="${esc(c.id||'')}"><div class="grid3">
+    <label class="field"><span class="label">Nombre del centro</span><input id="ct-name" name="name" required value="${esc(c.name||'')}" placeholder="Ej.: Centro Avellaneda"></label>
+    <label class="field"><span class="label">Municipio (para el clima)</span><input id="ct-muni" name="municipio" list="dl-muni" value="${esc(c.municipio||'')}" required></label>
+    <label class="field"><span class="label">Provincia</span><input id="ct-prov" name="provincia" value="${esc(c.provincia||'Buenos Aires')}"></label></div>
+    <datalist id="dl-muni">${MUNIS.map(m=>`<option value="${esc(m)}">`).join('')}</datalist>
+    <div class="row"><button class="primary" type="submit">Guardar centro</button><button type="button" data-act="cancelForm">Cancelar</button></div></form>`;
+}
 /* acciones y formularios del módulo */
-const XNODB=['wxUse','newGoal','editGoal','newSave','finReal','newCard','editCard','newCuota','cuTab','cxTab','plantsToggle','plantPick','plantClose','stockNew','stockEdit','stockCount','climRangeEdit','cureNew','tplNew'];
+const XNODB=['newCenter','editCenter','wxUse','newGoal','editGoal','newSave','finReal','newCard','editCard','newCuota','cuTab','cxTab','plantsToggle','plantPick','plantClose','stockNew','stockEdit','stockCount','climRangeEdit','cureNew','tplNew'];
 const XACT={
   cxTab(b){S.cxTab=b.dataset.tab;S.form=null;rerender()},
+  newCenter(){S.form={type:'center'};rerender()},
+  editCenter(b,id){S.form={type:'center',id};rerender()},
   wxUse(b){const f=app.querySelector(`form[data-form=climate][data-sid="${b.dataset.sid}"]`);if(!f)return;f.querySelector('[name=temp]').value=dec(b.dataset.t);f.querySelector('[name=hum]').value=b.dataset.h;f.querySelector('[name=time]').value=new Date().toTimeString().slice(0,5);f.querySelector('[name=note]').value='Clima del municipio';f.querySelector('[name=hum]').dispatchEvent(new Event('input',{bubbles:true}))},
   newGoal(){S.form={type:'goal'};rerender();setTimeout(()=>document.getElementById('gl-name')?.focus(),0)},
   editGoal(b,id){S.form={type:'goal',id};rerender()},
@@ -2809,6 +2867,8 @@ const XACT={
   delClimate(b,id){safe(async()=>{await db.doc('climate/'+id).delete();S.confirm=null})},
 };
 const XFORM={
+  center(f,d){const cs=[...centersOf()];const id=f.dataset.id||('c'+Date.now().toString(36));const c={...(cs.find(x=>x.id===id)||{}),id,name:(d.name||'').trim(),municipio:(d.municipio||'').trim(),provincia:(d.provincia||'').trim(),pais:'Argentina'};
+    const i=cs.findIndex(x=>x.id===id);if(i>=0)cs[i]=c;else cs.push(c);safe(async()=>{await saveCenters(cs);S.form=null;rerender()})},
   muni(f,d){const m=(d.municipio||'').trim();safe(async()=>{await db.doc('spaces/'+f.dataset.sid).update({municipio:m});document.activeElement?.blur?.();rerender()})},
   budget(f,d){const p=current();const cat=(f.dataset.cat||d.cat||'').trim();if(!cat)return;const B={...(p.budgets||{})};const v=n2(d.cap);if(v===''||!v)delete B[cat];else B[cat]=v;
     safe(async()=>{await db.doc('projects/'+p.id).update({budgets:B});document.activeElement?.blur?.();rerender()})},
@@ -3080,7 +3140,7 @@ app.addEventListener('submit',e=>{
   if(kind==='space'){
     const n=v=>{const t=String(v||'').trim();return t===''?'':num(t)};
     const data={tentBrand:(d.tentBrand||'').trim(),tentModel:(d.tentModel||'').trim(),portsTop:n(d.portsTop),portsBottom:n(d.portsBottom),
-      portsTopD:new FormData(f).getAll('portsTopD').map(x=>String(x).trim()),portsBottomD:new FormData(f).getAll('portsBottomD').map(x=>String(x).trim()),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),airHours:n(d.airHours)};
+      portsTopD:new FormData(f).getAll('portsTopD').map(x=>String(x).trim()),portsBottomD:new FormData(f).getAll('portsBottomD').map(x=>String(x).trim()),cropType:d.cropType||'',lighting:d.lighting||'',width:n(d.width),length:n(d.length),height:n(d.height),temp:n(d.temp),humidity:n(d.humidity),airHours:n(d.airHours)};if(d.centerId)data.centerId=d.centerId;
     safe(async()=>{await db.doc('spaces/'+f.dataset.id).update(data);S.spaceMsg='Guardado.';document.activeElement?.blur?.();rerender()});return}
   safe(async()=>{
     if(kind==='project'){
