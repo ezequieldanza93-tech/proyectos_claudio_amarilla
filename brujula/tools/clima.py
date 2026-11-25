@@ -39,7 +39,8 @@ def forecast(lat, lon):
         det = ts["data"]["instant"]["details"]
         rain = ((ts["data"].get("next_1_hours") or ts["data"].get("next_6_hours") or {}).get("details") or {}).get("precipitation_amount")
         span = 1 if ts["data"].get("next_1_hours") else 6
-        hours.append({"t": t, "temp": det.get("air_temperature"), "hum": det.get("relative_humidity"), "rain": rain, "span": span})
+        sym = ((ts["data"].get("next_1_hours") or ts["data"].get("next_6_hours") or {}).get("summary") or {}).get("symbol_code")
+        hours.append({"t": t, "temp": det.get("air_temperature"), "hum": det.get("relative_humidity"), "rain": rain, "span": span, "sym": sym})
     return hours
 
 def build(key, kind, name, geo, hours, prev):
@@ -49,22 +50,25 @@ def build(key, kind, name, geo, hours, prev):
     for h in hours:
         if h["temp"] is None or h["hum"] is None: continue
         k = h["t"].date().isoformat()
-        dd = days.setdefault(k, {"temps": [], "hums": [], "vpd": [], "rain": 0.0, "rainKnown": False})
+        dd = days.setdefault(k, {"temps": [], "hums": [], "vpd": [], "rain": 0.0, "rainKnown": False, "syms": []})
+        if h.get("sym"): dd["syms"].append((abs(h["t"].hour - 14), h["sym"]))
         dd["temps"].append(h["temp"]); dd["hums"].append(h["hum"]); dd["vpd"].append(svp(h["temp"]) * (1 - h["hum"] / 100))
         if h["rain"] is not None: dd["rain"] += h["rain"]; dd["rainKnown"] = True
     out = []
     for k in sorted(days)[:7]:
         dd = days[k]
         out.append({"date": k, "tMax": round(max(dd["temps"]), 1), "tMin": round(min(dd["temps"]), 1), "humMean": round(sum(dd["hums"]) / len(dd["hums"])),
-                    "humMin": round(min(dd["hums"])), "vpdMax": round(max(dd["vpd"]), 2), "rainMm": round(dd["rain"], 1) if dd["rainKnown"] else None})
+                    "humMin": round(min(dd["hums"])), "vpdMax": round(max(dd["vpd"]), 2), "rainMm": round(dd["rain"], 1) if dd["rainKnown"] else None,
+                    "symbol": min(dd["syms"])[1] if dd["syms"] else None})
     # historial: guarda el último pronóstico de cada día ya pasado (máx. 180 días)
     hist = dict((prev or {}).get("history") or {})
     for d in (prev or {}).get("days") or []:
         if d["date"] < now.date().isoformat(): hist[d["date"]] = d
     hist = dict(sorted(hist.items())[-180:])
     doc = {"kind": kind, "municipio": name, "place": geo["label"], "lat": geo["lat"], "lon": geo["lon"],
-           "current": {"time": cur["t"].strftime("%Y-%m-%d %H:%M"), "temp": cur["temp"], "hum": cur["hum"]},
-           "days": out, "history": hist, "source": "MET Norway (api.met.no); ubicación: Open-Meteo", "updatedAt": int(now.timestamp() * 1000), "updatedLocal": now.strftime("%d/%m %H:%M")}
+           "current": {"time": cur["t"].strftime("%Y-%m-%d %H:%M"), "temp": cur["temp"], "hum": cur["hum"], "symbol": cur.get("sym")},
+           "days": out, "history": hist,
+           "hours": [{"time": h["t"].strftime("%Y-%m-%d %H:%M"), "temp": h["temp"], "hum": h["hum"], "symbol": h.get("sym")} for h in hours if h["span"] == 1 and h["t"] >= now - dt.timedelta(hours=1)][:60], "source": "MET Norway (api.met.no); ubicación: Open-Meteo", "updatedAt": int(now.timestamp() * 1000), "updatedLocal": now.strftime("%d/%m %H:%M")}
     if kind == "center": doc["centerId"] = key
     if kind == "project": doc["projectId"] = key
     return doc

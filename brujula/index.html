@@ -410,6 +410,15 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .hwx-w .hwx-c b{font-size:1.05rem}
 .hvpd{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:8px}
 .hvpd-r{display:flex;flex-direction:column;gap:1px;font-size:.85rem}
+.hwx-now{display:flex;gap:12px;align-items:center}
+.hwx-now>div{display:flex;flex-direction:column}
+.hwx-t{font-size:1.9rem;line-height:1.1}
+.wxi{flex:none;display:block}
+.wx-now{display:flex;align-items:center;gap:2px;flex-wrap:wrap;justify-content:center}
+.wx-now b{font-size:.68rem;white-space:nowrap}
+.hwx-mm{white-space:nowrap;font-size:1.2rem!important}
+.hwx-c{align-items:flex-start}
+.wx-c .wxi{margin:0 auto}
 </style>
 
 <div class="wrap" id="app">
@@ -611,7 +620,8 @@ function typeAvgs(){const acc={};S.events.forEach(e=>{if(num(e.minutes)>0){(acc[
   const out={};for(const k in acc)out[k]=acc[k].reduce((a,b)=>a+b,0)/acc[k].length;return out}
 const MIN_PER_PLANT={'Riego radicular':3,'Riego foliar':3,'Trasplante':10};
 function plantsFor(e,sid){const sp=e.spaceId||sid||S.space;
-  if(sp)return S.batches.filter(x=>x.spaceId===sp&&x.status!=='finalizado').reduce((a,x)=>a+num(x.qty),0);
+  const d=e.date||today();const live=x=>(!x.startDate||x.startDate<=d)&&(x.status!=='finalizado'||(x.endDate&&x.endDate>=d));
+  if(sp)return S.batches.filter(x=>x.spaceId===sp&&live(x)).reduce((a,x)=>a+num(x.qty),0);
   const b=S.batches.find(x=>x.id===e.batchId);return b?num(b.qty):0}
 const ruleMin=(e,sid)=>MIN_PER_PLANT[e.type]?MIN_PER_PLANT[e.type]*(e.type==='Trasplante'&&num(e.tpQty)?num(e.tpQty):plantsFor(e,sid)):0;
 function planMinEv(e,avg){return num(e.estMin)||num(e.minutes)||ruleMin(e)||(avg[e.type]||0)}
@@ -1560,7 +1570,7 @@ async function uploadMedia(f){
   rerender();
 }
 const spacesOf=pid=>S.spaces.filter(s=>s.projectId===pid).sort((a,b)=>num(a.order)-num(b.order));
-const plantTotal=s=>S.batches.filter(b=>b.spaceId===s.id&&b.status!=='finalizado').reduce((a,x)=>a+num(x.qty),0);
+const plantTotal=s=>S.batches.filter(b=>b.spaceId===s.id&&b.status!=='finalizado'&&(!b.startDate||b.startDate<=today())).reduce((a,x)=>a+num(x.qty),0);
 const dec=v=>v===''||v==null?'':String(v).replace('.',',');
 function spaceSummary(s){
   const parts=[];
@@ -1925,7 +1935,8 @@ function weekPanel(p,pc){
     h+=`<button class="wkm-day ${ds===t?'today':''} ${ds===sel?'sel':''}" data-act="wkDay" data-date="${ds}" aria-label="${DIAS_D[(i+1)%7]} ${fmtDate(ds)}"><span>${DIAS_D[(i+1)%7].slice(0,3)}</span><b class="num">${+ds.slice(8)}</b></button>`;}
   {const cset=[...new Set(rows.map(centerOf).filter(Boolean))];for(const c of cset){if(!wxOfCenter(c))continue;
     h+=`<div class="wkm-sp wx-l" title="${esc(c.name)}">Clima<span class="muted">${esc(c.municipio||'')}</span></div>`;
-    for(let i=0;i<7;i++){const ds=addDays(ws,i);const d=wxDay(c,ds);h+=`<div class="wx-c ${ds===t?'today':''}" title="${esc(wxTip(d))}">${d?`<b class="num">${Math.round(d.tMax)}°<span class="muted">/${Math.round(d.tMin)}°</span></b><span class="num">${d.humMean}%${d.rainMm?' · '+dec(d.rainMm)+' mm':''}</span>`:'<span class="muted">—</span>'}</div>`}}}
+    for(let i=0;i<7;i++){const ds=addDays(ws,i);const d=wxDay(c,ds);const nw=ds===t?wxNow(wxOfCenter(c)):null;
+      h+=`<div class="wx-c ${ds===t?'today':''}" title="${esc(wxTip(d))}">${nw?`<span class="wx-now">${wxIcon(nw.symbol,18)}<b class="num">${Math.round(num(nw.temp))}° · ${Math.round(num(nw.hum))}%</b></span><span class="muted" style="font-size:.58rem">ahora</span>`:''}${d?`${nw?'':wxIcon(d.symbol,18)}<b class="num">${Math.round(d.tMax)}°<span class="muted">/${Math.round(d.tMin)}°</span></b><span class="num">${d.humMean}%${d.rainMm?' · '+dec(d.rainMm)+' mm':''}</span>`:'<span class="muted">—</span>'}</div>`}}}
   for(const r of rowDefs){
     h+=`<div class="wkm-sp" style="--pc:${r.color}">${esc(r.name)}</div>`;
     for(let i=0;i<7;i++){const ds=addDays(ws,i);
@@ -2792,7 +2803,7 @@ function wxBox(s){
   const tc=v=>has('tMax')&&v>num(r.tMax)||has('tMin')&&v<num(r.tMin)?'exp':'';
   let h=`<div class="wx">${c?centerHead(c,false):'<div class="muted">Este sector no tiene centro de cultivo. Creá uno en Cultivo → Centros y sectores.</div>'}`;
   if(!ok)return h+'</div>';
-  const cur=w.current||{};
+  const cur=wxNow(w)||{};
   h+=`<div class="label" style="margin-top:2px">Con el clima de ahora</div>${vpdAdvice(s,{temp:cur.temp,hum:cur.hum,date:today()},false)}`;
   h+=`${ext?`<button class="small" data-act="wxUse" data-sid="${esc(s.id)}" data-t="${esc(cur.temp)}" data-h="${esc(Math.round(num(cur.hum)))}" style="align-self:flex-start">Usar el clima de ahora como medición</button>`:'<div class="muted" style="font-size:.78rem">Es el clima de afuera del centro: referencia para ventilar o prever calor y frío; no reemplaza tu medición adentro.</div>'}
     <div class="tbl-wrap"><table class="ptbl"><thead><tr><th>Día</th><th>Mín</th><th>Máx</th><th>HR media</th><th>VPD máx.</th><th>Lluvia</th></tr></thead><tbody>
@@ -2802,9 +2813,34 @@ function wxBox(s){
 }
 function projWx(p){
   const w=S.weather.find(x=>x.kind==='project'&&x.projectId===p.id);if(!w)return '';const ds=(w.days||[]).filter(d=>d.date>=today()).slice(0,7);if(!ds.length)return '';
-  return `<section class="hwx" aria-label="Clima de la semana en ${esc(w.municipio)}"><div class="hwx-h"><b>Clima de la semana · ${esc(w.municipio)}</b><span class="muted num">ahora ${dec(w.current?.temp)} °C · ${Math.round(num(w.current?.hum))} %</span></div>
-    <div class="hwx-w">${ds.map((d,i)=>`<div class="hwx-c ${i===0?'on':''}"><span class="label">${i===0?'Hoy':DIAS_D[new Date(d.date+'T00:00:00').getDay()].slice(0,3)+' '+(+d.date.slice(8))}</span><b class="num">${Math.round(d.tMax)}°<span class="muted">/${Math.round(d.tMin)}°</span></b><span class="num muted">${d.humMean} %${d.rainMm?` · ${dec(d.rainMm)} mm`:''}</span></div>`).join('')}</div>
+  return `<section class="hwx" aria-label="Clima de la semana en ${esc(w.municipio)}"><div class="hwx-h"><b>Clima de la semana · ${esc(w.municipio)}</b><span class="row num" style="gap:6px">${wxIcon((wxNow(w)||{}).symbol,24)} ahora ${dec((wxNow(w)||{}).temp)} °C · ${Math.round(num((wxNow(w)||{}).hum))} %</span></div>
+    <div class="hwx-w">${ds.map((d,i)=>`<div class="hwx-c ${i===0?'on':''}"><span class="label">${i===0?'Hoy':DIAS_D[new Date(d.date+'T00:00:00').getDay()].slice(0,3)+' '+(+d.date.slice(8))}</span>${wxIcon(d.symbol,24)}<b class="num">${Math.round(d.tMax)}°<span class="muted">/${Math.round(d.tMin)}°</span></b><span class="num muted">${d.humMean} %${d.rainMm?` · ${dec(d.rainMm)} mm`:''}</span></div>`).join('')}</div>
     <span class="muted" style="font-size:.7rem">Actualizado ${esc(w.updatedLocal||'')} · MET Norway</span></section>`;
+}
+/* íconos del clima (códigos de MET Norway) */
+const WX_LBL=[['thunder','Tormenta'],['sleet','Aguanieve'],['snow','Nieve'],['heavyrain','Lluvia fuerte'],['lightrain','Lluvia débil'],['rain','Lluvia'],['fog','Niebla'],['partlycloudy','Parcialmente nublado'],['fair','Mayormente despejado'],['clearsky','Despejado'],['cloudy','Nublado']];
+const wxLabel=c=>{if(!c)return '';const f=WX_LBL.find(([k])=>c.includes(k));return f?f[1]:c};
+function wxIcon(c,sz){
+  sz=sz||28;if(!c)return '';const night=/_night|_polartwilight/.test(c);
+  const sun=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#f2b632"/>${[0,45,90,135,180,225,270,315].map(a=>{const t=a*Math.PI/180;return `<line x1="${x+Math.cos(t)*(r+2)}" y1="${y+Math.sin(t)*(r+2)}" x2="${x+Math.cos(t)*(r+4.5)}" y2="${y+Math.sin(t)*(r+4.5)}" stroke="#f2b632" stroke-width="1.8" stroke-linecap="round"/>`}).join('')}`;
+  const moon=(x,y,r)=>`<path d="M${x+r*0.3} ${y-r} a${r} ${r} 0 1 0 ${r*0.75} ${r*1.55} a${r*0.8} ${r*0.8} 0 0 1 ${-r*0.75} ${-r*1.55}z" fill="#c9cfe0"/>`;
+  const cloud=(x,y,col)=>`<path d="M${x} ${y+8}h16a5 5 0 0 0 0-10 7 7 0 0 0-13.5-1.5A5 5 0 0 0 ${x} ${y+8}z" fill="${col||'#b9c2cc'}" stroke="#8d98a5" stroke-width=".8"/>`;
+  const sky=night?moon(10,10,5):sun(10,10,4.5);
+  let g;
+  if(/clearsky/.test(c))g=night?moon(16,15,8):sun(16,16,6.5);
+  else if(/fair/.test(c))g=sky+cloud(9,14);
+  else if(/partlycloudy/.test(c))g=sky+cloud(6,12);
+  else if(/fog/.test(c))g=cloud(5,7)+[22,26].map(y=>`<line x1="6" y1="${y}" x2="26" y2="${y}" stroke="#8d98a5" stroke-width="2" stroke-linecap="round"/>`).join('');
+  else if(/thunder/.test(c))g=cloud(5,6,'#9aa4b0')+`<path d="M16 18l-4 7h4l-2 6 6-8h-4l2-5z" fill="#f2b632"/>`;
+  else if(/snow|sleet/.test(c))g=cloud(5,6)+[9,16,23].map(x=>`<text x="${x}" y="29" font-size="7" text-anchor="middle" fill="#7fb3e0">✻</text>`).join('');
+  else if(/rain/.test(c)){const n=/heavy/.test(c)?4:/light/.test(c)?2:3;g=cloud(5,6,'#a3adb8')+Array.from({length:n},(_,i)=>`<line x1="${9+i*5}" y1="21" x2="${7+i*5}" y2="27" stroke="#4a90d9" stroke-width="2" stroke-linecap="round"/>`).join('')+(/showers/.test(c)?(night?moon(25,7,3.5):sun(25,7,3)):'')}
+  else g=cloud(5,9);
+  return `<svg class="wxi" viewBox="0 0 32 32" width="${sz}" height="${sz}" role="img" aria-label="${esc(wxLabel(c))}"><title>${esc(wxLabel(c))}</title>${g}</svg>`;
+}
+function wxNow(w){
+  if(!w)return null;const hs=w.hours||[];const n=new Date();const key=ymd(n)+' '+String(n.getHours()).padStart(2,'0')+':00';
+  const h=hs.find(x=>x.time===key)||hs.filter(x=>x.time<=key).slice(-1)[0];
+  return h&&Math.abs(new Date(h.time.replace(' ','T'))-n)<3*3600e3?h:(w.current||null);
 }
 function vpdFix(s,T,H){
   const {st}=rangeFor(s,today());const tg=vpdTarget(s,st);const v=vpdOf(T,H);if(!tg||v==null)return null;
@@ -2812,7 +2848,7 @@ function vpdFix(s,T,H){
   return {st,tg,v,ok:v>=tg.lo&&v<=tg.hi,H2:Math.min(99,Math.max(0,100*(1-goal/svp(T)))),T2:tFromSvp(goal/(1-H/100)),T,H};
 }
 function homeVpd(w){
-  const T=w.current?.temp,H=w.current?.hum;if(T==null||H==null)return '';
+  const nw=wxNow(w)||{};const T=nw.temp,H=nw.hum;if(T==null||H==null)return '';
   const r1=n=>dec(Math.round(n*10)/10);
   const rows=S.spaces.filter(x=>x.enabled!==false&&x.projectId==='cultivo').map(sp=>[sp,vpdFix(sp,T,H)]).filter(x=>x[1]);
   if(!rows.length)return '';
@@ -2824,8 +2860,9 @@ function homeVpd(w){
 function homeWx(){
   const w=S.weather.find(x=>x.kind==='home');if(!w)return '';const ds=(w.days||[]).filter(d=>d.date>=today()).slice(0,3);if(!ds.length)return '';
   const lab=(d,i)=>i===0?'Hoy':i===1?'Mañana':DIAS_D[new Date(d.date+'T00:00:00').getDay()];
-  return `<section class="hwx" aria-label="Clima en ${esc(w.municipio)}"><div class="hwx-h"><b>${esc(w.municipio)}</b><span class="muted num">ahora ${dec(w.current?.temp)} °C · ${Math.round(num(w.current?.hum))} %</span></div>
-    <div class="hwx-d">${ds.map((d,i)=>`<div class="hwx-c ${i===0?'on':''}"><span class="label">${lab(d,i)}</span><b class="num">${Math.round(d.tMax)}°<span class="muted"> / ${Math.round(d.tMin)}°</span></b><span class="num muted">HR ${d.humMean} %${d.rainMm?` · lluvia ${dec(d.rainMm)} mm`:''}</span></div>`).join('')}</div>
+  const nw=wxNow(w)||{};
+  return `<section class="hwx" aria-label="Clima en ${esc(w.municipio)}"><div class="hwx-now">${wxIcon(nw.symbol,52)}<div><span class="label">${esc(w.municipio)} · ahora</span><b class="num hwx-t">${dec(Math.round(num(nw.temp)*10)/10)} °C</b><span class="num">Humedad ${Math.round(num(nw.hum))} %${nw.symbol?' · '+esc(wxLabel(nw.symbol)):''}</span></div></div>
+    <div class="hwx-d">${ds.map((d,i)=>`<div class="hwx-c ${i===0?'on':''}"><span class="label">${lab(d,i)}</span>${wxIcon(d.symbol,28)}<b class="num hwx-mm">${Math.round(d.tMax)}°<span class="muted">/${Math.round(d.tMin)}°</span></b><span class="num muted">HR ${d.humMean} %${d.rainMm?` · lluvia ${dec(d.rainMm)} mm`:''}</span></div>`).join('')}</div>
     ${homeVpd(w)}
     <span class="muted" style="font-size:.7rem">Actualizado ${esc(w.updatedLocal||'')} · MET Norway</span></section>`;
 }
@@ -2840,7 +2877,7 @@ async function saveCenters(cs){await db.doc('projects/'+cultP().id).update({cent
 function centerHead(c,full){
   const w=wxOfCenter(c);const t=wxDay(c,today());
   return `<div class="ctr-h"><div style="min-width:0"><span class="label">Centro de cultivo</span><b class="ctr-n">${esc(c.name)}</b><span class="muted" style="font-size:.8rem">${esc([c.municipio,c.provincia,c.pais].filter(Boolean).join(', '))||'Sin ubicación'}</span></div>
-    ${w&&w.municipio===c.municipio?`<div class="ctr-w"><b class="num">${dec(w.current?.temp)} °C · ${Math.round(num(w.current?.hum))} %</b><span class="muted" style="font-size:.75rem">ahora${t?' · hoy '+wxShort(t):''}</span></div>`:c.municipio?'<span class="muted" style="font-size:.78rem">El clima se carga en la próxima actualización (6:44).</span>':''}
+    ${w&&w.municipio===c.municipio?`<div class="ctr-w"><b class="num row" style="gap:6px">${wxIcon((wxNow(w)||{}).symbol,26)}${dec((wxNow(w)||{}).temp)} °C · ${Math.round(num((wxNow(w)||{}).hum))} %</b><span class="muted" style="font-size:.75rem">ahora${t?' · hoy '+wxShort(t):''}</span></div>`:c.municipio?'<span class="muted" style="font-size:.78rem">El clima se carga en la próxima actualización (6:44).</span>':''}
     ${full?`<button class="small ghost" data-act="editCenter" data-id="${esc(c.id)}">Editar</button>`:''}</div>`;
 }
 function centerForm(c){c=c||{};
